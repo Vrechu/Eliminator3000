@@ -7,7 +7,7 @@ public class MoveShip : MonoBehaviour
     public InputActionAsset InputActions;
     private InputAction moveHorizontally;
     private Vector2 horizontalVector;
-    private float horizontalSpeed = 5f;
+    private float horizontalSpeed = 7f;
 
 
     private void OnEnable()
@@ -39,6 +39,6 @@ public class MoveShip : MonoBehaviour
 
     private void Move()
     {
-        shipTransform.Translate(new Vector3( horizontalVector.x,0,horizontalVector.y) * horizontalSpeed * Time.deltaTime);
+        shipTransform.Translate(new Vector3( horizontalVector.x,0,0) * horizontalSpeed * Time.deltaTime);
     }
 }
