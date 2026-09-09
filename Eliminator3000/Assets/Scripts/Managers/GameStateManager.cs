@@ -6,6 +6,8 @@ public class GameStateManager : MonoBehaviour
     public static GameStateManager Instance { get; private set; }
 
     public UnityEvent OnLose;
+    public UnityEvent OnWin;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -23,5 +25,11 @@ public class GameStateManager : MonoBehaviour
     {
         OnLose?.Invoke();
         Debug.Log("Game Over!");
+    }
+
+    public void WinGame()
+    {
+        OnWin?.Invoke();
+        Debug.Log("You Win!");
     }
 }
