@@ -5,8 +5,7 @@ using UnityEngine.Events;
 public class LivesManager : MonoBehaviour
 {
     public static LivesManager Instance { get; private set; }
-    [SerializeField]
-    private int lives = 3;
+    public int lives { get; private set; } = 3;
 
     public UnityEvent OnLivesChanged;
     public UnityEvent OnLivesAtZero;
@@ -24,16 +23,15 @@ public class LivesManager : MonoBehaviour
             Instance = this;
         }
     }
-
     public void LoseLife(int amount)
     {
         lives -= amount;
-        OnLivesChanged?.Invoke();
         CheckLives();
     }
     
-    private void CheckLives()
+    public void CheckLives()
     {
+        OnLivesChanged?.Invoke();
         if (lives <= 0)
         {
             OnLivesAtZero?.Invoke();

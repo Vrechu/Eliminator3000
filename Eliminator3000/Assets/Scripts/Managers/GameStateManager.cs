@@ -5,8 +5,10 @@ public class GameStateManager : MonoBehaviour
 {
     public static GameStateManager Instance { get; private set; }
 
+    public UnityEvent OnGameStart;
     public UnityEvent OnLose;
     public UnityEvent OnWin;
+
 
     private void Awake()
     {
@@ -19,6 +21,11 @@ public class GameStateManager : MonoBehaviour
         {
             Instance = this;
         }
+    }
+    private void Start()
+    {
+        OnGameStart?.Invoke(); 
+        Debug.Log("Game Started!");
     }
 
     public void LoseGame()
