@@ -6,6 +6,8 @@ public class ObstacleTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            LivesManager.Instance.LoseLife(1);
+
             Debug.Log("Player has entered the obstacle trigger!");
         }
 

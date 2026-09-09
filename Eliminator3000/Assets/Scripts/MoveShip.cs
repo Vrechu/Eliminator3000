@@ -3,27 +3,31 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 public class MoveShip : MonoBehaviour
 {
-    public Transform shipTransform;
-    public InputActionAsset InputActions;
+    [SerializeField]
+    private InputActionAsset inputActions;
     private InputAction moveHorizontally;
     private Vector2 horizontalVector;
+    [SerializeField]
     private float horizontalSpeed = 7f;
+
+    [SerializeField]
+    private float trackwidth = 12f;
 
 
     private void OnEnable()
     {
-        InputActions.FindActionMap("Player").Enable();
+        inputActions.FindActionMap("Player").Enable();
     }
 
     private void Awake()
     {
-        moveHorizontally = InputActions.FindAction("Move");
+        moveHorizontally = inputActions.FindAction("Move");
     }
 
     private void OnDisable()
     {
-        InputActions.FindActionMap("Player").Disable();        
-    }   
+        inputActions.FindActionMap("Player").Disable();
+    }
 
     private void Update()
     {
@@ -34,11 +38,18 @@ public class MoveShip : MonoBehaviour
     private void SetInputs()
     {
         horizontalVector = moveHorizontally.ReadValue<Vector2>();
-        
     }
 
     private void Move()
     {
-        shipTransform.Translate(new Vector3( horizontalVector.x,0,0) * horizontalSpeed * Time.deltaTime);
+        if (transform.position.x < -trackwidth * 0.5f
+            && horizontalVector.x < 0)        
+            horizontalVector.x = 0;        
+
+        if (transform.position.x > trackwidth * 0.5f
+            && horizontalVector.x > 0)
+            horizontalVector.x = 0;
+
+        transform.Translate(new Vector3( horizontalVector.x,0,0) * horizontalSpeed * Time.deltaTime);
     }
 }
