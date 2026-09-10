@@ -5,10 +5,12 @@ using UnityEngine.Events;
 public class LivesManager : MonoBehaviour
 {
     public static LivesManager Instance { get; private set; }
-    public int lives { get; private set; } = 3;
 
     public UnityEvent OnLivesChanged;
-    public UnityEvent OnLivesAtZero;
+    public UnityEvent OnP1LivesAtZero;
+    public UnityEvent OnP2LivesAtZero;
+
+    private ProfileManager profileManager;
 
 
     private void Awake()
@@ -23,18 +25,40 @@ public class LivesManager : MonoBehaviour
             Instance = this;
         }
     }
-    public void LoseLife(int amount)
+
+    private void Start()
     {
-        lives -= amount;
-        CheckLives();
+        profileManager = ProfileManager.Instance;
+    }
+
+    public void LoseLife(int player, int amount)
+    {
+        if (player == 1)
+        {
+            profileManager.Player1.Lives -= amount;
+        }
+        else if (player == 2)
+        {
+            profileManager.Player2.Lives -= amount;
+        }
+
+        CheckLives(player);
     }
     
-    public void CheckLives()
+    public void CheckLives(int player)
     {
         OnLivesChanged?.Invoke();
-        if (lives <= 0)
+        Debug.Log(player + " has "+ profileManager.AllProfiles()[player - 1].Lives);
+        if (profileManager.AllProfiles()[player - 1].Lives <= 0)
         {
-            OnLivesAtZero?.Invoke();
+            if (player == 1)
+            {
+                OnP1LivesAtZero?.Invoke();
+            }
+            else if (player == 2)
+            {
+                OnP2LivesAtZero?.Invoke();
+            }
         }
     }
 }
