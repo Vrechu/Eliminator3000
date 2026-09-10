@@ -12,7 +12,7 @@ public class MoveShip : MonoBehaviour
 
     [SerializeField]
     private float trackwidth = 12f;
-
+    private GameStateManager gameStateManager;
 
 
 
@@ -31,16 +31,15 @@ public class MoveShip : MonoBehaviour
         inputActions.FindActionMap("Player").Disable();
     }
 
-    private void Update()
+    private void Start()
     {
-        SetInputs();
-        Move();
+        gameStateManager = GameStateManager.Instance;
     }
 
-    private void SetInputs()
+    private void Update()
     {
-        //horizontalVector = moveHorizontally.ReadValue<Vector2>();
-
+        if (gameStateManager.CurrentState == GameStateManager.GameState.Ingame)
+            Move();
     }
 
     public void GetHorizontalImputs(InputAction.CallbackContext context)

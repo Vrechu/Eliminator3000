@@ -17,64 +17,55 @@ public class PlayerInputManager : MonoBehaviour
 
     private ProfileManager profileManager;
 
+    private GameStateManager gameStateManager;
+
 
     private void Start()
     {
         profileManager = ProfileManager.Instance;
+        gameStateManager = GameStateManager.Instance;
     }
 
 
     void Update()
     {
         if (Keyboard.current == null) return;
-
-        if (!wasdJoined
-            && Keyboard.current.spaceKey.wasPressedThisFrame)
+        if (gameStateManager.CurrentState == GameStateManager.GameState.Pregame
+            || gameStateManager.CurrentState == GameStateManager.GameState.Ingame
+            || gameStateManager.CurrentState == GameStateManager.GameState.Paused)
         {
-            PlayerInput player = PlayerInput.Instantiate(player1Prefab,
-                controlScheme: "WASD",
-                pairWithDevice: Keyboard.current);
-
-            profileManager.NewProfile(1, player.gameObject, player);
-            if (spawnPoints.Length > 0)
+            if (!wasdJoined
+                && Keyboard.current.spaceKey.wasPressedThisFrame)
             {
-                player.transform.position = spawnPoints[0].position;
-            }
+                PlayerInput player = PlayerInput.Instantiate(player1Prefab,
+                    controlScheme: "WASD",
+                    pairWithDevice: Keyboard.current);
 
-            wasdJoined = true;
-            OnPlayerJoined?.Invoke();
-        }
+                profileManager.NewProfile(1, player.gameObject, player);
+                if (spawnPoints.Length > 0)
+                {
+                    player.transform.position = spawnPoints[0].position;
+                }
 
-        if (!arrowsJoined
-            && Keyboard.current.rightCtrlKey.wasPressedThisFrame)
-        {
-            PlayerInput player = PlayerInput.Instantiate(player2Prefab,
-                controlScheme: "Arrows",
-                pairWithDevice: Keyboard.current);
-
-            profileManager.NewProfile(2, player.gameObject, player);
-            if (spawnPoints.Length > 1)
-            {
-                player.transform.position = spawnPoints[1].position;
-            }
-            arrowsJoined = true;
-            OnPlayerJoined?.Invoke();
-        }
-
-        /*foreach (var gamePad in Gamepad.all)
-        {
-            if (gamePad.buttonSouth.wasPressedThisFrame)
-            {
-                PlayerInput player = PlayerInput.Instantiate(playerPrefab[2],
-                    controlScheme: "Gamepad",
-                    pairWithDevice: gamePad);
-
-
+                wasdJoined = true;
                 OnPlayerJoined?.Invoke();
             }
-        }*/
+
+            if (!arrowsJoined
+                && Keyboard.current.rightCtrlKey.wasPressedThisFrame)
+            {
+                PlayerInput player = PlayerInput.Instantiate(player2Prefab,
+                    controlScheme: "Arrows",
+                    pairWithDevice: Keyboard.current);
+
+                profileManager.NewProfile(2, player.gameObject, player);
+                if (spawnPoints.Length > 1)
+                {
+                    player.transform.position = spawnPoints[1].position;
+                }
+                arrowsJoined = true;
+                OnPlayerJoined?.Invoke();
+            }
+        }
     }
-
-
-
 }
