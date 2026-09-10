@@ -14,6 +14,8 @@ public class MoveShip : MonoBehaviour
     private float trackwidth = 12f;
 
 
+
+
     private void OnEnable()
     {
         inputActions.FindActionMap("Player").Enable();
@@ -37,19 +39,25 @@ public class MoveShip : MonoBehaviour
 
     private void SetInputs()
     {
-        horizontalVector = moveHorizontally.ReadValue<Vector2>();
+        //horizontalVector = moveHorizontally.ReadValue<Vector2>();
+
+    }
+
+    public void GetHorizontalImputs(InputAction.CallbackContext context)
+    {
+        horizontalVector = context.ReadValue<Vector2>();
     }
 
     private void Move()
     {
         if (transform.position.x < -trackwidth * 0.5f
-            && horizontalVector.x < 0)        
-            horizontalVector.x = 0;        
+            && horizontalVector.x < 0)
+            horizontalVector.x = 0;
 
         if (transform.position.x > trackwidth * 0.5f
             && horizontalVector.x > 0)
             horizontalVector.x = 0;
 
-        transform.Translate(new Vector3( horizontalVector.x,0,0) * horizontalSpeed * Time.deltaTime);
+        transform.Translate(new Vector3(horizontalVector.x, 0, 0) * horizontalSpeed * Time.deltaTime);
     }
 }

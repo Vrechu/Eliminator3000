@@ -5,18 +5,16 @@ public class UpdateGUI : MonoBehaviour
 {
     [SerializeField]
     private TMPro.TextMeshProUGUI livesGUI, winGUI,loseGUI;
-    private LivesManager livesManager; 
 
     private void Start()
     {
-        livesManager = LivesManager.Instance;
         DisableWinLose();
     }
 
 
     public void SetLivesUI()
     {
-        livesGUI.text = "Lives: " + livesManager.lives;
+        livesGUI.text = "Lives: " + LivesManager.Instance.lives;
     }
 
     private void DisableWinLose()
