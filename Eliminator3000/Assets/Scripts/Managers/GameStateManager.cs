@@ -36,7 +36,7 @@ public class GameStateManager : MonoBehaviour
     }
     private void Start()
     {
-        CurrentState = GameState.Pregame;        
+        CurrentState = GameState.Pregame;
         Debug.Log("Game Started!");
     }
     private void Update()
@@ -60,19 +60,23 @@ public class GameStateManager : MonoBehaviour
 
     private void PlayPauseGame()
     {
-        if (Keyboard.current.enterKey.wasPressedThisFrame)
+        if (!Keyboard.current.enterKey.wasPressedThisFrame) return;
+
+        if (!(ProfileManager.Instance.player1Active
+            || ProfileManager.Instance.player2Active)) return;
+
+        if (CurrentState == GameState.Pregame
+        || CurrentState == GameState.Paused)
+
         {
-            if (CurrentState == GameState.Pregame
-                || CurrentState == GameState.Paused)
-            {
             CurrentState = GameState.Ingame;
             OnGameStart?.Invoke();
-            }
-            else if (CurrentState == GameState.Ingame)
-            {
-                CurrentState = GameState.Paused;
-                Debug.Log("Game Paused!");
-            }
+        }
+
+        else if (CurrentState == GameState.Ingame)
+        {
+            CurrentState = GameState.Paused;
+            Debug.Log("Game Paused!");
         }
     }
 }
