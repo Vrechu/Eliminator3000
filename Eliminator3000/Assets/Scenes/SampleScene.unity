@@ -3286,6 +3286,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: BackPlane
       objectReference: {fileID: 0}
+    - target: {fileID: 4784446030248826768, guid: fd0700eceda3ba845ada77c469ba06dc, type: 3}
+      propertyPath: m_Convex
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4784446030248826768, guid: fd0700eceda3ba845ada77c469ba06dc, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6582608978599414172, guid: fd0700eceda3ba845ada77c469ba06dc, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

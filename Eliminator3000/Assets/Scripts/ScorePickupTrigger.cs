@@ -18,5 +18,9 @@ public class ScorePickupTrigger : MonoBehaviour
             EventBus<PlayerScoredEvent>.Publish(new PlayerScoredEvent(2, scoreValue));
             Destroy(gameObject);
         }
+        else if (other.CompareTag("BackPlane"))
+        {
+            Destroy(gameObject);
+        }
     }
 }

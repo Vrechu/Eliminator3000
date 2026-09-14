@@ -6,7 +6,11 @@ public class Shoot : MonoBehaviour
 {
     [SerializeField]
     private InputActionAsset inputActions;
+    [SerializeField]
+    private GameObject projectilePrefab;
     private bool inputpressedThisFrame;
+    [SerializeField]
+    private MonoBehaviour playerController;
 
     private void OnEnable()
     {
@@ -20,9 +24,18 @@ public class Shoot : MonoBehaviour
 
     public void GetShootInput(InputAction.CallbackContext context)
     {
-        inputpressedThisFrame = false;
+        if (GameStateManager.Instance.CurrentState 
+            != GameStateManager.GameState.Ingame) return;
         if (!context.performed) return;
+        inputpressedThisFrame = false;
         inputpressedThisFrame = true;
-        Debug.Log("Shoot input pressed");
+        ShootProjectile();
     }
+
+
+    private void ShootProjectile()
+    {
+        GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.Euler(90f,0f,0f));
+    }
+
 }
