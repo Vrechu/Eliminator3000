@@ -17,7 +17,7 @@
                     "priority": 0
                 },
                 {
-                    "name": "Jump",
+                    "name": "Shoot",
                     "type": "Button",
                     "id": "2a79777b-0095-4702-89b1-0f5524f57dbc",
                     "expectedControlType": "",
@@ -156,7 +156,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
-                    "action": "Jump",
+                    "action": "Shoot",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -167,7 +167,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";WASD",
-                    "action": "Jump",
+                    "action": "Shoot",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -178,7 +178,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Arrows",
-                    "action": "Jump",
+                    "action": "Shoot",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

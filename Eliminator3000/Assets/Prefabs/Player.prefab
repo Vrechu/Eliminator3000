@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 1556448168896425009}
   - component: {fileID: 2158181575188216181}
   - component: {fileID: 7649430092913139473}
-  - component: {fileID: 23272461047941011}
+  - component: {fileID: 6548040488092596121}
   m_Layer: 0
-  m_Name: Player2
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -174,7 +174,19 @@ MonoBehaviour:
     m_ActionId: 7f746426-9d54-423f-bf7c-a354a7bb9093
     m_ActionName: 'Gameplay/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6548040488092596121}
+        m_TargetAssemblyTypeName: Shoot, Assembly-CSharp
+        m_MethodName: GetShootInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 2a79777b-0095-4702-89b1-0f5524f57dbc
     m_ActionName: 'Gameplay/Jump[/Keyboard/space,/Keyboard/rightCtrl]'
   m_NeverAutoSwitchControlSchemes: 1
@@ -182,7 +194,7 @@ MonoBehaviour:
   m_DefaultActionMap: Gameplay
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &23272461047941011
+--- !u!114 &6548040488092596121
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -262,7 +274,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 984c2ad7688dae84c931156553b16b4e, type: 2}
+  - {fileID: 2100000, guid: 7a8584748bf13ad4cb771e7bbe570aa3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -322,7 +334,7 @@ GameObject:
   - component: {fileID: 6881089789449366302}
   m_Layer: 0
   m_Name: Ship_Collider
-  m_TagString: Player2
+  m_TagString: Player1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

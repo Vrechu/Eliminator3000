@@ -14,12 +14,14 @@ public class ObstacleTrigger : MonoBehaviour
         {
             Debug.Log("Player 1 hit an obstacle!");
             livesManager.LoseLife(1,1);
+            Destroy(gameObject);
         }
 
         if (other.CompareTag("Player2"))
         {
             Debug.Log("Player 2 hit an obstacle!");
             livesManager.LoseLife(2,1);
+            Destroy(gameObject);
         }
 
         if (other.CompareTag("BackPlane"))

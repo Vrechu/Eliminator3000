@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &4896345223047028808
+--- !u!1001 &389812439598746677
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -10,12 +10,16 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 977800845787270904, guid: 5dc7f4f5ff2bf8048af11888999a2531, type: 3}
       propertyPath: m_Name
-      value: Player1
+      value: Player2 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7333223874390168298, guid: 5dc7f4f5ff2bf8048af11888999a2531, type: 3}
+      propertyPath: m_TagString
+      value: Player2
       objectReference: {fileID: 0}
     - target: {fileID: 7532096394665910017, guid: 5dc7f4f5ff2bf8048af11888999a2531, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 9893b7a692e68d34bb80f6f903d87380, type: 2}
+      objectReference: {fileID: 2100000, guid: 984c2ad7688dae84c931156553b16b4e, type: 2}
     - target: {fileID: 7997904762219213327, guid: 5dc7f4f5ff2bf8048af11888999a2531, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

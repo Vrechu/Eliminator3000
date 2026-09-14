@@ -5,7 +5,6 @@ public class MoveShip : MonoBehaviour
 {
     [SerializeField]
     private InputActionAsset inputActions;
-    private InputAction moveHorizontally;
     private Vector2 horizontalVector;
     [SerializeField]
     private float horizontalSpeed = 7f;
@@ -18,17 +17,12 @@ public class MoveShip : MonoBehaviour
 
     private void OnEnable()
     {
-        inputActions.FindActionMap("Player").Enable();
-    }
-
-    private void Awake()
-    {
-        moveHorizontally = inputActions.FindAction("Move");
+        inputActions.FindActionMap("Gameplay").Enable();
     }
 
     private void OnDisable()
     {
-        inputActions.FindActionMap("Player").Disable();
+        inputActions.FindActionMap("Gameplay").Disable();
     }
 
     private void Start()
@@ -57,6 +51,7 @@ public class MoveShip : MonoBehaviour
             && horizontalVector.x > 0)
             horizontalVector.x = 0;
 
-        transform.Translate(new Vector3(horizontalVector.x, 0, 0) * horizontalSpeed * Time.deltaTime);
+        transform.Translate(new Vector3(horizontalVector.x, 0, 0) 
+            * horizontalSpeed * Time.deltaTime);
     }
 }
