@@ -62,7 +62,8 @@ public class GameStateManager : MonoBehaviour
     {
         if (Keyboard.current.enterKey.wasPressedThisFrame)
         {
-            if (CurrentState == GameState.Pregame)
+            if (CurrentState == GameState.Pregame
+                || CurrentState == GameState.Paused)
             {
             CurrentState = GameState.Ingame;
             OnGameStart?.Invoke();
