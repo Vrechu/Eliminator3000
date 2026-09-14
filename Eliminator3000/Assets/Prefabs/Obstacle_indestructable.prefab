@@ -15,8 +15,8 @@ GameObject:
   - component: {fileID: 6826200374914394844}
   - component: {fileID: 3035863154724065037}
   m_Layer: 0
-  m_Name: Obstacle
-  m_TagString: Enemy
+  m_Name: Obstacle_indestructable
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -69,7 +69,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d2504456168ebe94c8de541e89183372, type: 2}
+  - {fileID: 2100000, guid: 776e9af2334dd8f4589c94fe1138a82a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
