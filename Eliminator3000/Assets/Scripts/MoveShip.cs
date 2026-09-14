@@ -5,12 +5,12 @@ public class MoveShip : MonoBehaviour
 {
     [SerializeField]
     private InputActionAsset inputActions;
-    private Vector2 horizontalVector;
+    private Vector2 movementInputVector;
     [SerializeField]
     private float horizontalSpeed = 7f;
 
     [SerializeField]
-    private float trackwidth = 12f;
+    private float trackWidth = 12f, maxHeight = 5f;
     private GameStateManager gameStateManager;
 
 
@@ -38,20 +38,29 @@ public class MoveShip : MonoBehaviour
 
     public void GetHorizontalImputs(InputAction.CallbackContext context)
     {
-        horizontalVector = context.ReadValue<Vector2>();
+        movementInputVector = context.ReadValue<Vector2>();
     }
 
     private void Move()
     {
-        if (transform.position.x < -trackwidth * 0.5f
-            && horizontalVector.x < 0)
-            horizontalVector.x = 0;
+        if (transform.position.x < -trackWidth * 0.5f
+            && movementInputVector.x < 0)
+            movementInputVector.x = 0;
 
-        if (transform.position.x > trackwidth * 0.5f
-            && horizontalVector.x > 0)
-            horizontalVector.x = 0;
+        if (transform.position.x > trackWidth * 0.5f
+            && movementInputVector.x > 0)
+            movementInputVector.x = 0;
 
-        transform.Translate(new Vector3(horizontalVector.x, 0, 0) 
+        if (transform.position.y < 0.5f
+            && movementInputVector.y < 0)
+            movementInputVector.y = 0;
+
+        if (transform.position.y > maxHeight
+            && movementInputVector.y > 0)
+            movementInputVector.y = 0;
+
+        transform.Translate(new Vector3(
+            movementInputVector.x, movementInputVector.y, 0).normalized 
             * horizontalSpeed * Time.deltaTime);
     }
 }
