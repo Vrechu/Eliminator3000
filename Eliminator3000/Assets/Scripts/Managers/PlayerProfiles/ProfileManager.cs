@@ -29,6 +29,16 @@ public class ProfileManager : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        EventBus<PlayerScoredEvent>.Subscribe(ChangePlayerScore);
+    }
+
+    private void OnDestroy()
+    {
+        EventBus<PlayerScoredEvent>.UnSubscribe(ChangePlayerScore);
+    }
+
     public PlayerProfile[] AllProfiles()
     {
                return new PlayerProfile[] { Player1, Player2 };
@@ -77,6 +87,22 @@ public class ProfileManager : MonoBehaviour
         if (!player1Active && !player2Active)
         {
             GameStateManager.Instance.LoseGame();
+        }
+    }
+
+    private void ChangePlayerScore(PlayerScoredEvent pPlayerScoredEvent)
+    {
+        if (pPlayerScoredEvent.Player == 1)
+        {
+            Player1.Score += pPlayerScoredEvent.Score;
+            Debug.Log($"Player 1 Score: {Player1.Score}");
+            EventBus<ScoreChangedEvent>.Publish(new ScoreChangedEvent(1, Player1.Score));
+        }
+        else if (pPlayerScoredEvent.Player == 2)
+        {
+            Player2.Score += pPlayerScoredEvent.Score;
+            Debug.Log($"Player 2 Score: {Player2.Score}");
+            EventBus<ScoreChangedEvent>.Publish(new ScoreChangedEvent(2, Player2.Score));
         }
     }
 }

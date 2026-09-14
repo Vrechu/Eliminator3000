@@ -25,16 +25,25 @@ public class EventBus<T> where T : Event
     }    
 }
 
-#region Playerevents
 
-public class PlayerPickedupItemEvent : Event
+public class PlayerScoredEvent : Event
 {
-    public GameObject Player;
-    public GameObject Item;
-    public PlayerPickedupItemEvent(GameObject cPlayer, GameObject cItem)
+    public int Player;
+    public int Score;
+    public PlayerScoredEvent(int cPlayer, int cScore)
     {
         Player = cPlayer;
-        Item = cItem;
+        Score = cScore;
     }
 }
-#endregion
+
+public class ScoreChangedEvent : Event
+{
+    public int Player;
+    public int Score;
+    public ScoreChangedEvent(int cPlayer, int cScore)
+    {
+        Player = cPlayer;
+        Score = cScore;
+    }
+}
