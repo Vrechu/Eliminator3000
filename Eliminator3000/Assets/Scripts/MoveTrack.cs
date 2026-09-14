@@ -3,6 +3,7 @@ using UnityEngine;
 public class MoveTrack : MonoBehaviour
 {
     public Transform TrackTransform;
+    [SerializeField]
     private float moveSpeed = 5f;
 
     private GameStateManager gameStateManager;
