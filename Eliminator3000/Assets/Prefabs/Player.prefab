@@ -130,8 +130,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MoveShip
   inputActions: {fileID: -944628639613478452, guid: 633c5b20bd428aa4bbcb0f2952440a2a, type: 3}
-  horizontalSpeed: 7
-  trackwidth: 14
+  horizontalSpeed: 14
+  trackWidth: 12
+  maxHeight: 5
 --- !u!114 &7649430092913139473
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -208,6 +209,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Shoot
   inputActions: {fileID: -944628639613478452, guid: 633c5b20bd428aa4bbcb0f2952440a2a, type: 3}
   projectilePrefab: {fileID: 3398698198055584001, guid: c91bf16120e6f234ea107d3ceb1f51de, type: 3}
+  playerController: {fileID: 0}
 --- !u!1 &2038160204921866548
 GameObject:
   m_ObjectHideFlags: 0
