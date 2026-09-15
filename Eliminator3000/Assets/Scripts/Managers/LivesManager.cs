@@ -13,6 +13,18 @@ public class LivesManager : MonoBehaviour
     private ProfileManager profileManager;
 
 
+    private void OnEnable()
+    {
+        EventBus<PlayerHitEvent>.Subscribe(OnPlayerHit);
+    }
+
+    private void OnDestroy()
+    {
+        EventBus<PlayerHitEvent>.UnSubscribe(OnPlayerHit);
+    }
+
+
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -30,6 +42,12 @@ public class LivesManager : MonoBehaviour
     {
         profileManager = ProfileManager.Instance;
     }
+
+    private void OnPlayerHit(PlayerHitEvent context)
+    {
+        LoseLife(context.Player, context.Damage);
+    }
+
 
     public void LoseLife(int player, int amount)
     {

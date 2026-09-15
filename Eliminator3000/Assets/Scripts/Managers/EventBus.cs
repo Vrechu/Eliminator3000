@@ -47,3 +47,14 @@ public class ScoreChangedEvent : Event
         Score = cScore;
     }
 }
+
+public class PlayerHitEvent : Event
+{
+    public int Player;
+    public int Damage;
+    public PlayerHitEvent(int cPlayer, int cDamage)
+    {
+        Player = cPlayer;
+        Damage = cDamage;
+    }
+}
