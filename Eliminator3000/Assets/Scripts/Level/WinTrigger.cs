@@ -3,11 +3,11 @@ using UnityEngine.Events;
 
 public class WinTrigger : MonoBehaviour
 {
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider _other)
     {
-        if (other.CompareTag("Player1") || other.CompareTag("Player2"))
+        if (_other.CompareTag("Player1") || _other.CompareTag("Player2"))
         {
-            GameStateManager.Instance.WinGame();
+            EventBus<FinishedLevelEvent>.Publish(new FinishedLevelEvent());
         }
     }
 }

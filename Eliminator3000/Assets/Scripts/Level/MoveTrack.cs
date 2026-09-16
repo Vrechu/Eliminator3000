@@ -6,23 +6,36 @@ public class MoveTrack : MonoBehaviour
     [SerializeField]
     private float moveSpeed = 5f;
 
-    private GameStateManager gameStateManager;
+    private bool isMoving = false;
 
-    private void Start()
+    private void OnEnable()
     {
-        gameStateManager = GameStateManager.Instance;
+        EventBus<GameStartEvent>.Subscribe(StartTrack);
+        EventBus<GamePauseEvent>.Subscribe(StopTrack);
+    }
+    private void OnDestroy()
+    {
+        EventBus<GameStartEvent>.UnSubscribe(StartTrack);
+        EventBus<GamePauseEvent>.UnSubscribe(StopTrack);
     }
 
     private void Update()
     {
-        if (gameStateManager.CurrentState == GameStateManager.GameState.Ingame)
-        {
-            MoveTrackBackward();
-        }
+        if (isMoving) MoveTrackBackward();
     }
 
     private void MoveTrackBackward()
     {   
         TrackTransform.Translate(0, 0, moveSpeed * Time.deltaTime * -1);
+    }
+
+    private void StartTrack(GameStartEvent _gameStartEvent)
+    {
+        isMoving = true;
+    }
+
+    private void StopTrack(GamePauseEvent _gamePauseEvent)
+    {
+        isMoving = false;
     }
 }

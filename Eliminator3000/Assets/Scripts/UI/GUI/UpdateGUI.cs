@@ -11,8 +11,6 @@ public class UpdateGUI : MonoBehaviour
         winGUI,
         loseGUI;
 
-    private ProfileManager profileManager;
-
     private void OnEnable()
     {
         EventBus<PlayerLivesChangedEvent>.Subscribe(SetLivesGUI);
@@ -33,31 +31,30 @@ public class UpdateGUI : MonoBehaviour
 
     private void Start()
     {
-        profileManager = ProfileManager.Instance;
         DisableGUI();
     }
 
-    private void SetLivesGUI(PlayerLivesChangedEvent playerLivesChangedEvent)
+    private void SetLivesGUI(PlayerLivesChangedEvent _playerLivesChangedEvent)
     {
-        if (playerLivesChangedEvent.Player == 1)
+        if (_playerLivesChangedEvent.Player == 1)
         {
-            p1LivesGUI.text = playerLivesChangedEvent.Lives.ToString();
+            p1LivesGUI.text = _playerLivesChangedEvent.Lives.ToString();
         }
-        else if (playerLivesChangedEvent.Player == 2)
+        else if (_playerLivesChangedEvent.Player == 2)
         {
-            p2LivesGUI.text = playerLivesChangedEvent.Lives.ToString();
+            p2LivesGUI.text = _playerLivesChangedEvent.Lives.ToString();
         }
     }
 
-    private void SetScoreGUI(ScoreChangedEvent pScoreChangedEvent)
+    private void SetScoreGUI(ScoreChangedEvent _scoreChangedEvent)
     {
-        if (pScoreChangedEvent.Player == 1)
+        if (_scoreChangedEvent.Player == 1)
         {
-            p1ScoreGUI.text = pScoreChangedEvent.Score.ToString();
+            p1ScoreGUI.text = _scoreChangedEvent.Score.ToString();
         }
-        else if (pScoreChangedEvent.Player == 2)
+        else if (_scoreChangedEvent.Player == 2)
         {
-            p2ScoreGUI.text = pScoreChangedEvent.Score.ToString();
+            p2ScoreGUI.text = _scoreChangedEvent.Score.ToString();
         }
     }
 
@@ -71,24 +68,24 @@ public class UpdateGUI : MonoBehaviour
         if (p2ScoreGUI.enabled) p2ScoreGUI.enabled = false;
     }
 
-    private void EnableWinGUI(GameWinEvent pWinEvent)
+    private void EnableWinGUI(GameWinEvent _winEvent)
     {
         winGUI.enabled = true;
     }
 
-    private void EnableLoseGUIgame(GameLoseEvent pLoseEvent)
+    private void EnableLoseGUIgame(GameLoseEvent _loseEvent)
     {
         loseGUI.enabled = true;
     }
 
-    private void EnablePlayerGUI(PlayerJoinedEvent pPlayerJoinedEvent)
+    private void EnablePlayerGUI(PlayerJoinedEvent _playerJoinedEvent)
     {
-        if (pPlayerJoinedEvent.PlayerProfile == 1)
+        if (_playerJoinedEvent.PlayerProfile == 1)
         {
             p1LivesGUI.enabled = true;
             p1ScoreGUI.enabled = true;
         }
-        else if (pPlayerJoinedEvent.PlayerProfile == 2)
+        else if (_playerJoinedEvent.PlayerProfile == 2)
         {
             p2LivesGUI.enabled = true;
             p2ScoreGUI.enabled = true;

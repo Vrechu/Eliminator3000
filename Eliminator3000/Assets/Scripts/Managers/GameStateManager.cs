@@ -16,7 +16,6 @@ public class GameStateManager : MonoBehaviour
     }
     public GameState CurrentState { get; private set; }
 
-
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -33,11 +32,13 @@ public class GameStateManager : MonoBehaviour
     private void OnEnable()
     {
         EventBus<AllPlayersDeadEvent>.Subscribe(OnAllPlayersDead);
+        EventBus<FinishedLevelEvent>.Subscribe(OnFinishedLevel);
     }
 
     private void OnDestroy()
     {
         EventBus<AllPlayersDeadEvent>.UnSubscribe(OnAllPlayersDead);
+        EventBus<FinishedLevelEvent>.UnSubscribe(OnFinishedLevel);
     }
 
     private void Start()
@@ -47,19 +48,7 @@ public class GameStateManager : MonoBehaviour
     private void Update()
     {
         PlayPauseGame();
-    }
-
-    private void OnAllPlayersDead(AllPlayersDeadEvent pAllPlayersDeadEvent)
-    {
-        CurrentState = GameState.Lost;
-        EventBus<GameLoseEvent>.Publish(new GameLoseEvent());
-    }
-
-    public void WinGame()
-    {
-        CurrentState = GameState.Won;
-        EventBus<GameWinEvent>.Publish(new GameWinEvent());
-    }
+    }    
 
     private void PlayPauseGame()
     {
@@ -79,6 +68,19 @@ public class GameStateManager : MonoBehaviour
         else if (CurrentState == GameState.Ingame)
         {
             CurrentState = GameState.Paused;
+            EventBus<GamePauseEvent>.Publish(new GamePauseEvent());
         }
+    }
+
+    private void OnAllPlayersDead(AllPlayersDeadEvent _allPlayersDeadEvent)
+    {
+        CurrentState = GameState.Lost;
+        EventBus<GameLoseEvent>.Publish(new GameLoseEvent());
+    }
+
+    private void OnFinishedLevel(FinishedLevelEvent _finishedLevelEvent)
+    {
+        CurrentState = GameState.Won;
+        EventBus<GameWinEvent>.Publish(new GameWinEvent());
     }
 }

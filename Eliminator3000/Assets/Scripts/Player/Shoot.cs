@@ -8,9 +8,9 @@ public class Shoot : MonoBehaviour
     private InputActionAsset inputActions;
     [SerializeField]
     private GameObject projectilePrefab;
-    private bool inputpressedThisFrame;
     [SerializeField]
     private MonoBehaviour playerController;
+    private GameStateManager gameStateManager;
 
     private void OnEnable()
     {
@@ -22,20 +22,22 @@ public class Shoot : MonoBehaviour
         inputActions.FindActionMap("Gameplay").Disable();
     }
 
-    public void GetShootInput(InputAction.CallbackContext context)
+    private void Start()
     {
-        if (GameStateManager.Instance.CurrentState 
+        gameStateManager = GameStateManager.Instance;
+    }
+
+    public void GetShootInput(InputAction.CallbackContext _context)
+    {
+        if (gameStateManager == null) return;
+        if (gameStateManager.CurrentState 
             != GameStateManager.GameState.Ingame) return;
-        if (!context.performed) return;
-        inputpressedThisFrame = false;
-        inputpressedThisFrame = true;
+        if (!_context.performed) return;
         ShootProjectile();
     }
 
-
     private void ShootProjectile()
     {
-        GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.Euler(90f,0f,0f));
+        Instantiate(projectilePrefab, transform.position, Quaternion.Euler(90f,0f,0f));
     }
-
 }

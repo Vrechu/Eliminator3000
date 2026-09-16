@@ -3,14 +3,14 @@ using UnityEngine;
 public class Timer
 {
     public float Duration { get; private set; }
-    public float Time { get; private set; }
+    public float TimeLeft { get; private set; }
     public bool Loop { get; private set; }
     public bool Paused;
 
     public Timer(float cDuration, bool cLoop = false, bool cPaused = false)
     {
         Duration = cDuration;
-        Time = cDuration;
+        TimeLeft = cDuration;
         this.Loop = cLoop;
         Paused = cPaused;
     }
@@ -18,13 +18,13 @@ public class Timer
     public bool IsFinished()
     {
         if (Paused) return false;
-        if (Time > 0)
+        if (TimeLeft > 0)
         {
-            Time -= UnityEngine.Time.deltaTime;
-            if (Time < 0) Time = 0;
+            TimeLeft -= UnityEngine.Time.deltaTime;
+            if (TimeLeft < 0) TimeLeft = 0;
             return false;
         }
-        if (Loop) Time = Duration;
+        if (Loop) TimeLeft = Duration;
         return true;
     }
 }

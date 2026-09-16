@@ -7,20 +7,20 @@ public class PlayerProjectileHit : MonoBehaviour
         targetTags,
         ignoreTags;
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider _other)
     {
         for (int i = 0; i < targetTags.Length; i++)
         {
-            if (other.CompareTag(targetTags[i]))
+            if (_other.CompareTag(targetTags[i]))
             {                
-                Destroy(other.gameObject);
+                Destroy(_other.gameObject);
                 Destroy(gameObject);
                 return;
             }
         }
         for (int i = 0; i < ignoreTags.Length; i++)
         {
-            if (other.CompareTag(ignoreTags[i]))
+            if (_other.CompareTag(ignoreTags[i]))
             {
                 return;
             }

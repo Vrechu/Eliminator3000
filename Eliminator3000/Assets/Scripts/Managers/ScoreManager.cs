@@ -21,18 +21,16 @@ public class ScoreManager : MonoBehaviour
         profileManager = ProfileManager.Instance;
     }
 
-    private void ChangePlayerScore(PlayerScoredEvent pPlayerScoredEvent)
+    private void ChangePlayerScore(PlayerScoredEvent _playerScoredEvent)
     {
-        if (pPlayerScoredEvent.Player == 1)
+        if (_playerScoredEvent.Player == 1)
         {
-            profileManager.Player1.Score += pPlayerScoredEvent.Score;
-            Debug.Log($"Player 1 Score: {profileManager.Player1.Score}");
+            profileManager.Player1.Score += _playerScoredEvent.Score;
             EventBus<ScoreChangedEvent>.Publish(new ScoreChangedEvent(1, profileManager.Player1.Score));
         }
-        else if (pPlayerScoredEvent.Player == 2)
+        else if (_playerScoredEvent.Player == 2)
         {
-            profileManager.Player2.Score += pPlayerScoredEvent.Score;
-            Debug.Log($"Player 2 Score: {profileManager.Player2.Score}");
+            profileManager.Player2.Score += _playerScoredEvent.Score;
             EventBus<ScoreChangedEvent>.Publish(new ScoreChangedEvent(2, profileManager.Player2.Score));
         }
     }

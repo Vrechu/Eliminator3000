@@ -27,6 +27,6 @@ public class EnemyShoot : MonoBehaviour
 
     private void ShootProjectile()
     {
-        GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.Euler(90f, 180f, 0f));
+        Instantiate(projectilePrefab, transform.position, Quaternion.Euler(90f, 180f, 0f));
     }
 }

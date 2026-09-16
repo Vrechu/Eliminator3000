@@ -209,7 +209,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Shoot
   inputActions: {fileID: -944628639613478452, guid: 633c5b20bd428aa4bbcb0f2952440a2a, type: 3}
   projectilePrefab: {fileID: 3398698198055584001, guid: c91bf16120e6f234ea107d3ceb1f51de, type: 3}
-  playerController: {fileID: 0}
+  playerController: {fileID: 2158181575188216181}
 --- !u!1 &2038160204921866548
 GameObject:
   m_ObjectHideFlags: 0

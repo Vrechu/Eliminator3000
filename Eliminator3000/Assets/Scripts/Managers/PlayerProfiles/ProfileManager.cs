@@ -96,7 +96,6 @@ public class ProfileManager : MonoBehaviour
         }
     }
 
-
     public PlayerProfile[] AllProfiles()
     {
         return new PlayerProfile[] { Player1, Player2 };
@@ -124,14 +123,14 @@ public class ProfileManager : MonoBehaviour
         EventBus<PlayerJoinedEvent>.Publish(new PlayerJoinedEvent(_player));
     }
 
-    private void DestroyPlayer(PlayerLivesAtZeroEvent cPlayerLivesAtZeroEvent)
+    private void DestroyPlayer(PlayerLivesAtZeroEvent _playerLivesAtZeroEvent)
     {
-        if (cPlayerLivesAtZeroEvent.Player == 1)
+        if (_playerLivesAtZeroEvent.Player == 1)
         {
             Destroy(Player1.IngameAvatar);
             player1Active = false;
         }
-        else if (cPlayerLivesAtZeroEvent.Player == 2)
+        else if (_playerLivesAtZeroEvent.Player == 2)
         {
             Destroy(Player2.IngameAvatar);
             player2Active = false;

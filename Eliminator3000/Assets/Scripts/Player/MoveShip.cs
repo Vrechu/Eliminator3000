@@ -36,9 +36,9 @@ public class MoveShip : MonoBehaviour
             Move();
     }
 
-    public void GetHorizontalImputs(InputAction.CallbackContext context)
+    public void GetHorizontalImputs(InputAction.CallbackContext _context)
     {
-        movementInputVector = context.ReadValue<Vector2>();
+        movementInputVector = _context.ReadValue<Vector2>();
     }
 
     private void Move()

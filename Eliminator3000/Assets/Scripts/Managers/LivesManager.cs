@@ -4,8 +4,6 @@ using UnityEngine.Events;
 
 public class LivesManager : MonoBehaviour
 {
-    public static LivesManager Instance { get; private set; }
-
     private ProfileManager profileManager;
 
 
@@ -19,49 +17,36 @@ public class LivesManager : MonoBehaviour
         EventBus<PlayerHitEvent>.UnSubscribe(OnPlayerHit);
     }
 
-    private void Awake()
-    {
-        if (Instance != null && Instance != this)
-        {
-            Debug.LogWarning("Multiple instances of LivesManager detected. Destroying duplicate.");
-            Destroy(this.gameObject);
-        }
-        else
-        {
-            Instance = this;
-        }
-    }
-
     private void Start()
     {
         profileManager = ProfileManager.Instance;
     }
 
-    private void OnPlayerHit(PlayerHitEvent context)
+    private void OnPlayerHit(PlayerHitEvent _context)
     {
-        LoseLife(context.Player, context.Damage);
+        LoseLife(_context.Player, _context.Damage);
     }
 
 
-    public void LoseLife(int player, int amount)
+    public void LoseLife(int _player, int _amount)
     {
-        if (player == 1)
+        if (_player == 1)
         {
-            profileManager.Player1.Lives -= amount;
+            profileManager.Player1.Lives -= _amount;
         }
-        else if (player == 2)
+        else if (_player == 2)
         {
-            profileManager.Player2.Lives -= amount;
+            profileManager.Player2.Lives -= _amount;
         }
-        EventBus<PlayerLivesChangedEvent>.Publish(new PlayerLivesChangedEvent(player, profileManager.AllProfiles()[player - 1].Lives));
-        CheckLives(player);
+        EventBus<PlayerLivesChangedEvent>.Publish(new PlayerLivesChangedEvent(_player, profileManager.AllProfiles()[_player - 1].Lives));
+        CheckLives(_player);
     }
 
-    public void CheckLives(int player)
+    public void CheckLives(int _player)
     {
-        if (profileManager.AllProfiles()[player - 1].Lives <= 0)
+        if (profileManager.AllProfiles()[_player - 1].Lives <= 0)
         {
-            EventBus<PlayerLivesAtZeroEvent>.Publish(new (player));
+            EventBus<PlayerLivesAtZeroEvent>.Publish(new (_player));
         }
     }
 }

@@ -116,3 +116,9 @@ public class PlayerScoredEvent : Event
 }
 
 #endregion
+
+#region Level events
+
+public class FinishedLevelEvent : Event { }
+
+#endregion
