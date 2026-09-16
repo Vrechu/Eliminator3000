@@ -9,6 +9,17 @@ public class ProfileManager : MonoBehaviour
     public PlayerProfile Player1, Player2;
     public bool player1Active = false, player2Active = false;
 
+    [SerializeField]
+    private GameObject player1Prefab, player2Prefab;
+    [SerializeField]
+    private Transform[] spawnPoints;
+
+    private bool wasdJoined = false;
+    private bool arrowsJoined = false;
+
+    private GameStateManager gameStateManager;
+
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -25,22 +36,73 @@ public class ProfileManager : MonoBehaviour
 
     private void OnEnable()
     {
-        EventBus<PlayerScoredEvent>.Subscribe(ChangePlayerScore);
         EventBus<PlayerLivesAtZeroEvent>.Subscribe(DestroyPlayer);
     }
 
     private void OnDestroy()
     {
-        EventBus<PlayerScoredEvent>.UnSubscribe(ChangePlayerScore);
         EventBus<PlayerLivesAtZeroEvent>.UnSubscribe(DestroyPlayer);
     }
 
-    public PlayerProfile[] AllProfiles()
+    private void Start()
     {
-               return new PlayerProfile[] { Player1, Player2 };
+        gameStateManager = GameStateManager.Instance;
     }
 
-    public void NewProfile(int _player, 
+    private void Update()
+    {
+        PlayerJoin();
+    }
+
+    private void PlayerJoin()
+    {
+        if (Keyboard.current == null) return;
+        if (gameStateManager.CurrentState == GameStateManager.GameState.Pregame
+            || gameStateManager.CurrentState == GameStateManager.GameState.Ingame
+            || gameStateManager.CurrentState == GameStateManager.GameState.Paused)
+        {
+            if (!wasdJoined
+                && Keyboard.current.spaceKey.wasPressedThisFrame)
+            {
+                PlayerInput player = PlayerInput.Instantiate(
+                    player1Prefab,
+                    controlScheme: "WASD",
+                    pairWithDevice: Keyboard.current);
+
+                NewProfile(1, player1Prefab, player, player.gameObject);
+                if (spawnPoints.Length > 0)
+                {
+                    player.transform.position = spawnPoints[0].position;
+                }
+
+                wasdJoined = true;
+            }
+
+            if (!arrowsJoined
+                && Keyboard.current.rightCtrlKey.wasPressedThisFrame)
+            {
+                PlayerInput player = PlayerInput.Instantiate(
+                    player2Prefab,
+                    controlScheme: "Arrows",
+                    pairWithDevice: Keyboard.current);
+
+                NewProfile(2, player2Prefab, player, player.gameObject);
+                if (spawnPoints.Length > 1)
+                {
+                    player.transform.position = spawnPoints[1].position;
+                }
+                arrowsJoined = true;
+            }
+        }
+    }
+
+
+    public PlayerProfile[] AllProfiles()
+    {
+        return new PlayerProfile[] { Player1, Player2 };
+    }
+
+    private void NewProfile(int _player, 
         GameObject _playerPrefab, 
         PlayerInput _playerInput,
         GameObject _ingameAvatar)
@@ -64,7 +126,6 @@ public class ProfileManager : MonoBehaviour
 
     private void DestroyPlayer(PlayerLivesAtZeroEvent cPlayerLivesAtZeroEvent)
     {
-        Debug.Log(4);
         if (cPlayerLivesAtZeroEvent.Player == 1)
         {
             Destroy(Player1.IngameAvatar);
@@ -83,22 +144,6 @@ public class ProfileManager : MonoBehaviour
         if (!player1Active && !player2Active)
         {
             EventBus<AllPlayersDeadEvent>.Publish(new AllPlayersDeadEvent());
-        }
-    }
-
-    private void ChangePlayerScore(PlayerScoredEvent pPlayerScoredEvent)
-    {
-        if (pPlayerScoredEvent.Player == 1)
-        {
-            Player1.Score += pPlayerScoredEvent.Score;
-            Debug.Log($"Player 1 Score: {Player1.Score}");
-            EventBus<ScoreChangedEvent>.Publish(new ScoreChangedEvent(1, Player1.Score));
-        }
-        else if (pPlayerScoredEvent.Player == 2)
-        {
-            Player2.Score += pPlayerScoredEvent.Score;
-            Debug.Log($"Player 2 Score: {Player2.Score}");
-            EventBus<ScoreChangedEvent>.Publish(new ScoreChangedEvent(2, Player2.Score));
         }
     }
 }

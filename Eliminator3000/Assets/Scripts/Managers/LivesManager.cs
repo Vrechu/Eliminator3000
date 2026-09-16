@@ -45,7 +45,6 @@ public class LivesManager : MonoBehaviour
 
     public void LoseLife(int player, int amount)
     {
-        Debug.Log(1);
         if (player == 1)
         {
             profileManager.Player1.Lives -= amount;
@@ -60,10 +59,8 @@ public class LivesManager : MonoBehaviour
 
     public void CheckLives(int player)
     {
-        Debug.Log(2);
         if (profileManager.AllProfiles()[player - 1].Lives <= 0)
         {
-            Debug.Log(3);
             EventBus<PlayerLivesAtZeroEvent>.Publish(new (player));
         }
     }
