@@ -26,25 +26,46 @@ public class EventBus<T> where T : Event
 }
 
 
-public class PlayerScoredEvent : Event
+
+#region Profile events
+
+public class PlayerJoinedEvent : Event
 {
-    public int Player;
-    public int Score;
-    public PlayerScoredEvent(int cPlayer, int cScore)
-    {
-        Player = cPlayer;
-        Score = cScore;
-    }
+    public int PlayerProfile;
+    public PlayerJoinedEvent(int cPlayerProfile)
+    { PlayerProfile = cPlayerProfile; }
 }
 
-public class ScoreChangedEvent : Event
+public class AllPlayersDeadEvent : Event { }
+
+#endregion
+
+#region Game state events
+public class GameStateChangedEvent : Event
+{
+    public string NewState;
+    public GameStateChangedEvent(string cNewState)
+    {
+        NewState = cNewState;
+    }
+}
+public class GameStartEvent : Event { }
+public class GamePauseEvent : Event { }
+public class GameResumeEvent : Event { }
+public class GameLoseEvent : Event { }
+public class GameWinEvent : Event { }
+#endregion
+
+#region Player health events
+
+public class PlayerLivesChangedEvent : Event
 {
     public int Player;
-    public int Score;
-    public ScoreChangedEvent(int cPlayer, int cScore)
+    public int Lives;
+    public PlayerLivesChangedEvent(int cPlayer, int cLives)
     {
         Player = cPlayer;
-        Score = cScore;
+        Lives = cLives;
     }
 }
 
@@ -58,3 +79,40 @@ public class PlayerHitEvent : Event
         Damage = cDamage;
     }
 }
+
+public class  PlayerLivesAtZeroEvent : Event
+{
+    public int Player;
+    public PlayerLivesAtZeroEvent(int cPlayer)
+    {
+        Player = cPlayer;
+    }
+}
+
+#endregion
+
+#region Player score events
+
+public class ScoreChangedEvent : Event
+{
+    public int Player;
+    public int Score;
+    public ScoreChangedEvent(int cPlayer, int cScore)
+    {
+        Player = cPlayer;
+        Score = cScore;
+    }
+}
+
+public class PlayerScoredEvent : Event
+{
+    public int Player;
+    public int Score;
+    public PlayerScoredEvent(int cPlayer, int cScore)
+    {
+        Player = cPlayer;
+        Score = cScore;
+    }
+}
+
+#endregion

@@ -13,8 +13,6 @@ public class PlayerInputManager : MonoBehaviour
     private bool wasdJoined = false;
     private bool arrowsJoined = false;
 
-    private UnityEvent OnPlayerJoined;
-
     private ProfileManager profileManager;
 
     private GameStateManager gameStateManager;
@@ -37,34 +35,34 @@ public class PlayerInputManager : MonoBehaviour
             if (!wasdJoined
                 && Keyboard.current.spaceKey.wasPressedThisFrame)
             {
-                PlayerInput player = PlayerInput.Instantiate(player1Prefab,
+                PlayerInput player = PlayerInput.Instantiate(
+                    player1Prefab,
                     controlScheme: "WASD",
                     pairWithDevice: Keyboard.current);
 
-                profileManager.NewProfile(1, player.gameObject, player);
+                profileManager.NewProfile(1, player1Prefab, player, player.gameObject);
                 if (spawnPoints.Length > 0)
                 {
                     player.transform.position = spawnPoints[0].position;
                 }
 
                 wasdJoined = true;
-                OnPlayerJoined?.Invoke();
             }
 
             if (!arrowsJoined
                 && Keyboard.current.rightCtrlKey.wasPressedThisFrame)
             {
-                PlayerInput player = PlayerInput.Instantiate(player2Prefab,
+                PlayerInput player = PlayerInput.Instantiate(
+                    player2Prefab,
                     controlScheme: "Arrows",
                     pairWithDevice: Keyboard.current);
 
-                profileManager.NewProfile(2, player.gameObject, player);
+                profileManager.NewProfile(2,player2Prefab, player, player.gameObject);
                 if (spawnPoints.Length > 1)
                 {
                     player.transform.position = spawnPoints[1].position;
                 }
                 arrowsJoined = true;
-                OnPlayerJoined?.Invoke();
             }
         }
     }

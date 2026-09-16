@@ -6,10 +6,6 @@ public class LivesManager : MonoBehaviour
 {
     public static LivesManager Instance { get; private set; }
 
-    public UnityEvent OnLivesChanged;
-    public UnityEvent OnP1LivesAtZero;
-    public UnityEvent OnP2LivesAtZero;
-
     private ProfileManager profileManager;
 
 
@@ -22,8 +18,6 @@ public class LivesManager : MonoBehaviour
     {
         EventBus<PlayerHitEvent>.UnSubscribe(OnPlayerHit);
     }
-
-
 
     private void Awake()
     {
@@ -51,6 +45,7 @@ public class LivesManager : MonoBehaviour
 
     public void LoseLife(int player, int amount)
     {
+        Debug.Log(1);
         if (player == 1)
         {
             profileManager.Player1.Lives -= amount;
@@ -59,24 +54,17 @@ public class LivesManager : MonoBehaviour
         {
             profileManager.Player2.Lives -= amount;
         }
-
+        EventBus<PlayerLivesChangedEvent>.Publish(new PlayerLivesChangedEvent(player, profileManager.AllProfiles()[player - 1].Lives));
         CheckLives(player);
     }
-    
+
     public void CheckLives(int player)
     {
-        OnLivesChanged?.Invoke();
-        Debug.Log(player + " has "+ profileManager.AllProfiles()[player - 1].Lives);
+        Debug.Log(2);
         if (profileManager.AllProfiles()[player - 1].Lives <= 0)
         {
-            if (player == 1)
-            {
-                OnP1LivesAtZero?.Invoke();
-            }
-            else if (player == 2)
-            {
-                OnP2LivesAtZero?.Invoke();
-            }
+            Debug.Log(3);
+            EventBus<PlayerLivesAtZeroEvent>.Publish(new (player));
         }
     }
 }

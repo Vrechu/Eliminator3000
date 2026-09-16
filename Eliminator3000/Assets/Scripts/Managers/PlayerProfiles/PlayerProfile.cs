@@ -3,30 +3,24 @@ using UnityEngine.InputSystem;
 
 public struct PlayerProfile 
 {
-    public GameObject PlayerPrefab;
+    public GameObject ProfilePrefab { get; private set; }
     public PlayerInput PlayerInput;
+    public GameObject IngameAvatar;
     public int Lives;
     public int Score;
+        
 
     public PlayerProfile(
-        GameObject playerPrefab, 
-        PlayerInput playerInput,
-        int lives,
-        int score)
+        GameObject cPrefab,
+        PlayerInput cPlayerInput,
+        GameObject cIngameAvatar,
+        int cLives = 3,
+        int cScore = 0)
     {
-        PlayerPrefab = playerPrefab;
-        PlayerInput = playerInput;
-        Lives = lives;
-        Score = score;
-    }
-
-    public PlayerProfile(
-        GameObject playerPrefab,
-        PlayerInput playerInput)
-    {
-        PlayerPrefab = playerPrefab;
-        PlayerInput = playerInput;
-        Lives = 3;
-        Score = 0;
+        ProfilePrefab = cPrefab;
+        PlayerInput = cPlayerInput;
+        IngameAvatar = cIngameAvatar;
+        Lives = cLives;
+        Score = cScore;
     }
 }

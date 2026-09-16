@@ -6,14 +6,8 @@ public class ProfileManager : MonoBehaviour
 {
     public static ProfileManager Instance { get; private set; }
 
-    public PlayerProfile Player1;
-    public PlayerProfile Player2;
-
-    public bool player1Active = false;
-    public bool player2Active = false;
-
-    public UnityEvent OnPlayer1Joined;
-    public UnityEvent OnPlayer2Joined;
+    public PlayerProfile Player1, Player2;
+    public bool player1Active = false, player2Active = false;
 
     private void Awake()
     {
@@ -32,11 +26,13 @@ public class ProfileManager : MonoBehaviour
     private void OnEnable()
     {
         EventBus<PlayerScoredEvent>.Subscribe(ChangePlayerScore);
+        EventBus<PlayerLivesAtZeroEvent>.Subscribe(DestroyPlayer);
     }
 
     private void OnDestroy()
     {
         EventBus<PlayerScoredEvent>.UnSubscribe(ChangePlayerScore);
+        EventBus<PlayerLivesAtZeroEvent>.UnSubscribe(DestroyPlayer);
     }
 
     public PlayerProfile[] AllProfiles()
@@ -44,49 +40,49 @@ public class ProfileManager : MonoBehaviour
                return new PlayerProfile[] { Player1, Player2 };
     }
 
-    public void NewProfile(int player, 
-        GameObject playerPrefab, 
-        PlayerInput playerInput)
+    public void NewProfile(int _player, 
+        GameObject _playerPrefab, 
+        PlayerInput _playerInput,
+        GameObject _ingameAvatar)
     {
-        if (player == 1)
+        if (_player == 1)
         {
-            Player1 = new PlayerProfile(playerPrefab, playerInput);
-            Debug.Log(Player1.Lives);
+            Player1 = new PlayerProfile(_playerPrefab, _playerInput, _ingameAvatar);
             player1Active = true;
-            OnPlayer1Joined?.Invoke();
         }
-        else if (player == 2)
+        else if (_player == 2)
         {
-            Player2 = new PlayerProfile(playerPrefab, playerInput);
-            Debug.Log(Player2.Lives);
+            Player2 = new PlayerProfile(_playerPrefab, _playerInput, _ingameAvatar);
             player2Active = true;
-            OnPlayer2Joined?.Invoke();
         }
         else
         {
             Debug.LogWarning("Invalid player number. 1 or 2 expected.");
         }
+        EventBus<PlayerJoinedEvent>.Publish(new PlayerJoinedEvent(_player));
     }
 
-    public void DestroyPlayer1()
+    private void DestroyPlayer(PlayerLivesAtZeroEvent cPlayerLivesAtZeroEvent)
     {
-        Destroy(Player1.PlayerPrefab);
-        player1Active = false;
+        Debug.Log(4);
+        if (cPlayerLivesAtZeroEvent.Player == 1)
+        {
+            Destroy(Player1.IngameAvatar);
+            player1Active = false;
+        }
+        else if (cPlayerLivesAtZeroEvent.Player == 2)
+        {
+            Destroy(Player2.IngameAvatar);
+            player2Active = false;
+        }
         CheckPlayersAlive();
     }
 
-    public void DestroyPlayer2()
-    {
-        Destroy(Player2.PlayerPrefab);
-        player2Active = false;
-        CheckPlayersAlive();
-    }
-
-    public void CheckPlayersAlive()
+    private void CheckPlayersAlive()
     {
         if (!player1Active && !player2Active)
         {
-            GameStateManager.Instance.LoseGame();
+            EventBus<AllPlayersDeadEvent>.Publish(new AllPlayersDeadEvent());
         }
     }
 

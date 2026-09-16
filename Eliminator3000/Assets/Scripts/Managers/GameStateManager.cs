@@ -16,11 +16,6 @@ public class GameStateManager : MonoBehaviour
     }
     public GameState CurrentState { get; private set; }
 
-    public UnityEvent OnGameStart;
-    public UnityEvent OnLose;
-    public UnityEvent OnWin;
-
-
 
     private void Awake()
     {
@@ -34,28 +29,36 @@ public class GameStateManager : MonoBehaviour
             Instance = this;
         }
     }
+
+    private void OnEnable()
+    {
+        EventBus<AllPlayersDeadEvent>.Subscribe(OnAllPlayersDead);
+    }
+
+    private void OnDestroy()
+    {
+        EventBus<AllPlayersDeadEvent>.UnSubscribe(OnAllPlayersDead);
+    }
+
     private void Start()
     {
         CurrentState = GameState.Pregame;
-        Debug.Log("Game Started!");
     }
     private void Update()
     {
         PlayPauseGame();
     }
 
-    public void LoseGame()
+    private void OnAllPlayersDead(AllPlayersDeadEvent pAllPlayersDeadEvent)
     {
         CurrentState = GameState.Lost;
-        OnLose?.Invoke();
-        Debug.Log("Game Over!");
+        EventBus<GameLoseEvent>.Publish(new GameLoseEvent());
     }
 
     public void WinGame()
     {
         CurrentState = GameState.Won;
-        OnWin?.Invoke();
-        Debug.Log("You Win!");
+        EventBus<GameWinEvent>.Publish(new GameWinEvent());
     }
 
     private void PlayPauseGame()
@@ -70,13 +73,12 @@ public class GameStateManager : MonoBehaviour
 
         {
             CurrentState = GameState.Ingame;
-            OnGameStart?.Invoke();
+            EventBus<GameStartEvent>.Publish(new GameStartEvent());
         }
 
         else if (CurrentState == GameState.Ingame)
         {
             CurrentState = GameState.Paused;
-            Debug.Log("Game Paused!");
         }
     }
 }
