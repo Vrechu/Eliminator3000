@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 2a0719435c1d2364cb881beb4564d7b3
+guid: 4c43b937c1e518042b87a5b05b22c49f
 ModelImporter:
   serializedVersion: 24300
   internalIDToNameTable: []
@@ -7,13 +7,23 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: M_Emissive
-    second: {fileID: 2100000, guid: a51e7387dd721d04f95bc3ab14bb0191, type: 2}
+      name: Bomb_Mat
+    second: {fileID: 2100000, guid: 3336ea675c163ce448488c09676986bf, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: M_Ship
-    second: {fileID: 2100000, guid: 5ce4cc0fc36cc0740be9930c9e36c3f5, type: 2}
+      name: Emissive_Material
+    second: {fileID: 2100000, guid: 9b0e4a92e9fcb604caad9e882d906f50, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Eye
+    second: {fileID: 2100000, guid: b90a99e6db408c84cb071e7fc7d0b4ef, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Main_Body
+    second: {fileID: 2100000, guid: b6b27e9aaf387e14e8a9d799e4d64688, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -44,7 +54,7 @@ ModelImporter:
     isReadable: 0
   meshes:
     lODScreenPercentages: []
-    globalScale: 100
+    globalScale: 1
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
@@ -102,7 +112,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 100
+    globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
