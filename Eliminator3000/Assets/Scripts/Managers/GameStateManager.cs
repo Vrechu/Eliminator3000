@@ -20,7 +20,7 @@ public class GameStateManager : MonoBehaviour
     {
         if (Instance != null && Instance != this)
         {
-            Debug.LogWarning("Multiple instances of GameStateManager detected. Destroying duplicate.");
+            //Debug.LogWarning("Multiple instances of GameStateManager detected. Destroying duplicate.");
             Destroy(this.gameObject);
         }
         else

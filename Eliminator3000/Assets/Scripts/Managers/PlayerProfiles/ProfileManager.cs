@@ -24,7 +24,7 @@ public class ProfileManager : MonoBehaviour
     {
         if (Instance != null && Instance != this)
         {
-            Debug.LogWarning("Multiple instances of ProfileManager detected. Destroying duplicate.");
+            //Debug.LogWarning("Multiple instances of ProfileManager detected. Destroying duplicate.");
             Destroy(gameObject);
             return;
         }

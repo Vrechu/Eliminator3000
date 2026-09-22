@@ -26,6 +26,14 @@ public class EventBus<T> where T : Event
 }
 
 
+public class LoadSceneEvent : Event
+{
+    public string SceneName;
+    public LoadSceneEvent(string cSceneName)
+    {
+        SceneName = cSceneName;
+    }
+}
 
 #region Profile events
 
@@ -37,6 +45,12 @@ public class PlayerJoinedEvent : Event
 }
 
 public class AllPlayersDeadEvent : Event { }
+
+#endregion
+
+#region Main menu events
+
+public class MainMenuStartGameEvent : Event { }
 
 #endregion
 
