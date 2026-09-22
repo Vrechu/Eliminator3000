@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class ProfileManager : MonoBehaviour
 {
@@ -11,8 +12,7 @@ public class ProfileManager : MonoBehaviour
 
     [SerializeField]
     private GameObject player1Prefab, player2Prefab;
-    [SerializeField]
-    private Transform[] spawnPoints;
+    private Transform p1SpawnPoint, p2SpawnPoint;
 
     private bool wasdJoined = false;
     private bool arrowsJoined = false;
@@ -28,7 +28,7 @@ public class ProfileManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        else 
+        else
         {
             Instance = this;
         }
@@ -37,11 +37,13 @@ public class ProfileManager : MonoBehaviour
     private void OnEnable()
     {
         EventBus<PlayerLivesAtZeroEvent>.Subscribe(DestroyPlayer);
+        EventBus<PlayerSpawnEvent>.Subscribe(OnPlayerSpawn);
     }
 
     private void OnDestroy()
     {
         EventBus<PlayerLivesAtZeroEvent>.UnSubscribe(DestroyPlayer);
+        EventBus<PlayerSpawnEvent>.UnSubscribe(OnPlayerSpawn);
     }
 
     private void Start()
@@ -70,10 +72,7 @@ public class ProfileManager : MonoBehaviour
                     pairWithDevice: Keyboard.current);
 
                 NewProfile(1, player1Prefab, player, player.gameObject);
-                if (spawnPoints.Length > 0)
-                {
-                    player.transform.position = spawnPoints[0].position;
-                }
+                EventBus<PlayerJoinedEvent>.Publish(new PlayerJoinedEvent(1));
 
                 wasdJoined = true;
             }
@@ -87,10 +86,7 @@ public class ProfileManager : MonoBehaviour
                     pairWithDevice: Keyboard.current);
 
                 NewProfile(2, player2Prefab, player, player.gameObject);
-                if (spawnPoints.Length > 1)
-                {
-                    player.transform.position = spawnPoints[1].position;
-                }
+                EventBus<PlayerJoinedEvent>.Publish(new PlayerJoinedEvent(2));
                 arrowsJoined = true;
             }
         }
@@ -101,8 +97,8 @@ public class ProfileManager : MonoBehaviour
         return new PlayerProfile[] { Player1, Player2 };
     }
 
-    private void NewProfile(int _player, 
-        GameObject _playerPrefab, 
+    private void NewProfile(int _player,
+        GameObject _playerPrefab,
         PlayerInput _playerInput,
         GameObject _ingameAvatar)
     {
@@ -120,7 +116,7 @@ public class ProfileManager : MonoBehaviour
         {
             Debug.LogWarning("Invalid player number. 1 or 2 expected.");
         }
-        EventBus<PlayerJoinedEvent>.Publish(new PlayerJoinedEvent(_player));
+
     }
 
     private void DestroyPlayer(PlayerLivesAtZeroEvent _playerLivesAtZeroEvent)
@@ -143,6 +139,19 @@ public class ProfileManager : MonoBehaviour
         if (!player1Active && !player2Active)
         {
             EventBus<AllPlayersDeadEvent>.Publish(new AllPlayersDeadEvent());
+        }
+    }
+
+
+    private void OnPlayerSpawn(PlayerSpawnEvent _playerSpawnEvent)
+    {
+        if (_playerSpawnEvent.Player == 1)
+        {
+            Player1.IngameAvatar.transform.position = _playerSpawnEvent.SpawnPoint.position;
+        }
+        else if (_playerSpawnEvent.Player == 2)
+        {
+            Player2.IngameAvatar.transform.position = _playerSpawnEvent.SpawnPoint.position;
         }
     }
 }

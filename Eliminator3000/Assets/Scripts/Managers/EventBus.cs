@@ -40,11 +40,22 @@ public class LoadSceneEvent : Event
 public class PlayerJoinedEvent : Event
 {
     public int PlayerProfile;
-    public PlayerJoinedEvent(int cPlayerProfile)
-    { PlayerProfile = cPlayerProfile; }
+    public PlayerJoinedEvent(int cPlayer)
+    { PlayerProfile = cPlayer; }
 }
 
 public class AllPlayersDeadEvent : Event { }
+
+public class PlayerSpawnEvent : Event
+{
+    public int Player;
+    public Transform SpawnPoint;
+    public PlayerSpawnEvent(int cPlayer, Transform cSpawnPoint)
+    {
+        Player = cPlayer;
+        SpawnPoint = cSpawnPoint;
+    }
+}
 
 #endregion
 

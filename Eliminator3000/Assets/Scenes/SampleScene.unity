@@ -3438,6 +3438,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 979272072}
+  - component: {fileID: 979272073}
   m_Layer: 0
   m_Name: SpawnPoints
   m_TagString: Untagged
@@ -3462,6 +3463,20 @@ Transform:
   - {fileID: 1129646118}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &979272073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 979272071}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf3c45fb5ea775a428955238ad62e3b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpawnpointManager
+  p1SpawnPoint: {fileID: 1982209359}
+  p2SpawnPoint: {fileID: 1129646118}
 --- !u!4 &1021242709 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1016135611604295379, guid: 2570939ab66c5e740802476ae033633a, type: 3}
