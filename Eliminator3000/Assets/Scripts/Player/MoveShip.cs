@@ -3,8 +3,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 public class MoveShip : MonoBehaviour
 {
-    [SerializeField]
-    private InputActionAsset inputActions;
     private Vector2 movementInputVector;
     [SerializeField]
     private float horizontalSpeed = 7f;
@@ -15,16 +13,6 @@ public class MoveShip : MonoBehaviour
 
 
 
-    private void OnEnable()
-    {
-        inputActions.FindActionMap("Gameplay").Enable();
-    }
-
-    private void OnDisable()
-    {
-        inputActions.FindActionMap("Gameplay").Disable();
-    }
-
     private void Start()
     {
         gameStateManager = GameStateManager.Instance;
@@ -33,7 +21,7 @@ public class MoveShip : MonoBehaviour
     private void Update()
     {
         if (gameStateManager.CurrentState == GameStateManager.GameState.Ingame)
-            Move();
+            Move();        
     }
 
     public void GetHorizontalImputs(InputAction.CallbackContext _context)

@@ -5,22 +5,10 @@ using UnityEngine.InputSystem.XR;
 public class Shoot : MonoBehaviour
 {
     [SerializeField]
-    private InputActionAsset inputActions;
-    [SerializeField]
     private GameObject projectilePrefab;
     [SerializeField]
     private MonoBehaviour playerController;
     private GameStateManager gameStateManager;
-
-    private void OnEnable()
-    {
-        inputActions.FindActionMap("Gameplay").Enable();
-    }
-
-    private void OnDisable()
-    {
-        inputActions.FindActionMap("Gameplay").Disable();
-    }
 
     private void Start()
     {

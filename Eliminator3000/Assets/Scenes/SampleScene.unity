@@ -7345,7 +7345,8 @@ PrefabInstance:
       propertyPath: 'spawnPoints.Array.data[1]'
       value: 
       objectReference: {fileID: 1129646118}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8615851781699254117, guid: 796ab6f38729a4b4aad451126eefa3dc, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

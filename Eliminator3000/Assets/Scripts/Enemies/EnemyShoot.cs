@@ -18,6 +18,8 @@ public class EnemyShoot : MonoBehaviour
 
     private void Update()
     {
+        if (GameStateManager.Instance.CurrentState != GameStateManager.GameState.Ingame)
+            return;
         if (timer.IsFinished())
         {
             ShootProjectile();
