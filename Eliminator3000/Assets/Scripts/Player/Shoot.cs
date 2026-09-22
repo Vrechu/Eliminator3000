@@ -6,8 +6,6 @@ public class Shoot : MonoBehaviour
 {
     [SerializeField]
     private GameObject projectilePrefab;
-    [SerializeField]
-    private MonoBehaviour playerController;
     private GameStateManager gameStateManager;
 
     private void Start()
