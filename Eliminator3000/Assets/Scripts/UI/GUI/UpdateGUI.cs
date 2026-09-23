@@ -5,11 +5,16 @@ using UnityEngine.UI;
 public class UpdateGUI : MonoBehaviour
 {
     [SerializeField]
-    private TMPro.TextMeshProUGUI 
-        p1LivesGUI, p2LivesGUI, 
+    private TMPro.TextMeshProUGUI
+        p1LivesGUI, p2LivesGUI,
         p1ScoreGUI, p2ScoreGUI,
         winGUI,
         loseGUI;
+    [SerializeField]
+    private GameObject
+        p1GunGUI, p2GunGUI,
+        p1BaseGunGUI, p2BaseGunGUI,
+        p1BigGunGUI, p2BigGunGUI;
 
     private void OnEnable()
     {
@@ -17,7 +22,8 @@ public class UpdateGUI : MonoBehaviour
         EventBus<PlayerJoinedEvent>.Subscribe(EnablePlayerGUI);
         EventBus<ScoreChangedEvent>.Subscribe(SetScoreGUI);
         EventBus<GameWinEvent>.Subscribe(EnableWinGUI);
-        EventBus<GameLoseEvent>.Subscribe(EnableLoseGUIgame);        
+        EventBus<GameLoseEvent>.Subscribe(EnableLoseGUIgame);
+        EventBus<PlayerGunPickupEvent>.Subscribe(EnableBigGun);
     }
 
     private void OnDestroy()
@@ -27,6 +33,7 @@ public class UpdateGUI : MonoBehaviour
         EventBus<ScoreChangedEvent>.UnSubscribe(SetScoreGUI);
         EventBus<GameWinEvent>.UnSubscribe(EnableWinGUI);
         EventBus<GameLoseEvent>.UnSubscribe(EnableLoseGUIgame);
+        EventBus<PlayerGunPickupEvent>.UnSubscribe(EnableBigGun);
     }
 
     private void Start()
@@ -66,6 +73,13 @@ public class UpdateGUI : MonoBehaviour
         if (p2LivesGUI.enabled) p2LivesGUI.enabled = false;
         if (p1ScoreGUI.enabled) p1ScoreGUI.enabled = false;
         if (p2ScoreGUI.enabled) p2ScoreGUI.enabled = false;
+
+        if (p1GunGUI.activeSelf) p1GunGUI.SetActive(false);
+        if (p2GunGUI.activeSelf) p2GunGUI.SetActive(false);
+        if (p1BaseGunGUI.activeSelf) p1BaseGunGUI.SetActive(false);
+        if (p2BaseGunGUI.activeSelf) p2BaseGunGUI.SetActive(false);
+        if (p1BigGunGUI.activeSelf) p1BigGunGUI.SetActive(false);
+        if (p2BigGunGUI.activeSelf) p2BigGunGUI.SetActive(false);
     }
 
     private void EnableWinGUI(GameWinEvent _winEvent)
@@ -84,11 +98,29 @@ public class UpdateGUI : MonoBehaviour
         {
             p1LivesGUI.enabled = true;
             p1ScoreGUI.enabled = true;
+            p1GunGUI.SetActive(true);
+            p1BaseGunGUI.SetActive(true);
         }
         else if (_playerJoinedEvent.PlayerProfile == 2)
         {
             p2LivesGUI.enabled = true;
             p2ScoreGUI.enabled = true;
+            p2GunGUI.SetActive(true);
+            p2BaseGunGUI.SetActive(true);
+        }
+    }
+
+    private void EnableBigGun(PlayerGunPickupEvent _playerGunPickupEvent)
+    {
+        if (_playerGunPickupEvent.Player == 1)
+        {
+            p1BaseGunGUI.SetActive(false);
+            p1BigGunGUI.SetActive(true);
+        }
+        else if (_playerGunPickupEvent.Player == 2)
+        {
+            p2BaseGunGUI.SetActive(false);
+            p2BigGunGUI.SetActive(true);
         }
     }
 }
