@@ -12,7 +12,8 @@ public class GameStateManager : MonoBehaviour
         Ingame,
         Paused,
         Lost,
-        Won
+        Won,
+        MainMenu
     }
     public GameState CurrentState { get; private set; }
 
@@ -33,12 +34,14 @@ public class GameStateManager : MonoBehaviour
     {
         EventBus<AllPlayersDeadEvent>.Subscribe(OnAllPlayersDead);
         EventBus<FinishedLevelEvent>.Subscribe(OnFinishedLevel);
+        EventBus<LevelEnteredEvent>.Subscribe(OnLevelEntered);
     }
 
     private void OnDestroy()
     {
         EventBus<AllPlayersDeadEvent>.UnSubscribe(OnAllPlayersDead);
         EventBus<FinishedLevelEvent>.UnSubscribe(OnFinishedLevel);
+        EventBus<LevelEnteredEvent>.UnSubscribe(OnLevelEntered);
     }
 
     private void Start()
@@ -50,6 +53,9 @@ public class GameStateManager : MonoBehaviour
         PlayPauseGame();
     }    
 
+    /// <summary>
+    /// Toggles the game state between Ingame and Paused when the Enter key is pressed.
+    /// </summary>
     private void PlayPauseGame()
     {
         if (!Keyboard.current.enterKey.wasPressedThisFrame) return;
@@ -72,15 +78,36 @@ public class GameStateManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Sets the game state to Lost and publishes a GameLoseEvent when all players are dead.
+    /// </summary>
+    /// <param name="_allPlayersDeadEvent">The event data for all players dead.</param>
     private void OnAllPlayersDead(AllPlayersDeadEvent _allPlayersDeadEvent)
     {
         CurrentState = GameState.Lost;
         EventBus<GameLoseEvent>.Publish(new GameLoseEvent());
     }
 
+    /// <summary>
+    /// Sets the game state to Won and publishes a GameWinEvent when the level is finished.
+    /// </summary>
+    /// <param name="_finishedLevelEvent">The event data for the finished level.</param>
     private void OnFinishedLevel(FinishedLevelEvent _finishedLevelEvent)
     {
         CurrentState = GameState.Won;
         EventBus<GameWinEvent>.Publish(new GameWinEvent());
+    }
+
+    private void OnLevelEntered(LevelEnteredEvent _levelEnteredEvent)
+    {
+        if (_levelEnteredEvent.LevelNumber == 0)
+        {
+            CurrentState = GameState.MainMenu;
+        }
+        else
+        {
+            CurrentState = GameState.Pregame;
+        }
+        CurrentState = GameState.Pregame;
     }
 }

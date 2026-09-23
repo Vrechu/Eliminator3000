@@ -144,6 +144,15 @@ public class PlayerScoredEvent : Event
 
 #region Level events
 
+public class  LevelEnteredEvent : Event
+{
+    public int LevelNumber;
+    public LevelEnteredEvent(int cLevelNumber)
+    {
+        LevelNumber = cLevelNumber;
+    }
+}
+
 public class FinishedLevelEvent : Event { }
 
 #endregion

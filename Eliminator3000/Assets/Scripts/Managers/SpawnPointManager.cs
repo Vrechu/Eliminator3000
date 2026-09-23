@@ -18,6 +18,11 @@ public class SpawnPointManager : MonoBehaviour
         EventBus<PlayerJoinedEvent>.Subscribe(OnPlayerJoined);
     }
 
+    private void OnDestroy()
+    {
+        EventBus<PlayerJoinedEvent>.UnSubscribe(OnPlayerJoined);
+    }
+
     public Transform GetSpawnPoint(int _playerNumber)
     {
         return _playerNumber switch

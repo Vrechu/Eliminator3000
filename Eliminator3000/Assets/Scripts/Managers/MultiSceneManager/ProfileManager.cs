@@ -14,8 +14,7 @@ public class ProfileManager : MonoBehaviour
     private GameObject player1Prefab, player2Prefab;
     private Transform p1SpawnPoint, p2SpawnPoint;
 
-    private bool wasdJoined = false;
-    private bool arrowsJoined = false;
+    private bool wasdJoined = false, arrowsJoined = false;
 
     private GameStateManager gameStateManager;
 
@@ -38,12 +37,14 @@ public class ProfileManager : MonoBehaviour
     {
         EventBus<PlayerLivesAtZeroEvent>.Subscribe(DestroyPlayer);
         EventBus<PlayerSpawnEvent>.Subscribe(OnPlayerSpawn);
+        EventBus<LevelEnteredEvent>.Subscribe(OnLevelEntered);
     }
 
     private void OnDestroy()
     {
         EventBus<PlayerLivesAtZeroEvent>.UnSubscribe(DestroyPlayer);
         EventBus<PlayerSpawnEvent>.UnSubscribe(OnPlayerSpawn);
+        EventBus<LevelEnteredEvent>.UnSubscribe(OnLevelEntered);
     }
 
     private void Start()
@@ -56,6 +57,9 @@ public class ProfileManager : MonoBehaviour
         PlayerJoin();
     }
 
+    /// <summary>
+    /// creates a new player profile when a player joins the game, and publishes a PlayerJoinedEvent to notify other systems of the new player.
+    /// </summary>
     private void PlayerJoin()
     {
         if (Keyboard.current == null) return;
@@ -92,6 +96,10 @@ public class ProfileManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Returns an array containing all player profiles.
+    /// </summary>
+    /// <returns>An array of PlayerProfile objects.</returns>
     public PlayerProfile[] AllProfiles()
     {
         return new PlayerProfile[] { Player1, Player2 };
@@ -116,24 +124,34 @@ public class ProfileManager : MonoBehaviour
         {
             Debug.LogWarning("Invalid player number. 1 or 2 expected.");
         }
-
     }
 
+    /// <summary>
+    /// Destroys the ingame avatar of the player whose lives have reached zero, and checks if both players are dead to publish an AllPlayersDeadEvent.
+    /// </summary>
+    /// <param name="_playerLivesAtZeroEvent">The event containing information about the player whose lives have reached zero.</param>
     private void DestroyPlayer(PlayerLivesAtZeroEvent _playerLivesAtZeroEvent)
     {
         if (_playerLivesAtZeroEvent.Player == 1)
         {
             Destroy(Player1.IngameAvatar);
+            wasdJoined = false;
+            Destroy(Player1.PlayerInput);
             player1Active = false;
         }
         else if (_playerLivesAtZeroEvent.Player == 2)
         {
             Destroy(Player2.IngameAvatar);
+            arrowsJoined = false;
+            Destroy(Player2.PlayerInput);
             player2Active = false;
         }
         CheckPlayersAlive();
     }
 
+    /// <summary>
+    /// Checks if both players are dead and publishes an AllPlayersDeadEvent if they are.
+    /// </summary>
     private void CheckPlayersAlive()
     {
         if (!player1Active && !player2Active)
@@ -142,7 +160,10 @@ public class ProfileManager : MonoBehaviour
         }
     }
 
-
+    /// <summary>
+    /// Moves the ingame avatar of the player to the specified spawn point when a PlayerSpawnEvent is received.
+    /// </summary>
+    /// <param name="_playerSpawnEvent">The event containing information about the player and the spawn point.</param>
     private void OnPlayerSpawn(PlayerSpawnEvent _playerSpawnEvent)
     {
         if (_playerSpawnEvent.Player == 1)
@@ -153,5 +174,11 @@ public class ProfileManager : MonoBehaviour
         {
             Player2.IngameAvatar.transform.position = _playerSpawnEvent.SpawnPoint.position;
         }
+    }
+
+    private void OnLevelEntered(LevelEnteredEvent _levelEnteredEvent)
+    {
+        player1Active = false;
+        player2Active = false;
     }
 }
