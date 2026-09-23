@@ -44,10 +44,6 @@ public class GameStateManager : MonoBehaviour
         EventBus<LevelEnteredEvent>.UnSubscribe(OnLevelEntered);
     }
 
-    private void Start()
-    {
-        CurrentState = GameState.Pregame;
-    }
     private void Update()
     {
         PlayPauseGame();
@@ -108,6 +104,5 @@ public class GameStateManager : MonoBehaviour
         {
             CurrentState = GameState.Pregame;
         }
-        CurrentState = GameState.Pregame;
     }
 }
