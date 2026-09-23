@@ -156,3 +156,16 @@ public class  LevelEnteredEvent : Event
 public class FinishedLevelEvent : Event { }
 
 #endregion
+
+#region Player combat events
+
+public class PlayerGunPickupEvent : Event
+{
+    public int Player;
+    public PlayerGunPickupEvent(int cPlayer)
+    {
+        Player = cPlayer;
+    }
+}
+
+#endregion

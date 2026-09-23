@@ -12,6 +12,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player1
       objectReference: {fileID: 0}
+    - target: {fileID: 1198567855085069216, guid: 5dc7f4f5ff2bf8048af11888999a2531, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 9893b7a692e68d34bb80f6f903d87380, type: 2}
+    - target: {fileID: 2038160204921866548, guid: 5dc7f4f5ff2bf8048af11888999a2531, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6827704096844093803, guid: 5dc7f4f5ff2bf8048af11888999a2531, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7019095551105211704, guid: 5dc7f4f5ff2bf8048af11888999a2531, type: 3}
+      propertyPath: player
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7532096394665910017, guid: 5dc7f4f5ff2bf8048af11888999a2531, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
