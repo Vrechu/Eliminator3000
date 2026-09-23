@@ -73,13 +73,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6fb50789acc7e34cb2dfb7538110411, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProfileManager
-  player1Active: 0
-  player2Active: 0
   player1Prefab: {fileID: 5648227213499969200, guid: fa1ca7d95c2ae384791df14654003c81, type: 3}
   player2Prefab: {fileID: 646614995034292941, guid: 2daf2ce73200d254d8f82e846880ec90, type: 3}
-  spawnPoints:
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!114 &4834699067627782072
 MonoBehaviour:
   m_ObjectHideFlags: 0

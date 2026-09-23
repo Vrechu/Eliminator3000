@@ -8,11 +8,11 @@ public class ProfileManager : MonoBehaviour
     public static ProfileManager Instance { get; private set; }
 
     public PlayerProfile Player1, Player2;
-    public bool player1Active = false, player2Active = false;
+    public bool player1Alive { get; private set; }
+    public bool player2Alive { get; private set; }
 
     [SerializeField]
     private GameObject player1Prefab, player2Prefab;
-    private Transform p1SpawnPoint, p2SpawnPoint;
 
     private bool wasdJoined = false, arrowsJoined = false;
 
@@ -23,7 +23,6 @@ public class ProfileManager : MonoBehaviour
     {
         if (Instance != null && Instance != this)
         {
-            //Debug.LogWarning("Multiple instances of ProfileManager detected. Destroying duplicate.");
             Destroy(gameObject);
             return;
         }
@@ -35,16 +34,18 @@ public class ProfileManager : MonoBehaviour
 
     private void OnEnable()
     {
-        EventBus<PlayerLivesAtZeroEvent>.Subscribe(DestroyPlayer);
+        EventBus<PlayerLivesAtZeroEvent>.Subscribe(OnPlayerLivesAtZero);
         EventBus<PlayerSpawnEvent>.Subscribe(OnPlayerSpawn);
         EventBus<LevelEnteredEvent>.Subscribe(OnLevelEntered);
+        EventBus<LevelExitEvent>.Subscribe(OnGameEnd);
     }
 
     private void OnDestroy()
     {
-        EventBus<PlayerLivesAtZeroEvent>.UnSubscribe(DestroyPlayer);
+        EventBus<PlayerLivesAtZeroEvent>.UnSubscribe(OnPlayerLivesAtZero);
         EventBus<PlayerSpawnEvent>.UnSubscribe(OnPlayerSpawn);
         EventBus<LevelEnteredEvent>.UnSubscribe(OnLevelEntered);
+        EventBus<LevelExitEvent>.UnSubscribe(OnGameEnd);
     }
 
     private void Start()
@@ -113,12 +114,12 @@ public class ProfileManager : MonoBehaviour
         if (_player == 1)
         {
             Player1 = new PlayerProfile(_playerPrefab, _playerInput, _ingameAvatar);
-            player1Active = true;
+            player1Alive = true;
         }
         else if (_player == 2)
         {
             Player2 = new PlayerProfile(_playerPrefab, _playerInput, _ingameAvatar);
-            player2Active = true;
+            player2Alive = true;
         }
         else
         {
@@ -126,27 +127,34 @@ public class ProfileManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Destroys the ingame avatar of the player whose lives have reached zero, and checks if both players are dead to publish an AllPlayersDeadEvent.
-    /// </summary>
-    /// <param name="_playerLivesAtZeroEvent">The event containing information about the player whose lives have reached zero.</param>
-    private void DestroyPlayer(PlayerLivesAtZeroEvent _playerLivesAtZeroEvent)
+    private void DestroyPlayer(int _player)
     {
-        if (_playerLivesAtZeroEvent.Player == 1)
+        if (_player == 1)
         {
             Destroy(Player1.IngameAvatar);
-            wasdJoined = false;
             Destroy(Player1.PlayerInput);
-            player1Active = false;
+            player1Alive = false;
         }
-        else if (_playerLivesAtZeroEvent.Player == 2)
+        else if (_player == 2)
         {
             Destroy(Player2.IngameAvatar);
-            arrowsJoined = false;
             Destroy(Player2.PlayerInput);
-            player2Active = false;
+            player2Alive = false;
         }
         CheckPlayersAlive();
+    }
+
+    private void OnPlayerLivesAtZero(PlayerLivesAtZeroEvent _playerLivesAtZeroEvent)
+    {
+        DestroyPlayer(_playerLivesAtZeroEvent.Player);
+    }
+
+    private void OnGameEnd(LevelExitEvent _levelExitEvent)
+    {
+        DestroyPlayer(1);
+        wasdJoined = false;
+        DestroyPlayer(2);
+        arrowsJoined = false;
     }
 
     /// <summary>
@@ -154,7 +162,7 @@ public class ProfileManager : MonoBehaviour
     /// </summary>
     private void CheckPlayersAlive()
     {
-        if (!player1Active && !player2Active)
+        if (!player1Alive && !player2Alive)
         {
             EventBus<AllPlayersDeadEvent>.Publish(new AllPlayersDeadEvent());
         }
@@ -178,7 +186,7 @@ public class ProfileManager : MonoBehaviour
 
     private void OnLevelEntered(LevelEnteredEvent _levelEnteredEvent)
     {
-        player1Active = false;
-        player2Active = false;
+        player1Alive = false;
+        player2Alive = false;
     }
 }

@@ -17,11 +17,12 @@ public class GameStateManager : MonoBehaviour
     }
     public GameState CurrentState { get; private set; }
 
+    private ProfileManager profileManager;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
         {
-            //Debug.LogWarning("Multiple instances of GameStateManager detected. Destroying duplicate.");
             Destroy(this.gameObject);
         }
         else
@@ -44,6 +45,11 @@ public class GameStateManager : MonoBehaviour
         EventBus<LevelEnteredEvent>.UnSubscribe(OnLevelEntered);
     }
 
+    private void Start()
+    {
+        profileManager = ProfileManager.Instance;
+    }
+
     private void Update()
     {
         PlayPauseGame();
@@ -56,8 +62,8 @@ public class GameStateManager : MonoBehaviour
     {
         if (!Keyboard.current.enterKey.wasPressedThisFrame) return;
 
-        if (!(ProfileManager.Instance.player1Active
-            || ProfileManager.Instance.player2Active)) return;
+        if (!(profileManager.player1Alive
+            || profileManager.player2Alive)) return;
 
         if (CurrentState == GameState.Pregame
         || CurrentState == GameState.Paused)

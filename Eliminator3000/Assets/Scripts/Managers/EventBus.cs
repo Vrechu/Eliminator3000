@@ -78,7 +78,8 @@ public class GameStartEvent : Event { }
 public class GamePauseEvent : Event { }
 public class GameResumeEvent : Event { }
 public class GameLoseEvent : Event { }
-public class GameWinEvent : Event { }
+public class GameWinEvent : Event { }  
+public class LevelExitEvent : Event { }
 #endregion
 
 #region Player health events

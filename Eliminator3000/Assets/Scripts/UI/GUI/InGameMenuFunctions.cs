@@ -24,6 +24,7 @@ public class InGameMenuFunctions : MonoBehaviour
     public void OnMainMenuButtonPressed()
     {
         EventBus<LoadSceneEvent>.Publish(new LoadSceneEvent("MenuScene"));
+        EventBus<LevelExitEvent>.Publish(new LevelExitEvent());
     }
 
     private void EnableMenu()
