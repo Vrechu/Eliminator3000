@@ -162,10 +162,8 @@ public class ProfileManager : MonoBehaviour
     /// </summary>
     private void CheckPlayersAlive()
     {
-        if (!player1Alive && !player2Alive)
-        {
-            EventBus<AllPlayersDeadEvent>.Publish(new AllPlayersDeadEvent());
-        }
+        if (player1Alive || player2Alive) return;
+        EventBus<AllPlayersDeadEvent>.Publish(new AllPlayersDeadEvent());
     }
 
     /// <summary>
