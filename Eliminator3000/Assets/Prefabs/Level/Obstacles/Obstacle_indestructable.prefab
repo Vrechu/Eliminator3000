@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6673216381554715552}
   - component: {fileID: 6826200374914394844}
   - component: {fileID: 3035863154724065037}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Obstacle_indestructable
   m_TagString: Untagged
   m_Icon: {fileID: 0}

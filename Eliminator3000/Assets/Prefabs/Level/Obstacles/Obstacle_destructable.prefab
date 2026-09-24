@@ -14,7 +14,8 @@ GameObject:
   - component: {fileID: 6673216381554715552}
   - component: {fileID: 6826200374914394844}
   - component: {fileID: 3035863154724065037}
-  m_Layer: 0
+  - component: {fileID: 1832058872937928393}
+  m_Layer: 11
   m_Name: Obstacle_destructable
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -153,3 +154,16 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!114 &1832058872937928393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5519828220680120833}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4185c77c7defd2c45afc53b362b7c62c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyInfo
+  ScoreValue: 3

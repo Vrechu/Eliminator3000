@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 1871549836110449567}
   - component: {fileID: 4416552335947367166}
   - component: {fileID: 5592777496649675423}
-  - component: {fileID: 3733380982536978892}
-  - component: {fileID: 2851432517437828888}
-  m_Layer: 0
+  - component: {fileID: 5018929918533624577}
+  - component: {fileID: 8355136895130737295}
+  m_Layer: 7
   m_Name: Projectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -116,7 +116,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3733380982536978892
+--- !u!114 &5018929918533624577
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -130,7 +130,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MoveProjectile
   speed: 30
   lifeSeconds: 3
---- !u!114 &2851432517437828888
+--- !u!114 &8355136895130737295
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -141,9 +141,8 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 613736fbc23852b46ad903ac5f828513, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ProjectileHit
-  targetTags:
-  - Enemy
-  ignoreTags:
-  - Player1
-  - Player2
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerProjectileHit
+  PlayerID: 1
+  targetLayers:
+    serializedVersion: 2
+    m_Bits: 2304

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5078330017362349694}
   - component: {fileID: 4847237277978986282}
   - component: {fileID: 6293937440007397290}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -125,3 +125,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 843dc8e782d549a458f04feaaa43cfd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScorePickupTrigger
+  scoreValue: 10

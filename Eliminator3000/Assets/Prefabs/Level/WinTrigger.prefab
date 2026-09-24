@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1200446800140614480}
   - component: {fileID: 6356923337423869087}
   - component: {fileID: 1816329161107518962}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: WinTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}

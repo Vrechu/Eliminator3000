@@ -8,12 +8,15 @@ public class Shoot : MonoBehaviour
     private GameObject projectilePrefab, upgradeProjectilePrefab;
     private GameStateManager gameStateManager;
     private SetGunType setGunType;
+    [SerializeField]
+    private int Player = 1;
 
 
     private void Start()
     {
         gameStateManager = GameStateManager.Instance;
         setGunType = GetComponent<SetGunType>();
+        MarkProjectiles();
     }
 
     public void GetShootInput(InputAction.CallbackContext _context)
@@ -27,7 +30,16 @@ public class Shoot : MonoBehaviour
 
     private void ShootRegularProjectile()
     {
-        Instantiate(projectilePrefab, transform.position, Quaternion.Euler(90f,0f,0f));
+        GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.Euler(90f,0f,0f));
+        /*if (TryGetComponent<PlayerProjectileHit>(out PlayerProjectileHit playerProjectileHit))
+        {
+            playerProjectileHit.PlayerID = Player;
+        }
+        else
+        {
+            Debug.LogWarning("Shoot: PlayerProjectileHit component not found on projectilePrefab.");
+        }*/
+
     }
     private void ShootUpgradeProjectile()
     {
@@ -47,6 +59,26 @@ public class Shoot : MonoBehaviour
             default:
                 Debug.LogWarning("Unknown gun type.");
                 break;
+        }
+    }
+
+    private void MarkProjectiles()
+    { 
+        if (projectilePrefab.TryGetComponent<PlayerProjectileHit>(out PlayerProjectileHit playerProjectileHit))
+        {
+            playerProjectileHit.PlayerID = Player;
+        }
+        else 
+        {
+            Debug.LogWarning("Projectile prefab does not have a PlayerProjectileHit component.");
+        }
+        if (upgradeProjectilePrefab.TryGetComponent<PlayerProjectileHit>(out PlayerProjectileHit upgradePlayerProjectileHit))
+        {
+            upgradePlayerProjectileHit.PlayerID = Player;
+        }
+        else 
+        {
+            Debug.LogWarning("Upgrade projectile prefab does not have a PlayerProjectileHit component.");
         }
     }
 }

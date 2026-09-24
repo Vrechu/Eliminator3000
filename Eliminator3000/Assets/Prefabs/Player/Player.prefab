@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 7649430092913139473}
   - component: {fileID: 7019095551105211704}
   - component: {fileID: 6548040488092596121}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -238,7 +238,7 @@ GameObject:
   - component: {fileID: 7954473243318632084}
   - component: {fileID: 7532096394665910017}
   - component: {fileID: 5991984168135489204}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ship_Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -350,7 +350,7 @@ GameObject:
   - component: {fileID: 3883824577746390646}
   - component: {fileID: 1198567855085069216}
   - component: {fileID: 3206618375740341108}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ship_Model_gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -464,7 +464,7 @@ GameObject:
   - component: {fileID: 3610763498669229930}
   - component: {fileID: 6908293870932674626}
   - component: {fileID: 6881089789449366302}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ship_Collider
   m_TagString: Player1
   m_Icon: {fileID: 0}
@@ -603,7 +603,7 @@ GameObject:
   - component: {fileID: 7141013180035257518}
   - component: {fileID: 821728675758124055}
   - component: {fileID: 5776067714727628660}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Gun_model
   m_TagString: Untagged
   m_Icon: {fileID: 0}

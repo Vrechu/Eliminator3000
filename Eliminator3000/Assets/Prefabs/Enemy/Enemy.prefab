@@ -12,10 +12,11 @@ GameObject:
   - component: {fileID: 5832627450606735392}
   - component: {fileID: 471220609010298582}
   - component: {fileID: 8067223423504404344}
+  - component: {fileID: -1965939530698700420}
   - component: {fileID: 7460655747993194662}
   - component: {fileID: 285611534498342072}
   - component: {fileID: 5466366148492343946}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -117,6 +118,19 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-1965939530698700420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3699308623078601662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4185c77c7defd2c45afc53b362b7c62c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyInfo
+  ScoreValue: 15
 --- !u!114 &7460655747993194662
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -130,6 +144,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyShoot
   projectilePrefab: {fileID: 3398698198055584001, guid: 57c4561162f2a9f41a5947cb8b5f4b69, type: 3}
+  shootInterval: 6
 --- !u!114 &285611534498342072
 MonoBehaviour:
   m_ObjectHideFlags: 0

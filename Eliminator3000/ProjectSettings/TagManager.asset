@@ -15,13 +15,13 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Player
+  - PlayerProjectile
+  - Enemy
+  - EnemyProjectile
+  - Obstacle
+  - BreakableObstacle
+  - Pickup
   - 
   - 
   - 
@@ -44,6 +44,12 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Player
+    uniqueID: 1645394191
+    locked: 0
+  - name: PlayerProjectile
+    uniqueID: 2393851389
     locked: 0
   m_RenderingLayers:
   - Default
