@@ -22,8 +22,8 @@ TagManager:
   - Obstacle
   - BreakableObstacle
   - Pickup
-  - 
-  - 
+  - LevelTrigger
+  - BackPlane
   - 
   - 
   - 
