@@ -172,9 +172,22 @@ public class EnemySpawnTriggeredEvent : Event
 public class PlayerGunPickupEvent : Event
 {
     public int Player;
-    public PlayerGunPickupEvent(int cPlayer)
+    public int GunIndex;
+    public PlayerGunPickupEvent(int cPlayer, int cGunIndex)
     {
         Player = cPlayer;
+        GunIndex = cGunIndex;
+    }
+}
+
+public class PlayerGunSwapEvent : Event
+{
+    public int Player;
+    public int GunIndex;
+    public PlayerGunSwapEvent(int cPlayer, int cGunIndex)
+    {
+        Player = cPlayer;
+        GunIndex = cGunIndex;
     }
 }
 

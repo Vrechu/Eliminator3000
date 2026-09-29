@@ -5,20 +5,17 @@ using UnityEngine;
 public class SetGunType : MonoBehaviour
 {
     [SerializeField]
-    private int player;
+    private int playerID;
     [SerializeField]
-    private GameObject baseModel, gunModel;
+    private GameObject[] gunModels;
+    [SerializeField]
+    private GunProfile[] guns;
+    private int currentGunIndex = 0;
 
-    public enum GunType
-    {
-        Base,
-        Gun
-    }
-    public GunType gunType = GunType.Base;
 
     private void OnEnable()
     {
-        if (player == 0)
+        if (playerID == 0)
         {
             Debug.LogError("Player is not assigned in SetGunType script.");
             return;
@@ -35,22 +32,66 @@ public class SetGunType : MonoBehaviour
     private void Start()
     {
         DisableModels();
-        baseModel.SetActive(true);
+        gunModels[0].SetActive(true); // Activate the base gun model by default
+        GunsViable();
+        MarkProjectiles();
     }
 
     private void OnGunPickup(PlayerGunPickupEvent _playerGunPickupEvent)
     {
-        if (_playerGunPickupEvent.Player == player)
+        if (_playerGunPickupEvent.Player == playerID)
         {
-            gunType = GunType.Gun;
-            baseModel.SetActive(false);
-            gunModel.SetActive(true);
+            currentGunIndex = _playerGunPickupEvent.GunIndex;
+            DisableModels();
+            gunModels[_playerGunPickupEvent.GunIndex].SetActive(true);
         }
     }
 
     private void DisableModels()
     {
-        baseModel.SetActive(false);
-        gunModel.SetActive(false);
+        for (int i = 0; i < gunModels.Length; i++)
+        {
+            gunModels[i].SetActive(false);
+        }
     }
+
+    private bool GunsViable()
+    {
+        if (gunModels.Length != guns.Length)
+        {
+            Debug.LogError("Gun models and gun profiles arrays must have the same length.");
+            return false;
+        }
+        if (gunModels.Length == 0 || guns.Length == 0)
+        {
+            Debug.LogError("Gun models and gun profiles arrays cannot be empty.");
+            return false;
+        }
+        return true;
+    }
+
+    public GunProfile GetCurrentGunProfile()
+    {
+        if (currentGunIndex < 0 || currentGunIndex >= guns.Length)
+        {
+            Debug.LogError("Current gun index is out of bounds.");
+            return null;
+        }
+        return guns[currentGunIndex];
+    }
+
+    private void MarkProjectiles()
+    {
+        for (int i = 0; i < guns.Length; i++)
+        {
+            if (guns[i].ProjectilePrefab.TryGetComponent<PlayerProjectileHit>(out PlayerProjectileHit playerProjectileHit))
+            {
+                playerProjectileHit.PlayerID = playerID;
+            }
+            else
+            {
+                Debug.LogWarning($"Gun at index {i} does not have a PlayerProjectileHit component.");
+            }
+        }
+    } 
 }

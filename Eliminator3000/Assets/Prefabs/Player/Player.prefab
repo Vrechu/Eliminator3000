@@ -208,10 +208,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7d5466f0f1105243965e0d5cb97c50e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SetGunType
-  player: 0
-  baseModel: {fileID: 2038160204921866548}
-  gunModel: {fileID: 6827704096844093803}
-  gunType: 0
+  playerID: 1
+  gunModels:
+  - {fileID: 2038160204921866548}
+  - {fileID: 6827704096844093803}
+  guns:
+  - {fileID: 11400000, guid: af7ec424b44eadc40838dce1debeb5bd, type: 2}
+  - {fileID: 11400000, guid: 30b95af0b013bb04c8257a1e12103433, type: 2}
 --- !u!114 &6548040488092596121
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -224,8 +227,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb8460f3f662649499723a20131a4911, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Shoot
-  projectilePrefab: {fileID: 3398698198055584001, guid: c91bf16120e6f234ea107d3ceb1f51de, type: 3}
-  upgradeProjectilePrefab: {fileID: 3398698198055584001, guid: 1c3f584033474704e8d08ebdbd6ec81a, type: 3}
 --- !u!1 &2038160204921866548
 GameObject:
   m_ObjectHideFlags: 0

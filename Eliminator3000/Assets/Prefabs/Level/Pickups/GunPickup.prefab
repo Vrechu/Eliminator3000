@@ -128,3 +128,4 @@ MonoBehaviour:
   targetLayers:
     serializedVersion: 2
     m_Bits: 16448
+  gunIndex: 1
