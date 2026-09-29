@@ -151,6 +151,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   WaypointOrder: 0100000002000000030000000000000001000000020000000300000000000000
+  EndPoint: {fileID: 0}
   speed: 6
 --- !u!114 &7460655747993194662
 MonoBehaviour:

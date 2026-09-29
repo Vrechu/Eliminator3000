@@ -9,6 +9,9 @@ public class EnemyShoot : MonoBehaviour
 
     private Timer timer;
 
+    [SerializeField] private bool multiShot = false;
+    [SerializeField] private GameObject[] shotOrigins;
+
 
     private void Start()
     {
@@ -22,7 +25,14 @@ public class EnemyShoot : MonoBehaviour
             return;
         if (timer.IsFinished())
         {
-            ShootProjectile();
+            if (multiShot)
+            {
+                ShootMultiProjectile();
+            }
+            else
+            {
+                ShootProjectile();
+            }
         }
     }
 
@@ -30,5 +40,13 @@ public class EnemyShoot : MonoBehaviour
     private void ShootProjectile()
     {
         Instantiate(projectilePrefab, transform.position, Quaternion.Euler(90f, 180f, 0f));
+    }
+
+    private void ShootMultiProjectile()
+    {
+        for (int i = 0; i < shotOrigins.Length; i++)
+        {
+            Instantiate(projectilePrefab, shotOrigins[i].transform.position, Quaternion.Euler(90f, 180f, 0f));
+        }
     }
 }
