@@ -5,6 +5,7 @@ public class SpawnEnemy : MonoBehaviour
 {
     [SerializeField] private Transform[] spawnPoints;
     [SerializeField] private Transform[] waypoints;
+    [SerializeField] private Transform[] endPoints;
     [SerializeField] private EnemyWave[] enemyWaves;
 
     private int currentWaveIndex = 0;
@@ -79,7 +80,8 @@ public class SpawnEnemy : MonoBehaviour
         {
             moveEnemy.Waypoints = waypoints;
             moveEnemy.WaypointOrder = CurrentWave().WaypointOrder;
-            Instantiate(enemy, spawnPoints[CurrentWave().SpawnPointsIndices[currentEnemyIndex]].position, Quaternion.identity);
+            moveEnemy.EndPoint = endPoints[CurrentWave().EndPointIndex];
+            Instantiate(enemy, spawnPoints[CurrentWave().SpawnPointIndex].position, Quaternion.identity);
         }
         else
         {
@@ -97,11 +99,6 @@ public class SpawnEnemy : MonoBehaviour
         if (CurrentWave().EnemyPrefabs.Length != CurrentWave().TimesBetweenSpawns.Length)
         {
             Debug.LogError($"Wave {currentWaveIndex} has mismatched lengths for EnemyPrefabs and TimesBetweenSpawns.");
-            return false;
-        }
-        if (CurrentWave().EnemyPrefabs.Length != CurrentWave().SpawnPointsIndices.Length)
-        {
-            Debug.LogError($"Wave {currentWaveIndex} has mismatched lengths for EnemyPrefabs and SpawnPointsIndices.");
             return false;
         }
         return true;
