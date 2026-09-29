@@ -6,6 +6,7 @@ public class GunProfile : ScriptableObject
     [TextArea(15, 20), SerializeField] 
     private string Info;
 
+    public bool Unlocked;
     public GameObject ProjectilePrefab;
     public float fireRate;
 }

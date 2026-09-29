@@ -1,6 +1,9 @@
 using System;
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class SetGunType : MonoBehaviour
 {
@@ -11,6 +14,7 @@ public class SetGunType : MonoBehaviour
 
     private Timer shootTimer = new Timer(0, false);
     public bool canShoot { get; private set; } = true;
+    private GameStateManager gameStateManager;
 
 
     private void OnEnable()
@@ -22,21 +26,21 @@ public class SetGunType : MonoBehaviour
         }
 
         EventBus<PlayerGunPickupEvent>.Subscribe(OnGunPickup);
-        EventBus<PlayerGunSwapEvent>.Subscribe(OnPlayerGunSwap);
     }
 
     private void OnDisable()
     {
         EventBus<PlayerGunPickupEvent>.UnSubscribe(OnGunPickup);
-        EventBus<PlayerGunSwapEvent>.UnSubscribe(OnPlayerGunSwap);
     }
 
     private void Start()
     {
+        gameStateManager = GameStateManager.Instance;
         DisableModels();
         gunModels[0].SetActive(true); // Activate the base gun model by default
         GunsViable();
         MarkProjectiles();
+        ResetGunUnlocks();
     }
 
     private void Update()
@@ -50,21 +54,25 @@ public class SetGunType : MonoBehaviour
         currentGunIndex = _gunIndex;
         gunModels[_gunIndex].SetActive(true);
         shootTimer.Reset(0);
+        EventBus<PlayerGunSwapEvent>.Publish(new PlayerGunSwapEvent(playerID, _gunIndex));
+    }
+
+    public void GetSwapInput(InputAction.CallbackContext _context)
+    {
+        if (gameStateManager == null) return;
+        if (gameStateManager.CurrentState
+            != GameStateManager.GameState.Ingame) return;
+        if (!_context.performed) return;
+        Debug.Log($"Player {playerID} pressed swap gun button.");
+        SwapGun();
     }
 
     private void OnGunPickup(PlayerGunPickupEvent _playerGunPickupEvent)
     {
         if (_playerGunPickupEvent.Player == playerID)
         {
+            guns[_playerGunPickupEvent.GunIndex].Unlocked = true;
             SetGun(_playerGunPickupEvent.GunIndex);
-        }
-    }
-
-    private void OnPlayerGunSwap(PlayerGunSwapEvent _playerGunSwapEvent)
-    {
-        if (_playerGunSwapEvent.Player == playerID)
-        {
-            SetGun(_playerGunSwapEvent.GunIndex);
         }
     }
 
@@ -121,4 +129,34 @@ public class SetGunType : MonoBehaviour
         shootTimer.Reset(guns[currentGunIndex].fireRate);
     }
 
+    private void SwapGun()
+    {
+        SetGun(NextUnlockedGunIndex());
+    }
+
+    private int NextUnlockedGunIndex()
+    {
+        for (int i = currentGunIndex + 1; i < guns.Length; i++)
+        {
+            if (guns[i].Unlocked)
+            {
+                return i;
+            }
+        }
+        for (int i = 0; i < currentGunIndex; i++)
+        {
+            if (guns[i].Unlocked)
+            {
+                return i;
+            }
+        }
+        return currentGunIndex; // Return current index if no other unlocked gun is found
+    }
+    private void ResetGunUnlocks()
+    {
+        for (int i = 1; i < guns.Length; i++)
+        {
+            guns[i].Unlocked = false;
+        }
+    }
 }

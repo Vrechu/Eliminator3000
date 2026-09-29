@@ -265,7 +265,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  WaypointOrder: 0100000002000000030000000000000001000000020000000300000000000000
+  WaypointOrder: 00000000030000000200000001000000
   EndPoint: {fileID: 0}
   speed: 6
 --- !u!114 &7460655747993194662
@@ -301,7 +301,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ObstacleCollision
   targetLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 16448
 --- !u!54 &5466366148492343946
 Rigidbody:
   m_ObjectHideFlags: 0

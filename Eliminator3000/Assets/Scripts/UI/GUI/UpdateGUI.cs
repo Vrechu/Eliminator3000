@@ -23,7 +23,7 @@ public class UpdateGUI : MonoBehaviour
         EventBus<ScoreChangedEvent>.Subscribe(SetScoreGUI);
         EventBus<GameWinEvent>.Subscribe(EnableWinGUI);
         EventBus<GameLoseEvent>.Subscribe(EnableLoseGUIgame);
-        EventBus<PlayerGunPickupEvent>.Subscribe(EnableBigGun);
+        EventBus<PlayerGunSwapEvent>.Subscribe(EnableBigGun);
     }
 
     private void OnDestroy()
@@ -33,7 +33,7 @@ public class UpdateGUI : MonoBehaviour
         EventBus<ScoreChangedEvent>.UnSubscribe(SetScoreGUI);
         EventBus<GameWinEvent>.UnSubscribe(EnableWinGUI);
         EventBus<GameLoseEvent>.UnSubscribe(EnableLoseGUIgame);
-        EventBus<PlayerGunPickupEvent>.UnSubscribe(EnableBigGun);
+        EventBus<PlayerGunSwapEvent>.UnSubscribe(EnableBigGun);
     }
 
     private void Start()
@@ -110,17 +110,36 @@ public class UpdateGUI : MonoBehaviour
         }
     }
 
-    private void EnableBigGun(PlayerGunPickupEvent _playerGunPickupEvent)
+    private void EnableBigGun(PlayerGunSwapEvent playerGunSwapEvent)
     {
-        if (_playerGunPickupEvent.Player == 1)
+        if (playerGunSwapEvent.Player == 1)
         {
-            p1BaseGunGUI.SetActive(false);
-            p1BigGunGUI.SetActive(true);
+            switch (playerGunSwapEvent.GunIndex)
+            {
+                case 0:
+                    p1BaseGunGUI.SetActive(true);
+                    p1BigGunGUI.SetActive(false);
+                    break;
+                case 1:
+                    p1BaseGunGUI.SetActive(false);
+                    p1BigGunGUI.SetActive(true);
+                    break;
+            }
+
         }
-        else if (_playerGunPickupEvent.Player == 2)
+        else if (playerGunSwapEvent.Player == 2)
         {
-            p2BaseGunGUI.SetActive(false);
-            p2BigGunGUI.SetActive(true);
-        }
+            switch (playerGunSwapEvent.GunIndex)
+            {
+                case 0:
+                    p2BaseGunGUI.SetActive(true);
+                    p2BigGunGUI.SetActive(false);
+                    break;
+                case 1:
+                    p2BaseGunGUI.SetActive(false);
+                    p2BigGunGUI.SetActive(true);
+                    break;
+            }
+        }   
     }
 }

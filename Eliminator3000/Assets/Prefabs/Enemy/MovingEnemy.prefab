@@ -167,6 +167,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyShoot
   projectilePrefab: {fileID: 3398698198055584001, guid: 57c4561162f2a9f41a5947cb8b5f4b69, type: 3}
   shootInterval: 1
+  multiShot: 0
+  shotOrigins: []
 --- !u!114 &285611534498342072
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -181,7 +183,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ObstacleCollision
   targetLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 16448
 --- !u!54 &5466366148492343946
 Rigidbody:
   m_ObjectHideFlags: 0
