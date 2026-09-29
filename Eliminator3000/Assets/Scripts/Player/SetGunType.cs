@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class SetGunType : MonoBehaviour
 {
-    [SerializeField]
-    private int playerID;
-    [SerializeField]
-    private GameObject[] gunModels;
-    [SerializeField]
-    private GunProfile[] guns;
+    [SerializeField] private int playerID;
+    [SerializeField] private GameObject[] gunModels;
+    [SerializeField] private GunProfile[] guns;
     private int currentGunIndex = 0;
+
+    private Timer shootTimer = new Timer(0, false);
+    public bool canShoot { get; private set; } = true;
 
 
     private void OnEnable()
@@ -22,11 +22,13 @@ public class SetGunType : MonoBehaviour
         }
 
         EventBus<PlayerGunPickupEvent>.Subscribe(OnGunPickup);
+        EventBus<PlayerGunSwapEvent>.Subscribe(OnPlayerGunSwap);
     }
 
     private void OnDisable()
     {
         EventBus<PlayerGunPickupEvent>.UnSubscribe(OnGunPickup);
+        EventBus<PlayerGunSwapEvent>.UnSubscribe(OnPlayerGunSwap);
     }
 
     private void Start()
@@ -37,13 +39,32 @@ public class SetGunType : MonoBehaviour
         MarkProjectiles();
     }
 
+    private void Update()
+    {
+        canShoot = shootTimer.IsFinished();
+    }
+
+    private void SetGun(int _gunIndex)
+    {
+        DisableModels();
+        currentGunIndex = _gunIndex;
+        gunModels[_gunIndex].SetActive(true);
+        shootTimer.Reset(0);
+    }
+
     private void OnGunPickup(PlayerGunPickupEvent _playerGunPickupEvent)
     {
         if (_playerGunPickupEvent.Player == playerID)
         {
-            currentGunIndex = _playerGunPickupEvent.GunIndex;
-            DisableModels();
-            gunModels[_playerGunPickupEvent.GunIndex].SetActive(true);
+            SetGun(_playerGunPickupEvent.GunIndex);
+        }
+    }
+
+    private void OnPlayerGunSwap(PlayerGunSwapEvent _playerGunSwapEvent)
+    {
+        if (_playerGunSwapEvent.Player == playerID)
+        {
+            SetGun(_playerGunSwapEvent.GunIndex);
         }
     }
 
@@ -94,4 +115,10 @@ public class SetGunType : MonoBehaviour
             }
         }
     } 
+
+    public void ResetShootTimer()
+    {
+        shootTimer.Reset(guns[currentGunIndex].fireRate);
+    }
+
 }

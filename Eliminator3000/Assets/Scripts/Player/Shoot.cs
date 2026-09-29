@@ -20,12 +20,13 @@ public class Shoot : MonoBehaviour
         if (gameStateManager.CurrentState 
             != GameStateManager.GameState.Ingame) return;
         if (!_context.performed) return;
-
+        if (!setGunType.canShoot) return;
         ShootProjectile();
     }    
 
     private void ShootProjectile()
     { 
         Instantiate(setGunType.GetCurrentGunProfile().ProjectilePrefab, transform.position, Quaternion.Euler(90f, 0f, 0f));
+        setGunType.ResetShootTimer();
     }
 }

@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: GunProfile0 1
   m_EditorClassIdentifier: Assembly-CSharp::GunProfile
   Info: 
-  ProjectilePrefab: {fileID: 3398698198055584001, guid: c91bf16120e6f234ea107d3ceb1f51de, type: 3}
-  fireRate: 0.2
+  ProjectilePrefab: {fileID: 3398698198055584001, guid: 1c3f584033474704e8d08ebdbd6ec81a, type: 3}
+  fireRate: 0.4
