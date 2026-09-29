@@ -12,7 +12,8 @@ public class SpawnEnemy : MonoBehaviour
     private int currentEnemyIndex = 0;
 
     private Timer spawnTimer;
-    bool isSpawning = false;
+    private bool isSpawning = false;
+    private GameStateManager gameStateManager;
 
     private void OnEnable()
     {
@@ -26,12 +27,13 @@ public class SpawnEnemy : MonoBehaviour
 
     private void Start()
     {
+        gameStateManager = GameStateManager.Instance;
         spawnTimer = new Timer(1f, true);
     }
 
     private void Update()
     {
-        if (!isSpawning) return;
+        if (gameStateManager.CurrentState != GameStateManager.GameState.Ingame || !isSpawning) return;
         if (spawnTimer.IsFinished())
         {
             SpawnNextEnemy();

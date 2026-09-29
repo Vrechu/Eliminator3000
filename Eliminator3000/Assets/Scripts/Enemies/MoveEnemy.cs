@@ -21,7 +21,7 @@ public class MoveEnemy : MonoBehaviour
 
     private void Update()
     {
-        if (gameStatemanager.CurrentState != GameStateManager.GameState.Ingame && !finalWaypointReached) return;
+        if (gameStatemanager.CurrentState != GameStateManager.GameState.Ingame) return;
         Move();
     }
 
