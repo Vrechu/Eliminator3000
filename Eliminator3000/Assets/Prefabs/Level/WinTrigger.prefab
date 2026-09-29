@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1200446800140614480}
   - component: {fileID: 6356923337423869087}
   - component: {fileID: 1816329161107518962}
+  - component: {fileID: 7451849282384829841}
   m_Layer: 13
   m_Name: WinTrigger
   m_TagString: Untagged
@@ -141,3 +142,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &7451849282384829841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 343843933378281743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 688cfeb8ab970c343841ef430a4d3c3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WinTrigger
+  targetLayers:
+    serializedVersion: 2
+    m_Bits: 64

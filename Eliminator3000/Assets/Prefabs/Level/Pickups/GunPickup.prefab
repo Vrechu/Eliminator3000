@@ -125,3 +125,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4ed630bf01f747449dc07d8ebc83800, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PowerupPickupTrigger
+  targetLayers:
+    serializedVersion: 2
+    m_Bits: 16448

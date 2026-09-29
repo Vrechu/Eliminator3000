@@ -156,6 +156,15 @@ public class  LevelEnteredEvent : Event
 
 public class FinishedLevelEvent : Event { }
 
+public class EnemySpawnTriggeredEvent : Event
+{
+    public int WaveNumber;
+    public EnemySpawnTriggeredEvent(int cWaveNumber)
+    {
+        WaveNumber = cWaveNumber;
+    }
+}
+
 #endregion
 
 #region Player combat events

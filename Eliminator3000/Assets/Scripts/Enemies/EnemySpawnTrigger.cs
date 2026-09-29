@@ -1,14 +1,17 @@
 using UnityEngine;
-using UnityEngine.Events;
 
-public class WinTrigger : MonoBehaviour
+public class EnemySpawnTrigger : MonoBehaviour
 {
+    [SerializeField] private int waveNumber;
     [SerializeField] private LayerMask targetLayers;
+
     private void OnTriggerEnter(Collider _other)
     {
         if (targetLayers == (targetLayers | (1 << _other.gameObject.layer)))
         {
-            EventBus<FinishedLevelEvent>.Publish(new FinishedLevelEvent());
+            EventBus<EnemySpawnTriggeredEvent>.Publish(new EnemySpawnTriggeredEvent(waveNumber));
         }
-    }    
+    }
 }
+
+

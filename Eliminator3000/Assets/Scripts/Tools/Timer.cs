@@ -27,4 +27,10 @@ public class Timer
         if (Loop) TimeLeft = Duration;
         return true;
     }
+
+    public void Reset(float _newDuration = -1)
+    {
+        if (_newDuration >= 0) Duration = _newDuration;
+        TimeLeft = Duration;
+    }
 }
