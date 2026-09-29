@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3404801453417064491}
   - component: {fileID: 932542205240832175}
   m_Layer: 0
-  m_Name: ShootingPoint (2)
+  m_Name: ShootingPointRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -282,7 +282,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyShoot
   projectilePrefab: {fileID: 3398698198055584001, guid: 57c4561162f2a9f41a5947cb8b5f4b69, type: 3}
   shootInterval: 1
-  multiShot: 1
+  multiShot: 0
   shotOrigins:
   - {fileID: 9151973694371936873}
   - {fileID: 6784523768946973851}
@@ -342,7 +342,7 @@ GameObject:
   - component: {fileID: 8655683360278293749}
   - component: {fileID: 1313920182962281276}
   m_Layer: 0
-  m_Name: ShootingPoint (1)
+  m_Name: ShootingPointleft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
