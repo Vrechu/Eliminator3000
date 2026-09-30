@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// Profile for a player, containing their prefab, input, avatar, lives, and score.
+/// </summary>
 public struct PlayerProfile 
 {
     public GameObject ProfilePrefab { get; private set; }

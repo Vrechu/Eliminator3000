@@ -23,6 +23,11 @@ public class SpawnPointManager : MonoBehaviour
         EventBus<PlayerJoinedEvent>.UnSubscribe(OnPlayerJoined);
     }
 
+    /// <summary>
+    /// Returns the spawn point for the specified player number.
+    /// </summary>
+    /// <param name="_playerNumber">The number of the player (1 or 2).</param>
+    /// <returns>The spawn point Transform for the specified player.</returns>
     public Transform GetSpawnPoint(int _playerNumber)
     {
         return _playerNumber switch
@@ -33,6 +38,10 @@ public class SpawnPointManager : MonoBehaviour
         };
     }
 
+    /// <summary>
+    /// Publishes a PlayerSpawnEvent when a player joins, providing the appropriate spawn point based on the player's profile.
+    /// </summary>
+    /// <param name="_playerJoinedEvent">Event info</param>
     public void OnPlayerJoined(PlayerJoinedEvent _playerJoinedEvent)
     {
         if (_playerJoinedEvent.PlayerProfile == 1)

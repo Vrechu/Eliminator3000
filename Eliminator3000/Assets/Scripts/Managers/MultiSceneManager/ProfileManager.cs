@@ -59,7 +59,8 @@ public class ProfileManager : MonoBehaviour
     }
 
     /// <summary>
-    /// creates a new player profile when a player joins the game, and publishes a PlayerJoinedEvent to notify other systems of the new player.
+    /// Waits for players to join the game using the keyboard. Player 1 can join by pressing the space key, and Player 2 can join by pressing the right control key. 
+    /// This method checks if the game is in a state that allows joining (Pregame, Ingame, or Paused) and ensures that each player can only join once.
     /// </summary>
     private void PlayerJoin()
     {
@@ -127,6 +128,11 @@ public class ProfileManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Destroys the ingame avatar and player input of the specified player and updates their alive status. 
+    /// After destroying the player, it checks if both players are dead and publishes an AllPlayersDeadEvent if they are.
+    /// </summary>
+    /// <param name="_player">The player to be destroyed.</param>
     private void DestroyPlayer(int _player)
     {
         if (_player == 1)
@@ -149,6 +155,11 @@ public class ProfileManager : MonoBehaviour
         DestroyPlayer(_playerLivesAtZeroEvent.Player);
     }
 
+    /// <summary>
+    /// Destroys both players when a LevelExitEvent is received, indicating the end of the game. 
+    /// It also resets the joined status for both players.
+    /// </summary>
+    /// <param name="_levelExitEvent">Event info</param>
     private void OnGameEnd(LevelExitEvent _levelExitEvent)
     {
         DestroyPlayer(1);
@@ -181,6 +192,7 @@ public class ProfileManager : MonoBehaviour
             Player2.IngameAvatar.transform.position = _playerSpawnEvent.SpawnPoint.position;
         }
     }
+
 
     private void OnLevelEntered(LevelEnteredEvent _levelEnteredEvent)
     {

@@ -27,7 +27,12 @@ public class LivesManager : MonoBehaviour
         LoseLife(_context.Player, _context.Damage);
     }
 
-
+    /// <summary>
+    /// Reduces the life of the specified player by the given amount and publishes an event to notify other systems of the change. 
+    /// If the player's lives reach zero, it also publishes a separate event to indicate that the player has no remaining lives.
+    /// </summary>
+    /// <param name="_player">Player to lose a life</param>
+    /// <param name="_amount">Amount of lives to lose</param>
     public void LoseLife(int _player, int _amount)
     {
         if (_player == 1)
@@ -42,6 +47,11 @@ public class LivesManager : MonoBehaviour
         CheckLives(_player);
     }
 
+    /// <summary>
+    /// Checks if the specified player has any remaining lives. 
+    /// If the player's lives are zero or less, it publishes an event to notify other systems that the player has no remaining lives.
+    /// </summary>
+    /// <param name="_player">Player whos lives are checked</param>
     public void CheckLives(int _player)
     {
         if (profileManager.AllProfiles()[_player - 1].Lives <= 0)

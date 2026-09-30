@@ -3,8 +3,6 @@ using UnityEngine.Rendering.Universal.Internal;
 
 public class MoveEnemy : MonoBehaviour
 {
-
-
     public Transform[] Waypoints;
     public int[] WaypointOrder;
     public Transform EndPoint;
@@ -25,6 +23,10 @@ public class MoveEnemy : MonoBehaviour
         Move();
     }
 
+    /// <summary>
+    /// Moves the enemy towards the next waypoint in the WaypointOrder. If the enemy reaches the final waypoint, it will be destroyed. 
+    /// The movement is based on the speed variable and is frame-rate independent.
+    /// </summary>
     private void Move()
     {
         Vector3 direction = NextWaypointPosition() - transform.position;
@@ -36,6 +38,11 @@ public class MoveEnemy : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Returns the position of the next waypoint based on the currentWaypointIndex and WaypointOrder. 
+    /// If all waypoints have been reached, it returns the position of the EndPoint and sets finalWaypointReached to true.
+    /// </summary>
+    /// <returns>The position of the next waypoint or the EndPoint if all waypoints have been reached.</returns>
     private Vector3 NextWaypointPosition()
     {
         if (currentWaypointIndex < WaypointOrder.Length)

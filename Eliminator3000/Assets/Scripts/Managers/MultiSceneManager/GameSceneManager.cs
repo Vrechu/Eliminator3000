@@ -6,6 +6,11 @@ public class GameSceneManager : MonoBehaviour
 {
     public static GameSceneManager Instance { get; private set; }
 
+    /// <summary>
+    /// Creates a singleton instance of the GameSceneManager. 
+    /// If an instance already exists, it destroys the duplicate. 
+    /// The instance persists across scene loads.
+    /// </summary>
     private void Awake()
     {
         if (Instance == null)

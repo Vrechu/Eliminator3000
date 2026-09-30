@@ -33,6 +33,12 @@ public class ScoreManager : MonoBehaviour
         ChangePlayerScore(_playerHitEvent.Player, -_playerHitEvent.ScoreLoss);
     }
 
+    /// <summary>
+    /// Changes the score of the specified player by the given amount. If the resulting score is less than 0, it will be set to 0. 
+    /// After changing the score, a ScoreChangedEvent is published to notify other systems of the change.
+    /// </summary>
+    /// <param name="_player">The player whose score is to be changed.</param>
+    /// <param name="_score">The amount by which to change the player's score.</param>
     private void ChangePlayerScore(int _player, int _score)
     {
         if (_player == 1)

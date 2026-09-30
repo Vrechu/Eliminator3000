@@ -5,20 +5,36 @@ using System;
 
 public abstract class Event { }
 
+/// <summary>
+/// Event bus for publishing and subscribing to events of type T.
+/// </summary>
+/// <typeparam name="T">Event type</typeparam>
 public class EventBus<T> where T : Event
 {
     public static event Action<T> OnEvent;
 
+    /// <summary>
+    /// Subscribe to an event of type T.
+    /// </summary>
+    /// <param name="method">The method to be called when the event is published.</param>
     public static void Subscribe(Action<T> method)
     {
         OnEvent += method;
     }
 
+    /// <summary>
+    /// Unsubscribe from an event of type T.
+    /// </summary>
+    /// <param name="method">The method to be removed from the event subscription.</param>
     public static void UnSubscribe(Action<T> method)
     {
         OnEvent -= method;
     }
 
+    /// <summary>
+    /// Publish an event of type T to all subscribers.
+    /// </summary>
+    /// <param name="pEvent">The event to be published.</param>
     public static void Publish(T pEvent)
     {
         OnEvent?.Invoke(pEvent);

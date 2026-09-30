@@ -4,14 +4,9 @@ using UnityEngine.InputSystem;
 public class MoveShip : MonoBehaviour
 {
     private Vector2 movementInputVector;
-    [SerializeField]
-    private float horizontalSpeed = 7f;
-
-    [SerializeField]
-    private float trackWidth = 12f, maxHeight = 5f;
+    [SerializeField] private float horizontalSpeed = 7f;
+    [SerializeField] private float trackWidth = 12f, maxHeight = 5f;
     private GameStateManager gameStateManager;
-
-
 
     private void Start()
     {

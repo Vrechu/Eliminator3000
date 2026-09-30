@@ -12,13 +12,15 @@ public class EnemyShoot : MonoBehaviour
     [SerializeField] private bool multiShot = false;
     [SerializeField] private GameObject[] shotOrigins;
 
-
     private void Start()
     {
         timer = new Timer(shootInterval, true);
     }
 
-
+    /// <summary>
+    /// Shoots a projectile from the enemy at regular intervals defined by shootInterval. 
+    /// If multiShot is enabled, it shoots multiple projectiles from specified shot origins.
+    /// </summary>
     private void Update()
     {
         if (GameStateManager.Instance.CurrentState != GameStateManager.GameState.Ingame)
@@ -35,7 +37,6 @@ public class EnemyShoot : MonoBehaviour
             }
         }
     }
-
 
     private void ShootProjectile()
     {

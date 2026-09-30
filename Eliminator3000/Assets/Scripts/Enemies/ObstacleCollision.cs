@@ -5,6 +5,7 @@ public class ObstacleCollision : MonoBehaviour
     [SerializeField] private LayerMask targetLayers;
     [SerializeField] private int damage = 1;
     [SerializeField] private int scoreLoss = 30;
+
     private void OnCollisionEnter(Collision _collision)
     {
         if (((1 << _collision.gameObject.layer) & targetLayers) != 0)

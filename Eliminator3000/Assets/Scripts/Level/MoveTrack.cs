@@ -2,9 +2,7 @@ using UnityEngine;
 
 public class MoveTrack : MonoBehaviour
 {
-    public Transform TrackTransform;
-    [SerializeField]
-    private float moveSpeed = 5f;
+    [SerializeField] private float moveSpeed = 5f;
 
     private GameStateManager gameStateManager;
 
@@ -21,6 +19,6 @@ public class MoveTrack : MonoBehaviour
 
     private void MoveTrackBackward()
     {
-        TrackTransform.Translate(0, 0, moveSpeed * Time.deltaTime * -1);
+        transform.Translate(0, 0, moveSpeed * Time.deltaTime * -1);
     }
 }

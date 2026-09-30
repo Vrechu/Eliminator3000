@@ -100,6 +100,10 @@ public class GameStateManager : MonoBehaviour
         EventBus<GameWinEvent>.Publish(new GameWinEvent());
     }
 
+    /// <summary>
+    /// Sets the game state to MainMenu if the level number is 0, otherwise sets it to Pregame when a level is entered.
+    /// </summary>
+    /// <param name="_levelEnteredEvent">Event info</param>
     private void OnLevelEntered(LevelEnteredEvent _levelEnteredEvent)
     {
         if (_levelEnteredEvent.LevelNumber == 0)
