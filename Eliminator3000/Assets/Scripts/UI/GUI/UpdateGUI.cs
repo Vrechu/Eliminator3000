@@ -94,14 +94,14 @@ public class UpdateGUI : MonoBehaviour
 
     private void EnablePlayerGUI(PlayerJoinedEvent _playerJoinedEvent)
     {
-        if (_playerJoinedEvent.PlayerProfile == 1)
+        if (_playerJoinedEvent.PlayerIndex == 1)
         {
             p1LivesGUI.enabled = true;
             p1ScoreGUI.enabled = true;
             p1GunGUI.SetActive(true);
             p1BaseGunGUI.SetActive(true);
         }
-        else if (_playerJoinedEvent.PlayerProfile == 2)
+        else if (_playerJoinedEvent.PlayerIndex == 2)
         {
             p2LivesGUI.enabled = true;
             p2ScoreGUI.enabled = true;

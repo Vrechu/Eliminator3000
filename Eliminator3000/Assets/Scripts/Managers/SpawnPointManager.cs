@@ -44,11 +44,11 @@ public class SpawnPointManager : MonoBehaviour
     /// <param name="_playerJoinedEvent">Event info</param>
     public void OnPlayerJoined(PlayerJoinedEvent _playerJoinedEvent)
     {
-        if (_playerJoinedEvent.PlayerProfile == 1)
+        if (_playerJoinedEvent.PlayerIndex == 1)
         {
             EventBus<PlayerSpawnEvent>.Publish(new PlayerSpawnEvent(1, p1SpawnPoint));
         }
-        else if (_playerJoinedEvent.PlayerProfile == 2)
+        else if (_playerJoinedEvent.PlayerIndex == 2)
         {
             EventBus<PlayerSpawnEvent>.Publish(new PlayerSpawnEvent(2, p2SpawnPoint));
         }

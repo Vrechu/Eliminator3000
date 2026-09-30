@@ -11,12 +11,13 @@ public struct PlayerProfile
     public GameObject IngameAvatar;
     public int Lives;
     public int Score;
-        
+    public bool Alive;
+
 
     public PlayerProfile(
         GameObject cPrefab,
-        PlayerInput cPlayerInput,
-        GameObject cIngameAvatar,
+        PlayerInput cPlayerInput = null,
+        GameObject cIngameAvatar = null,
         int cLives = 3,
         int cScore = 0)
     {
@@ -25,5 +26,6 @@ public struct PlayerProfile
         IngameAvatar = cIngameAvatar;
         Lives = cLives;
         Score = cScore;
+        Alive = true;
     }
 }

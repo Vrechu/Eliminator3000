@@ -13,15 +13,14 @@ public class GameSceneManager : MonoBehaviour
     /// </summary>
     private void Awake()
     {
-        if (Instance == null)
+        if (Instance != null && Instance != this)
         {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
+            Destroy(gameObject);
+            return;
         }
         else
         {
-            Debug.LogWarning("Multiple instances of GameSceneManager detected. Destroying duplicate.");
-            Destroy(gameObject);
+            Instance = this;
         }
     }
 

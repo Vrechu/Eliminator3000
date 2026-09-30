@@ -55,9 +55,9 @@ public class LoadSceneEvent : Event
 
 public class PlayerJoinedEvent : Event
 {
-    public int PlayerProfile;
+    public int PlayerIndex;
     public PlayerJoinedEvent(int cPlayer)
-    { PlayerProfile = cPlayer; }
+    { PlayerIndex = cPlayer; }
 }
 
 public class AllPlayersDeadEvent : Event { }
