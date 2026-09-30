@@ -3,6 +3,8 @@ using UnityEngine;
 public class EnemyProjectileHit : MonoBehaviour
 {
     [SerializeField] private LayerMask targetLayers;
+    [SerializeField] private int damage = 1;
+    [SerializeField] private int scoreLoss = 20;
 
     private void OnTriggerEnter(Collider _other)
     {
@@ -10,11 +12,11 @@ public class EnemyProjectileHit : MonoBehaviour
         {
             if (_other.CompareTag("Player1"))
             {
-                EventBus<PlayerHitEvent>.Publish(new PlayerHitEvent(1, 1));
+                EventBus<PlayerHitEvent>.Publish(new PlayerHitEvent(1, damage, scoreLoss));
             }
             if (_other.CompareTag("Player2"))
             {
-                EventBus<PlayerHitEvent>.Publish(new PlayerHitEvent(2, 1));
+                EventBus<PlayerHitEvent>.Publish(new PlayerHitEvent(2, damage, scoreLoss));
             }
             Destroy(gameObject);
         }

@@ -8,12 +8,14 @@ public class ScoreManager : MonoBehaviour
 
     private void OnEnable()
     {
-        EventBus<PlayerScoredEvent>.Subscribe(ChangePlayerScore);
+        EventBus<PlayerScoredEvent>.Subscribe(OnPlayerScored);
+        EventBus<PlayerHitEvent>.Subscribe(OnPlayerHit);
     }
 
     private void OnDestroy()
     {
-        EventBus<PlayerScoredEvent>.UnSubscribe(ChangePlayerScore);
+        EventBus<PlayerScoredEvent>.UnSubscribe(OnPlayerScored);
+        EventBus<PlayerHitEvent>.UnSubscribe(OnPlayerHit);
     }
 
     private void Start()
@@ -21,16 +23,34 @@ public class ScoreManager : MonoBehaviour
         profileManager = ProfileManager.Instance;
     }
 
-    private void ChangePlayerScore(PlayerScoredEvent _playerScoredEvent)
+    private void OnPlayerScored(PlayerScoredEvent _playerScoredEvent)
     {
-        if (_playerScoredEvent.Player == 1)
+        ChangePlayerScore(_playerScoredEvent.Player, _playerScoredEvent.Score);
+    }
+
+    private void OnPlayerHit(PlayerHitEvent _playerHitEvent)
+    {
+        ChangePlayerScore(_playerHitEvent.Player, -_playerHitEvent.ScoreLoss);
+    }
+
+    private void ChangePlayerScore(int _player, int _score)
+    {
+        if (_player == 1)
         {
-            profileManager.Player1.Score += _playerScoredEvent.Score;
+            profileManager.Player1.Score += _score;
+            if (profileManager.Player1.Score < 0)
+            {
+                profileManager.Player1.Score = 0;
+            }
             EventBus<ScoreChangedEvent>.Publish(new ScoreChangedEvent(1, profileManager.Player1.Score));
         }
-        else if (_playerScoredEvent.Player == 2)
+        else if (_player == 2)
         {
-            profileManager.Player2.Score += _playerScoredEvent.Score;
+            profileManager.Player2.Score += _score;
+            if (profileManager.Player2.Score < 0)
+            {
+                profileManager.Player2.Score = 0;
+            }
             EventBus<ScoreChangedEvent>.Publish(new ScoreChangedEvent(2, profileManager.Player2.Score));
         }
     }

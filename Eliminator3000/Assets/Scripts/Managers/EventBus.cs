@@ -99,10 +99,12 @@ public class PlayerHitEvent : Event
 {
     public int Player;
     public int Damage;
-    public PlayerHitEvent(int cPlayer, int cDamage)
+    public int ScoreLoss;
+    public PlayerHitEvent(int cPlayer, int cDamage, int cScoreLoss)
     {
         Player = cPlayer;
         Damage = cDamage;
+        ScoreLoss = cScoreLoss;
     }
 }
 
