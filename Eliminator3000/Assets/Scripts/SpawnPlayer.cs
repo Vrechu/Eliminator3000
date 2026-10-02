@@ -16,12 +16,14 @@ public class SpawnPlayer : MonoBehaviour
         playerProfileManager = PlayerProfileManager.Instance;
         EventBus<LevelEnteredEvent>.Subscribe(InstantiateOnLevelEnter);
         EventBus<PlayerLivesAtZeroEvent>.Subscribe(OnPlayerLivesAtZero);
+        EventBus<PlayerJoinedEvent>.Subscribe(OnInGameJoin);
     }
 
     private void OnDestroy()
     {
         EventBus<LevelEnteredEvent>.UnSubscribe(InstantiateOnLevelEnter);
         EventBus<PlayerLivesAtZeroEvent>.UnSubscribe(OnPlayerLivesAtZero);
+        EventBus<PlayerJoinedEvent>.UnSubscribe(OnInGameJoin);
     }
 
     private void InstantiateOnLevelEnter(LevelEnteredEvent _levelEnteredEvent)
@@ -84,5 +86,10 @@ public class SpawnPlayer : MonoBehaviour
             avatarsIngame[_playerIndex] = false;
             playerAvatars[_playerIndex] = null;
         }
+    }
+
+    private void OnInGameJoin(PlayerJoinedEvent _playerJoinedEvent)
+    {
+        InstantiatePlayerAvatar(_playerJoinedEvent.PlayerIndex);
     }
 }

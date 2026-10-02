@@ -115,7 +115,6 @@ public class GameStateManager : MonoBehaviour
         {
             CurrentState = GameState.Pregame;
         }
-        Debug.Log($"Level {_levelEnteredEvent.LevelNumber} entered, setting game state to {CurrentState}.   ");
     }
 
     private void OnMainMenuEntered(MainMenuEnterEvent _mainMenuEnterEvent)

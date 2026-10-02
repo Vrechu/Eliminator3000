@@ -11,6 +11,5 @@ public class LevelInfo : MonoBehaviour
     {
         if (levelIndex < 1) EventBus<MainMenuEnterEvent>.Publish(new MainMenuEnterEvent()); 
         else EventBus<LevelEnteredEvent>.Publish(new LevelEnteredEvent(levelIndex));
-        Debug.Log($"LevelInfo: {levelName} - {levelIndex}");
     }
 }
