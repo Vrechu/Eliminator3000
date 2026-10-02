@@ -70,13 +70,11 @@ public class GameStateManager : MonoBehaviour
 
         {
             CurrentState = GameState.Ingame;
-            EventBus<GameStartEvent>.Publish(new GameStartEvent());
         }
 
         else if (CurrentState == GameState.Ingame)
         {
             CurrentState = GameState.Paused;
-            EventBus<GamePauseEvent>.Publish(new GamePauseEvent());
         }
     }
 

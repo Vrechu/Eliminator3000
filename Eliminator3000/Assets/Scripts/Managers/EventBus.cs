@@ -77,22 +77,12 @@ public class PlayerSpawnEvent : Event
 
 #region Main menu events
 
-public class MainMenuStartGameEvent : Event { }
+
+public class MainMenuStartEvent : Event { }
 
 #endregion
 
 #region Game state events
-public class GameStateChangedEvent : Event
-{
-    public string NewState;
-    public GameStateChangedEvent(string cNewState)
-    {
-        NewState = cNewState;
-    }
-}
-public class GameStartEvent : Event { }
-public class GamePauseEvent : Event { }
-public class GameResumeEvent : Event { }
 public class GameLoseEvent : Event { }
 public class GameWinEvent : Event { }  
 public class LevelExitEvent : Event { }
