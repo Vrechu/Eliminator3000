@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 7752015121874787379}
   - component: {fileID: 5430035006313322800}
   - component: {fileID: 8298352334588265496}
-  - component: {fileID: 4191121327594036547}
   - component: {fileID: 4834699067627782072}
   - component: {fileID: 1986516880988417489}
   - component: {fileID: 8424526041907571862}
+  - component: {fileID: 7036849482840387080}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -61,20 +61,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5440a00236cb6c4bb89771fd702f50d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameStateManager
---- !u!114 &4191121327594036547
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2854620704518527146}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6fb50789acc7e34cb2dfb7538110411, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ProfileManager
-  player1Prefab: {fileID: 5648227213499969200, guid: fa1ca7d95c2ae384791df14654003c81, type: 3}
-  player2Prefab: {fileID: 646614995034292941, guid: 2daf2ce73200d254d8f82e846880ec90, type: 3}
 --- !u!114 &4834699067627782072
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -144,3 +130,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 532d6a4d32c2f244191eb3bb02b7a72c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScoreManager
+--- !u!114 &7036849482840387080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2854620704518527146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 027c6678196cd0345bb8329b2860d34b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerProfileManager
+  playerPrefabs:
+  - {fileID: 5648227213499969200, guid: fa1ca7d95c2ae384791df14654003c81, type: 3}
+  - {fileID: 646614995034292941, guid: 2daf2ce73200d254d8f82e846880ec90, type: 3}
+  playersJoined: 0000

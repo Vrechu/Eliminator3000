@@ -19,7 +19,7 @@ public class SetGunType : MonoBehaviour
 
     private void OnEnable()
     {
-        if (playerID == 0)
+        if (playerID < 0 || playerID > 1)
         {
             Debug.LogError("Player is not assigned in SetGunType script.");
             return;

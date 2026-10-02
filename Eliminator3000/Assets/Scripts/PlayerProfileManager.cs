@@ -7,7 +7,7 @@ public class PlayerProfileManager : MonoBehaviour
 
     public PlayerProfile[] PlayerProfiles { get; private set; } = new PlayerProfile[2];
     [SerializeField] private GameObject[] playerPrefabs;
-    private bool[] playersJoined = new bool[2] { false, false };
+    public bool[] PlayersJoined = new bool[2] { false, false };
 
     private GameStateManager gameStateManager;
 
@@ -23,6 +23,17 @@ public class PlayerProfileManager : MonoBehaviour
             Instance = this;
         }
     }
+
+    private void OnEnable()
+    {
+        EventBus<MainMenuEnterEvent>.Subscribe(OnGameBoot);
+    }
+
+    private void OnDestroy()
+    {
+        EventBus<MainMenuEnterEvent>.UnSubscribe(OnGameBoot);
+    }
+
     private void Start()
     {
         gameStateManager = GameStateManager.Instance;
@@ -33,29 +44,21 @@ public class PlayerProfileManager : MonoBehaviour
         CheckJoinInput();
     }
 
-    private void CreateNewProfile(int _profileIndex)
+    private void OnGameBoot(MainMenuEnterEvent _mainMenuEnterEvent)
     {
-        switch (_profileIndex)
-        {
-            case 0:
-                PlayerProfiles[_profileIndex] = new PlayerProfile(playerPrefabs[_profileIndex]);
-                playersJoined[_profileIndex] = true;
-                break;
-            case 1:
-                PlayerProfiles[_profileIndex] = new PlayerProfile(playerPrefabs[_profileIndex]);
-                playersJoined[_profileIndex] = true;
-                break;
-            default:
-                Debug.LogError("Invalid profile index: " + _profileIndex);
-                break;
-        }
+        ResetProfiles();
+        CreateNewProfile(0);
     }
 
-    private void RemoveProfile(int _profileIndex)
+    private void CreateNewProfile(int _profileIndex)
     {
-        PlayerProfiles[_profileIndex] = default;
-        playersJoined[_profileIndex] = false;
+        if (_profileIndex < 0 || _profileIndex >= PlayerProfiles.Length) return;
+        if (PlayersJoined[_profileIndex]) return;
+        PlayerProfiles[_profileIndex] = new PlayerProfile(playerPrefabs[_profileIndex]);
+        PlayersJoined[_profileIndex] = true;
+        EventBus<PlayerJoinedEvent>.Publish(new PlayerJoinedEvent(_profileIndex));
     }
+
 
     private void ResetProfiles()
     {
@@ -63,6 +66,11 @@ public class PlayerProfileManager : MonoBehaviour
         {
             RemoveProfile(i);
         }
+    }
+    private void RemoveProfile(int _profileIndex)
+    {
+        PlayerProfiles[_profileIndex] = default;
+        PlayersJoined[_profileIndex] = false;
     }
 
     private void CheckJoinInput()
@@ -72,19 +80,36 @@ public class PlayerProfileManager : MonoBehaviour
             || gameStateManager.CurrentState == GameStateManager.GameState.Pregame
             || gameStateManager.CurrentState == GameStateManager.GameState.Ingame
             || gameStateManager.CurrentState == GameStateManager.GameState.Paused)) return;
-
-        if (!playersJoined[0]
+        if (!PlayersJoined[0]
             && Keyboard.current.spaceKey.wasPressedThisFrame)
         {
             CreateNewProfile(0);
             return;
         }
 
-        if (!playersJoined[1]
+        if (!PlayersJoined[1]
                 && Keyboard.current.rightCtrlKey.wasPressedThisFrame)
         {
             CreateNewProfile(1);
             return;
         }
+    }
+
+    public bool BothPlayersAlive()
+    {
+        for (int i = 0; i < PlayerProfiles.Length; i++)
+        {
+            if (PlayersJoined[i] && !PlayerProfiles[i].AliveInLevel) return false;
+        }
+        return true;
+    }
+
+    public bool BothPlayersDead()
+    {
+        for (int i = 0; i < PlayerProfiles.Length; i++)
+        {
+            if (PlayerProfiles[i].AliveInLevel) return false;
+        }
+        return true;
     }
 }

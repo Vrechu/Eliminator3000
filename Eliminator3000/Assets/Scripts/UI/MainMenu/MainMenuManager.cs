@@ -2,13 +2,43 @@ using UnityEngine;
 
 public class MainMenuManager : MonoBehaviour
 {
+    [SerializeField] private GameObject p1JoinedUI, p2JoinedUI;
+
+    private void Awake()
+    {
+        ResetPlayerJoinedUI();
+    }
+
+    private void OnEnable()
+    {
+        EventBus<PlayerJoinedEvent>.Subscribe(OnPlayerJoined);
+    }
+
+    private void OnDestroy()
+    {
+        EventBus<PlayerJoinedEvent>.UnSubscribe(OnPlayerJoined);
+    }
+
     public void OnStartButtonPressed()
     {
         EventBus<LoadSceneEvent>.Publish(new LoadSceneEvent("SampleScene"));
     }
 
-    private void Start()
+    private void OnPlayerJoined(PlayerJoinedEvent _playerJoinedEvent)
     {
-        EventBus<MainMenuStartEvent>.Publish(new MainMenuStartEvent());
+        if (_playerJoinedEvent.PlayerIndex == 0)
+        {
+            p1JoinedUI.SetActive(true);
+        }
+        else if (_playerJoinedEvent.PlayerIndex == 1)
+        {
+            p2JoinedUI.SetActive(true);
+        }
+    }
+
+    private void ResetPlayerJoinedUI()
+    {
+        p1JoinedUI.SetActive(false);
+        p2JoinedUI.SetActive(false);
     }
 }

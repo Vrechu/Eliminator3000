@@ -6,14 +6,35 @@ using UnityEngine.InputSystem;
 public class SpawnPlayer : MonoBehaviour
 {
     [SerializeField]private Transform[] spawnPoints;
-    private PlayerProfileManager profileManager;
+    private PlayerProfileManager playerProfileManager;
     private bool[] avatarsIngame = new bool[2] {false, false};
     private GameObject[] playerAvatars = new GameObject[2];
 
-    private void Start()
+
+    private void OnEnable()
     {
-        profileManager = PlayerProfileManager.Instance;
+        playerProfileManager = PlayerProfileManager.Instance;
+        EventBus<LevelEnteredEvent>.Subscribe(InstantiateOnLevelEnter);
+        EventBus<PlayerLivesAtZeroEvent>.Subscribe(OnPlayerLivesAtZero);
     }
+
+    private void OnDestroy()
+    {
+        EventBus<LevelEnteredEvent>.UnSubscribe(InstantiateOnLevelEnter);
+        EventBus<PlayerLivesAtZeroEvent>.UnSubscribe(OnPlayerLivesAtZero);
+    }
+
+    private void InstantiateOnLevelEnter(LevelEnteredEvent _levelEnteredEvent)
+    {
+        for (int i = 0; i < playerProfileManager.PlayerProfiles.Length; i++)
+        {
+            if (playerProfileManager.PlayersJoined[i])
+            {
+                InstantiatePlayerAvatar(i);
+            }
+        }
+    }
+
 
     /// <summary>
     /// Publishes a PlayerSpawnEvent when a player joins, providing the appropriate spawn point based on the player's profile.
@@ -22,25 +43,27 @@ public class SpawnPlayer : MonoBehaviour
     public void InstantiatePlayerAvatar(int _playerIndex)
     {
         if (avatarsIngame[_playerIndex]) return;
-        if (profileManager.PlayerProfiles[0].IngameAvatar != null) return;
+        if (playerProfileManager.PlayerProfiles[0].IngameAvatar != null) return;
 
         PlayerInput player = PlayerInput.Instantiate(
-        profileManager.PlayerProfiles[_playerIndex].ProfilePrefab,
+        playerProfileManager.PlayerProfiles[_playerIndex].ProfilePrefab,
         controlScheme: CheckControlScheme(_playerIndex),
         pairWithDevice: Keyboard.current);
 
         avatarsIngame[_playerIndex] = true;
         playerAvatars[_playerIndex] = player.gameObject;
+        playerProfileManager.PlayerProfiles[_playerIndex].AliveInLevel = true;
         player.transform.position = spawnPoints[_playerIndex].position;
+        EventBus<PlayerAvatarInstantiatedEvent>.Publish(new PlayerAvatarInstantiatedEvent(_playerIndex));
     }
 
     private string CheckControlScheme(int _playerIndex)
     {
         switch (_playerIndex)
         {
-            case 1:
+            case 0:
                 return "WASD";
-            case 2:
+            case 1:
                 return "Arrows";
             default:
                 Debug.LogError("Invalid player index: " + _playerIndex);
@@ -48,15 +71,18 @@ public class SpawnPlayer : MonoBehaviour
         }
     }
 
-    private void DestroyAvatars()
+    private void OnPlayerLivesAtZero(PlayerLivesAtZeroEvent _playerLivesAtZeroEvent)
     {
-        for (int i = 0; i < playerAvatars.Length; i++)
+        DestroyAvatar(_playerLivesAtZeroEvent.Player);
+    }
+
+    private void DestroyAvatar(int _playerIndex)
+    {
+        if (playerAvatars[_playerIndex] != null)
         {
-            if (playerAvatars[i] != null)
-            {
-                Destroy(playerAvatars[i]);
-                avatarsIngame[i] = false;
-            }
+            Destroy(playerAvatars[_playerIndex]);
+            avatarsIngame[_playerIndex] = false;
+            playerAvatars[_playerIndex] = null;
         }
     }
 }

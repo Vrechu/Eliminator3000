@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,7 +12,7 @@ public struct PlayerProfile
     public GameObject IngameAvatar;
     public int Lives;
     public int Score;
-    public bool Alive;
+    public bool AliveInLevel;
 
 
     public PlayerProfile(
@@ -19,13 +20,12 @@ public struct PlayerProfile
         PlayerInput cPlayerInput = null,
         GameObject cIngameAvatar = null,
         int cLives = 3,
-        int cScore = 0)
-    {
+        int cScore = 0)    {
         ProfilePrefab = cPrefab;
         PlayerInput = cPlayerInput;
         IngameAvatar = cIngameAvatar;
         Lives = cLives;
         Score = cScore;
-        Alive = true;
+        AliveInLevel = false;
     }
 }

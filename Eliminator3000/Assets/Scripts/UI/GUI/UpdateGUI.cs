@@ -18,8 +18,8 @@ public class UpdateGUI : MonoBehaviour
 
     private void OnEnable()
     {
+        EventBus<PlayerAvatarInstantiatedEvent>.Subscribe(EnablePlayerGUI);
         EventBus<PlayerLivesChangedEvent>.Subscribe(SetLivesGUI);
-        EventBus<PlayerJoinedEvent>.Subscribe(EnablePlayerGUI);
         EventBus<ScoreChangedEvent>.Subscribe(SetScoreGUI);
         EventBus<GameWinEvent>.Subscribe(EnableWinGUI);
         EventBus<GameLoseEvent>.Subscribe(EnableLoseGUIgame);
@@ -28,8 +28,8 @@ public class UpdateGUI : MonoBehaviour
 
     private void OnDestroy()
     {
+        EventBus<PlayerAvatarInstantiatedEvent>.UnSubscribe(EnablePlayerGUI);
         EventBus<PlayerLivesChangedEvent>.UnSubscribe(SetLivesGUI);
-        EventBus<PlayerJoinedEvent>.UnSubscribe(EnablePlayerGUI);
         EventBus<ScoreChangedEvent>.UnSubscribe(SetScoreGUI);
         EventBus<GameWinEvent>.UnSubscribe(EnableWinGUI);
         EventBus<GameLoseEvent>.UnSubscribe(EnableLoseGUIgame);
@@ -43,11 +43,11 @@ public class UpdateGUI : MonoBehaviour
 
     private void SetLivesGUI(PlayerLivesChangedEvent _playerLivesChangedEvent)
     {
-        if (_playerLivesChangedEvent.Player == 1)
+        if (_playerLivesChangedEvent.Player == 0)
         {
             p1LivesGUI.text = _playerLivesChangedEvent.Lives.ToString();
         }
-        else if (_playerLivesChangedEvent.Player == 2)
+        else if (_playerLivesChangedEvent.Player == 1)
         {
             p2LivesGUI.text = _playerLivesChangedEvent.Lives.ToString();
         }
@@ -55,11 +55,11 @@ public class UpdateGUI : MonoBehaviour
 
     private void SetScoreGUI(ScoreChangedEvent _scoreChangedEvent)
     {
-        if (_scoreChangedEvent.Player == 1)
+        if (_scoreChangedEvent.Player == 0)
         {
             p1ScoreGUI.text = _scoreChangedEvent.Score.ToString();
         }
-        else if (_scoreChangedEvent.Player == 2)
+        else if (_scoreChangedEvent.Player == 1)
         {
             p2ScoreGUI.text = _scoreChangedEvent.Score.ToString();
         }
@@ -92,16 +92,16 @@ public class UpdateGUI : MonoBehaviour
         loseGUI.enabled = true;
     }
 
-    private void EnablePlayerGUI(PlayerJoinedEvent _playerJoinedEvent)
+    private void EnablePlayerGUI(PlayerAvatarInstantiatedEvent _playerAvatarInstantiatedEvent)
     {
-        if (_playerJoinedEvent.PlayerIndex == 1)
+        if (_playerAvatarInstantiatedEvent.Player == 0)
         {
             p1LivesGUI.enabled = true;
             p1ScoreGUI.enabled = true;
             p1GunGUI.SetActive(true);
             p1BaseGunGUI.SetActive(true);
         }
-        else if (_playerJoinedEvent.PlayerIndex == 2)
+        else if (_playerAvatarInstantiatedEvent.Player == 1)
         {
             p2LivesGUI.enabled = true;
             p2ScoreGUI.enabled = true;
@@ -112,7 +112,7 @@ public class UpdateGUI : MonoBehaviour
 
     private void EnableBigGun(PlayerGunSwapEvent playerGunSwapEvent)
     {
-        if (playerGunSwapEvent.Player == 1)
+        if (playerGunSwapEvent.Player == 0)
         {
             switch (playerGunSwapEvent.GunIndex)
             {
@@ -127,7 +127,7 @@ public class UpdateGUI : MonoBehaviour
             }
 
         }
-        else if (playerGunSwapEvent.Player == 2)
+        else if (playerGunSwapEvent.Player == 1)
         {
             switch (playerGunSwapEvent.GunIndex)
             {

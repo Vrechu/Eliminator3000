@@ -1473,7 +1473,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 809c7635768d5d44aa19e4dc66731643, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MoveTrack
-  TrackTransform: {fileID: 444640544}
   moveSpeed: 20
 --- !u!1001 &455284797
 PrefabInstance:
@@ -2950,7 +2949,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelInfo
   levelName: SampleScene
-  levelNumber: 1
+  Info: 
+  levelIndex: 1
 --- !u!4 &921488530
 Transform:
   m_ObjectHideFlags: 0
@@ -3366,9 +3366,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 979272072}
-  - component: {fileID: 979272073}
+  - component: {fileID: 979272074}
   m_Layer: 0
-  m_Name: SpawnPoints
+  m_Name: PlayerSpawnPoints
   m_TagString: Untagged
   m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -3391,7 +3391,7 @@ Transform:
   - {fileID: 1129646118}
   m_Father: {fileID: 921488530}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &979272073
+--- !u!114 &979272074
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3400,11 +3400,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 979272071}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf3c45fb5ea775a428955238ad62e3b1, type: 3}
+  m_Script: {fileID: 11500000, guid: ee423fb9c4ea78a4b9c4da3b98be161c, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SpawnpointManager
-  p1SpawnPoint: {fileID: 1982209359}
-  p2SpawnPoint: {fileID: 1129646118}
+  m_EditorClassIdentifier: Assembly-CSharp::SpawnPlayer
+  spawnPoints:
+  - {fileID: 1982209359}
+  - {fileID: 1129646118}
 --- !u!4 &1021242709 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1016135611604295379, guid: 2570939ab66c5e740802476ae033633a, type: 3}
@@ -6856,6 +6857,10 @@ PrefabInstance:
     - target: {fileID: 2854620704518527146, guid: 796ab6f38729a4b4aad451126eefa3dc, type: 3}
       propertyPath: m_Name
       value: GameManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 2854620704518527146, guid: 796ab6f38729a4b4aad451126eefa3dc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7752015121874787379, guid: 796ab6f38729a4b4aad451126eefa3dc, type: 3}
       propertyPath: m_LocalPosition.x

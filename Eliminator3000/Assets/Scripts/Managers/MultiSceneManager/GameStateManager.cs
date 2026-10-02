@@ -17,13 +17,14 @@ public class GameStateManager : MonoBehaviour
     }
     public GameState CurrentState { get; private set; }
 
-    private ProfileManager profileManager;
+    private PlayerProfileManager playerProfileManager;
 
     private void Awake()
     {
         if (Instance != null && Instance != this)
         {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
+            return;
         }
         else
         {
@@ -33,21 +34,23 @@ public class GameStateManager : MonoBehaviour
 
     private void OnEnable()
     {
-        EventBus<AllPlayersDeadEvent>.Subscribe(OnAllPlayersDead);
+        EventBus<BothPlayersDeadEvent>.Subscribe(OnAllPlayersDead);
         EventBus<FinishedLevelEvent>.Subscribe(OnFinishedLevel);
         EventBus<LevelEnteredEvent>.Subscribe(OnLevelEntered);
+        EventBus<MainMenuEnterEvent>.Subscribe(OnMainMenuEntered);
     }
 
     private void OnDestroy()
     {
-        EventBus<AllPlayersDeadEvent>.UnSubscribe(OnAllPlayersDead);
+        EventBus<BothPlayersDeadEvent>.UnSubscribe(OnAllPlayersDead);
         EventBus<FinishedLevelEvent>.UnSubscribe(OnFinishedLevel);
         EventBus<LevelEnteredEvent>.UnSubscribe(OnLevelEntered);
+        EventBus<MainMenuEnterEvent>.UnSubscribe(OnMainMenuEntered);
     }
 
     private void Start()
     {
-        profileManager = ProfileManager.Instance;
+        playerProfileManager = PlayerProfileManager.Instance;
     }
 
     private void Update()
@@ -62,8 +65,7 @@ public class GameStateManager : MonoBehaviour
     {
         if (!Keyboard.current.enterKey.wasPressedThisFrame) return;
 
-        if (!(profileManager.player1Alive
-            || profileManager.player2Alive)) return;
+        if (!playerProfileManager.BothPlayersAlive()) return;
 
         if (CurrentState == GameState.Pregame
         || CurrentState == GameState.Paused)
@@ -82,8 +84,9 @@ public class GameStateManager : MonoBehaviour
     /// Sets the game state to Lost and publishes a GameLoseEvent when all players are dead.
     /// </summary>
     /// <param name="_allPlayersDeadEvent">The event data for all players dead.</param>
-    private void OnAllPlayersDead(AllPlayersDeadEvent _allPlayersDeadEvent)
+    private void OnAllPlayersDead(BothPlayersDeadEvent _allPlayersDeadEvent)
     {
+        Debug.Log("All players dead, game lost.");
         CurrentState = GameState.Lost;
         EventBus<GameLoseEvent>.Publish(new GameLoseEvent());
     }
@@ -106,11 +109,17 @@ public class GameStateManager : MonoBehaviour
     {
         if (_levelEnteredEvent.LevelNumber == 0)
         {
-            CurrentState = GameState.MainMenu;
+            Debug.LogError("Level number is 0, setting game state to MainMenu.");
         }
         else
         {
             CurrentState = GameState.Pregame;
         }
+        Debug.Log($"Level {_levelEnteredEvent.LevelNumber} entered, setting game state to {CurrentState}.   ");
+    }
+
+    private void OnMainMenuEntered(MainMenuEnterEvent _mainMenuEnterEvent)
+    {
+        CurrentState = GameState.MainMenu;
     }
 }

@@ -3,7 +3,7 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class ScoreManager : MonoBehaviour
 {
-    private ProfileManager profileManager;   
+    private PlayerProfileManager playerProfileManager;
 
 
     private void OnEnable()
@@ -20,7 +20,7 @@ public class ScoreManager : MonoBehaviour
 
     private void Start()
     {
-        profileManager = ProfileManager.Instance;
+        playerProfileManager = PlayerProfileManager.Instance;
     }
 
     private void OnPlayerScored(PlayerScoredEvent _playerScoredEvent)
@@ -37,27 +37,15 @@ public class ScoreManager : MonoBehaviour
     /// Changes the score of the specified player by the given amount. If the resulting score is less than 0, it will be set to 0. 
     /// After changing the score, a ScoreChangedEvent is published to notify other systems of the change.
     /// </summary>
-    /// <param name="_player">The player whose score is to be changed.</param>
+    /// <param name="_playerIndex">The player whose score is to be changed.</param>
     /// <param name="_score">The amount by which to change the player's score.</param>
-    private void ChangePlayerScore(int _player, int _score)
+    private void ChangePlayerScore(int _playerIndex, int _score)
     {
-        if (_player == 1)
-        {
-            profileManager.Player1.Score += _score;
-            if (profileManager.Player1.Score < 0)
+        playerProfileManager.PlayerProfiles[_playerIndex].Score += _score;
+            if (playerProfileManager.PlayerProfiles[_playerIndex].Score < 0)
             {
-                profileManager.Player1.Score = 0;
+            playerProfileManager.PlayerProfiles[_playerIndex].Score = 0;
             }
-            EventBus<ScoreChangedEvent>.Publish(new ScoreChangedEvent(1, profileManager.Player1.Score));
-        }
-        else if (_player == 2)
-        {
-            profileManager.Player2.Score += _score;
-            if (profileManager.Player2.Score < 0)
-            {
-                profileManager.Player2.Score = 0;
-            }
-            EventBus<ScoreChangedEvent>.Publish(new ScoreChangedEvent(2, profileManager.Player2.Score));
-        }
+            EventBus<ScoreChangedEvent>.Publish(new ScoreChangedEvent(_playerIndex, playerProfileManager.PlayerProfiles[_playerIndex].Score));
     }
 }

@@ -12,12 +12,12 @@ public class ObstacleCollision : MonoBehaviour
         {
             if (_collision.gameObject.tag == "Player1")
             {
-                EventBus<PlayerHitEvent>.Publish(new PlayerHitEvent(1, damage, scoreLoss));
+                EventBus<PlayerHitEvent>.Publish(new PlayerHitEvent(0, damage, scoreLoss));
             }
 
             if (_collision.gameObject.tag == "Player2")
             {
-                EventBus<PlayerHitEvent>.Publish(new PlayerHitEvent(2, damage, scoreLoss));
+                EventBus<PlayerHitEvent>.Publish(new PlayerHitEvent(1, damage, scoreLoss));
             }
                 Destroy(gameObject);
             

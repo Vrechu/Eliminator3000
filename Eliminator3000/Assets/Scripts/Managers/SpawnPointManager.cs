@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// DEPRECATED: This class is no longer used. Use SpawnPlayer instead.
+/// </summary>
 public class SpawnPointManager : MonoBehaviour
 {
     public static SpawnPointManager Instance { get; private set; }

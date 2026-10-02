@@ -224,7 +224,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7d5466f0f1105243965e0d5cb97c50e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SetGunType
-  playerID: 1
+  playerID: -1
   gunModels:
   - {fileID: 2038160204921866548}
   - {fileID: 6827704096844093803}

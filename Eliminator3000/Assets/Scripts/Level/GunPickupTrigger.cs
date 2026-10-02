@@ -10,11 +10,11 @@ public class GunPickupTrigger : MonoBehaviour
         {
             if (_other.CompareTag("Player1"))
             {
-                EventBus<PlayerGunPickupEvent>.Publish(new PlayerGunPickupEvent(1, gunIndex));
+                EventBus<PlayerGunPickupEvent>.Publish(new PlayerGunPickupEvent(0, gunIndex));
             }
             else if (_other.CompareTag("Player2"))
             {
-                EventBus<PlayerGunPickupEvent>.Publish(new PlayerGunPickupEvent(2, gunIndex));
+                EventBus<PlayerGunPickupEvent>.Publish(new PlayerGunPickupEvent(1, gunIndex));
             }
             Destroy(gameObject);
         }

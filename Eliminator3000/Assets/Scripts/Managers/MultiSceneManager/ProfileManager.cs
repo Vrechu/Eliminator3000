@@ -2,7 +2,9 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using static UnityEditor.Experimental.GraphView.GraphView;
-
+/// <summary>
+/// DEPRECATED: This class is no longer used. Use PlayerProfileManager instead.
+/// </summary>
 public class ProfileManager : MonoBehaviour
 {
     public static ProfileManager Instance { get; private set; }
@@ -174,7 +176,7 @@ public class ProfileManager : MonoBehaviour
     private void CheckPlayersAlive()
     {
         if (player1Alive || player2Alive) return;
-        EventBus<AllPlayersDeadEvent>.Publish(new AllPlayersDeadEvent());
+        EventBus<BothPlayersDeadEvent>.Publish(new BothPlayersDeadEvent());
     }
 
     /// <summary>

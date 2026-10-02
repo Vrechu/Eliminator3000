@@ -60,7 +60,7 @@ public class PlayerJoinedEvent : Event
     { PlayerIndex = cPlayer; }
 }
 
-public class AllPlayersDeadEvent : Event { }
+public class BothPlayersDeadEvent : Event { }
 
 public class PlayerSpawnEvent : Event
 {
@@ -77,8 +77,8 @@ public class PlayerSpawnEvent : Event
 
 #region Main menu events
 
+public class MainMenuEnterEvent : Event { }
 
-public class MainMenuStartEvent : Event { }
 
 #endregion
 
@@ -159,6 +159,15 @@ public class  LevelEnteredEvent : Event
     public LevelEnteredEvent(int cLevelNumber)
     {
         LevelNumber = cLevelNumber;
+    }
+}
+
+public class  PlayerAvatarInstantiatedEvent : Event
+{
+    public int Player;
+    public PlayerAvatarInstantiatedEvent(int cPlayer)
+    {
+        Player = cPlayer;
     }
 }
 

@@ -3,10 +3,14 @@ using UnityEngine;
 public class LevelInfo : MonoBehaviour
 {
     [SerializeField] private string levelName;
-    [SerializeField] private int levelNumber;
+    [TextArea(15, 20), SerializeField]
+    private string Info;
+    [SerializeField] private int levelIndex;
 
     private void Start()
     {
-        EventBus<LevelEnteredEvent>.Publish(new LevelEnteredEvent(levelNumber));
+        if (levelIndex < 1) EventBus<MainMenuEnterEvent>.Publish(new MainMenuEnterEvent()); 
+        else EventBus<LevelEnteredEvent>.Publish(new LevelEnteredEvent(levelIndex));
+        Debug.Log($"LevelInfo: {levelName} - {levelIndex}");
     }
 }

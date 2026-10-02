@@ -13,11 +13,11 @@ public class ScorePickupTrigger : MonoBehaviour
         {
             if (_other.CompareTag("Player1"))
             {
-                EventBus<PlayerScoredEvent>.Publish(new PlayerScoredEvent(1, scoreValue));
+                EventBus<PlayerScoredEvent>.Publish(new PlayerScoredEvent(0, scoreValue));
             }
             else if (_other.CompareTag("Player2"))
             {
-                EventBus<PlayerScoredEvent>.Publish(new PlayerScoredEvent(2, scoreValue));
+                EventBus<PlayerScoredEvent>.Publish(new PlayerScoredEvent(1, scoreValue));
             }
             Destroy(gameObject);
         }
