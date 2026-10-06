@@ -1,7 +1,9 @@
+using System.Globalization;
 using UnityEngine;
 
 public class MainMenuManager : MonoBehaviour
 {
+    [SerializeField] private string firstSceneName = "SampleScene";
     [SerializeField] private GameObject p1JoinedUI, p2JoinedUI;
 
     private void Awake()
@@ -21,7 +23,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void OnStartButtonPressed()
     {
-        EventBus<LoadSceneEvent>.Publish(new LoadSceneEvent("SampleScene"));
+        EventBus<LoadSceneEvent>.Publish(new LoadSceneEvent(firstSceneName));
     }
 
     private void OnPlayerJoined(PlayerJoinedEvent _playerJoinedEvent)
