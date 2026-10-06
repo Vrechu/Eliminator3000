@@ -21,19 +21,44 @@ public class Shoot : MonoBehaviour
     public void GetShootInput(InputAction.CallbackContext _context)
     {
         if (gameStateManager == null) return;
-        if (gameStateManager.CurrentState 
+        if (gameStateManager.CurrentState
             != GameStateManager.GameState.Ingame) return;
         if (!_context.performed) return;
         if (!setGunType.canShoot) return;
         ShootProjectile();
-    }    
-    
+    }
+
     /// <summary>
     /// Instantiates the projectile prefab at the player's position and resets the shoot timer.
     /// </summary>
     private void ShootProjectile()
-    { 
-        Instantiate(setGunType.GetCurrentGunProfile().ProjectilePrefab, transform.position, Quaternion.Euler(90f, 0f, 0f));
+    {
+        if (!setGunType.GetCurrentGunProfile().Cluster) ShootSingle();
+        else ShootCluster();
         setGunType.ResetShootTimer();
+    }
+
+    private void ShootSingle()
+    {
+        Instantiate(setGunType.GetCurrentGunProfile().ProjectilePrefab, transform.position, Quaternion.Euler(90f, 0f, 0f));
+    }
+
+    private void ShootCluster()
+    {
+        float height = setGunType.GetCurrentGunProfile().Angle * setGunType.GetCurrentGunProfile().Rows;
+        float width = setGunType.GetCurrentGunProfile().Angle * setGunType.GetCurrentGunProfile().Columns;
+
+        for (int i = 0; i < setGunType.GetCurrentGunProfile().Rows; i++)
+        {
+            for (int j = 0; j < setGunType.GetCurrentGunProfile().Columns; j++)
+            {
+
+                Instantiate(setGunType.GetCurrentGunProfile().ProjectilePrefab, transform.position,
+                            Quaternion.Euler(
+                                90f - height / 2 + setGunType.GetCurrentGunProfile().Angle * i,
+                                0f,
+                               0f - width / 2 + setGunType.GetCurrentGunProfile().Angle * j));
+            }
+        }
     }
 }

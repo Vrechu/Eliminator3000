@@ -230,7 +230,7 @@ MonoBehaviour:
   - {fileID: 6827704096844093803}
   guns:
   - {fileID: 11400000, guid: af7ec424b44eadc40838dce1debeb5bd, type: 2}
-  - {fileID: 11400000, guid: 30b95af0b013bb04c8257a1e12103433, type: 2}
+  - {fileID: 11400000, guid: 2a7a8ac1b733b714087cbd1dc6aa2704, type: 2}
 --- !u!114 &6548040488092596121
 MonoBehaviour:
   m_ObjectHideFlags: 0

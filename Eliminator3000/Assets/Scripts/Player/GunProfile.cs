@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -11,5 +12,9 @@ public class GunProfile : ScriptableObject
 
     public bool Unlocked;
     public GameObject ProjectilePrefab;
-    public float fireRate;
+    public float FireRate;
+    public bool Cluster;
+    public float Angle;
+    public int Rows;
+    public int Columns;
 }

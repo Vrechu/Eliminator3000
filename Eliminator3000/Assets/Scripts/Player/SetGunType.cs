@@ -154,7 +154,7 @@ public class SetGunType : MonoBehaviour
 
     public void ResetShootTimer()
     {
-        shootTimer.Reset(guns[currentGunIndex].fireRate);
+        shootTimer.Reset(guns[currentGunIndex].FireRate);
     }
 
     private void SwapGun()

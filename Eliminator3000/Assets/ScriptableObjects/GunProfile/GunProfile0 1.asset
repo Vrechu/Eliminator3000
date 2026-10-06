@@ -15,4 +15,8 @@ MonoBehaviour:
   Info: 
   Unlocked: 1
   ProjectilePrefab: {fileID: 3398698198055584001, guid: 1c3f584033474704e8d08ebdbd6ec81a, type: 3}
-  fireRate: 0.4
+  FireRate: 0.4
+  Cluster: 0
+  Angle: 0
+  Rows: 0
+  Columns: 0

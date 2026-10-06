@@ -10,6 +10,7 @@ public class EnemyWave : ScriptableObject
     public int SpawnPointIndex;
     public GameObject[] EnemyPrefabs;
     public float[] TimesBetweenSpawns;
+    public float EnemySpeed;
     public int[] WaypointOrder;
     public int EndPointIndex;
 }

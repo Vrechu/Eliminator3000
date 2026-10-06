@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3d9dcd2ed0c5edd498e3a9c4ff3ae75c, type: 3}
-  m_Name: GunProfile0
+  m_Name: ClusterGun
   m_EditorClassIdentifier: Assembly-CSharp::GunProfile
   Info: 
-  Unlocked: 1
+  Unlocked: 0
   ProjectilePrefab: {fileID: 3398698198055584001, guid: c91bf16120e6f234ea107d3ceb1f51de, type: 3}
-  FireRate: 0.2
-  Cluster: 0
-  Angle: 0
-  Rows: 0
-  Columns: 0
+  FireRate: 0.5
+  Cluster: 1
+  Angle: 3.5
+  Rows: 5
+  Columns: 5
