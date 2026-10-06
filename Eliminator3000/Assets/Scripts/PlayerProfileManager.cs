@@ -60,7 +60,7 @@ public class PlayerProfileManager : MonoBehaviour
     }
 
 
-    private void ResetProfiles()
+    public void ResetProfiles()
     {
         for (int i = 0; i < PlayerProfiles.Length; i++)
         {
