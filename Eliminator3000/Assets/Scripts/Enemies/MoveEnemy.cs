@@ -55,4 +55,9 @@ public class MoveEnemy : MonoBehaviour
             return EndPoint.position; // Move to the end point if no more waypoints
         }
     }
+
+    public void SetSpeed(float _newSpeed)
+    {
+        speed = _newSpeed;
+    }
 }

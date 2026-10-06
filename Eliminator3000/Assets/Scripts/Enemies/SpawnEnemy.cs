@@ -103,6 +103,7 @@ public class SpawnEnemy : MonoBehaviour
             moveEnemy.Waypoints = waypoints;
             moveEnemy.WaypointOrder = CurrentWave().WaypointOrder;
             moveEnemy.EndPoint = endPoints[CurrentWave().EndPointIndex];
+            moveEnemy.SetSpeed(CurrentWave().EnemySpeed);
             Instantiate(enemy, spawnPoints[CurrentWave().SpawnPointIndex].position, Quaternion.identity);
         }
         else
