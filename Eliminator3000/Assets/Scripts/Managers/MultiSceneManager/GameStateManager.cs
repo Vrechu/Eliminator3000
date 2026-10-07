@@ -66,6 +66,7 @@ public class GameStateManager : MonoBehaviour
         if (!Keyboard.current.enterKey.wasPressedThisFrame) return;
 
         if (!playerProfileManager.BothPlayersAlive()) return;
+        if (!playerProfileManager.PlayersJoined[0]) return;
 
         if (CurrentState == GameState.Pregame
         || CurrentState == GameState.Paused)
@@ -86,7 +87,6 @@ public class GameStateManager : MonoBehaviour
     /// <param name="_allPlayersDeadEvent">The event data for all players dead.</param>
     private void OnAllPlayersDead(BothPlayersDeadEvent _allPlayersDeadEvent)
     {
-        Debug.Log("All players dead, game lost.");
         CurrentState = GameState.Lost;
         EventBus<GameLoseEvent>.Publish(new GameLoseEvent());
     }
