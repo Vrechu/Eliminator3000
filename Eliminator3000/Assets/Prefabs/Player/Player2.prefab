@@ -30,7 +30,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5107522450115076944, guid: 5dc7f4f5ff2bf8048af11888999a2531, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6548040488092596121, guid: 5dc7f4f5ff2bf8048af11888999a2531, type: 3}
       propertyPath: Player
@@ -50,7 +50,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7333223874390168298, guid: 5dc7f4f5ff2bf8048af11888999a2531, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7333223874390168298, guid: 5dc7f4f5ff2bf8048af11888999a2531, type: 3}
       propertyPath: m_TagString

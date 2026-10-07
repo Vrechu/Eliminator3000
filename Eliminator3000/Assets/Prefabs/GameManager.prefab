@@ -145,4 +145,4 @@ MonoBehaviour:
   playerPrefabs:
   - {fileID: 5648227213499969200, guid: fa1ca7d95c2ae384791df14654003c81, type: 3}
   - {fileID: 646614995034292941, guid: 2daf2ce73200d254d8f82e846880ec90, type: 3}
-  playersJoined: 0000
+  PlayersJoined: 0000
