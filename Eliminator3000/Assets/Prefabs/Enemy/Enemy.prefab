@@ -163,6 +163,8 @@ MonoBehaviour:
   targetLayers:
     serializedVersion: 2
     m_Bits: 16448
+  damage: 33
+  scoreLoss: 30
 --- !u!54 &5466366148492343946
 Rigidbody:
   m_ObjectHideFlags: 0

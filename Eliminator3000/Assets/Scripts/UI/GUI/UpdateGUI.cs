@@ -7,6 +7,7 @@ public class UpdateGUI : MonoBehaviour
     [SerializeField]
     private TMPro.TextMeshProUGUI
         p1LivesGUI, p2LivesGUI,
+        p1HealthGUI, p2HealthGUI,
         p1ScoreGUI, p2ScoreGUI,
         winGUI,
         loseGUI;
@@ -21,6 +22,7 @@ public class UpdateGUI : MonoBehaviour
     {
         EventBus<PlayerAvatarInstantiatedEvent>.Subscribe(EnablePlayerGUI);
         EventBus<PlayerLivesChangedEvent>.Subscribe(SetLivesGUI);
+        EventBus<PlayerHealthChangedEvent>.Subscribe(SetHealthGUI);
         EventBus<ScoreChangedEvent>.Subscribe(SetScoreGUI);
         EventBus<GameWinEvent>.Subscribe(EnableWinGUI);
         EventBus<GameLoseEvent>.Subscribe(EnableLoseGUIgame);
@@ -31,6 +33,7 @@ public class UpdateGUI : MonoBehaviour
     {
         EventBus<PlayerAvatarInstantiatedEvent>.UnSubscribe(EnablePlayerGUI);
         EventBus<PlayerLivesChangedEvent>.UnSubscribe(SetLivesGUI);
+        EventBus<PlayerHealthChangedEvent>.UnSubscribe(SetHealthGUI);
         EventBus<ScoreChangedEvent>.UnSubscribe(SetScoreGUI);
         EventBus<GameWinEvent>.UnSubscribe(EnableWinGUI);
         EventBus<GameLoseEvent>.UnSubscribe(EnableLoseGUIgame);
@@ -46,11 +49,23 @@ public class UpdateGUI : MonoBehaviour
     {
         if (_playerLivesChangedEvent.Player == 0)
         {
-            p1LivesGUI.text = _playerLivesChangedEvent.Lives.ToString();
+            p1LivesGUI.text = _playerLivesChangedEvent.NewLives.ToString();
         }
         else if (_playerLivesChangedEvent.Player == 1)
         {
-            p2LivesGUI.text = _playerLivesChangedEvent.Lives.ToString();
+            p2LivesGUI.text = _playerLivesChangedEvent.NewLives.ToString();
+        }
+    }
+
+    private void SetHealthGUI(PlayerHealthChangedEvent _playerHealthChangedEvent)
+    {
+        if (_playerHealthChangedEvent.Player == 0)
+        {
+            p1HealthGUI.text = _playerHealthChangedEvent.NewHealth.ToString();
+        }
+        else if (_playerHealthChangedEvent.Player == 1)
+        {
+            p2HealthGUI.text = _playerHealthChangedEvent.NewHealth.ToString();
         }
     }
 
@@ -72,6 +87,8 @@ public class UpdateGUI : MonoBehaviour
         if (loseGUI.enabled) loseGUI.enabled = false;
         if (p1LivesGUI.enabled) p1LivesGUI.enabled = false;
         if (p2LivesGUI.enabled) p2LivesGUI.enabled = false;
+        if (p1HealthGUI.enabled) p1HealthGUI.enabled = false;
+        if (p2HealthGUI.enabled) p2HealthGUI.enabled = false;
         if (p1ScoreGUI.enabled) p1ScoreGUI.enabled = false;
         if (p2ScoreGUI.enabled) p2ScoreGUI.enabled = false;
 
@@ -100,6 +117,7 @@ public class UpdateGUI : MonoBehaviour
         if (_playerAvatarInstantiatedEvent.Player == 0)
         {
             p1LivesGUI.enabled = true;
+            p1HealthGUI.enabled = true;
             p1ScoreGUI.enabled = true;
             p1GunGUI.SetActive(true);
             p1BaseGunGUI.SetActive(true);
@@ -107,6 +125,7 @@ public class UpdateGUI : MonoBehaviour
         else if (_playerAvatarInstantiatedEvent.Player == 1)
         {
             p2LivesGUI.enabled = true;
+            p2HealthGUI.enabled = true;
             p2ScoreGUI.enabled = true;
             p2GunGUI.SetActive(true);
             p2BaseGunGUI.SetActive(true);

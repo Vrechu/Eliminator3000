@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
@@ -24,7 +25,7 @@ public class LivesManager : MonoBehaviour
 
     private void OnPlayerHit(PlayerHitEvent _context)
     {
-        LoseLife(_context.Player, _context.Damage);
+        LoseHealth(_context.Player, _context.Damage);
     }
 
     /// <summary>
@@ -33,11 +34,11 @@ public class LivesManager : MonoBehaviour
     /// </summary>
     /// <param name="_playerIndex">Player to lose a life</param>
     /// <param name="_amount">Amount of lives to lose</param>
-    public void LoseLife(int _playerIndex, int _amount)
+    public void LoseHealth(int _playerIndex, int _amount)
     {
-        playerProfileManager.PlayerProfiles[_playerIndex].Lives -= _amount;
-        EventBus<PlayerLivesChangedEvent>.Publish(new PlayerLivesChangedEvent(_playerIndex, playerProfileManager.PlayerProfiles[_playerIndex].Lives));
-        CheckLives(_playerIndex);
+        playerProfileManager.PlayerProfiles[_playerIndex].Health -= _amount;
+        CheckHealth(_playerIndex);
+        EventBus<PlayerHealthChangedEvent>.Publish(new PlayerHealthChangedEvent(_playerIndex, playerProfileManager.PlayerProfiles[_playerIndex].Health));
     }
 
     /// <summary>
@@ -45,18 +46,35 @@ public class LivesManager : MonoBehaviour
     /// If the player's lives are zero or less, it publishes an event to notify other systems that the player has no remaining lives.
     /// </summary>
     /// <param name="_playerIndex">Player whos lives are checked</param>
-    public void CheckLives(int _playerIndex)
+    private void CheckHealth(int _playerIndex)
+    {
+        if (playerProfileManager.PlayerProfiles[_playerIndex].Health <= 0)
+        {
+            playerProfileManager.PlayerProfiles[_playerIndex].Health = 100;
+            LoseLife(_playerIndex);
+        }
+    }
+
+    private void LoseLife(int _playerIndex, int _amount = 1)
+    {
+        playerProfileManager.PlayerProfiles[_playerIndex].Lives -= _amount;
+        CheckLives(_playerIndex);
+        EventBus<PlayerLivesChangedEvent>.Publish(new(_playerIndex, playerProfileManager.PlayerProfiles[_playerIndex].Lives));
+    }
+
+    private void CheckLives(int _playerIndex)
     {
         if (playerProfileManager.PlayerProfiles[_playerIndex].Lives <= 0)
         {
             playerProfileManager.PlayerProfiles[_playerIndex].AliveInLevel = false;
-            EventBus<PlayerLivesAtZeroEvent>.Publish(new (_playerIndex));
+            EventBus<PlayerLivesAtZeroEvent>.Publish(new(_playerIndex));
 
             CheckPlayersAlive();
         }
     }
 
-    public void CheckPlayersAlive()
+
+    private void CheckPlayersAlive()
     {
         if (playerProfileManager.BothPlayersDead())
         {

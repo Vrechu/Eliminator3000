@@ -145,3 +145,5 @@ MonoBehaviour:
   targetLayers:
     serializedVersion: 2
     m_Bits: 3136
+  damage: 33
+  scoreLoss: 20

@@ -90,14 +90,14 @@ public class LevelExitEvent : Event { }
 
 #region Player health events
 
-public class PlayerLivesChangedEvent : Event
+public class PlayerHealthChangedEvent : Event
 {
     public int Player;
-    public int Lives;
-    public PlayerLivesChangedEvent(int cPlayer, int cLives)
+    public int NewHealth;
+    public PlayerHealthChangedEvent(int cPlayer, int cNewHealth)
     {
         Player = cPlayer;
-        Lives = cLives;
+        NewHealth = cNewHealth;
     }
 }
 
@@ -111,6 +111,17 @@ public class PlayerHitEvent : Event
         Player = cPlayer;
         Damage = cDamage;
         ScoreLoss = cScoreLoss;
+    }
+}
+
+public class PlayerLivesChangedEvent : Event
+{
+    public int Player;
+    public int NewLives;
+    public PlayerLivesChangedEvent(int cPlayer, int cNewLives)
+    {
+        Player = cPlayer;
+        NewLives = cNewLives;
     }
 }
 
