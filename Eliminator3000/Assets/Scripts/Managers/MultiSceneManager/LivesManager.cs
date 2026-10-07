@@ -6,18 +6,22 @@ using UnityEngine.Events;
 public class LivesManager : MonoBehaviour
 {
     private PlayerProfileManager playerProfileManager;
+    [SerializeField] private int maxLives = 3;
+    [SerializeField] private int maxHealth = 100;
 
 
     private void OnEnable()
     {
-        EventBus<PlayerHitEvent>.Subscribe(OnPlayerHit);
         EventBus<PlayerAvatarInstantiatedEvent>.Subscribe(OnPlayerInstantiated);
+        EventBus<PlayerHitEvent>.Subscribe(OnPlayerHit);
+        EventBus<HealthPickupEvent>.Subscribe(OnHealthPickup);
     }
 
     private void OnDestroy()
     {
-        EventBus<PlayerHitEvent>.UnSubscribe(OnPlayerHit);
         EventBus<PlayerAvatarInstantiatedEvent>.UnSubscribe(OnPlayerInstantiated);
+        EventBus<PlayerHitEvent>.UnSubscribe(OnPlayerHit);
+        EventBus<HealthPickupEvent>.UnSubscribe(OnHealthPickup);
     }
 
     private void Start()
@@ -32,8 +36,8 @@ public class LivesManager : MonoBehaviour
 
     private void ResetPlayer(int _playerIndex)
     {
-        playerProfileManager.PlayerProfiles[_playerIndex].Health = 100;
-        playerProfileManager.PlayerProfiles[_playerIndex].Lives = 3;
+        playerProfileManager.PlayerProfiles[_playerIndex].Lives = maxLives;
+        playerProfileManager.PlayerProfiles[_playerIndex].Health = maxHealth;
         EventBus<PlayerHealthChangedEvent>.Publish(new PlayerHealthChangedEvent(_playerIndex, playerProfileManager.PlayerProfiles[_playerIndex].Health));
         EventBus<PlayerLivesChangedEvent>.Publish(new PlayerLivesChangedEvent(_playerIndex, playerProfileManager.PlayerProfiles[_playerIndex].Lives));
     }
@@ -56,6 +60,18 @@ public class LivesManager : MonoBehaviour
         EventBus<PlayerHealthChangedEvent>.Publish(new PlayerHealthChangedEvent(_playerIndex, playerProfileManager.PlayerProfiles[_playerIndex].Health));
     }
 
+    private void OnHealthPickup(HealthPickupEvent _healthPickupEvent)
+    {
+        GainHealth(_healthPickupEvent.Player, _healthPickupEvent.HealthAmount);
+    }
+
+    private void GainHealth(int _playerIndex, int _amount)
+    {
+        playerProfileManager.PlayerProfiles[_playerIndex].Health += _amount;
+        CheckHealth(_playerIndex);
+        EventBus<PlayerHealthChangedEvent>.Publish(new PlayerHealthChangedEvent(_playerIndex, playerProfileManager.PlayerProfiles[_playerIndex].Health));
+    }
+
     /// <summary>
     /// Checks if the specified player has any remaining lives. 
     /// If the player's lives are zero or less, it publishes an event to notify other systems that the player has no remaining lives.
@@ -65,8 +81,12 @@ public class LivesManager : MonoBehaviour
     {
         if (playerProfileManager.PlayerProfiles[_playerIndex].Health <= 0)
         {
-            playerProfileManager.PlayerProfiles[_playerIndex].Health = 100;
+            playerProfileManager.PlayerProfiles[_playerIndex].Health = maxHealth;
             LoseLife(_playerIndex);
+        }
+        if (playerProfileManager.PlayerProfiles[_playerIndex].Health > maxHealth)
+        {
+            playerProfileManager.PlayerProfiles[_playerIndex].Health = maxHealth;
         }
     }
 

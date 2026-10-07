@@ -114,6 +114,17 @@ public class PlayerHitEvent : Event
     }
 }
 
+public class HealthPickupEvent : Event
+{
+    public int Player;
+    public int HealthAmount;
+    public HealthPickupEvent(int cPlayer, int cHealthAmount)
+    {
+        Player = cPlayer;
+        HealthAmount = cHealthAmount;
+    }
+}
+
 public class PlayerLivesChangedEvent : Event
 {
     public int Player;
