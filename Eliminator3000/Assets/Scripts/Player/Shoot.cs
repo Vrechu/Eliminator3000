@@ -20,6 +20,8 @@ public class Shoot : MonoBehaviour
 
     private void Update()
     {
+        if (gameStateManager.CurrentState
+            != GameStateManager.GameState.Ingame) return;
         if (!shooting) return;
         if (!setGunType.canShoot) return;
         ShootProjectile();

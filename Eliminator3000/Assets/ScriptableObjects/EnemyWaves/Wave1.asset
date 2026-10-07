@@ -26,5 +26,6 @@ MonoBehaviour:
   - 2
   - 2
   - 2
+  EnemySpeed: 6
   WaypointOrder: 00000000030000000200000001000000
   EndPointIndex: 0
