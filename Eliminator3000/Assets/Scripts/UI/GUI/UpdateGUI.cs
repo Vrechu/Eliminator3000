@@ -14,7 +14,8 @@ public class UpdateGUI : MonoBehaviour
     private GameObject
         p1GunGUI, p2GunGUI,
         p1BaseGunGUI, p2BaseGunGUI,
-        p1BigGunGUI, p2BigGunGUI;
+        p1RapidGunGUI, p2RapidGunGUI,
+        p1ClusterGunGUI, p2ClusterGunGUI;
 
     private void OnEnable()
     {
@@ -23,7 +24,7 @@ public class UpdateGUI : MonoBehaviour
         EventBus<ScoreChangedEvent>.Subscribe(SetScoreGUI);
         EventBus<GameWinEvent>.Subscribe(EnableWinGUI);
         EventBus<GameLoseEvent>.Subscribe(EnableLoseGUIgame);
-        EventBus<PlayerGunSwapEvent>.Subscribe(EnableBigGun);
+        EventBus<PlayerGunSwapEvent>.Subscribe(SwitchGunGUI);
     }
 
     private void OnDestroy()
@@ -33,7 +34,7 @@ public class UpdateGUI : MonoBehaviour
         EventBus<ScoreChangedEvent>.UnSubscribe(SetScoreGUI);
         EventBus<GameWinEvent>.UnSubscribe(EnableWinGUI);
         EventBus<GameLoseEvent>.UnSubscribe(EnableLoseGUIgame);
-        EventBus<PlayerGunSwapEvent>.UnSubscribe(EnableBigGun);
+        EventBus<PlayerGunSwapEvent>.UnSubscribe(SwitchGunGUI);
     }
 
     private void Start()
@@ -78,8 +79,10 @@ public class UpdateGUI : MonoBehaviour
         if (p2GunGUI.activeSelf) p2GunGUI.SetActive(false);
         if (p1BaseGunGUI.activeSelf) p1BaseGunGUI.SetActive(false);
         if (p2BaseGunGUI.activeSelf) p2BaseGunGUI.SetActive(false);
-        if (p1BigGunGUI.activeSelf) p1BigGunGUI.SetActive(false);
-        if (p2BigGunGUI.activeSelf) p2BigGunGUI.SetActive(false);
+        if (p1RapidGunGUI.activeSelf) p1RapidGunGUI.SetActive(false);
+        if (p2RapidGunGUI.activeSelf) p2RapidGunGUI.SetActive(false);
+        if (p1ClusterGunGUI.activeSelf) p1ClusterGunGUI.SetActive(false);
+        if (p2ClusterGunGUI.activeSelf) p2ClusterGunGUI.SetActive(false);
     }
 
     private void EnableWinGUI(GameWinEvent _winEvent)
@@ -110,7 +113,7 @@ public class UpdateGUI : MonoBehaviour
         }
     }
 
-    private void EnableBigGun(PlayerGunSwapEvent playerGunSwapEvent)
+    private void SwitchGunGUI(PlayerGunSwapEvent playerGunSwapEvent)
     {
         if (playerGunSwapEvent.Player == 0)
         {
@@ -118,11 +121,19 @@ public class UpdateGUI : MonoBehaviour
             {
                 case 0:
                     p1BaseGunGUI.SetActive(true);
-                    p1BigGunGUI.SetActive(false);
+                    p1RapidGunGUI.SetActive(false);
+                    p1ClusterGunGUI.SetActive(false);
+
                     break;
                 case 1:
                     p1BaseGunGUI.SetActive(false);
-                    p1BigGunGUI.SetActive(true);
+                    p1RapidGunGUI.SetActive(true);
+                    p1ClusterGunGUI.SetActive(false);
+                    break;
+                case 2:
+                    p1BaseGunGUI.SetActive(false);
+                    p1RapidGunGUI.SetActive(false);
+                    p1ClusterGunGUI.SetActive(true);
                     break;
             }
 
@@ -133,13 +144,20 @@ public class UpdateGUI : MonoBehaviour
             {
                 case 0:
                     p2BaseGunGUI.SetActive(true);
-                    p2BigGunGUI.SetActive(false);
+                    p2RapidGunGUI.SetActive(false);
+                    p2ClusterGunGUI.SetActive(false);
                     break;
                 case 1:
                     p2BaseGunGUI.SetActive(false);
-                    p2BigGunGUI.SetActive(true);
+                    p2RapidGunGUI.SetActive(true);
+                    p2ClusterGunGUI.SetActive(false);
+                    break;
+                case 2:
+                    p2BaseGunGUI.SetActive(false);
+                    p2RapidGunGUI.SetActive(false);
+                    p2ClusterGunGUI.SetActive(true);
                     break;
             }
-        }   
+        }
     }
 }

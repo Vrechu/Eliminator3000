@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3795022890452737512}
   - component: {fileID: 6972901099954458668}
   m_Layer: 11
-  m_Name: GunPickup
+  m_Name: ClusterGunPickup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -128,4 +128,4 @@ MonoBehaviour:
   targetLayers:
     serializedVersion: 2
     m_Bits: 16448
-  gunIndex: 1
+  gunIndex: 2

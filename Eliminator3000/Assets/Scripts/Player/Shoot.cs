@@ -1,17 +1,28 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.XR;
+using UnityEngine.InputSystem.Interactions
+;
 
 public class Shoot : MonoBehaviour
 {
     private GameStateManager gameStateManager;
     private SetGunType setGunType;
 
+    [SerializeField] private InputActionReference shootInputActionReference;
+    private bool shooting = false;
 
     private void Start()
     {
         gameStateManager = GameStateManager.Instance;
         setGunType = GetComponent<SetGunType>();
+    }
+
+    private void Update()
+    {
+        if (!shooting) return;
+        if (!setGunType.canShoot) return;
+        ShootProjectile();
     }
 
     /// <summary>
@@ -23,9 +34,8 @@ public class Shoot : MonoBehaviour
         if (gameStateManager == null) return;
         if (gameStateManager.CurrentState
             != GameStateManager.GameState.Ingame) return;
-        if (!_context.performed) return;
-        if (!setGunType.canShoot) return;
-        ShootProjectile();
+        if (_context.started) shooting = true;
+        if (_context.canceled) shooting = false;
     }
 
     /// <summary>
