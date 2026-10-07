@@ -175,10 +175,10 @@ public class  LevelEnteredEvent : Event
 
 public class  PlayerAvatarInstantiatedEvent : Event
 {
-    public int Player;
+    public int PlayerIndex;
     public PlayerAvatarInstantiatedEvent(int cPlayer)
     {
-        Player = cPlayer;
+        PlayerIndex = cPlayer;
     }
 }
 

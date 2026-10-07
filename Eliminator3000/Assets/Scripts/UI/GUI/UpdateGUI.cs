@@ -114,7 +114,7 @@ public class UpdateGUI : MonoBehaviour
 
     private void EnablePlayerGUI(PlayerAvatarInstantiatedEvent _playerAvatarInstantiatedEvent)
     {
-        if (_playerAvatarInstantiatedEvent.Player == 0)
+        if (_playerAvatarInstantiatedEvent.PlayerIndex == 0)
         {
             p1LivesGUI.enabled = true;
             p1HealthGUI.enabled = true;
@@ -122,7 +122,7 @@ public class UpdateGUI : MonoBehaviour
             p1GunGUI.SetActive(true);
             p1BaseGunGUI.SetActive(true);
         }
-        else if (_playerAvatarInstantiatedEvent.Player == 1)
+        else if (_playerAvatarInstantiatedEvent.PlayerIndex == 1)
         {
             p2LivesGUI.enabled = true;
             p2HealthGUI.enabled = true;

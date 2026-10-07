@@ -11,16 +11,31 @@ public class LivesManager : MonoBehaviour
     private void OnEnable()
     {
         EventBus<PlayerHitEvent>.Subscribe(OnPlayerHit);
+        EventBus<PlayerAvatarInstantiatedEvent>.Subscribe(OnPlayerInstantiated);
     }
 
     private void OnDestroy()
     {
         EventBus<PlayerHitEvent>.UnSubscribe(OnPlayerHit);
+        EventBus<PlayerAvatarInstantiatedEvent>.UnSubscribe(OnPlayerInstantiated);
     }
 
     private void Start()
     {
         playerProfileManager = PlayerProfileManager.Instance;
+    }
+
+    private void OnPlayerInstantiated(PlayerAvatarInstantiatedEvent _playerAvatarInstantiatedEvent)
+    {
+        ResetPlayer(_playerAvatarInstantiatedEvent.PlayerIndex);
+    }
+
+    private void ResetPlayer(int _playerIndex)
+    {
+        playerProfileManager.PlayerProfiles[_playerIndex].Health = 100;
+        playerProfileManager.PlayerProfiles[_playerIndex].Lives = 3;
+        EventBus<PlayerHealthChangedEvent>.Publish(new PlayerHealthChangedEvent(_playerIndex, playerProfileManager.PlayerProfiles[_playerIndex].Health));
+        EventBus<PlayerLivesChangedEvent>.Publish(new PlayerLivesChangedEvent(_playerIndex, playerProfileManager.PlayerProfiles[_playerIndex].Lives));
     }
 
     private void OnPlayerHit(PlayerHitEvent _context)
