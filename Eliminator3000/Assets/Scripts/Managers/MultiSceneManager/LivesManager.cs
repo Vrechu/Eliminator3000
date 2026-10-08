@@ -44,6 +44,7 @@ public class LivesManager : MonoBehaviour
 
     private void OnPlayerHit(PlayerHitEvent _context)
     {
+        if (CheckShielded(_context.Player)) return;
         LoseHealth(_context.Player, _context.Damage);
     }
 
@@ -108,12 +109,20 @@ public class LivesManager : MonoBehaviour
         }
     }
 
-
     private void CheckPlayersAlive()
     {
         if (playerProfileManager.BothPlayersDead())
         {
             EventBus<BothPlayersDeadEvent>.Publish(new BothPlayersDeadEvent());
         }
+    }
+
+    private bool CheckShielded(int _playerIndex)
+    {
+        if (playerProfileManager.PlayerProfiles[_playerIndex].Shield < 1) return false;
+        playerProfileManager.PlayerProfiles[_playerIndex].Shield--;
+        if (playerProfileManager.PlayerProfiles[_playerIndex].Shield < 1)
+            EventBus<PlayerShieldDropEvent>.Publish(new PlayerShieldDropEvent(_playerIndex));
+        return true;
     }
 }

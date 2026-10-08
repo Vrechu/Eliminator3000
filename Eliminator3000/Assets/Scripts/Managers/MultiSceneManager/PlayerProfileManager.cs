@@ -27,11 +27,13 @@ public class PlayerProfileManager : MonoBehaviour
     private void OnEnable()
     {
         EventBus<MainMenuEnterEvent>.Subscribe(OnGameBoot);
+        EventBus<PlayerShieldPickupEvent>.Subscribe(OnShieldPickup);
     }
 
     private void OnDestroy()
     {
         EventBus<MainMenuEnterEvent>.UnSubscribe(OnGameBoot);
+        EventBus<PlayerShieldPickupEvent>.UnSubscribe(OnShieldPickup);
     }
 
     private void Start()
@@ -111,5 +113,15 @@ public class PlayerProfileManager : MonoBehaviour
             if (PlayerProfiles[i].AliveInLevel) return false;
         }
         return true;
+    }
+
+    private void OnShieldPickup(PlayerShieldPickupEvent _playerShieldPickupEvent)
+    {
+        GainShield(_playerShieldPickupEvent.Player, _playerShieldPickupEvent.ShieldAmount);
+    }
+
+    private void GainShield(int _playerIndex, int _amount)
+    {
+        PlayerProfiles[_playerIndex].Shield += _amount;
     }
 }
