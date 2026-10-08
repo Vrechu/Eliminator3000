@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class SpawnEnemy : MonoBehaviour
 {
+    [SerializeField] private EnemyWave[] enemyWaves;
     [SerializeField] private Transform[] spawnPoints;
     [SerializeField] private Transform[] waypoints;
     [SerializeField] private Transform[] endPoints;
-    [SerializeField] private EnemyWave[] enemyWaves;
 
     private int currentWaveIndex = 0;
     private int currentEnemyIndex = 0;
