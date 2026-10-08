@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -128,8 +128,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c90c12a58635a54286be2670399f5b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MoveProjectile
-  speed: 30
-  lifeSeconds: 3
+  speed: 60
+  lifeSeconds: 2
 --- !u!114 &8355136895130737295
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -142,7 +142,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 613736fbc23852b46ad903ac5f828513, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerProjectileHit
-  PlayerID: 1
+  PlayerID: 0
   targetLayers:
     serializedVersion: 2
     m_Bits: 2304
