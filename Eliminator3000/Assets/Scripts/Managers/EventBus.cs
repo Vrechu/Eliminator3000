@@ -206,7 +206,7 @@ public class EnemySpawnTriggeredEvent : Event
 
 #endregion
 
-#region Player combat events
+#region Player pickup events
 
 public class PlayerGunPickupEvent : Event
 {
@@ -227,6 +227,26 @@ public class PlayerGunSwapEvent : Event
     {
         Player = cPlayer;
         GunIndex = cGunIndex;
+    }
+}
+
+public class PlayerShieldPickupEvent : Event
+{
+    public int Player;
+    public int ShieldAmount;
+    public PlayerShieldPickupEvent(int cPlayer, int cShieldAmount)
+    {
+        Player = cPlayer;
+        ShieldAmount = cShieldAmount;
+    }
+}
+
+public class PlayerShieldDropEvent : Event
+{
+    public int Player;
+    public PlayerShieldDropEvent(int cPlayer)
+    {
+        Player = cPlayer;
     }
 }
 
