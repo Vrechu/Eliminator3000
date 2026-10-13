@@ -13,12 +13,14 @@ GameObject:
   - component: {fileID: 3366768005955493179}
   - component: {fileID: 1556448168896425009}
   - component: {fileID: 7649430092913139473}
+  - component: {fileID: 6747074732344875239}
   - component: {fileID: 2158181575188216181}
   - component: {fileID: 7019095551105211704}
   - component: {fileID: 6548040488092596121}
   - component: {fileID: -2375540107422204807}
+  - component: {fileID: 5407184496350687769}
   m_Layer: 6
-  m_Name: Player
+  m_Name: Player_parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -195,11 +197,41 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 08e869c1-1306-4500-ac0d-0919b80341ca
     m_ActionName: 'Gameplay/Swap[/Keyboard/leftCtrl,/Keyboard/rightAlt]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5407184496350687769}
+        m_TargetAssemblyTypeName: UseDummy, Assembly-CSharp
+        m_MethodName: GetDummyInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: be7619bf-e29c-4a7a-8c83-fc9fca83176b
+    m_ActionName: 'Gameplay/UsePickup[/Keyboard/q,/Keyboard/rightShift]'
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: 
   m_DefaultActionMap: Gameplay
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &6747074732344875239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 977800845787270904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09c77416d23bc2b40a2f8b2263ef1041, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InGameAvatarInfo
+  Info: 
+  PlayerID: -1
 --- !u!114 &2158181575188216181
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -228,7 +260,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7d5466f0f1105243965e0d5cb97c50e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SetGunType
-  playerID: -1
   gunModels:
   - {fileID: 2038160204921866548}
   - {fileID: 5107522450115076944}
@@ -263,7 +294,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SetShieldModel
   shieldModel: {fileID: 4147124535410435050}
-  playerIndex: -1
+--- !u!114 &5407184496350687769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 977800845787270904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5474dff1a507534449782db54fb16fe3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UseDummy
+  dummyPrefab: {fileID: 1570547598467343979, guid: 62e0f6c2f5e9beb48a8023e7f251e63a, type: 3}
 --- !u!1 &2038160204921866548
 GameObject:
   m_ObjectHideFlags: 0
