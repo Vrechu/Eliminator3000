@@ -52,7 +52,7 @@ public class Shoot : MonoBehaviour
 
     private void ShootSingle()
     {
-        Instantiate(setGunType.GetCurrentGunProfile().ProjectilePrefab, transform.position, Quaternion.Euler(0f, 0f, 0f));
+        Instantiate(setGunType.GetCurrentGunProfile().ProjectilePrefab, transform.position, Quaternion.identity);
     }
 
     private void ShootCluster()
