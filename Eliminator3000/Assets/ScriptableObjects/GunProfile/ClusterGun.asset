@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GunProfile
   Info: 
   Unlocked: 0
-  ProjectilePrefab: {fileID: 3398698198055584001, guid: c91bf16120e6f234ea107d3ceb1f51de, type: 3}
+  ProjectilePrefab: {fileID: 2946831950281905418, guid: d05272a0ed26efd4784b8878e6b1e2c8, type: 3}
   FireRate: 0.5
   Cluster: 1
   Angle: 3.5
