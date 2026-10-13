@@ -28,12 +28,14 @@ public class PlayerProfileManager : MonoBehaviour
     {
         EventBus<MainMenuEnterEvent>.Subscribe(OnGameBoot);
         EventBus<PlayerShieldPickupEvent>.Subscribe(OnShieldPickup);
+        EventBus<PlayerDummyPickupEvent>.Subscribe(OnDummyPickup);
     }
 
     private void OnDestroy()
     {
         EventBus<MainMenuEnterEvent>.UnSubscribe(OnGameBoot);
         EventBus<PlayerShieldPickupEvent>.UnSubscribe(OnShieldPickup);
+        EventBus<PlayerDummyPickupEvent>.UnSubscribe(OnDummyPickup);
     }
 
     private void Start()
@@ -123,5 +125,14 @@ public class PlayerProfileManager : MonoBehaviour
     private void GainShield(int _playerIndex, int _amount)
     {
         PlayerProfiles[_playerIndex].Shield += _amount;
+    }
+
+    private void OnDummyPickup(PlayerDummyPickupEvent _playerDummyPickupEvent)
+    {
+        GainDummy(_playerDummyPickupEvent.Player);
+    }
+    private void GainDummy(int _playerIndex)
+    {
+        PlayerProfiles[_playerIndex].Dummy = true;
     }
 }
