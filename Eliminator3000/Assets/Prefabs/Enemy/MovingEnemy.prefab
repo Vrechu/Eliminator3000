@@ -165,7 +165,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 614d143dd2954f24880bb90b50351d60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyShoot
-  projectilePrefab: {fileID: 3398698198055584001, guid: 57c4561162f2a9f41a5947cb8b5f4b69, type: 3}
+  projectilePrefab: {fileID: 4603973788345293308, guid: 0b47b98ede419214dbe5631d4d588960, type: 3}
+  aimAtPlayer: 1
   shootInterval: 1
   multiShot: 0
   shotOrigins: []

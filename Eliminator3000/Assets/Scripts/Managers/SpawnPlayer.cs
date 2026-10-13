@@ -54,6 +54,7 @@ public class SpawnPlayer : MonoBehaviour
 
         avatarsIngame[_playerIndex] = true;
         playerAvatars[_playerIndex] = player.gameObject;
+        playerProfileManager.PlayerProfiles[_playerIndex].IngameAvatar = player.gameObject;
         playerProfileManager.PlayerProfiles[_playerIndex].AliveInLevel = true;
         player.transform.position = spawnPoints[_playerIndex].position;
         EventBus<PlayerAvatarInstantiatedEvent>.Publish(new PlayerAvatarInstantiatedEvent(_playerIndex));

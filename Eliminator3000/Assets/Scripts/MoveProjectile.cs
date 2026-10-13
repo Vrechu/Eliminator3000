@@ -17,7 +17,7 @@ public class MoveProjectile : MonoBehaviour
     {
         if (GameStateManager.Instance.CurrentState 
             != GameStateManager.GameState.Ingame)  return;
-        transform.Translate(Vector3.up * speed * Time.deltaTime);
+        transform.Translate(Vector3.forward * speed * Time.deltaTime);
         CountdownTillDelete();
     }
 
