@@ -3,7 +3,7 @@ using UnityEngine;
 public class SetShieldModel : MonoBehaviour
 {
     [SerializeField]GameObject shieldModel;
-    [SerializeField] private int playerIndex;
+    private int playerID;
 
     private void OnEnable()
     {
@@ -19,13 +19,23 @@ public class SetShieldModel : MonoBehaviour
 
     private void Start()
     {
+        SetPlayerID();
         shieldModel.SetActive(false);
+    }
+    private void SetPlayerID()
+    {
+        if (TryGetComponent<InGameAvatarInfo>(out InGameAvatarInfo _info))
+        {
+            playerID = _info.PlayerID;
+            if (playerID < 0 || playerID > 1) Debug.LogError("Invalid PLayerID set on: " + gameObject.name);
+        }
+        else Debug.LogError("No InGameAvatarInfo component found. Every Playerprefab should have one!");
     }
 
 
     private void OnShieldPickup(PlayerShieldPickupEvent _playerShieldPickup)
     {
-        if (_playerShieldPickup.Player == playerIndex)
+        if (_playerShieldPickup.Player == playerID)
         {
             EnableShield();
         }
@@ -33,7 +43,7 @@ public class SetShieldModel : MonoBehaviour
 
     private void OnShieldDrop(PlayerShieldDropEvent _playerShieldDrop)
     {
-        if (_playerShieldDrop.Player == playerIndex)
+        if (_playerShieldDrop.Player == playerID)
         {
             DisableShield();
         }

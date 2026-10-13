@@ -36,9 +36,17 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5407184496350687769, guid: 5dc7f4f5ff2bf8048af11888999a2531, type: 3}
+      propertyPath: dummyPrefab
+      value: 
+      objectReference: {fileID: 133854376005785244, guid: 07dd712fea24a40478e9baf64c4b1ba9, type: 3}
     - target: {fileID: 6548040488092596121, guid: 5dc7f4f5ff2bf8048af11888999a2531, type: 3}
       propertyPath: Player
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6747074732344875239, guid: 5dc7f4f5ff2bf8048af11888999a2531, type: 3}
+      propertyPath: PlayerID
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6827704096844093803, guid: 5dc7f4f5ff2bf8048af11888999a2531, type: 3}
       propertyPath: m_IsActive

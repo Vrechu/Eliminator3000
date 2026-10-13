@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 
 public class SetGunType : MonoBehaviour
 {
-    [SerializeField] private int playerID;
+    private int playerID = -1;
     [SerializeField] private GameObject[] gunModels;
     [SerializeField] private GunProfile[] guns;
     private int currentGunIndex = 0;
@@ -19,12 +19,6 @@ public class SetGunType : MonoBehaviour
 
     private void OnEnable()
     {
-        if (playerID < 0 || playerID > 1)
-        {
-            Debug.LogError("Player is not assigned in SetGunType script.");
-            return;
-        }
-
         EventBus<PlayerGunPickupEvent>.Subscribe(OnGunPickup);
     }
 
@@ -35,12 +29,24 @@ public class SetGunType : MonoBehaviour
 
     private void Start()
     {
+        SetPlayerID();
+
         gameStateManager = GameStateManager.Instance;
         DisableModels();
         gunModels[0].SetActive(true); // Activate the base gun model by default
         GunsViable();
         MarkProjectiles();
         ResetGunUnlocks();
+    }
+
+    private void SetPlayerID()
+    {
+        if (TryGetComponent<InGameAvatarInfo>(out InGameAvatarInfo _info))
+        {
+            playerID = _info.PlayerID;
+            if (playerID < 0 || playerID > 1) Debug.LogError("Invalid PLayerID set on: " + gameObject.name);
+        }
+        else Debug.LogError("No InGameAvatarInfo component found. Every Playerprefab should have one!");
     }
 
     private void Update()
