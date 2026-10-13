@@ -250,4 +250,32 @@ public class PlayerShieldDropEvent : Event
     }
 }
 
+public class PlayerDummyPickupEvent : Event 
+{
+    public int Player;
+    public PlayerDummyPickupEvent(int cPlayer)
+    {
+        Player = cPlayer;
+    }
+}
+
+public class DummySpawnEvent : Event
+{
+    public int Player;
+    public Vector3 DummyPosition;
+    public DummySpawnEvent(int cPlayer, Vector3 cDummyPosition)
+    {
+        Player = cPlayer;
+        DummyPosition = cDummyPosition;
+    }
+}
+
+public class DummyDespawnEvent : Event
+{
+    public int Player;
+    public DummyDespawnEvent(int cPlayer)
+    {
+        Player = cPlayer;
+    }
+}
 #endregion
