@@ -59,5 +59,26 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1570547598467343979, guid: 62e0f6c2f5e9beb48a8023e7f251e63a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -1463503279660628391}
   m_SourcePrefab: {fileID: 100100000, guid: 62e0f6c2f5e9beb48a8023e7f251e63a, type: 3}
+--- !u!1 &133854376005785244 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1570547598467343979, guid: 62e0f6c2f5e9beb48a8023e7f251e63a, type: 3}
+  m_PrefabInstance: {fileID: 1445725165022998775}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &-1463503279660628391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 133854376005785244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5609b26e59e33247ac48f6e0b0c1d01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DummyBehaiour
+  PlayerID: 0
