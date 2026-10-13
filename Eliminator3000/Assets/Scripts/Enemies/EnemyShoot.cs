@@ -12,11 +12,13 @@ public class EnemyShoot : MonoBehaviour
     [SerializeField] private GameObject[] shotOrigins;
 
     private PlayerProfileManager playerProfileManager;
+    private DummyManager dummyManager;
 
     private void Start()
     {
         timer = new Timer(shootInterval, true);
         playerProfileManager = PlayerProfileManager.Instance;
+        dummyManager = DummyManager.Instance;
     }
 
     /// <summary>
@@ -56,6 +58,10 @@ public class EnemyShoot : MonoBehaviour
     private Quaternion GetShotDirection()
     {
         if (!aimAtPlayer) return Quaternion.Euler(0, 180f, 0f);
+        for (int i = 0; i < dummyManager.DummiesUp.Length; i++)
+        {
+            if (dummyManager.DummiesUp[i]) return Quaternion.LookRotation(dummyManager.DummyPosition - transform.position, Vector3.up);
+        }
         return Quaternion.LookRotation(GetClosestPlayerPosition() - transform.position, Vector3.up);
     }
 
