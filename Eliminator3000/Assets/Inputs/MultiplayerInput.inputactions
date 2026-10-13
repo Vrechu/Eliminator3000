@@ -35,6 +35,16 @@
                     "interactions": "",
                     "initialStateCheck": false,
                     "priority": 0
+                },
+                {
+                    "name": "UsePickup",
+                    "type": "Button",
+                    "id": "be7619bf-e29c-4a7a-8c83-fc9fca83176b",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false,
+                    "priority": 0
                 }
             ],
             "bindings": [
@@ -211,6 +221,28 @@
                     "processors": "",
                     "groups": ";Arrows",
                     "action": "Swap",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b6aef977-5a7c-4541-96bf-079b7b5a0d45",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";WASD",
+                    "action": "UsePickup",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6ce761d8-9980-4bb3-9aa3-c63ab18b14ce",
+                    "path": "<Keyboard>/rightShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Arrows",
+                    "action": "UsePickup",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
