@@ -9,12 +9,14 @@ public class MoveEnemy : MonoBehaviour
     [SerializeField] private float speed = 2f;
 
     private int currentWaypointIndex = 0;
-    private GameStateManager gameStatemanager;
     private bool finalWaypointReached = false;
+    private GameStateManager gameStatemanager;
+    private BlackHoleManager blackHoleManager;
 
     private void Start()
     {
         gameStatemanager = GameStateManager.Instance;
+        blackHoleManager = BlackHoleManager.Instance;
     }
 
     private void Update()
@@ -30,8 +32,8 @@ public class MoveEnemy : MonoBehaviour
     private void Move()
     {
         Vector3 direction = NextWaypointPosition() - transform.position;
-                transform.position += direction.normalized * speed * Time.deltaTime;
-        if (direction.magnitude < 0.1f)
+                transform.position += direction.normalized * GetSpeed() * Time.deltaTime;
+        if (!BlackHoleActive() && direction.magnitude < 0.1f)
         {
             if (finalWaypointReached) Destroy(gameObject);
             currentWaypointIndex++;
@@ -44,7 +46,8 @@ public class MoveEnemy : MonoBehaviour
     /// </summary>
     /// <returns>The position of the next waypoint or the EndPoint if all waypoints have been reached.</returns>
     private Vector3 NextWaypointPosition()
-    {
+    {        
+        if (BlackHoleActive()) return blackHoleManager.BlackHolePosition;
         if (currentWaypointIndex < WaypointOrder.Length)
         {
             return Waypoints[WaypointOrder[currentWaypointIndex]].position;
@@ -59,5 +62,20 @@ public class MoveEnemy : MonoBehaviour
     public void SetSpeed(float _newSpeed)
     {
         speed = _newSpeed;
+    }
+
+    private float GetSpeed()
+    {
+        if (BlackHoleActive()) return blackHoleManager.BlackHoleSuckSpeed;
+        return speed;
+    }
+
+    private bool BlackHoleActive()
+    {
+        for (int i = 0; i < blackHoleManager.BlackHolesUp.Length; i++)
+        {
+            if (blackHoleManager.BlackHolesUp[i]) return true;
+        }
+        return false;
     }
 }
