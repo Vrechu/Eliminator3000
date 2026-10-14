@@ -48,8 +48,8 @@ public class UseBlackHole : MonoBehaviour
         }
         else
         {
-            Debug.LogError("No Black Hole Behaviour component found in dummy prefab!");
+            Debug.LogError("No Black Hole Behaviour component found in Black Hole prefab!");
         }
-        playerProfileManager.PlayerProfiles[playerID].Dummy = false;
+        playerProfileManager.PlayerProfiles[playerID].BlackHole = false;
     }
 }
