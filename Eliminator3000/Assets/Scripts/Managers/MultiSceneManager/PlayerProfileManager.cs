@@ -29,6 +29,7 @@ public class PlayerProfileManager : MonoBehaviour
         EventBus<MainMenuEnterEvent>.Subscribe(OnGameBoot);
         EventBus<PlayerShieldPickupEvent>.Subscribe(OnShieldPickup);
         EventBus<PlayerDummyPickupEvent>.Subscribe(OnDummyPickup);
+        EventBus<PlayerBlackHolePickupEvent>.Subscribe(OnBlackHolePickup);
     }
 
     private void OnDestroy()
@@ -36,6 +37,7 @@ public class PlayerProfileManager : MonoBehaviour
         EventBus<MainMenuEnterEvent>.UnSubscribe(OnGameBoot);
         EventBus<PlayerShieldPickupEvent>.UnSubscribe(OnShieldPickup);
         EventBus<PlayerDummyPickupEvent>.UnSubscribe(OnDummyPickup);
+        EventBus<PlayerBlackHolePickupEvent>.UnSubscribe(OnBlackHolePickup);
     }
 
     private void Start()
@@ -135,4 +137,14 @@ public class PlayerProfileManager : MonoBehaviour
     {
         PlayerProfiles[_playerIndex].Dummy = true;
     }
+
+    private void OnBlackHolePickup(PlayerBlackHolePickupEvent _playerBlackHolePickupEvent)
+    {
+        GainBlackHole(_playerBlackHolePickupEvent.Player);
+    }
+    private void GainBlackHole(int _playerIndex)
+    {
+        PlayerProfiles[_playerIndex].BlackHole = true;
+    }
+
 }
