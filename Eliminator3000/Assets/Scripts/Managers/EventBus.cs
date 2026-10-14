@@ -278,4 +278,35 @@ public class DummyDespawnEvent : Event
         Player = cPlayer;
     }
 }
+
+public class PlayerBlackHolePickupEvent : Event
+{
+    public int Player;
+    public PlayerBlackHolePickupEvent(int cPlayer)
+    {
+        Player= cPlayer;
+    }
+}
+
+public class BlackHoleSpawnEvent : Event
+{
+    public int Player;
+    public Vector3 BlackHolePosition;
+    public float SuckSpeed;
+    public BlackHoleSpawnEvent(int cPLayer, Vector3 cBlackHolePosition, float cSuckSpeed)
+    {
+        Player = cPLayer;
+        BlackHolePosition = cBlackHolePosition;
+        SuckSpeed = cSuckSpeed;
+    }
+}
+
+public class BlackHoleDespawnEvent : Event
+{
+    public int Player;
+    public BlackHoleDespawnEvent(int cPlayer)
+    {
+        Player = cPlayer;
+    }
+}
 #endregion
