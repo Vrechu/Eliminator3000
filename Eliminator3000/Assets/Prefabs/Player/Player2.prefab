@@ -20,6 +20,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 984c2ad7688dae84c931156553b16b4e, type: 2}
+    - target: {fileID: 1904528774827901253, guid: 5dc7f4f5ff2bf8048af11888999a2531, type: 3}
+      propertyPath: blackHolePrefab
+      value: 
+      objectReference: {fileID: 3455564024939663689, guid: d618e5ecf9631cc49b96e5121493c51d, type: 3}
     - target: {fileID: 2038160204921866548, guid: 5dc7f4f5ff2bf8048af11888999a2531, type: 3}
       propertyPath: m_IsActive
       value: 1

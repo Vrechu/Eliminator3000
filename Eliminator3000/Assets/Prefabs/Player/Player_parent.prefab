@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 6548040488092596121}
   - component: {fileID: -2375540107422204807}
   - component: {fileID: 5407184496350687769}
+  - component: {fileID: 1904528774827901253}
   m_Layer: 6
   m_Name: Player_parent
   m_TagString: Untagged
@@ -211,6 +212,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1904528774827901253}
+        m_TargetAssemblyTypeName: UseBlackHole, Assembly-CSharp
+        m_MethodName: GetBlackHoleInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: be7619bf-e29c-4a7a-8c83-fc9fca83176b
     m_ActionName: 'Gameplay/UsePickup[/Keyboard/q,/Keyboard/rightShift]'
   m_NeverAutoSwitchControlSchemes: 1
@@ -230,7 +243,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09c77416d23bc2b40a2f8b2263ef1041, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InGameAvatarInfo
-  Info: 
+  Info: ALWAYS USE THIS PREFAB WHEN EDITING UNIVERSAL PLAYER BEHAVIOUR!!!
   PlayerID: -1
 --- !u!114 &2158181575188216181
 MonoBehaviour:
@@ -307,6 +320,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UseDummy
   dummyPrefab: {fileID: 1570547598467343979, guid: 62e0f6c2f5e9beb48a8023e7f251e63a, type: 3}
+--- !u!114 &1904528774827901253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 977800845787270904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3ade9a79ad9a19428e888a85dda63a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UseBlackHole
+  blackHolePrefab: {fileID: 2875913054551717012, guid: 30cdb114b3e418747b72e2495f61ad98, type: 3}
+  spawnDistance: 12
 --- !u!1 &2038160204921866548
 GameObject:
   m_ObjectHideFlags: 0

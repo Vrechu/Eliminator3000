@@ -40,9 +40,9 @@ public class UseDummy : MonoBehaviour
     {
         GameObject newDummy = Instantiate(dummyPrefab, transform.position, Quaternion.identity);
         
-        if (newDummy.TryGetComponent<DummyBehaviour>(out DummyBehaviour dummyBehaviour)){
-            dummyBehaviour.PlayerID = playerID;
-            if (dummyBehaviour.PlayerID < 0 || dummyBehaviour.PlayerID > 1) Debug.LogError("Invalid PlayerID in dummy!");
+        if (newDummy.TryGetComponent<DummyBehaviour>(out DummyBehaviour _dummyBehaviour)){
+            _dummyBehaviour.PlayerID = playerID;
+            if (_dummyBehaviour.PlayerID < 0 || _dummyBehaviour.PlayerID > 1) Debug.LogError("Invalid PlayerID in dummy!");
         }
         else { Debug.LogError("No Dummy Behaviour component found in dummy prefab!");
         }

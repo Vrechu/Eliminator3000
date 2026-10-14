@@ -16,6 +16,7 @@ public struct PlayerProfile
     public int Health;
     public int Shield;
     public bool Dummy;
+    public bool BlackHole;
 
     public PlayerProfile(
         GameObject cPrefab,
@@ -25,7 +26,8 @@ public struct PlayerProfile
         int cLives = 3,
         int cHealth = 100,
         int cShield = 0,
-        bool cDummy = false)
+        bool cDummy = false,
+        bool cBlackHole = false)
     {
         ProfilePrefab = cPrefab;
         PlayerInput = cPlayerInput;
@@ -36,5 +38,6 @@ public struct PlayerProfile
         Health = cHealth;
         Shield = cShield;
         Dummy = cDummy;
+        BlackHole = cBlackHole; 
     }
 }
