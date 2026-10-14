@@ -65,7 +65,6 @@ public class PlayerProfileManager : MonoBehaviour
         EventBus<PlayerJoinedEvent>.Publish(new PlayerJoinedEvent(_profileIndex));
     }
 
-
     public void ResetProfiles()
     {
         for (int i = 0; i < PlayerProfiles.Length; i++)
@@ -73,6 +72,7 @@ public class PlayerProfileManager : MonoBehaviour
             RemoveProfile(i);
         }
     }
+
     private void RemoveProfile(int _profileIndex)
     {
         PlayerProfiles[_profileIndex] = default;
@@ -133,18 +133,19 @@ public class PlayerProfileManager : MonoBehaviour
     {
         GainDummy(_playerDummyPickupEvent.Player);
     }
+
     private void GainDummy(int _playerIndex)
     {
-        PlayerProfiles[_playerIndex].Dummy = true;
+        if (!PlayerProfiles[_playerIndex].BlackHole) PlayerProfiles[_playerIndex].Dummy = true;
     }
 
     private void OnBlackHolePickup(PlayerBlackHolePickupEvent _playerBlackHolePickupEvent)
     {
         GainBlackHole(_playerBlackHolePickupEvent.Player);
     }
+
     private void GainBlackHole(int _playerIndex)
     {
-        PlayerProfiles[_playerIndex].BlackHole = true;
+        if (!PlayerProfiles[_playerIndex].Dummy) PlayerProfiles[_playerIndex].BlackHole = true;
     }
-
 }
