@@ -211,8 +211,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MoveShip
   horizontalSpeed: 14
-  trackWidth: 20
-  maxHeight: 14
+  trackWidth: 23
+  maxHeight: 15.5
 --- !u!114 &7019095551105211704
 MonoBehaviour:
   m_ObjectHideFlags: 0

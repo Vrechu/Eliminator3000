@@ -13,6 +13,9 @@ public class SpiralLayout : MonoBehaviour
 
     private void Update()
     {
+        // CRITICAL FIX: Stop updating during gameplay so destroyed collectibles don't break positions
+        if (Application.isPlaying) return;
+
         int childCount = transform.childCount;
         if (childCount < 2) return;
 
