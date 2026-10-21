@@ -210,8 +210,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dcdbe9d7cbe2db4aa21c5df000b0eb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MoveShip
-  horizontalSpeed: 14
-  trackWidth: 23
+  horizontalSpeed: 22
+  trackWidth: 25
   maxHeight: 15.5
 --- !u!114 &7019095551105211704
 MonoBehaviour:
