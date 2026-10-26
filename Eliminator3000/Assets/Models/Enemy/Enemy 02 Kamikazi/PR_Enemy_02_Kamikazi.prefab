@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7751419097327573008}
   m_Layer: 0
-  m_Name: PR_Enemy_01_Kamikazi
+  m_Name: PR_Enemy_02_Kamikazi
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
