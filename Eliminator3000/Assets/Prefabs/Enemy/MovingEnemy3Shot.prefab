@@ -247,7 +247,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyInfo
   Info: 
-  ScoreValue: 20
+  ScoreValue: 1000
 --- !u!114 &9023769287737402404
 MonoBehaviour:
   m_ObjectHideFlags: 0

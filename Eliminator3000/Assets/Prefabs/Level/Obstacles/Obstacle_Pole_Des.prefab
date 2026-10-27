@@ -172,4 +172,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyInfo
   Info: 
-  ScoreValue: 3
+  ScoreValue: 300
