@@ -5,9 +5,11 @@ public class MoveEnemy : MonoBehaviour
 {
     public Transform[] Waypoints;
     public int[] WaypointOrder;
+    public float[] WaypointSpeeds;
     public float[] WaitTimes;
     public Transform EndPoint;
     [SerializeField] private float speed = 2f;
+    private float baseSpeed = 2f;
 
     private int currentWaypointIndex = 0;
     private Timer waitTimer;
@@ -20,6 +22,7 @@ public class MoveEnemy : MonoBehaviour
         gameStatemanager = GameStateManager.Instance;
         blackHoleManager = BlackHoleManager.Instance;
         waitTimer = new Timer(WaitTimes[currentWaypointIndex]);
+        baseSpeed = speed;
     }
 
     private void Update()
@@ -42,8 +45,16 @@ public class MoveEnemy : MonoBehaviour
             if (waitTimer.IsFinished())
             {
                 currentWaypointIndex++;
-                if (currentWaypointIndex >= WaitTimes.Length) return;
-                waitTimer.Reset(WaitTimes[currentWaypointIndex]);
+
+                if (currentWaypointIndex < WaypointSpeeds.Length)
+                {
+                    speed = WaypointSpeeds[currentWaypointIndex];
+                    if (speed <= 0) speed = baseSpeed; // Reset to base speed if the speed is zero or negative
+                }
+                if(currentWaypointIndex < WaitTimes.Length)
+                {
+                    waitTimer.Reset(WaitTimes[currentWaypointIndex]);
+                }
             }
         }
         else transform.position += direction.normalized * GetSpeed() * Time.deltaTime;

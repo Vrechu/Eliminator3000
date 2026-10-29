@@ -98,6 +98,7 @@ public class SpawnEnemy : MonoBehaviour
             moveEnemy.Waypoints = waypoints;
             moveEnemy.WaypointOrder = _waveInfo.WaypointOrder;
             moveEnemy.WaitTimes = _waveInfo.WaitTimes;
+            moveEnemy.WaypointSpeeds = _waveInfo.WaypointSpeeds;
             moveEnemy.EndPoint = endPoints[_waveInfo.EndPointIndex];
             moveEnemy.SetSpeed(_waveInfo.EnemySpeed);
         }
@@ -138,7 +139,11 @@ public class SpawnEnemy : MonoBehaviour
             Debug.LogError($"Wave has mismatched lengths for WaypointOrder and WaitTimes.");
             return false;
         }
-
+        if (_waveInfo.WaypointOrder.Length != _waveInfo.WaypointSpeeds.Length)
+        {
+            Debug.LogError($"Wave has mismatched lengths for WaypointOrder and WaypointSpeeds.");
+            return false;
+        }
         if (_waveInfo.SpawnPointIndex < 0
             || _waveInfo.SpawnPointIndex >= spawnPoints.Length)
         {
