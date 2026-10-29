@@ -150241,6 +150241,63 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3ca54a6f05a4ba24caaf174966014dcb, type: 3}
+--- !u!1001 &6162270425217863898
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 983379886671887589, guid: ab2db9d7c86f0194aa60ca0a96d13115, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 81.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 983379886671887589, guid: ab2db9d7c86f0194aa60ca0a96d13115, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 983379886671887589, guid: ab2db9d7c86f0194aa60ca0a96d13115, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 983379886671887589, guid: ab2db9d7c86f0194aa60ca0a96d13115, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 983379886671887589, guid: ab2db9d7c86f0194aa60ca0a96d13115, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 983379886671887589, guid: ab2db9d7c86f0194aa60ca0a96d13115, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 983379886671887589, guid: ab2db9d7c86f0194aa60ca0a96d13115, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 983379886671887589, guid: ab2db9d7c86f0194aa60ca0a96d13115, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 983379886671887589, guid: ab2db9d7c86f0194aa60ca0a96d13115, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 983379886671887589, guid: ab2db9d7c86f0194aa60ca0a96d13115, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5734044290910311396, guid: ab2db9d7c86f0194aa60ca0a96d13115, type: 3}
+      propertyPath: m_Name
+      value: PR_MiniBoss_01_FourShooter
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ab2db9d7c86f0194aa60ca0a96d13115, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -150255,3 +150312,4 @@ SceneRoots:
   - {fileID: 1106273949}
   - {fileID: 1115809049}
   - {fileID: 1334246207}
+  - {fileID: 6162270425217863898}
