@@ -36,8 +36,8 @@ Transform:
   m_GameObject: {fileID: 977800845787270904}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0.44474, z: 0.012996}
+  m_LocalScale: {x: 1.265145, y: 0.6000245, z: 1.3249}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7454738834925812147}
@@ -257,9 +257,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dcdbe9d7cbe2db4aa21c5df000b0eb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MoveShip
-  horizontalSpeed: 14
-  trackWidth: 12
-  maxHeight: 5
+  horizontalSpeed: 22
+  trackWidth: 25
+  maxHeight: 15.5
 --- !u!114 &7019095551105211704
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -362,7 +362,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.06866984, y: -0, z: -0, w: 0.99763954}
   m_LocalPosition: {x: 0, y: -0.34, z: -0.04}
-  m_LocalScale: {x: 1, y: 0.93099, z: 2.07}
+  m_LocalScale: {x: 1.7, y: 1.51, z: 2.42}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7997904762219213327}

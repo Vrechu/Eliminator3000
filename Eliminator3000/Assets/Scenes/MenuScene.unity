@@ -877,6 +877,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11d2f6e2a9008a143b8765c526208e90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainMenuManager
+  firstSceneName: Level block out
   p1JoinedUI: {fileID: 896652133}
   p2JoinedUI: {fileID: 225128151}
 --- !u!224 &1092690854
