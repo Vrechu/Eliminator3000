@@ -12,5 +12,6 @@ public class EnemyWaveInfo : ScriptableObject
     public float[] TimesBetweenSpawns;
     public float EnemySpeed;
     public int[] WaypointOrder;
+    public float[] WaitTimes;
     public int EndPointIndex;
 }

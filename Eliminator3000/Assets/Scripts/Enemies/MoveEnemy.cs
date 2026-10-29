@@ -5,10 +5,12 @@ public class MoveEnemy : MonoBehaviour
 {
     public Transform[] Waypoints;
     public int[] WaypointOrder;
+    public float[] WaitTimes;
     public Transform EndPoint;
     [SerializeField] private float speed = 2f;
 
     private int currentWaypointIndex = 0;
+    private Timer waitTimer;
     private bool finalWaypointReached = false;
     private GameStateManager gameStatemanager;
     private BlackHoleManager blackHoleManager;
@@ -17,6 +19,7 @@ public class MoveEnemy : MonoBehaviour
     {
         gameStatemanager = GameStateManager.Instance;
         blackHoleManager = BlackHoleManager.Instance;
+        waitTimer = new Timer(WaitTimes[currentWaypointIndex]);
     }
 
     private void Update()
@@ -31,13 +34,19 @@ public class MoveEnemy : MonoBehaviour
     /// </summary>
     private void Move()
     {
-        Vector3 direction = NextWaypointPosition() - transform.position;
-                transform.position += direction.normalized * GetSpeed() * Time.deltaTime;
+        Vector3 direction = NextWaypointPosition() - transform.position;  
+
         if (!BlackHoleActive() && direction.magnitude < 0.1f)
         {
             if (finalWaypointReached) Destroy(gameObject);
-            currentWaypointIndex++;
+            if (waitTimer.IsFinished())
+            {
+                currentWaypointIndex++;
+                if (currentWaypointIndex >= WaitTimes.Length) return;
+                waitTimer.Reset(WaitTimes[currentWaypointIndex]);
+            }
         }
+        else transform.position += direction.normalized * GetSpeed() * Time.deltaTime;
     }
 
     /// <summary>
