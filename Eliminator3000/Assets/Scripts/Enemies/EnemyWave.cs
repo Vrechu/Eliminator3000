@@ -1,16 +1,35 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "EnemyWaveScriptableObject", menuName = "ScriptableObjects/EnemyWave")]
-
-public class EnemyWave : ScriptableObject
+public class EnemyWave
 {
-    [TextArea(15, 20), SerializeField] 
-    private string Info;
+    public EnemyWaveInfo waveInfo;
+    public Timer spawnTimer;
+    private int currentEnemyIndex = 0;
 
-    public int SpawnPointIndex;
-    public GameObject[] EnemyPrefabs;
-    public float[] TimesBetweenSpawns;
-    public float EnemySpeed;
-    public int[] WaypointOrder;
-    public int EndPointIndex;
+    public EnemyWave(EnemyWaveInfo cWaveInfo)
+    {
+        waveInfo = cWaveInfo;
+        spawnTimer = new Timer(waveInfo.TimesBetweenSpawns[0]);
+    }
+
+    /// <summary>
+    /// Returns the next enemy prefab to spawn based on the currentEnemyIndex. 
+    /// If there are no more enemies to spawn, it returns null. 
+    /// It also resets the spawn timer for the next enemy if applicable.
+    /// </summary>
+    /// <returns>The next enemy prefab to spawn, or null if there are no more enemies.</returns>
+    public GameObject NextEnemy()
+    {
+        if (currentEnemyIndex < waveInfo.EnemyPrefabs.Length)
+        {
+            GameObject enemyPrefab = waveInfo.EnemyPrefabs[currentEnemyIndex];
+            currentEnemyIndex++;            
+            if (currentEnemyIndex < waveInfo.TimesBetweenSpawns.Length)
+            {
+                spawnTimer.Reset(waveInfo.TimesBetweenSpawns[currentEnemyIndex]);
+            }
+            return enemyPrefab;
+        }
+        return null;
+    }
 }

@@ -6444,6 +6444,18 @@ PrefabInstance:
       propertyPath: 'enemyWaves.Array.data[1]'
       value: 
       objectReference: {fileID: 11400000, guid: 8ca77a809036a404f9488bf54e6e9e6c, type: 2}
+    - target: {fileID: 6763786408745554138, guid: f88f1790820e0ee4583889f7695061d6, type: 3}
+      propertyPath: enemyWaveInfos.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6763786408745554138, guid: f88f1790820e0ee4583889f7695061d6, type: 3}
+      propertyPath: 'enemyWaveInfos.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: d1e55ae1dd0adb444974fa85d7e1845f, type: 2}
+    - target: {fileID: 6763786408745554138, guid: f88f1790820e0ee4583889f7695061d6, type: 3}
+      propertyPath: 'enemyWaveInfos.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: d1e55ae1dd0adb444974fa85d7e1845f, type: 2}
     - target: {fileID: 9195731880493332213, guid: f88f1790820e0ee4583889f7695061d6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
