@@ -1,3 +1,4 @@
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,6 +10,16 @@ public class UseDummy : MonoBehaviour
 
     private PlayerProfileManager playerProfileManager;
     private GameStateManager gameStateManager;
+    [SerializeField] private bool instant;
+
+    private void OnEnable()
+    {
+        EventBus<PlayerDummyPickupEvent>.Subscribe(OnPickup);
+    }
+    private void OnDestroy()
+    {
+        EventBus<PlayerDummyPickupEvent>.UnSubscribe(OnPickup);
+    }
 
     private void Start()
     {
@@ -29,11 +40,17 @@ public class UseDummy : MonoBehaviour
 
     public void GetDummyInput(InputAction.CallbackContext _context)
     {
+        if (instant) return;
         if (gameStateManager == null) return;
         if (gameStateManager.CurrentState
             != GameStateManager.GameState.Ingame) return;
         if (!playerProfileManager.PlayerProfiles[playerID].Dummy) return;
         if (_context.performed) SpawnDummy();
+    }
+
+    private void OnPickup(PlayerDummyPickupEvent _event)
+    {
+        if (instant) SpawnDummy();
     }
 
     private void SpawnDummy()

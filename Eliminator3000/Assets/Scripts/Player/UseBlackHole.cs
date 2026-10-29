@@ -10,6 +10,17 @@ public class UseBlackHole : MonoBehaviour
 
     private PlayerProfileManager playerProfileManager;
     private GameStateManager gameStateManager;
+    [SerializeField] private bool instant;
+
+    private void OnEnable()
+    {
+        EventBus<PlayerBlackHolePickupEvent>.Subscribe(OnPickup);
+    }
+
+    private void OnDestroy()
+    {
+        EventBus<PlayerBlackHolePickupEvent>.UnSubscribe(OnPickup);
+    }
 
     private void Start()
     {
@@ -30,11 +41,17 @@ public class UseBlackHole : MonoBehaviour
 
     public void GetBlackHoleInput(InputAction.CallbackContext _context)
     {
+        if (instant) return;
         if (gameStateManager == null) return;
         if (gameStateManager.CurrentState
             != GameStateManager.GameState.Ingame) return;
         if (!playerProfileManager.PlayerProfiles[playerID].BlackHole) return;
         if (_context.performed) SpawnBlackHole();
+    }
+
+    private void OnPickup(PlayerBlackHolePickupEvent _event)
+    {
+        if (instant) SpawnBlackHole();
     }
 
     private void SpawnBlackHole()

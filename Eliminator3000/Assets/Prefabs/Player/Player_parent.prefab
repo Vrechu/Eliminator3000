@@ -320,6 +320,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UseDummy
   dummyPrefab: {fileID: 1570547598467343979, guid: 62e0f6c2f5e9beb48a8023e7f251e63a, type: 3}
+  instant: 1
 --- !u!114 &1904528774827901253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -334,6 +335,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UseBlackHole
   blackHolePrefab: {fileID: 2875913054551717012, guid: 30cdb114b3e418747b72e2495f61ad98, type: 3}
   spawnDistance: 12
+  instant: 1
 --- !u!1 &2038160204921866548
 GameObject:
   m_ObjectHideFlags: 0
