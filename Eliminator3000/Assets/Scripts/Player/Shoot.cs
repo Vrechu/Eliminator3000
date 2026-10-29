@@ -60,16 +60,15 @@ public class Shoot : MonoBehaviour
         float height = setGunType.GetCurrentGunProfile().Angle * setGunType.GetCurrentGunProfile().Rows;
         float width = setGunType.GetCurrentGunProfile().Angle * setGunType.GetCurrentGunProfile().Columns;
 
-        for (int i = 0; i < setGunType.GetCurrentGunProfile().Rows; i++)
+        for (int row = 0; row < setGunType.GetCurrentGunProfile().Rows; row++)
         {
-            for (int j = 0; j < setGunType.GetCurrentGunProfile().Columns; j++)
+            for (int column = 0; column < setGunType.GetCurrentGunProfile().Columns; column++)
             {
-
                 Instantiate(setGunType.GetCurrentGunProfile().ProjectilePrefab, transform.position,
                             Quaternion.Euler(
-                                0f - height / 2 + setGunType.GetCurrentGunProfile().Angle * i,
-                                0f,
-                               0f - width / 2 + setGunType.GetCurrentGunProfile().Angle * j));
+                                0f - height / 2 + setGunType.GetCurrentGunProfile().Angle * row,
+                                0f - width / 2 + setGunType.GetCurrentGunProfile().Angle * column,
+                              0));
             }
         }
     }
