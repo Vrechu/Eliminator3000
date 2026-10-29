@@ -115,7 +115,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 1.12
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
@@ -132,7 +132,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyInfo
   Info: 
-  ScoreValue: 20
+  ScoreValue: 500
 --- !u!114 &9023769287737402404
 MonoBehaviour:
   m_ObjectHideFlags: 0

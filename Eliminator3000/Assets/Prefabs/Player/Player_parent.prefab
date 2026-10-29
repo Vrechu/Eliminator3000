@@ -260,6 +260,7 @@ MonoBehaviour:
   horizontalSpeed: 22
   trackWidth: 25
   maxHeight: 15.5
+  minHeight: 2
 --- !u!114 &7019095551105211704
 MonoBehaviour:
   m_ObjectHideFlags: 0

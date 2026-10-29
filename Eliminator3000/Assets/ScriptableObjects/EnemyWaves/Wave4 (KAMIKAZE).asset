@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2837c145cb0d9ab47803c610bdff03a0, type: 3}
-  m_Name: Wave4
+  m_Name: Wave4 (KAMIKAZE)
   m_EditorClassIdentifier: Assembly-CSharp::Wave
   Info: 
   SpawnPointIndex: 0

@@ -112,7 +112,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.9
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
@@ -129,7 +129,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MoveProjectile
   speed: 50
-  lifeSeconds: 0.4
+  lifeSeconds: 0.2
 --- !u!114 &2851432517437828888
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -142,6 +142,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 613736fbc23852b46ad903ac5f828513, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileHit
+  PlayerID: 0
   targetLayers:
     serializedVersion: 2
     m_Bits: 2304
