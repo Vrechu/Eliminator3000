@@ -5,7 +5,7 @@ public class MoveShip : MonoBehaviour
 {
     private Vector2 movementInputVector;
     [SerializeField] private float horizontalSpeed = 7f;
-    [SerializeField] private float trackWidth = 12f, maxHeight = 5f;
+    [SerializeField] private float trackWidth = 12f, maxHeight = 5f, minHeight;
     private GameStateManager gameStateManager;
 
     private void Start()
@@ -34,7 +34,7 @@ public class MoveShip : MonoBehaviour
             && movementInputVector.x > 0)
             movementInputVector.x = 0;
 
-        if (transform.position.y < 0.5f
+        if (transform.position.y < minHeight
             && movementInputVector.y < 0)
             movementInputVector.y = 0;
 

@@ -11,21 +11,13 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2837c145cb0d9ab47803c610bdff03a0, type: 3}
   m_Name: Wave0
-  m_EditorClassIdentifier: Assembly-CSharp::Wave
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyWave
   Info: 
-  SpawnPointIndex: 0
+  SpawnPointIndex: 3
   EnemyPrefabs:
-  - {fileID: 3699308623078601662, guid: 67d2085d610b8244bb74e95e6df6b45b, type: 3}
-  - {fileID: 3699308623078601662, guid: 67d2085d610b8244bb74e95e6df6b45b, type: 3}
-  - {fileID: 3699308623078601662, guid: 67d2085d610b8244bb74e95e6df6b45b, type: 3}
-  - {fileID: 3699308623078601662, guid: 67d2085d610b8244bb74e95e6df6b45b, type: 3}
   - {fileID: 3699308623078601662, guid: 67d2085d610b8244bb74e95e6df6b45b, type: 3}
   TimesBetweenSpawns:
   - 2
-  - 2
-  - 2
-  - 2
-  - 2
-  EnemySpeed: 10
-  WaypointOrder: 01000000020000000300000000000000
-  EndPointIndex: 1
+  EnemySpeed: 8
+  WaypointOrder: 0400000005000000
+  EndPointIndex: 2

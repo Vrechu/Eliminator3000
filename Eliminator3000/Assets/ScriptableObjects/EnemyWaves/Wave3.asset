@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: Wave3
   m_EditorClassIdentifier: Assembly-CSharp::EnemyWave
   Info: 
-  SpawnPointIndex: 1
+  SpawnPointIndex: 0
   EnemyPrefabs:
   - {fileID: 3699308623078601662, guid: 67d2085d610b8244bb74e95e6df6b45b, type: 3}
-  - {fileID: 3699308623078601662, guid: 955d9f6cf94f6d340bd1b5504ac41421, type: 3}
+  - {fileID: 3699308623078601662, guid: 67d2085d610b8244bb74e95e6df6b45b, type: 3}
   TimesBetweenSpawns:
-  - 0
-  - 6
-  EnemySpeed: 5
-  WaypointOrder: 0400000006000000
-  EndPointIndex: 7
+  - 1
+  - 2
+  EnemySpeed: 8
+  WaypointOrder: 0300000002000000
+  EndPointIndex: 1
