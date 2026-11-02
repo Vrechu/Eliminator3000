@@ -22,4 +22,14 @@ MonoBehaviour:
   - 3
   EnemySpeed: 5
   WaypointOrder: 03000000020000000100000000000000
+  WaypointSpeeds:
+  - 0
+  - 0
+  - 0
+  - 0
+  WaitTimes:
+  - 0
+  - 0
+  - 0
+  - 0
   EndPointIndex: 0
