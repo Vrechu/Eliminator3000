@@ -85,7 +85,7 @@ public class MainMenuEnterEvent : Event { }
 #region Game state events
 public class GameLoseEvent : Event { }
 public class GameWinEvent : Event { }  
-public class LevelExitEvent : Event { }
+public class GameFinishedEvent : Event { }
 #endregion
 
 #region Player health events
@@ -177,10 +177,10 @@ public class PlayerScoredEvent : Event
 
 public class  LevelEnteredEvent : Event
 {
-    public int LevelNumber;
+    public int LevelIndex;
     public LevelEnteredEvent(int cLevelNumber)
     {
-        LevelNumber = cLevelNumber;
+        LevelIndex = cLevelNumber;
     }
 }
 
@@ -193,7 +193,7 @@ public class  PlayerAvatarInstantiatedEvent : Event
     }
 }
 
-public class FinishedLevelEvent : Event { }
+public class LevelFinishedEvent : Event { }
 
 public class EnemySpawnTriggeredEvent : Event
 {

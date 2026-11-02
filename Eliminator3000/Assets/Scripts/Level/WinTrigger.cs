@@ -9,7 +9,7 @@ public class WinTrigger : MonoBehaviour
     {
         if (targetLayers == (targetLayers | (1 << _other.gameObject.layer)))
         {
-            EventBus<FinishedLevelEvent>.Publish(new FinishedLevelEvent());
+            EventBus<LevelFinishedEvent>.Publish(new LevelFinishedEvent());
         }
     }    
 }

@@ -45,6 +45,7 @@ public class SpawnEnemy : MonoBehaviour
             || _enemySpawnEvent.WaveNumber < 0)
         {
             Debug.LogError($"Wave number {_enemySpawnEvent.WaveNumber} is out of bounds.");
+            return;
         }
         if (!CheckWaveViability(enemyWaveInfos[_enemySpawnEvent.WaveNumber]))
         {
