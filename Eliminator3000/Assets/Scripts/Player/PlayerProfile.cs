@@ -1,9 +1,10 @@
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 /// <summary>
-/// Profile for a player, containing their prefab, input, avatar, lives, and score.
+/// Profile for a player, containing their prefab, input, avatar, lives,pickups, and score.
 /// </summary>
 public struct PlayerProfile
 {
@@ -11,7 +12,8 @@ public struct PlayerProfile
     public PlayerInput PlayerInput;
     public GameObject IngameAvatar;
     public bool AliveInLevel;
-    public int Score;
+    public int TotalScore;
+    public List<int> LevelScores;
     public int Lives;
     public int Health;
     public int Shield;
@@ -33,7 +35,8 @@ public struct PlayerProfile
         PlayerInput = cPlayerInput;
         IngameAvatar = cIngameAvatar;
         AliveInLevel = false;
-        Score = cScore;
+        TotalScore = cScore;
+        LevelScores = new List<int>();
         Lives = cLives;
         Health = cHealth;
         Shield = cShield;

@@ -35,7 +35,7 @@ public class GameStateManager : MonoBehaviour
     private void OnEnable()
     {
         EventBus<BothPlayersDeadEvent>.Subscribe(OnAllPlayersDead);
-        EventBus<FinishedLevelEvent>.Subscribe(OnFinishedLevel);
+        EventBus<LevelFinishedEvent>.Subscribe(OnFinishedLevel);
         EventBus<LevelEnteredEvent>.Subscribe(OnLevelEntered);
         EventBus<MainMenuEnterEvent>.Subscribe(OnMainMenuEntered);
     }
@@ -43,7 +43,7 @@ public class GameStateManager : MonoBehaviour
     private void OnDestroy()
     {
         EventBus<BothPlayersDeadEvent>.UnSubscribe(OnAllPlayersDead);
-        EventBus<FinishedLevelEvent>.UnSubscribe(OnFinishedLevel);
+        EventBus<LevelFinishedEvent>.UnSubscribe(OnFinishedLevel);
         EventBus<LevelEnteredEvent>.UnSubscribe(OnLevelEntered);
         EventBus<MainMenuEnterEvent>.UnSubscribe(OnMainMenuEntered);
     }
@@ -95,7 +95,7 @@ public class GameStateManager : MonoBehaviour
     /// Sets the game state to Won and publishes a GameWinEvent when the level is finished.
     /// </summary>
     /// <param name="_finishedLevelEvent">The event data for the finished level.</param>
-    private void OnFinishedLevel(FinishedLevelEvent _finishedLevelEvent)
+    private void OnFinishedLevel(LevelFinishedEvent _finishedLevelEvent)
     {
         CurrentState = GameState.Won;
         EventBus<GameWinEvent>.Publish(new GameWinEvent());
@@ -107,7 +107,7 @@ public class GameStateManager : MonoBehaviour
     /// <param name="_levelEnteredEvent">Event info</param>
     private void OnLevelEntered(LevelEnteredEvent _levelEnteredEvent)
     {
-        if (_levelEnteredEvent.LevelNumber == 0)
+        if (_levelEnteredEvent.Levelindex == 0)
         {
             Debug.LogError("Level number is 0, setting game state to MainMenu.");
         }
