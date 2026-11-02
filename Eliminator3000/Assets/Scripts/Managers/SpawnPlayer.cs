@@ -13,7 +13,6 @@ public class SpawnPlayer : MonoBehaviour
 
     private void OnEnable()
     {
-        playerProfileManager = PlayerProfileManager.Instance;
         EventBus<LevelEnteredEvent>.Subscribe(InstantiateOnLevelEnter);
         EventBus<PlayerLivesAtZeroEvent>.Subscribe(OnPlayerLivesAtZero);
         EventBus<PlayerJoinedEvent>.Subscribe(OnInGameJoin);
@@ -26,11 +25,17 @@ public class SpawnPlayer : MonoBehaviour
         EventBus<PlayerJoinedEvent>.UnSubscribe(OnInGameJoin);
     }
 
-    private void InstantiateOnLevelEnter(LevelEnteredEvent _levelEnteredEvent)
+    private void Start()
     {
-        for (int i = 0; i < playerProfileManager.PlayerProfiles.Length; i++)
+        playerProfileManager = PlayerProfileManager.Instance;        
+    }
+
+    private void InstantiateOnLevelEnter(LevelEnteredEvent _levelEnteredEvent)
+    {        
+        if (_levelEnteredEvent.LevelIndex < 1) return;
+        for (int i = 0; i < PlayerProfileManager.Instance.PlayerProfiles.Length; i++)
         {
-            if (playerProfileManager.PlayersJoined[i])
+            if (PlayerProfileManager.Instance.PlayersJoined[i])
             {
                 InstantiatePlayerAvatar(i);
             }
@@ -45,17 +50,16 @@ public class SpawnPlayer : MonoBehaviour
     public void InstantiatePlayerAvatar(int _playerIndex)
     {
         if (avatarsIngame[_playerIndex]) return;
-        if (playerProfileManager.PlayerProfiles[0].IngameAvatar != null) return;
-
+        if (PlayerProfileManager.Instance.PlayerProfiles[_playerIndex].IngameAvatar != null) return;
         PlayerInput player = PlayerInput.Instantiate(
-        playerProfileManager.PlayerProfiles[_playerIndex].ProfilePrefab,
+        PlayerProfileManager.Instance.PlayerProfiles[_playerIndex].ProfilePrefab,
         controlScheme: CheckControlScheme(_playerIndex),
         pairWithDevice: Keyboard.current);
 
         avatarsIngame[_playerIndex] = true;
         playerAvatars[_playerIndex] = player.gameObject;
-        playerProfileManager.PlayerProfiles[_playerIndex].IngameAvatar = player.gameObject;
-        playerProfileManager.PlayerProfiles[_playerIndex].AliveInLevel = true;
+        PlayerProfileManager.Instance.PlayerProfiles[_playerIndex].IngameAvatar = player.gameObject;
+        PlayerProfileManager.Instance.PlayerProfiles[_playerIndex].AliveInLevel = true;
         player.transform.position = spawnPoints[_playerIndex].position;
         EventBus<PlayerAvatarInstantiatedEvent>.Publish(new PlayerAvatarInstantiatedEvent(_playerIndex));
     }
