@@ -38,6 +38,8 @@ public class GameStateManager : MonoBehaviour
         EventBus<LevelFinishedEvent>.Subscribe(OnFinishedLevel);
         EventBus<LevelEnteredEvent>.Subscribe(OnLevelEntered);
         EventBus<MainMenuEnterEvent>.Subscribe(OnMainMenuEntered);
+        EventBus<GameWinEvent>.Subscribe(OnGameFinished);
+        EventBus<GameLoseEvent>.Subscribe(OnGameFinished);
     }
 
     private void OnDestroy()
@@ -46,6 +48,8 @@ public class GameStateManager : MonoBehaviour
         EventBus<LevelFinishedEvent>.UnSubscribe(OnFinishedLevel);
         EventBus<LevelEnteredEvent>.UnSubscribe(OnLevelEntered);
         EventBus<MainMenuEnterEvent>.UnSubscribe(OnMainMenuEntered);
+        EventBus<GameWinEvent>.UnSubscribe(OnGameFinished);
+        EventBus<GameLoseEvent>.UnSubscribe(OnGameFinished);
     }
 
     private void Start()
@@ -107,7 +111,7 @@ public class GameStateManager : MonoBehaviour
     /// <param name="_levelEnteredEvent">Event info</param>
     private void OnLevelEntered(LevelEnteredEvent _levelEnteredEvent)
     {
-        if (_levelEnteredEvent.Levelindex == 0)
+        if (_levelEnteredEvent.LevelIndex == 0)
         {
             Debug.LogError("Level number is 0, setting game state to MainMenu.");
         }
@@ -117,8 +121,17 @@ public class GameStateManager : MonoBehaviour
         }
     }
 
-    private void OnMainMenuEntered(MainMenuEnterEvent _mainMenuEnterEvent)
+    private void OnMainMenuEntered(MainMenuEnterEvent _mainMenuEnteredEvent)
     {
         CurrentState = GameState.MainMenu;
+    }
+
+    private void OnGameFinished(GameWinEvent _gameWinEvent)
+    {
+        EventBus<GameFinishedEvent>.Publish(new GameFinishedEvent());
+    }
+    private void OnGameFinished(GameLoseEvent _gameLoseEvent)
+    {
+        EventBus<GameFinishedEvent>.Publish(new GameFinishedEvent());
     }
 }

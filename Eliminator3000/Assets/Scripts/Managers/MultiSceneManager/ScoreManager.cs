@@ -9,7 +9,7 @@ public class ScoreManager : MonoBehaviour
     private PlayerProfileManager playerProfileManager;
     private int currentLevelIndex = 0;
     private List<KeyValuePair<string, int>> scoreList = new List<KeyValuePair<string, int>>();
-    [SerializeField] private string scoreFileName = "Scores.txt";
+    [SerializeField] private string scoreFileName = "Scores";
     private string scoreFilePath;
 
     private void OnEnable()
@@ -17,7 +17,8 @@ public class ScoreManager : MonoBehaviour
         EventBus<PlayerScoredEvent>.Subscribe(OnPlayerScored);
         EventBus<PlayerHitEvent>.Subscribe(OnPlayerHit);
         EventBus<PlayerAvatarInstantiatedEvent>.Subscribe(OnPlayerSpawned);
-        EventBus<GameWinEvent>.Subscribe(OnlevelFinshed);
+        EventBus<LevelFinishedEvent>.Subscribe(OnLevelFinished);
+        EventBus<GameFinishedEvent>.Subscribe(OnGameFinished);
     }
 
     private void OnDestroy()
@@ -25,13 +26,15 @@ public class ScoreManager : MonoBehaviour
         EventBus<PlayerScoredEvent>.UnSubscribe(OnPlayerScored);
         EventBus<PlayerHitEvent>.UnSubscribe(OnPlayerHit);
         EventBus<PlayerAvatarInstantiatedEvent>.UnSubscribe(OnPlayerSpawned);
-        EventBus<GameWinEvent>.UnSubscribe(OnlevelFinshed);
+        EventBus<LevelFinishedEvent>.UnSubscribe(OnLevelFinished);
+        EventBus<GameFinishedEvent>.UnSubscribe(OnGameFinished);
     }
 
     private void Start()
     {
         playerProfileManager = PlayerProfileManager.Instance;
-        scoreFilePath = Path.Combine(Application.dataPath, scoreFileName);
+        scoreFilePath = Path.Combine(Application.dataPath, scoreFileName + ".txt");
+        ReadScoreFile();
     }
 
     private void OnPlayerSpawned(PlayerAvatarInstantiatedEvent _playerAvatarInstantiatedEvent)
@@ -65,18 +68,35 @@ public class ScoreManager : MonoBehaviour
         EventBus<ScoreChangedEvent>.Publish(new ScoreChangedEvent(_playerIndex, playerProfileManager.PlayerProfiles[_playerIndex].LevelScores[currentLevelIndex]));
     }
 
-    private void OnlevelFinshed(GameWinEvent _gameWinEvent)
+    private void OnLevelFinished(LevelFinishedEvent _levelFinishedEvent)
+    {
+        CalculateTotalScore();
+    }
+
+    private void CalculateTotalScore()
     {
         for (int i = 0; i < playerProfileManager.PlayerProfiles.Length; i++)
         {
-            if (!playerProfileManager.PlayersJoined[i]) return;
+            if (!playerProfileManager.PlayersJoined[i]) continue;
             playerProfileManager.PlayerProfiles[i].TotalScore += playerProfileManager.PlayerProfiles[i].LevelScores[currentLevelIndex];
         }
     }
 
+    private void OnGameFinished(GameFinishedEvent _gameFinishedEvent)
+    {
+        CalculateTotalScore();
+        for (int i = 0; i < playerProfileManager.PlayerProfiles.Length; i++)
+        {
+            if (!playerProfileManager.PlayersJoined[i]) continue;
+            CreateScorePair(i, playerProfileManager.PlayerProfiles[i].TotalScore);
+        }
+        SortScores();
+        WriteScoresToTXT();
+    }
 
     private void CreateScorePair(int _playerIndex, int _score) // NEEDS PLAYER NAMES TO BE FILLED IN, CURRENTLY JUST USING PLAYER INDEX
     {
+        Debug.Log(_score);
         scoreList.Add(new KeyValuePair<string, int>(_playerIndex.ToString() + ": " + DateTime.Now.ToString(), _score));
     }
 
@@ -87,11 +107,11 @@ public class ScoreManager : MonoBehaviour
 
     private void WriteScoresToTXT()
     {
-        Debug.Log("Score file path: " + scoreFilePath);
-        if (!File.Exists(scoreFilePath))
+        if (File.Exists(scoreFilePath))
         {
-            File.Create(scoreFilePath);
+            File.Delete(scoreFilePath);
         }
+        File.Create(scoreFilePath).Dispose();
 
         for (int i = 0; i < scoreList.Count; i++)
         {
