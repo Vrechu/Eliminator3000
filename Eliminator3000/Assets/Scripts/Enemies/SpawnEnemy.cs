@@ -65,24 +65,20 @@ public class SpawnEnemy : MonoBehaviour
         for (int i = 0; i < activeWaves.Count; i++)
         {
             if (!activeWaves[i].spawnTimer.IsFinished()) continue;
-            GameObject enemy = activeWaves[i].NextEnemy();
-            if (enemy == null) activeWaves.RemoveAt(i);
+            GameObject enemyPrefab = activeWaves[i].NextEnemy();
+            if (enemyPrefab == null) activeWaves.RemoveAt(i);
             else {
+                GameObject enemy = Instantiate(enemyPrefab, spawnPoints[activeWaves[i].waveInfo.SpawnPointIndex].position, Quaternion.identity);
                 SetEnemyMovement(enemy, activeWaves[i].waveInfo);
-                SpawnNextEnemy(enemy, activeWaves[i].waveInfo);
             }
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="_enemy"></param>
-    /// <param name="_waveInfo"></param>
+
     private void SpawnNextEnemy(GameObject _enemy, EnemyWaveInfo _waveInfo)
     {
         if (_enemy == null) return;         
-        Instantiate(_enemy, spawnPoints[_waveInfo.SpawnPointIndex].position, Quaternion.identity);
+        
     }
 
     /// <summary>
@@ -101,7 +97,7 @@ public class SpawnEnemy : MonoBehaviour
             moveEnemy.WaitTimes = _waveInfo.WaitTimes;
             moveEnemy.WaypointSpeeds = _waveInfo.WaypointSpeeds;
             moveEnemy.EndPoint = endPoints[_waveInfo.EndPointIndex];
-            moveEnemy.SetSpeed(_waveInfo.EnemySpeed);
+            moveEnemy.SetBaseSpeed(_waveInfo.EnemySpeed);
         }
         else
         {
