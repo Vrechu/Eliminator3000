@@ -1,3 +1,4 @@
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Rendering.Universal.Internal;
 
@@ -37,23 +38,29 @@ public class MoveEnemy : MonoBehaviour
     /// </summary>
     private void Move()
     {
-        Vector3 direction = NextWaypointPosition() - transform.position;  
-
-        if (!BlackHoleActive() && direction.magnitude < 0.1f)
+        Vector3 direction = NextWaypointPosition() - transform.position;
+        if (direction.magnitude < 0.1f)
         {
-            if (finalWaypointReached) Destroy(gameObject);
-            if (waitTimer.IsFinished())
+            if (!BlackHoleActive())
             {
-                currentWaypointIndex++;
-
-                if(currentWaypointIndex < WaitTimes.Length)
+                if (finalWaypointReached) Destroy(gameObject);
+                if (waitTimer.IsFinished())
                 {
-                    waitTimer.Reset(WaitTimes[currentWaypointIndex]);
+                    currentWaypointIndex++;
+
+                    if (currentWaypointIndex < WaitTimes.Length)
+                    {
+                        waitTimer.Reset(WaitTimes[currentWaypointIndex]);
+                    }
+                    SetWaypointSpeed();
                 }
-                SetWaypointSpeed();
             }
         }
-        else transform.position += direction.normalized * GetSpeed() * Time.deltaTime;
+        else
+        {
+            if (direction.magnitude < GetSpeed() * Time.deltaTime) transform.position += direction;
+            else transform.position += direction.normalized * GetSpeed() * Time.deltaTime;
+        }
     }
 
     /// <summary>
