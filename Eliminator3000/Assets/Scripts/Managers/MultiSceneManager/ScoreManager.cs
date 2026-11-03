@@ -6,11 +6,28 @@ using System;
 
 public class ScoreManager : MonoBehaviour
 {
+    public static ScoreManager Instance { get; private set; }
+
     private PlayerProfileManager playerProfileManager;
     private int currentLevelIndex = 0;
-    private List<KeyValuePair<string, int>> scoreList = new List<KeyValuePair<string, int>>();
+
+    public List<KeyValuePair<string, int>> ScoreList = new List<KeyValuePair<string, int>>();
+
     [SerializeField] private string scoreFileName = "Scores";
     private string scoreFilePath;
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+    }
 
     private void OnEnable()
     {
@@ -97,12 +114,12 @@ public class ScoreManager : MonoBehaviour
     private void CreateScorePair(int _playerIndex, int _score) // NEEDS PLAYER NAMES TO BE FILLED IN, CURRENTLY JUST USING PLAYER INDEX
     {
         Debug.Log(_score);
-        scoreList.Add(new KeyValuePair<string, int>(_playerIndex.ToString() + ": " + DateTime.Now.ToString(), _score));
+        ScoreList.Add(new KeyValuePair<string, int>(_playerIndex.ToString() + ": " + DateTime.Now.ToString(), _score));
     }
 
     private void SortScores()
     {
-        scoreList.Sort((pair1, pair2) => pair2.Value.CompareTo(pair1.Value));
+        ScoreList.Sort((pair1, pair2) => pair2.Value.CompareTo(pair1.Value));
     }
 
     private void WriteScoresToTXT()
@@ -113,11 +130,11 @@ public class ScoreManager : MonoBehaviour
         }
         File.Create(scoreFilePath).Dispose();
 
-        for (int i = 0; i < scoreList.Count; i++)
+        for (int i = 0; i < ScoreList.Count; i++)
         {
             using (StreamWriter writer = new StreamWriter(scoreFilePath, true))
             {
-                writer.WriteLine(scoreList[i].Key + " :: " + scoreList[i].Value);
+                writer.WriteLine(ScoreList[i].Key + " :: " + ScoreList[i].Value);
             }
         }
     }
@@ -141,7 +158,8 @@ public class ScoreManager : MonoBehaviour
                     readScores.Add(new KeyValuePair<string, int>(parts[0], score));
                 }
             }
-            scoreList = readScores;
+            ScoreList = readScores;
         }
+        SortScores();
     }
 }
