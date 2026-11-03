@@ -41,7 +41,6 @@ public class EventBus<T> where T : Event
     }    
 }
 
-
 public class LoadSceneEvent : Event
 {
     public string SceneName;
@@ -168,6 +167,15 @@ public class PlayerScoredEvent : Event
     {
         Player = cPlayer;
         Score = cScore;
+    }
+}
+
+public class LevelScoreCalculatedEvent : Event
+{
+    public int LevelIndex;
+    public LevelScoreCalculatedEvent(int _levelIndex)
+    {
+        LevelIndex = _levelIndex;
     }
 }
 

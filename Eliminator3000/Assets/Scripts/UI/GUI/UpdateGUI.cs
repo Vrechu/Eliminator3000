@@ -1,43 +1,53 @@
 using UnityEngine;
-using UnityEngine.InputSystem.LowLevel;
-using UnityEngine.UI;
+using TMPro;
+using System.Collections.Generic;
 
 public class UpdateGUI : MonoBehaviour
 {
+    //player1
+    [SerializeField] private GameObject player1GUI;
     [SerializeField]
-    private TMPro.TextMeshProUGUI
-        p1LivesGUI, p2LivesGUI,
-        p1HealthGUI, p2HealthGUI,
-        p1ScoreGUI, p2ScoreGUI,
-        winGUI,
-        loseGUI;
+    private TextMeshProUGUI
+        p1LivesGUI, p1HealthGUI, p1ScoreGUI;
     [SerializeField]
     private GameObject
-        p1GunGUI, p2GunGUI,
-        p1BaseGunGUI, p2BaseGunGUI,
-        p1RapidGunGUI, p2RapidGunGUI,
-        p1ClusterGunGUI, p2ClusterGunGUI;
+        p1GunGUI, p1BaseGunGUI, p1RapidGunGUI, p1ClusterGunGUI;
+
+    //player2
+    [SerializeField] private GameObject player2GUI;
+    [SerializeField]
+    private TextMeshProUGUI
+        p2LivesGUI, p2HealthGUI, p2ScoreGUI;
+    [SerializeField]
+    private GameObject
+        p2GunGUI, p2BaseGunGUI, p2RapidGunGUI, p2ClusterGunGUI;
+
+    [SerializeField] private TextMeshProUGUI winGUI, loseGUI, finalScoreGUI;
+
+    private bool levelScoreCalculated = false;
 
     private void OnEnable()
     {
-        EventBus<PlayerAvatarInstantiatedEvent>.Subscribe(EnablePlayerGUI);
+        EventBus<PlayerAvatarInstantiatedEvent>.Subscribe(OnPlayerAvatarInitiated);
         EventBus<PlayerLivesChangedEvent>.Subscribe(SetLivesGUI);
         EventBus<PlayerHealthChangedEvent>.Subscribe(SetHealthGUI);
         EventBus<ScoreChangedEvent>.Subscribe(SetScoreGUI);
         EventBus<GameWinEvent>.Subscribe(EnableWinGUI);
         EventBus<GameLoseEvent>.Subscribe(EnableLoseGUIgame);
         EventBus<PlayerGunSwapEvent>.Subscribe(SwitchGunGUI);
+        EventBus<LevelScoreCalculatedEvent>.Subscribe(OnLevelScoreCalculated);
     }
 
     private void OnDestroy()
     {
-        EventBus<PlayerAvatarInstantiatedEvent>.UnSubscribe(EnablePlayerGUI);
+        EventBus<PlayerAvatarInstantiatedEvent>.UnSubscribe(OnPlayerAvatarInitiated);
         EventBus<PlayerLivesChangedEvent>.UnSubscribe(SetLivesGUI);
         EventBus<PlayerHealthChangedEvent>.UnSubscribe(SetHealthGUI);
         EventBus<ScoreChangedEvent>.UnSubscribe(SetScoreGUI);
         EventBus<GameWinEvent>.UnSubscribe(EnableWinGUI);
         EventBus<GameLoseEvent>.UnSubscribe(EnableLoseGUIgame);
         EventBus<PlayerGunSwapEvent>.UnSubscribe(SwitchGunGUI);
+        EventBus<LevelScoreCalculatedEvent>.UnSubscribe(OnLevelScoreCalculated);
     }
 
     private void Start()
@@ -85,12 +95,10 @@ public class UpdateGUI : MonoBehaviour
     {
         if (winGUI.enabled) winGUI.enabled = false;
         if (loseGUI.enabled) loseGUI.enabled = false;
-        if (p1LivesGUI.enabled) p1LivesGUI.enabled = false;
-        if (p2LivesGUI.enabled) p2LivesGUI.enabled = false;
-        if (p1HealthGUI.enabled) p1HealthGUI.enabled = false;
-        if (p2HealthGUI.enabled) p2HealthGUI.enabled = false;
-        if (p1ScoreGUI.enabled) p1ScoreGUI.enabled = false;
-        if (p2ScoreGUI.enabled) p2ScoreGUI.enabled = false;
+        if (finalScoreGUI.enabled) finalScoreGUI.enabled = false;
+
+        if (player1GUI.activeSelf) player1GUI.SetActive(false);
+        if (player2GUI.activeSelf) player2GUI.SetActive(false);
 
         if (p1GunGUI.activeSelf) p1GunGUI.SetActive(false);
         if (p2GunGUI.activeSelf) p2GunGUI.SetActive(false);
@@ -105,78 +113,107 @@ public class UpdateGUI : MonoBehaviour
     private void EnableWinGUI(GameWinEvent _winEvent)
     {
         winGUI.enabled = true;
+        finalScoreGUI.enabled = true;
     }
 
     private void EnableLoseGUIgame(GameLoseEvent _loseEvent)
     {
         loseGUI.enabled = true;
+        finalScoreGUI.enabled = true;
     }
 
-    private void EnablePlayerGUI(PlayerAvatarInstantiatedEvent _playerAvatarInstantiatedEvent)
+    private void OnPlayerAvatarInitiated(PlayerAvatarInstantiatedEvent _playerAvatarInstantiatedEvent)
     {
-        if (_playerAvatarInstantiatedEvent.PlayerIndex == 0)
+        EnablePlayerGUI(_playerAvatarInstantiatedEvent.PlayerIndex, true);
+    }
+
+
+    private void EnablePlayerGUI(int _playerIndex, bool _enable)
+    {
+        if (_playerIndex == 0)
         {
-            p1LivesGUI.enabled = true;
-            p1HealthGUI.enabled = true;
-            p1ScoreGUI.enabled = true;
-            p1GunGUI.SetActive(true);
-            p1BaseGunGUI.SetActive(true);
+            player1GUI.SetActive(_enable);
+            p1BaseGunGUI.SetActive(_enable);
         }
-        else if (_playerAvatarInstantiatedEvent.PlayerIndex == 1)
+        else if (_playerIndex == 1)
         {
-            p2LivesGUI.enabled = true;
-            p2HealthGUI.enabled = true;
-            p2ScoreGUI.enabled = true;
-            p2GunGUI.SetActive(true);
-            p2BaseGunGUI.SetActive(true);
+            player2GUI.SetActive(_enable);
+            p2BaseGunGUI.SetActive(_enable);
         }
     }
 
-    private void SwitchGunGUI(PlayerGunSwapEvent playerGunSwapEvent)
+    private void SwitchGunGUI(PlayerGunSwapEvent _playerGunSwapEvent)
     {
-        if (playerGunSwapEvent.Player == 0)
+        if (_playerGunSwapEvent.Player == 0)
         {
-            switch (playerGunSwapEvent.GunIndex)
+            DisableGunGUI(_playerGunSwapEvent.Player);
+            switch (_playerGunSwapEvent.GunIndex)
             {
                 case 0:
                     p1BaseGunGUI.SetActive(true);
-                    p1RapidGunGUI.SetActive(false);
-                    p1ClusterGunGUI.SetActive(false);
-
                     break;
                 case 1:
-                    p1BaseGunGUI.SetActive(false);
                     p1RapidGunGUI.SetActive(true);
-                    p1ClusterGunGUI.SetActive(false);
                     break;
                 case 2:
-                    p1BaseGunGUI.SetActive(false);
-                    p1RapidGunGUI.SetActive(false);
                     p1ClusterGunGUI.SetActive(true);
                     break;
             }
 
         }
-        else if (playerGunSwapEvent.Player == 1)
+        else if (_playerGunSwapEvent.Player == 1)
         {
-            switch (playerGunSwapEvent.GunIndex)
+            switch (_playerGunSwapEvent.GunIndex)
             {
                 case 0:
                     p2BaseGunGUI.SetActive(true);
-                    p2RapidGunGUI.SetActive(false);
-                    p2ClusterGunGUI.SetActive(false);
                     break;
                 case 1:
-                    p2BaseGunGUI.SetActive(false);
                     p2RapidGunGUI.SetActive(true);
-                    p2ClusterGunGUI.SetActive(false);
                     break;
                 case 2:
-                    p2BaseGunGUI.SetActive(false);
-                    p2RapidGunGUI.SetActive(false);
                     p2ClusterGunGUI.SetActive(true);
                     break;
             }
+        }
+    }
+
+    private void DisableGunGUI(int _playerIndex)
+    {
+        if (_playerIndex == 0)
+        {
+            p1BaseGunGUI.SetActive(false);
+            p1RapidGunGUI.SetActive(false);
+            p1ClusterGunGUI.SetActive(false);
+        }
+        else if (_playerIndex == 1)
+        {
+            p2BaseGunGUI.SetActive(false);
+            p2RapidGunGUI.SetActive(false);
+            p2ClusterGunGUI.SetActive(false);
+        }
+    }
+
+    private void OnLevelScoreCalculated(LevelScoreCalculatedEvent _levelScoreCalculatedEvent)
+    {
+        if (levelScoreCalculated) return;
+        levelScoreCalculated = true;
+        List<KeyValuePair<int, int>> playerLevelScores = new List<KeyValuePair<int, int>> { new KeyValuePair<int, int>(0, 0), new KeyValuePair<int, int>(1, 0) };
+
+        for (int i = 0; i < PlayerProfileManager.Instance.PlayerProfiles.Length; i++)
+        {
+            if (PlayerProfileManager.Instance.PlayersJoined[i])
+            {
+                playerLevelScores[i] = new KeyValuePair<int, int>(i, PlayerProfileManager.Instance.PlayerProfiles[i].LevelScores[_levelScoreCalculatedEvent.LevelIndex]);
+            }
+        }
+
+        playerLevelScores.Sort((pair1, pair2) => pair2.Value.CompareTo(pair1.Value));
+        finalScoreGUI.text = "Final Scores:\n";
+        for (int i = 0; i < 2; i++)
+        {
+            if (!PlayerProfileManager.Instance.PlayersJoined[playerLevelScores[i].Key]) continue;
+            finalScoreGUI.text += $"Player {playerLevelScores[i].Key + 1} Score: {playerLevelScores[i].Value} \n";
         }
     }
 }

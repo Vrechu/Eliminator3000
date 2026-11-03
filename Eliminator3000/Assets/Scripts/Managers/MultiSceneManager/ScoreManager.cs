@@ -2,6 +2,7 @@ using UnityEngine;
 using System.IO;
 using System.Collections.Generic;
 using System;
+using UnityEngine.Rendering;
 
 
 public class ScoreManager : MonoBehaviour
@@ -36,6 +37,7 @@ public class ScoreManager : MonoBehaviour
         EventBus<PlayerAvatarInstantiatedEvent>.Subscribe(OnPlayerSpawned);
         EventBus<LevelFinishedEvent>.Subscribe(OnLevelFinished);
         EventBus<GameFinishedEvent>.Subscribe(OnGameFinished);
+        EventBus<GameLoseEvent>.Subscribe(OnGameLost);
     }
 
     private void OnDestroy()
@@ -45,6 +47,7 @@ public class ScoreManager : MonoBehaviour
         EventBus<PlayerAvatarInstantiatedEvent>.UnSubscribe(OnPlayerSpawned);
         EventBus<LevelFinishedEvent>.UnSubscribe(OnLevelFinished);
         EventBus<GameFinishedEvent>.UnSubscribe(OnGameFinished);
+        EventBus<GameLoseEvent>.UnSubscribe(OnGameLost);
     }
 
     private void Start()
@@ -90,8 +93,15 @@ public class ScoreManager : MonoBehaviour
         CalculateTotalScore();
     }
 
+    private void OnGameLost(GameLoseEvent _gameLoseEvent)
+    {
+        CalculateTotalScore();
+        OnGameFinished(new GameFinishedEvent());
+    }
+
     private void CalculateTotalScore()
     {
+        EventBus<LevelScoreCalculatedEvent>.Publish(new LevelScoreCalculatedEvent(currentLevelIndex));
         for (int i = 0; i < playerProfileManager.PlayerProfiles.Length; i++)
         {
             if (!playerProfileManager.PlayersJoined[i]) continue;
@@ -101,7 +111,6 @@ public class ScoreManager : MonoBehaviour
 
     private void OnGameFinished(GameFinishedEvent _gameFinishedEvent)
     {
-        CalculateTotalScore();
         for (int i = 0; i < playerProfileManager.PlayerProfiles.Length; i++)
         {
             if (!playerProfileManager.PlayersJoined[i]) continue;
@@ -113,7 +122,6 @@ public class ScoreManager : MonoBehaviour
 
     private void CreateScorePair(int _playerIndex, int _score) // NEEDS PLAYER NAMES TO BE FILLED IN, CURRENTLY JUST USING PLAYER INDEX
     {
-        Debug.Log(_score);
         ScoreList.Add(new KeyValuePair<string, int>(_playerIndex.ToString() + ": " + DateTime.Now.ToString(), _score));
     }
 

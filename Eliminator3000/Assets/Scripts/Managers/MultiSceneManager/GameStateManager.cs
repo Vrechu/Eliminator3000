@@ -12,7 +12,7 @@ public class GameStateManager : MonoBehaviour
         Ingame,
         Paused,
         Lost,
-        Won,
+        LevelCleared,
         MainMenu
     }
     public GameState CurrentState { get; private set; }
@@ -101,7 +101,7 @@ public class GameStateManager : MonoBehaviour
     /// <param name="_finishedLevelEvent">The event data for the finished level.</param>
     private void OnFinishedLevel(LevelFinishedEvent _finishedLevelEvent)
     {
-        CurrentState = GameState.Won;
+        CurrentState = GameState.LevelCleared;
         EventBus<GameWinEvent>.Publish(new GameWinEvent());
     }
 
