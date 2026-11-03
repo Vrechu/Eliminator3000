@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -3431645929677009442, guid: 62e0f6c2f5e9beb48a8023e7f251e63a, type: 3}
+      propertyPath: PlayerID
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1570547598467343979, guid: 62e0f6c2f5e9beb48a8023e7f251e63a, type: 3}
       propertyPath: m_Name
       value: Ship2_dummy 1

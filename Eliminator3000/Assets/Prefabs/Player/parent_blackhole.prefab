@@ -128,5 +128,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BlackHoleBehaviour
   PlayerID: -1
-  blackHoleLifeTime: 10
-  suckSpeed: 50
+  blackHoleLifeTime: 3
+  suckSpeed: 20

@@ -145,8 +145,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyShoot
   projectilePrefab: {fileID: 4603973788345293308, guid: 0b47b98ede419214dbe5631d4d588960, type: 3}
-  aimAtPlayer: 0
-  shootInterval: 6
+  aimAtPlayer: 1
+  shootInterval: 1.6
   multiShot: 0
   shotOrigins: []
 --- !u!114 &285611534498342072
@@ -205,12 +205,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a53e798591729948951d9450bf76668, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MoveEnemy
-  Waypoints: []
-  WaypointOrder: 
-  WaypointSpeeds: []
-  WaitTimes: []
+  Waypoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  WaypointOrder: 0800000007000000
+  WaypointSpeeds:
+  - 20
+  - 5
+  WaitTimes:
+  - 0
+  - 0.3
   EndPoint: {fileID: 0}
-  speed: 2
+  speed: 22
 --- !u!1001 &2409449810566581684
 PrefabInstance:
   m_ObjectHideFlags: 0
