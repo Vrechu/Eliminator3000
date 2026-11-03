@@ -56,6 +56,14 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: f4c391917261908408ace917e342928b, type: 2}
+    - target: {fileID: 7285577884124277290, guid: 30cdb114b3e418747b72e2495f61ad98, type: 3}
+      propertyPath: PlayerID
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7285577884124277290, guid: 30cdb114b3e418747b72e2495f61ad98, type: 3}
+      propertyPath: blackHoleLifeTime
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

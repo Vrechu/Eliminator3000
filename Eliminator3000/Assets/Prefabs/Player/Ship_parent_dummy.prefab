@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8929397532996940506}
   - component: {fileID: 268003700277272587}
   - component: {fileID: 3347679668171354397}
+  - component: {fileID: -3431645929677009442}
   m_Layer: 6
   m_Name: Ship_parent_dummy
   m_TagString: Untagged
@@ -140,3 +141,17 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &-3431645929677009442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1570547598467343979}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5609b26e59e33247ac48f6e0b0c1d01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DummyBehaviour
+  PlayerID: -1
+  dummyLifeTime: 8

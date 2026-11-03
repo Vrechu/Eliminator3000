@@ -127,7 +127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MoveProjectile
   speed: 120
-  lifeSeconds: 3
+  lifeSeconds: 1.2
 --- !u!114 &3322396033197620980
 MonoBehaviour:
   m_ObjectHideFlags: 0
