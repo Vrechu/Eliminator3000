@@ -22,7 +22,7 @@ public class MoveEnemy : MonoBehaviour
         gameStatemanager = GameStateManager.Instance;
         blackHoleManager = BlackHoleManager.Instance;
         waitTimer = new Timer(WaitTimes[currentWaypointIndex]);
-        baseSpeed = speed;
+        SetWaypointSpeed();
     }
 
     private void Update()
@@ -46,15 +46,11 @@ public class MoveEnemy : MonoBehaviour
             {
                 currentWaypointIndex++;
 
-                if (currentWaypointIndex < WaypointSpeeds.Length)
-                {
-                    speed = WaypointSpeeds[currentWaypointIndex];
-                    if (speed <= 0) speed = baseSpeed; // Reset to base speed if the speed is zero or negative
-                }
                 if(currentWaypointIndex < WaitTimes.Length)
                 {
                     waitTimer.Reset(WaitTimes[currentWaypointIndex]);
                 }
+                SetWaypointSpeed();
             }
         }
         else transform.position += direction.normalized * GetSpeed() * Time.deltaTime;
@@ -79,9 +75,19 @@ public class MoveEnemy : MonoBehaviour
         }
     }
 
-    public void SetSpeed(float _newSpeed)
+    public void SetBaseSpeed(float _newSpeed)
     {
-        speed = _newSpeed;
+        baseSpeed = _newSpeed;
+    }
+
+    private void SetWaypointSpeed()
+    {
+        if (currentWaypointIndex < WaypointSpeeds.Length)
+        {
+            speed = WaypointSpeeds[currentWaypointIndex];
+            if (speed <= 0) speed = baseSpeed; // Reset to base speed if the speed is zero or negative
+        }
+        else speed = baseSpeed; // Reset to base speed if there are no more waypoints
     }
 
     private float GetSpeed()
