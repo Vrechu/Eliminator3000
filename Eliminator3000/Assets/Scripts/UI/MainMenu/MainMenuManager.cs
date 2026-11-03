@@ -1,9 +1,12 @@
 using System.Globalization;
+using System.Runtime.CompilerServices;
 using UnityEngine;
+using TMPro;
 
 public class MainMenuManager : MonoBehaviour
 {
     [SerializeField] private string firstSceneName = "SampleScene";
+    [SerializeField] private GameObject[] pages;
     [SerializeField] private GameObject p1JoinedUI, p2JoinedUI;
 
     private void Awake()
@@ -19,6 +22,11 @@ public class MainMenuManager : MonoBehaviour
     private void OnDestroy()
     {
         EventBus<PlayerJoinedEvent>.UnSubscribe(OnPlayerJoined);
+    }
+
+    private void Start()
+    {
+        OpenPage(0);
     }
 
     public void OnStartButtonPressed()
@@ -42,5 +50,19 @@ public class MainMenuManager : MonoBehaviour
     {
         p1JoinedUI.SetActive(false);
         p2JoinedUI.SetActive(false);
+    }
+
+    public void OpenPage(int _pageIndex)
+    {
+        ClosePages();
+        pages[_pageIndex].SetActive(true);
+    }
+
+    private void ClosePages()
+    {
+        for (int i = 0; i < pages.Length; i++)
+        {
+            pages[i].SetActive(false);
+        }
     }
 }
