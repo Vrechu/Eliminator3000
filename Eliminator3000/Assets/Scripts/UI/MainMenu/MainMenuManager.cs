@@ -1,7 +1,4 @@
-using System.Globalization;
-using System.Runtime.CompilerServices;
 using UnityEngine;
-using TMPro;
 
 public class MainMenuManager : MonoBehaviour
 {

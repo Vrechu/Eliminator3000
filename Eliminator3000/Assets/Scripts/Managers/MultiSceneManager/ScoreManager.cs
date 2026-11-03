@@ -2,7 +2,6 @@ using UnityEngine;
 using System.IO;
 using System.Collections.Generic;
 using System;
-using UnityEngine.Rendering;
 
 
 public class ScoreManager : MonoBehaviour

@@ -1,6 +1,4 @@
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.Rendering.Universal.Internal;
 
 public class MoveEnemy : MonoBehaviour
 {
