@@ -260,10 +260,10 @@ public class PlayerShieldDropEvent : Event
 
 public class PlayerDummyPickupEvent : Event 
 {
-    public int Player;
+    public int PlayerIndex;
     public PlayerDummyPickupEvent(int cPlayer)
     {
-        Player = cPlayer;
+        PlayerIndex = cPlayer;
     }
 }
 
@@ -289,10 +289,10 @@ public class DummyDespawnEvent : Event
 
 public class PlayerBlackHolePickupEvent : Event
 {
-    public int Player;
+    public int PlayerIndex;
     public PlayerBlackHolePickupEvent(int cPlayer)
     {
-        Player= cPlayer;
+        PlayerIndex= cPlayer;
     }
 }
 

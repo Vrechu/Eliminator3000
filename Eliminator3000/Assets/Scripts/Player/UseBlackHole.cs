@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 public class UseBlackHole : MonoBehaviour
 {
-    private int playerID;
+    private int playerIndex;
 
     [SerializeField] private GameObject blackHolePrefab;
     [SerializeField] private float spawnDistance = 3;
@@ -33,8 +33,8 @@ public class UseBlackHole : MonoBehaviour
     {
         if (TryGetComponent<InGameAvatarInfo>(out InGameAvatarInfo _info))
         {
-            playerID = _info.PlayerID;
-            if (playerID < 0 || playerID > 1) Debug.LogError("Invalid PLayerID set on: " + gameObject.name);
+            playerIndex = _info.PlayerID;
+            if (playerIndex < 0 || playerIndex > 1) Debug.LogError("Invalid PLayerID set on: " + gameObject.name);
         }
         else Debug.LogError("No InGameAvatarInfo component found. Every Playerprefab should have one!");
     }
@@ -45,13 +45,13 @@ public class UseBlackHole : MonoBehaviour
         if (gameStateManager == null) return;
         if (gameStateManager.CurrentState
             != GameStateManager.GameState.Ingame) return;
-        if (!playerProfileManager.PlayerProfiles[playerID].BlackHole) return;
+        if (!playerProfileManager.PlayerProfiles[playerIndex].BlackHole) return;
         if (_context.performed) SpawnBlackHole();
     }
 
-    private void OnPickup(PlayerBlackHolePickupEvent _event)
+    private void OnPickup(PlayerBlackHolePickupEvent _pickupEvent)
     {
-        if (instant) SpawnBlackHole();
+        if (instant && _pickupEvent.PlayerIndex == playerIndex) SpawnBlackHole();
     }
 
     private void SpawnBlackHole()
@@ -60,13 +60,13 @@ public class UseBlackHole : MonoBehaviour
 
         if (newBlackHole.TryGetComponent<BlackHoleBehaviour>(out BlackHoleBehaviour _blackHoleBehaviour))
         {
-            _blackHoleBehaviour.PlayerID = playerID;
+            _blackHoleBehaviour.PlayerID = playerIndex;
             if (_blackHoleBehaviour.PlayerID < 0 || _blackHoleBehaviour.PlayerID > 1) Debug.LogError("Invalid PlayerID in black hole!");
         }
         else
         {
             Debug.LogError("No Black Hole Behaviour component found in Black Hole prefab!");
         }
-        playerProfileManager.PlayerProfiles[playerID].BlackHole = false;
+        playerProfileManager.PlayerProfiles[playerIndex].BlackHole = false;
     }
 }

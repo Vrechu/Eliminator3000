@@ -131,7 +131,7 @@ public class PlayerProfileManager : MonoBehaviour
 
     private void OnDummyPickup(PlayerDummyPickupEvent _playerDummyPickupEvent)
     {
-        GainDummy(_playerDummyPickupEvent.Player);
+        GainDummy(_playerDummyPickupEvent.PlayerIndex);
     }
 
     private void GainDummy(int _playerIndex)
@@ -141,7 +141,7 @@ public class PlayerProfileManager : MonoBehaviour
 
     private void OnBlackHolePickup(PlayerBlackHolePickupEvent _playerBlackHolePickupEvent)
     {
-        GainBlackHole(_playerBlackHolePickupEvent.Player);
+        GainBlackHole(_playerBlackHolePickupEvent.PlayerIndex);
     }
 
     private void GainBlackHole(int _playerIndex)

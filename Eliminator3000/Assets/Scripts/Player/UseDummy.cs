@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 public class UseDummy : MonoBehaviour
 {
-    private int playerID;
+    private int playerIndex;
 
     [SerializeField] private GameObject dummyPrefab;
 
@@ -32,8 +32,8 @@ public class UseDummy : MonoBehaviour
     {
         if (TryGetComponent<InGameAvatarInfo>(out InGameAvatarInfo _info))
         {
-            playerID = _info.PlayerID;
-            if (playerID < 0 || playerID > 1) Debug.LogError("Invalid PLayerID set on: " + gameObject.name);
+            playerIndex = _info.PlayerID;
+            if (playerIndex < 0 || playerIndex > 1) Debug.LogError("Invalid PLayerID set on: " + gameObject.name);
         }
         else Debug.LogError("No InGameAvatarInfo component found. Every Playerprefab should have one!");
     }
@@ -44,13 +44,13 @@ public class UseDummy : MonoBehaviour
         if (gameStateManager == null) return;
         if (gameStateManager.CurrentState
             != GameStateManager.GameState.Ingame) return;
-        if (!playerProfileManager.PlayerProfiles[playerID].Dummy) return;
+        if (!playerProfileManager.PlayerProfiles[playerIndex].Dummy) return;
         if (_context.performed) SpawnDummy();
     }
 
-    private void OnPickup(PlayerDummyPickupEvent _event)
+    private void OnPickup(PlayerDummyPickupEvent _pickupEvent)
     {
-        if (instant) SpawnDummy();
+        if (instant && _pickupEvent.PlayerIndex == playerIndex) SpawnDummy();
     }
 
     private void SpawnDummy()
@@ -58,11 +58,11 @@ public class UseDummy : MonoBehaviour
         GameObject newDummy = Instantiate(dummyPrefab, transform.position, Quaternion.identity);
         
         if (newDummy.TryGetComponent<DummyBehaviour>(out DummyBehaviour _dummyBehaviour)){
-            _dummyBehaviour.PlayerID = playerID;
+            _dummyBehaviour.PlayerID = playerIndex;
             if (_dummyBehaviour.PlayerID < 0 || _dummyBehaviour.PlayerID > 1) Debug.LogError("Invalid PlayerID in dummy!");
         }
         else { Debug.LogError("No Dummy Behaviour component found in dummy prefab!");
         }
-        playerProfileManager.PlayerProfiles[playerID].Dummy = false;
+        playerProfileManager.PlayerProfiles[playerIndex].Dummy = false;
     }
 }
