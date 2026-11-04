@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 67245399808483596}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 13.19}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -73,7 +73,7 @@ Transform:
   m_GameObject: {fileID: 325254949786434140}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 27.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -113,7 +113,7 @@ Transform:
   m_GameObject: {fileID: 640084443100958424}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -11.74, y: 33.81, z: -11.99}
+  m_LocalPosition: {x: -23.6, y: 33.81, z: -11.99}
   m_LocalScale: {x: 25.128, y: 22.552, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -129,7 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1861149323039832394}
   m_Layer: 0
-  m_Name: EnemyWaypoint5
+  m_Name: EnemyWaypoint4
   m_TagString: Untagged
   m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -144,7 +144,7 @@ Transform:
   m_GameObject: {fileID: 957203305717661064}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -16.89, y: 10, z: 0.29999924}
+  m_LocalPosition: {x: -16.63, y: 11.19, z: -3.36}
   m_LocalScale: {x: 25.128, y: 22.552, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -160,9 +160,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3149463032701975217}
   m_Layer: 0
-  m_Name: EnemySpawnpoint3
+  m_Name: EnemySpawnpoint2
   m_TagString: Untagged
-  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 3443629218296621865, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -175,7 +175,7 @@ Transform:
   m_GameObject: {fileID: 1758188515736089569}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 11.03, y: 5.16, z: 0.29999924}
+  m_LocalPosition: {x: 14.69, y: 10, z: 0.29999924}
   m_LocalScale: {x: 25.128, y: 22.552, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -191,7 +191,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7855392505798108190}
   m_Layer: 0
-  m_Name: EnemyWaypoint6
+  m_Name: EnemyWaypoint5
   m_TagString: Untagged
   m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -206,7 +206,7 @@ Transform:
   m_GameObject: {fileID: 1829994356185268658}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 17.62, y: 10, z: 0.29999924}
+  m_LocalPosition: {x: 15.82, y: 9.56, z: -3.34}
   m_LocalScale: {x: 25.128, y: 22.552, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -222,7 +222,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1109639881229387220}
   m_Layer: 0
-  m_Name: EnemyWaypoint3 (1)
+  m_Name: EnemyWaypoint7
   m_TagString: Untagged
   m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -237,7 +237,7 @@ Transform:
   m_GameObject: {fileID: 2015457816459140911}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -18.52, y: 11.27, z: 7.19}
+  m_LocalPosition: {x: -14.703, y: 8.83, z: 7.19}
   m_LocalScale: {x: 25.128, y: 22.552, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -268,7 +268,7 @@ Transform:
   m_GameObject: {fileID: 2028903181132137916}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -20.4, y: 10, z: 0.29999924}
+  m_LocalPosition: {x: 21.6, y: 39.72, z: -5.76}
   m_LocalScale: {x: 25.128, y: 22.552, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -361,7 +361,7 @@ Transform:
   m_GameObject: {fileID: 2859234195295350777}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.27, y: 11.42, z: 0.28}
+  m_LocalPosition: {x: 17.11, y: 9.5, z: 0.28}
   m_LocalScale: {x: 25.128, y: 22.552, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -377,9 +377,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7773101141477228397}
   m_Layer: 0
-  m_Name: EnemyEndPoint4
+  m_Name: EnemyEndPoint3
   m_TagString: Untagged
-  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -392,7 +392,7 @@ Transform:
   m_GameObject: {fileID: 2986496806540477337}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -12.19, y: 4.8, z: 0.29999924}
+  m_LocalPosition: {x: 16.54, y: 4.8, z: 0.29999924}
   m_LocalScale: {x: 25.128, y: 22.552, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -408,7 +408,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3620422975511334344}
   m_Layer: 0
-  m_Name: EnemyWaypoint3
+  m_Name: EnemyWaypoint2
   m_TagString: Untagged
   m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -423,7 +423,7 @@ Transform:
   m_GameObject: {fileID: 3027901728138667746}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 11.03, y: 5.16, z: 0.29999924}
+  m_LocalPosition: {x: 15.4, y: 10, z: 5.84}
   m_LocalScale: {x: 25.128, y: 22.552, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -439,7 +439,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4737328978728345641}
   m_Layer: 0
-  m_Name: EnemyWaypoint4
+  m_Name: EnemyWaypoint3
   m_TagString: Untagged
   m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -454,7 +454,7 @@ Transform:
   m_GameObject: {fileID: 3505452769003480696}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -12.19, y: 4.8, z: 0.29999924}
+  m_LocalPosition: {x: -18.67, y: 16.33, z: 4.68}
   m_LocalScale: {x: 25.128, y: 22.552, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -501,9 +501,9 @@ GameObject:
   m_Component:
   - component: {fileID: 436730792152948565}
   m_Layer: 0
-  m_Name: EnemySpawnpoint4
+  m_Name: EnemySpawnpoint3
   m_TagString: Untagged
-  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 3443629218296621865, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -516,7 +516,7 @@ Transform:
   m_GameObject: {fileID: 4258550304874136969}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -12.19, y: 4.8, z: 0.29999924}
+  m_LocalPosition: {x: -28.2, y: 11.58, z: -19.18}
   m_LocalScale: {x: 25.128, y: 22.552, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -532,7 +532,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7431577479308830174}
   m_Layer: 0
-  m_Name: EnemyEndPoint3 (1)
+  m_Name: EnemyEndPoint4
   m_TagString: Untagged
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -609,7 +609,7 @@ Transform:
   m_GameObject: {fileID: 4794873140003155247}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -23.6, y: 33.81, z: -11.99}
+  m_LocalPosition: {x: 30.5, y: 34.1, z: 30.42}
   m_LocalScale: {x: 25.128, y: 22.552, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -625,9 +625,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7151734912332822281}
   m_Layer: 0
-  m_Name: EnemySpawnpoint2
+  m_Name: EnemySpawnpoint1
   m_TagString: Untagged
-  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 3443629218296621865, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -640,7 +640,7 @@ Transform:
   m_GameObject: {fileID: 4956123952508737489}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 11.23, y: 1.98, z: 0.29999924}
+  m_LocalPosition: {x: 14.87, y: 2, z: 0.29999924}
   m_LocalScale: {x: 25.128, y: 22.552, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -656,7 +656,7 @@ GameObject:
   m_Component:
   - component: {fileID: 127112115360521062}
   m_Layer: 0
-  m_Name: EnemyWaypoint1
+  m_Name: EnemyWaypoint0
   m_TagString: Untagged
   m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -671,7 +671,7 @@ Transform:
   m_GameObject: {fileID: 5143655640826503980}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -12.1, y: 2.2, z: 0.10000038}
+  m_LocalPosition: {x: -11.89, y: 2, z: 0.10000038}
   m_LocalScale: {x: 25.128, y: 22.552, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -724,22 +724,51 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fad9b7f842a2f0f45beb2f7df5bd4990, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnEnemy
-  enemyWaveInfos: []
+  enemyWaveInfos:
+  - {fileID: 11400000, guid: b995e0cb30ef57d41b6dc259ed3d5e4c, type: 2}
+  - {fileID: 11400000, guid: d1e55ae1dd0adb444974fa85d7e1845f, type: 2}
+  - {fileID: 11400000, guid: 8ca77a809036a404f9488bf54e6e9e6c, type: 2}
+  - {fileID: 11400000, guid: d94d426a618d4564fa7f40336ea9c923, type: 2}
+  - {fileID: 11400000, guid: 47eb9bfe50d8f254189c6cc2747784a9, type: 2}
+  - {fileID: 11400000, guid: fb2687f9cc70fb647a2032e57780a313, type: 2}
+  - {fileID: 11400000, guid: 1a95d5cd29d35664bb6be0004fead866, type: 2}
+  - {fileID: 11400000, guid: a7e34f0c6cf84b64895ac72a9b88a1ce, type: 2}
+  - {fileID: 11400000, guid: f3c96f872551f684987683192090cda5, type: 2}
   spawnPoints:
   - {fileID: 8038111258316202752}
   - {fileID: 7151734912332822281}
   - {fileID: 3149463032701975217}
   - {fileID: 436730792152948565}
+  - {fileID: 3246724562627045593}
+  - {fileID: 3848495071566580358}
+  - {fileID: 5612986642101811737}
+  - {fileID: 1322656476457598360}
+  - {fileID: 5092418803151519874}
   waypoints:
   - {fileID: 127112115360521062}
   - {fileID: 5676382340096168060}
   - {fileID: 3620422975511334344}
   - {fileID: 4737328978728345641}
+  - {fileID: 1861149323039832394}
+  - {fileID: 7855392505798108190}
+  - {fileID: 8565183092019663413}
+  - {fileID: 1109639881229387220}
+  - {fileID: 7870638668348977205}
+  - {fileID: 3517209652034804334}
+  - {fileID: 2462037401500076217}
+  - {fileID: 7699178714502477839}
+  - {fileID: 3866318471740608977}
+  - {fileID: 6869120717756692740}
+  - {fileID: 5948463661519340195}
+  - {fileID: 5081089546283679344}
+  - {fileID: 6025589932324095459}
   endPoints:
   - {fileID: 5312526569585590026}
   - {fileID: 3833774080937637365}
   - {fileID: 3813538881196404381}
   - {fileID: 7773101141477228397}
+  - {fileID: 7431577479308830174}
+  - {fileID: 4908305596810641042}
 --- !u!1 &5695404979163047000
 GameObject:
   m_ObjectHideFlags: 0
@@ -849,9 +878,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8038111258316202752}
   m_Layer: 0
-  m_Name: EnemySpawnpoint1
+  m_Name: EnemySpawnpoint0
   m_TagString: Untagged
-  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 3443629218296621865, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -864,7 +893,7 @@ Transform:
   m_GameObject: {fileID: 6287967364243926638}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -12.1, y: 2.2, z: 0.10000038}
+  m_LocalPosition: {x: -11.74, y: 33.81, z: -11.99}
   m_LocalScale: {x: 25.128, y: 22.552, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -911,9 +940,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3833774080937637365}
   m_Layer: 0
-  m_Name: EnemyEndPoint2
+  m_Name: EnemyEndPoint1
   m_TagString: Untagged
-  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -926,7 +955,7 @@ Transform:
   m_GameObject: {fileID: 6838865953008989763}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 11.23, y: 1.98, z: 0.29999924}
+  m_LocalPosition: {x: 19.39, y: 8.37, z: 36.72}
   m_LocalScale: {x: 25.128, y: 22.552, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -957,7 +986,7 @@ Transform:
   m_GameObject: {fileID: 7065860239093189758}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -14.31, y: 3.85, z: 7.5}
+  m_LocalPosition: {x: -12.33, y: 3.85, z: 7.5}
   m_LocalScale: {x: 25.128, y: 22.552, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -973,7 +1002,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5676382340096168060}
   m_Layer: 0
-  m_Name: EnemyWaypoint2
+  m_Name: EnemyWaypoint1
   m_TagString: Untagged
   m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -988,7 +1017,7 @@ Transform:
   m_GameObject: {fileID: 7666205439350417369}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 11.23, y: 1.98, z: 0.29999924}
+  m_LocalPosition: {x: 12.67, y: 4.95, z: 0.29999924}
   m_LocalScale: {x: 25.128, y: 22.552, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1050,7 +1079,7 @@ Transform:
   m_GameObject: {fileID: 8208913320979537491}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 15.42, y: 3.94, z: 0.29999924}
+  m_LocalPosition: {x: 13.24, y: 3.94, z: 0.29999924}
   m_LocalScale: {x: 25.128, y: 22.552, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1066,7 +1095,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7870638668348977205}
   m_Layer: 0
-  m_Name: EnemyWaypoint7 (1)
+  m_Name: EnemyWaypoint8
   m_TagString: Untagged
   m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -1097,9 +1126,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5312526569585590026}
   m_Layer: 0
-  m_Name: EnemyEndPoint1
+  m_Name: EnemyEndPoint0
   m_TagString: Untagged
-  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1112,7 +1141,7 @@ Transform:
   m_GameObject: {fileID: 8392093796908105194}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -12.1, y: 2.2, z: 0.10000038}
+  m_LocalPosition: {x: -22.75, y: 9.65, z: 25.4}
   m_LocalScale: {x: 25.128, y: 22.552, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1128,7 +1157,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8565183092019663413}
   m_Layer: 0
-  m_Name: EnemyWaypoint7
+  m_Name: EnemyWaypoint6
   m_TagString: Untagged
   m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -1143,7 +1172,7 @@ Transform:
   m_GameObject: {fileID: 8474212043363321060}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 29.86, y: 10, z: 0.29999924}
+  m_LocalPosition: {x: 11.21, y: 3.38, z: 7.5}
   m_LocalScale: {x: 25.128, y: 22.552, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1159,9 +1188,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3813538881196404381}
   m_Layer: 0
-  m_Name: EnemyEndPoint3
+  m_Name: EnemyEndPoint2
   m_TagString: Untagged
-  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1174,7 +1203,7 @@ Transform:
   m_GameObject: {fileID: 8778575055944080855}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 11.03, y: 5.16, z: 0.29999924}
+  m_LocalPosition: {x: 31.42, y: 9.52, z: 33.21}
   m_LocalScale: {x: 25.128, y: 22.552, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

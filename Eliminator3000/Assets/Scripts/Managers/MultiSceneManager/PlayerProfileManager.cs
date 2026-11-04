@@ -9,7 +9,6 @@ public class PlayerProfileManager : MonoBehaviour
     [SerializeField] private GameObject[] playerPrefabs;
     public bool[] PlayersJoined = new bool[2] { false, false };
 
-    private GameStateManager gameStateManager;
 
     private void Awake()
     {
@@ -38,11 +37,6 @@ public class PlayerProfileManager : MonoBehaviour
         EventBus<PlayerShieldPickupEvent>.UnSubscribe(OnShieldPickup);
         EventBus<PlayerDummyPickupEvent>.UnSubscribe(OnDummyPickup);
         EventBus<PlayerBlackHolePickupEvent>.UnSubscribe(OnBlackHolePickup);
-    }
-
-    private void Start()
-    {
-        gameStateManager = GameStateManager.Instance;
     }
 
     private void Update()
@@ -82,10 +76,10 @@ public class PlayerProfileManager : MonoBehaviour
     private void CheckJoinInput()
     {
         if (Keyboard.current == null) return;
-        if (!(gameStateManager.CurrentState == GameStateManager.GameState.MainMenu
-            || gameStateManager.CurrentState == GameStateManager.GameState.Pregame
-            || gameStateManager.CurrentState == GameStateManager.GameState.Ingame
-            || gameStateManager.CurrentState == GameStateManager.GameState.Paused)) return;
+        if (!(GameStateManager.Instance.CurrentState == GameStateManager.GameState.MainMenu
+            || GameStateManager.Instance.CurrentState == GameStateManager.GameState.Pregame
+            || GameStateManager.Instance.CurrentState == GameStateManager.GameState.Ingame
+            || GameStateManager.Instance.CurrentState == GameStateManager.GameState.Paused)) return;
         if (!PlayersJoined[0]
             && Keyboard.current.spaceKey.wasPressedThisFrame)
         {
