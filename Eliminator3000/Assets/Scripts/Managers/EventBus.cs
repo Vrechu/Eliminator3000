@@ -207,10 +207,12 @@ public class PlayerGunAmmoChangedEvent : Event
 {
     public int Player;
     public int NewAmmo;
-    public PlayerGunAmmoChangedEvent(int cPlayer, int cNewAmmo)
+    public bool InfiniteAmmo;
+    public PlayerGunAmmoChangedEvent(int cPlayer, int cNewAmmo, bool cInfiniteAmmo)
     {
         Player = cPlayer;
         NewAmmo = cNewAmmo;
+        InfiniteAmmo = cInfiniteAmmo;
     }
 }
 
