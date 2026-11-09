@@ -9,8 +9,9 @@ public class GunProfile : ScriptableObject
     [TextArea(15, 20), SerializeField] 
     private string Info;
 
-    public bool Unlocked;
+    public bool UnlockedFromStart;
     public GameObject ProjectilePrefab;
+    public bool InfiniteAmmo;
     public int MaxAmmo;
     public int AmmoCostPerShot;
     public float FireRate;

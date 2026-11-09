@@ -6,6 +6,7 @@ public class SetGunType : MonoBehaviour
     private int playerID = -1;
     [SerializeField] private GameObject[] gunModels;
     [SerializeField] private GunProfile[] guns;
+    private bool[] unlocked;
     private int[] ammos;
     private int currentGunIndex = 0;
 
@@ -27,6 +28,7 @@ public class SetGunType : MonoBehaviour
     private void Start()
     {
         ammos = new int[guns.Length];
+        unlocked = new bool[guns.Length];
         SetPlayerID();
 
         gameStateManager = GameStateManager.Instance;
@@ -35,6 +37,7 @@ public class SetGunType : MonoBehaviour
         GunsViable();
         MarkProjectiles();
         ResetGunUnlocks();
+        UnlockBaseGuns();
     }
 
     private void SetPlayerID()
@@ -60,10 +63,11 @@ public class SetGunType : MonoBehaviour
     {
         DisableModels();
         currentGunIndex = _gunIndex;
-        gunModels[_gunIndex].SetActive(true);
+        gunModels[_gunIndex].SetActive(true);        
         shootTimer.Reset(0);
         EventBus<PlayerGunSwapEvent>.Publish(new PlayerGunSwapEvent(playerID, _gunIndex));
-        EventBus<PlayerGunAmmoChangedEvent>.Publish(new PlayerGunAmmoChangedEvent(playerID, ammos[_gunIndex]));
+        EventBus<PlayerGunAmmoChangedEvent>.Publish(new PlayerGunAmmoChangedEvent(
+            playerID, ammos[_gunIndex], GetCurrentGunProfile().InfiniteAmmo));
     }
 
     /// <summary>
@@ -88,7 +92,7 @@ public class SetGunType : MonoBehaviour
     {
         if (_playerGunPickupEvent.Player == playerID)
         {
-            guns[_playerGunPickupEvent.GunIndex].Unlocked = true;
+            unlocked[_playerGunPickupEvent.GunIndex] = true;
             ammos[_playerGunPickupEvent.GunIndex] = guns[_playerGunPickupEvent.GunIndex].MaxAmmo;
             SetGun(_playerGunPickupEvent.GunIndex);
         }
@@ -177,14 +181,14 @@ public class SetGunType : MonoBehaviour
     {
         for (int i = currentGunIndex + 1; i < guns.Length; i++)
         {
-            if (guns[i].Unlocked)
+            if (unlocked[i])
             {
                 return i;
             }
         }
         for (int i = 0; i < currentGunIndex; i++)
         {
-            if (guns[i].Unlocked)
+            if (unlocked[i])
             {
                 return i;
             }
@@ -200,15 +204,15 @@ public class SetGunType : MonoBehaviour
     {
         for (int i = 1; i < guns.Length; i++)
         {
-            guns[i].Unlocked = false;
+            unlocked[i] = false;
         }
     }
 
     public void ReduceAmmo(int _amount)
     {
-        if (currentGunIndex ==0) return; // Base gun has infinite ammo
         ammos[currentGunIndex] -= _amount;
-        EventBus<PlayerGunAmmoChangedEvent>.Publish(new PlayerGunAmmoChangedEvent(playerID, ammos[currentGunIndex]));
+        EventBus<PlayerGunAmmoChangedEvent>.Publish(new PlayerGunAmmoChangedEvent(
+            playerID, ammos[currentGunIndex], GetCurrentGunProfile().InfiniteAmmo));
         if (ammos[currentGunIndex] <= 0)
         {
             RemoveGun();
@@ -217,8 +221,33 @@ public class SetGunType : MonoBehaviour
 
     private void RemoveGun()
     {
-        guns[currentGunIndex].Unlocked = false;
+        unlocked[currentGunIndex] = false;
         ammos[currentGunIndex] = 0;
         SetGun(0);
+    }
+
+    public bool HasAmmo()
+    {
+        return ammos[currentGunIndex] > 0 || guns[currentGunIndex].InfiniteAmmo;
+    }
+
+    private void UnlockBaseGuns()
+    {
+        for (int i = 0; i < guns.Length; i++)
+        {
+            if (guns[i].UnlockedFromStart)
+            {
+                unlocked[i] = true;
+                ammos[i] = guns[i].MaxAmmo;
+            }
+        }
+        for (int i = 0; i < guns.Length; i++)
+        {
+            if (guns[i].UnlockedFromStart)
+            {
+                SetGun(i);
+                break;
+            }
+        }
     }
 }

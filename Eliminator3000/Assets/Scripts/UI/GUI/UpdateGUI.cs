@@ -219,8 +219,8 @@ public class UpdateGUI : MonoBehaviour
     private void OnAmmoChanged(PlayerGunAmmoChangedEvent _playerGunAmmoChangedEvent)
     {
         if (_playerGunAmmoChangedEvent.Player == 0)
-        {            
-            if (_playerGunAmmoChangedEvent.NewAmmo <= 0)
+        {
+            if (_playerGunAmmoChangedEvent.InfiniteAmmo)
             {
                 p1AmmoGUI.text = "∞";
             }
@@ -229,7 +229,7 @@ public class UpdateGUI : MonoBehaviour
         }
         else if (_playerGunAmmoChangedEvent.Player == 1)
         {
-            if (_playerGunAmmoChangedEvent.NewAmmo <= 0)
+            if (_playerGunAmmoChangedEvent.InfiniteAmmo)
             {
                 p2AmmoGUI.text = "∞";
             }
