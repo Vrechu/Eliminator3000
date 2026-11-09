@@ -6,6 +6,7 @@ public class SetGunType : MonoBehaviour
     private int playerID = -1;
     [SerializeField] private GameObject[] gunModels;
     [SerializeField] private GunProfile[] guns;
+    private int[] ammos;
     private int currentGunIndex = 0;
 
     private Timer shootTimer = new Timer(0, false);
@@ -25,6 +26,7 @@ public class SetGunType : MonoBehaviour
 
     private void Start()
     {
+        ammos = new int[guns.Length];
         SetPlayerID();
 
         gameStateManager = GameStateManager.Instance;
@@ -86,6 +88,7 @@ public class SetGunType : MonoBehaviour
         if (_playerGunPickupEvent.Player == playerID)
         {
             guns[_playerGunPickupEvent.GunIndex].Unlocked = true;
+            ammos[_playerGunPickupEvent.GunIndex] = guns[_playerGunPickupEvent.GunIndex].MaxAmmo;
             SetGun(_playerGunPickupEvent.GunIndex);
         }
     }
@@ -198,5 +201,24 @@ public class SetGunType : MonoBehaviour
         {
             guns[i].Unlocked = false;
         }
+    }
+
+    public void ReduceAmmo(int _amount)
+    {
+        if (currentGunIndex ==0) return; // Base gun has infinite ammo
+        ammos[currentGunIndex] -= _amount;
+        Debug.Log($"Player {playerID} ammo for gun {currentGunIndex} reduced by {_amount}. Remaining ammo: {ammos[currentGunIndex]}");
+        if (ammos[currentGunIndex] <= 0)
+        {
+            RemoveGun();
+        }
+    }
+
+    private void RemoveGun()
+    {
+        guns[currentGunIndex].Unlocked = false;
+        ammos[currentGunIndex] = 0;
+        SetGun(0);
+        Debug.Log($"Player {playerID} has run out of ammo for gun {currentGunIndex}. Switching to base gun.");
     }
 }

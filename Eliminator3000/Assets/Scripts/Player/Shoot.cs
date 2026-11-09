@@ -50,6 +50,7 @@ public class Shoot : MonoBehaviour
     private void ShootSingle()
     {
         Instantiate(setGunType.GetCurrentGunProfile().ProjectilePrefab, transform.position, Quaternion.identity);
+        setGunType.ReduceAmmo(setGunType.GetCurrentGunProfile().AmmoCostPerShot);
     }
 
     private void ShootCluster()
@@ -68,5 +69,6 @@ public class Shoot : MonoBehaviour
                               0));
             }
         }
+        setGunType.ReduceAmmo(setGunType.GetCurrentGunProfile().AmmoCostPerShot);
     }
 }
