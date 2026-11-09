@@ -63,6 +63,7 @@ public class SetGunType : MonoBehaviour
         gunModels[_gunIndex].SetActive(true);
         shootTimer.Reset(0);
         EventBus<PlayerGunSwapEvent>.Publish(new PlayerGunSwapEvent(playerID, _gunIndex));
+        EventBus<PlayerGunAmmoChangedEvent>.Publish(new PlayerGunAmmoChangedEvent(playerID, ammos[_gunIndex]));
     }
 
     /// <summary>
@@ -207,7 +208,7 @@ public class SetGunType : MonoBehaviour
     {
         if (currentGunIndex ==0) return; // Base gun has infinite ammo
         ammos[currentGunIndex] -= _amount;
-        Debug.Log($"Player {playerID} ammo for gun {currentGunIndex} reduced by {_amount}. Remaining ammo: {ammos[currentGunIndex]}");
+        EventBus<PlayerGunAmmoChangedEvent>.Publish(new PlayerGunAmmoChangedEvent(playerID, ammos[currentGunIndex]));
         if (ammos[currentGunIndex] <= 0)
         {
             RemoveGun();
@@ -219,6 +220,5 @@ public class SetGunType : MonoBehaviour
         guns[currentGunIndex].Unlocked = false;
         ammos[currentGunIndex] = 0;
         SetGun(0);
-        Debug.Log($"Player {playerID} has run out of ammo for gun {currentGunIndex}. Switching to base gun.");
     }
 }
