@@ -1,9 +1,13 @@
 ﻿using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
+using Rive;
+using System.ComponentModel;
+using Rive.Components;
 
 public class UpdateGUI : MonoBehaviour
 {
+
     //player1
     [SerializeField] private GameObject player1GUI;
     [SerializeField] private TextMeshProUGUI
@@ -55,12 +59,14 @@ public class UpdateGUI : MonoBehaviour
     private void Start()
     {
         DisableGUI();
+
     }
 
     private void SetLivesGUI(PlayerLivesChangedEvent _playerLivesChangedEvent)
     {
         if (_playerLivesChangedEvent.Player == 0)
         {
+            
             p1LivesGUI.text = _playerLivesChangedEvent.NewLives.ToString();
         }
         else if (_playerLivesChangedEvent.Player == 1)
