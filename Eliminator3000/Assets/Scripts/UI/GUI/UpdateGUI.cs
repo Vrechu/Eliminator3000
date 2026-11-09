@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
 
@@ -6,21 +6,19 @@ public class UpdateGUI : MonoBehaviour
 {
     //player1
     [SerializeField] private GameObject player1GUI;
-    [SerializeField]
-    private TextMeshProUGUI
+    [SerializeField] private TextMeshProUGUI
         p1LivesGUI, p1HealthGUI, p1ScoreGUI;
-    [SerializeField]
-    private GameObject
+    [SerializeField] private GameObject
         p1GunGUI, p1BaseGunGUI, p1RapidGunGUI, p1ClusterGunGUI;
-
+    [SerializeField] private TextMeshProUGUI p1AmmoGUI;
     //player2
     [SerializeField] private GameObject player2GUI;
-    [SerializeField]
-    private TextMeshProUGUI
+    [SerializeField] private TextMeshProUGUI
         p2LivesGUI, p2HealthGUI, p2ScoreGUI;
     [SerializeField]
     private GameObject
         p2GunGUI, p2BaseGunGUI, p2RapidGunGUI, p2ClusterGunGUI;
+    [SerializeField] private TextMeshProUGUI p2AmmoGUI;
 
     [SerializeField] private TextMeshProUGUI winGUI, loseGUI, finalScoreGUI;
 
@@ -34,7 +32,8 @@ public class UpdateGUI : MonoBehaviour
         EventBus<ScoreChangedEvent>.Subscribe(SetScoreGUI);
         EventBus<GameWinEvent>.Subscribe(EnableWinGUI);
         EventBus<GameLoseEvent>.Subscribe(EnableLoseGUIgame);
-        EventBus<PlayerGunSwapEvent>.Subscribe(SwitchGunGUI);
+        EventBus<PlayerGunSwapEvent>.Subscribe(OnGunSwap);
+        EventBus<PlayerGunAmmoChangedEvent>.Subscribe(OnAmmoChanged);
         EventBus<LevelScoreCalculatedEvent>.Subscribe(OnLevelScoreCalculated);
     }
 
@@ -46,7 +45,8 @@ public class UpdateGUI : MonoBehaviour
         EventBus<ScoreChangedEvent>.UnSubscribe(SetScoreGUI);
         EventBus<GameWinEvent>.UnSubscribe(EnableWinGUI);
         EventBus<GameLoseEvent>.UnSubscribe(EnableLoseGUIgame);
-        EventBus<PlayerGunSwapEvent>.UnSubscribe(SwitchGunGUI);
+        EventBus<PlayerGunSwapEvent>.UnSubscribe(OnGunSwap);
+        EventBus<PlayerGunAmmoChangedEvent>.UnSubscribe(OnAmmoChanged);
         EventBus<LevelScoreCalculatedEvent>.UnSubscribe(OnLevelScoreCalculated);
     }
 
@@ -100,14 +100,8 @@ public class UpdateGUI : MonoBehaviour
         if (player1GUI.activeSelf) player1GUI.SetActive(false);
         if (player2GUI.activeSelf) player2GUI.SetActive(false);
 
-        if (p1GunGUI.activeSelf) p1GunGUI.SetActive(false);
-        if (p2GunGUI.activeSelf) p2GunGUI.SetActive(false);
-        if (p1BaseGunGUI.activeSelf) p1BaseGunGUI.SetActive(false);
-        if (p2BaseGunGUI.activeSelf) p2BaseGunGUI.SetActive(false);
-        if (p1RapidGunGUI.activeSelf) p1RapidGunGUI.SetActive(false);
-        if (p2RapidGunGUI.activeSelf) p2RapidGunGUI.SetActive(false);
-        if (p1ClusterGunGUI.activeSelf) p1ClusterGunGUI.SetActive(false);
-        if (p2ClusterGunGUI.activeSelf) p2ClusterGunGUI.SetActive(false);
+        
+
     }
 
     private void EnableWinGUI(GameWinEvent _winEvent)
@@ -133,21 +127,26 @@ public class UpdateGUI : MonoBehaviour
         if (_playerIndex == 0)
         {
             player1GUI.SetActive(_enable);
-            p1BaseGunGUI.SetActive(_enable);
+            SwitchGunGUI(_playerIndex, 0);
         }
         else if (_playerIndex == 1)
         {
             player2GUI.SetActive(_enable);
-            p2BaseGunGUI.SetActive(_enable);
+            SwitchGunGUI(_playerIndex, 0);
         }
     }
 
-    private void SwitchGunGUI(PlayerGunSwapEvent _playerGunSwapEvent)
+    private void OnGunSwap(PlayerGunSwapEvent _playerGunSwapEvent)
     {
-        if (_playerGunSwapEvent.Player == 0)
+        SwitchGunGUI(_playerGunSwapEvent.Player, _playerGunSwapEvent.GunIndex);
+    }
+
+    private void SwitchGunGUI(int _playerIndex, int _gunIndex)
+    {
+        if (_playerIndex == 0)
         {
-            DisableGunGUI(_playerGunSwapEvent.Player);
-            switch (_playerGunSwapEvent.GunIndex)
+            DisableGunGUI(_playerIndex);
+            switch (_gunIndex)
             {
                 case 0:
                     p1BaseGunGUI.SetActive(true);
@@ -161,9 +160,9 @@ public class UpdateGUI : MonoBehaviour
             }
 
         }
-        else if (_playerGunSwapEvent.Player == 1)
+        else if (_playerIndex == 1)
         {
-            switch (_playerGunSwapEvent.GunIndex)
+            switch (_gunIndex)
             {
                 case 0:
                     p2BaseGunGUI.SetActive(true);
@@ -182,15 +181,15 @@ public class UpdateGUI : MonoBehaviour
     {
         if (_playerIndex == 0)
         {
-            p1BaseGunGUI.SetActive(false);
-            p1RapidGunGUI.SetActive(false);
-            p1ClusterGunGUI.SetActive(false);
+            if (p1BaseGunGUI.activeSelf) p1BaseGunGUI.SetActive(false);
+            if (p1RapidGunGUI.activeSelf) p1RapidGunGUI.SetActive(false);
+            if (p1ClusterGunGUI.activeSelf) p1ClusterGunGUI.SetActive(false);
         }
         else if (_playerIndex == 1)
         {
-            p2BaseGunGUI.SetActive(false);
-            p2RapidGunGUI.SetActive(false);
-            p2ClusterGunGUI.SetActive(false);
+            if (p2BaseGunGUI.activeSelf) p2BaseGunGUI.SetActive(false);
+            if (p2RapidGunGUI.activeSelf) p2RapidGunGUI.SetActive(false);
+            if (p2ClusterGunGUI.activeSelf) p2ClusterGunGUI.SetActive(false);
         }
     }
 
@@ -214,6 +213,28 @@ public class UpdateGUI : MonoBehaviour
         {
             if (!PlayerProfileManager.Instance.PlayersJoined[playerLevelScores[i].Key]) continue;
             finalScoreGUI.text += $"Player {playerLevelScores[i].Key + 1} Score: {playerLevelScores[i].Value} \n";
+        }
+    }
+
+    private void OnAmmoChanged(PlayerGunAmmoChangedEvent _playerGunAmmoChangedEvent)
+    {
+        if (_playerGunAmmoChangedEvent.Player == 0)
+        {            
+            if (_playerGunAmmoChangedEvent.NewAmmo <= 0)
+            {
+                p1AmmoGUI.text = "∞";
+            }
+            else
+            p1AmmoGUI.text = _playerGunAmmoChangedEvent.NewAmmo.ToString();
+        }
+        else if (_playerGunAmmoChangedEvent.Player == 1)
+        {
+            if (_playerGunAmmoChangedEvent.NewAmmo <= 0)
+            {
+                p2AmmoGUI.text = "∞";
+            }
+            else
+                p2AmmoGUI.text = _playerGunAmmoChangedEvent.NewAmmo.ToString();
         }
     }
 }
