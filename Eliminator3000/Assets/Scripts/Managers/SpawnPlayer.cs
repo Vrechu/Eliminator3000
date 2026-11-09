@@ -4,7 +4,6 @@ using UnityEngine.InputSystem;
 public class SpawnPlayer : MonoBehaviour
 {
     [SerializeField]private Transform[] spawnPoints;
-    private PlayerProfileManager playerProfileManager;
     private bool[] avatarsIngame = new bool[2] {false, false};
     private GameObject[] playerAvatars = new GameObject[2];
 
@@ -23,13 +22,8 @@ public class SpawnPlayer : MonoBehaviour
         EventBus<PlayerJoinedEvent>.UnSubscribe(OnInGameJoin);
     }
 
-    private void Start()
-    {
-        playerProfileManager = PlayerProfileManager.Instance;        
-    }
-
     private void InstantiateOnLevelEnter(LevelEnteredEvent _levelEnteredEvent)
-    {        
+    {
         if (_levelEnteredEvent.LevelIndex < 1) return;
         for (int i = 0; i < PlayerProfileManager.Instance.PlayerProfiles.Length; i++)
         {

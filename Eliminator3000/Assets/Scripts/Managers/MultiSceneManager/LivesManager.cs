@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class LivesManager : MonoBehaviour
 {
-    private PlayerProfileManager playerProfileManager;
+    //private PlayerProfileManager playerProfileManager;
     [SerializeField] private int maxLives = 3;
     [SerializeField] private int maxHealth = 100;
 
@@ -23,7 +23,7 @@ public class LivesManager : MonoBehaviour
 
     private void Start()
     {
-        playerProfileManager = PlayerProfileManager.Instance;
+        //playerProfileManager = PlayerProfileManager.Instance;
     }
 
     private void OnPlayerInstantiated(PlayerAvatarInstantiatedEvent _playerAvatarInstantiatedEvent)
@@ -33,10 +33,10 @@ public class LivesManager : MonoBehaviour
 
     private void ResetPlayer(int _playerIndex)
     {
-        playerProfileManager.PlayerProfiles[_playerIndex].Lives = maxLives;
-        playerProfileManager.PlayerProfiles[_playerIndex].Health = maxHealth;
-        EventBus<PlayerHealthChangedEvent>.Publish(new PlayerHealthChangedEvent(_playerIndex, playerProfileManager.PlayerProfiles[_playerIndex].Health));
-        EventBus<PlayerLivesChangedEvent>.Publish(new PlayerLivesChangedEvent(_playerIndex, playerProfileManager.PlayerProfiles[_playerIndex].Lives));
+        PlayerProfileManager.Instance.PlayerProfiles[_playerIndex].Lives = maxLives;
+        PlayerProfileManager.Instance.PlayerProfiles[_playerIndex].Health = maxHealth;
+        EventBus<PlayerHealthChangedEvent>.Publish(new PlayerHealthChangedEvent(_playerIndex, PlayerProfileManager.Instance.PlayerProfiles[_playerIndex].Health));
+        EventBus<PlayerLivesChangedEvent>.Publish(new PlayerLivesChangedEvent(_playerIndex, PlayerProfileManager.Instance.PlayerProfiles[_playerIndex].Lives));
     }
 
     private void OnPlayerHit(PlayerHitEvent _context)
@@ -53,9 +53,9 @@ public class LivesManager : MonoBehaviour
     /// <param name="_amount">Amount of lives to lose</param>
     public void LoseHealth(int _playerIndex, int _amount)
     {
-        playerProfileManager.PlayerProfiles[_playerIndex].Health -= _amount;
+        PlayerProfileManager.Instance.PlayerProfiles[_playerIndex].Health -= _amount;
         CheckHealth(_playerIndex);
-        EventBus<PlayerHealthChangedEvent>.Publish(new PlayerHealthChangedEvent(_playerIndex, playerProfileManager.PlayerProfiles[_playerIndex].Health));
+        EventBus<PlayerHealthChangedEvent>.Publish(new PlayerHealthChangedEvent(_playerIndex, PlayerProfileManager.Instance.PlayerProfiles[_playerIndex].Health));
     }
 
     private void OnHealthPickup(HealthPickupEvent _healthPickupEvent)
@@ -65,9 +65,9 @@ public class LivesManager : MonoBehaviour
 
     private void GainHealth(int _playerIndex, int _amount)
     {
-        playerProfileManager.PlayerProfiles[_playerIndex].Health += _amount;
+        PlayerProfileManager.Instance.PlayerProfiles[_playerIndex].Health += _amount;
         CheckHealth(_playerIndex);
-        EventBus<PlayerHealthChangedEvent>.Publish(new PlayerHealthChangedEvent(_playerIndex, playerProfileManager.PlayerProfiles[_playerIndex].Health));
+        EventBus<PlayerHealthChangedEvent>.Publish(new PlayerHealthChangedEvent(_playerIndex, PlayerProfileManager.Instance.PlayerProfiles[_playerIndex].Health));
     }
 
     /// <summary>
@@ -77,29 +77,29 @@ public class LivesManager : MonoBehaviour
     /// <param name="_playerIndex">Player whos lives are checked</param>
     private void CheckHealth(int _playerIndex)
     {
-        if (playerProfileManager.PlayerProfiles[_playerIndex].Health <= 0)
+        if (PlayerProfileManager.Instance.PlayerProfiles[_playerIndex].Health <= 0)
         {
-            playerProfileManager.PlayerProfiles[_playerIndex].Health = maxHealth;
+            PlayerProfileManager.Instance.PlayerProfiles[_playerIndex].Health = maxHealth;
             LoseLife(_playerIndex);
         }
-        if (playerProfileManager.PlayerProfiles[_playerIndex].Health > maxHealth)
+        if (PlayerProfileManager.Instance.PlayerProfiles[_playerIndex].Health > maxHealth)
         {
-            playerProfileManager.PlayerProfiles[_playerIndex].Health = maxHealth;
+            PlayerProfileManager.Instance.PlayerProfiles[_playerIndex].Health = maxHealth;
         }
     }
 
     private void LoseLife(int _playerIndex, int _amount = 1)
     {
-        playerProfileManager.PlayerProfiles[_playerIndex].Lives -= _amount;
+        PlayerProfileManager.Instance.PlayerProfiles[_playerIndex].Lives -= _amount;
         CheckLives(_playerIndex);
-        EventBus<PlayerLivesChangedEvent>.Publish(new(_playerIndex, playerProfileManager.PlayerProfiles[_playerIndex].Lives));
+        EventBus<PlayerLivesChangedEvent>.Publish(new(_playerIndex, PlayerProfileManager.Instance.PlayerProfiles[_playerIndex].Lives));
     }
 
     private void CheckLives(int _playerIndex)
     {
-        if (playerProfileManager.PlayerProfiles[_playerIndex].Lives <= 0)
+        if (PlayerProfileManager.Instance.PlayerProfiles[_playerIndex].Lives <= 0)
         {
-            playerProfileManager.PlayerProfiles[_playerIndex].AliveInLevel = false;
+            PlayerProfileManager.Instance.PlayerProfiles[_playerIndex].AliveInLevel = false;
             EventBus<PlayerLivesAtZeroEvent>.Publish(new(_playerIndex));
 
             CheckPlayersAlive();
@@ -108,7 +108,7 @@ public class LivesManager : MonoBehaviour
 
     private void CheckPlayersAlive()
     {
-        if (playerProfileManager.BothPlayersDead())
+        if (PlayerProfileManager.Instance.BothPlayersDead())
         {
             EventBus<BothPlayersDeadEvent>.Publish(new BothPlayersDeadEvent());
         }
@@ -116,9 +116,9 @@ public class LivesManager : MonoBehaviour
 
     private bool CheckShielded(int _playerIndex)
     {
-        if (playerProfileManager.PlayerProfiles[_playerIndex].Shield < 1) return false;
-        playerProfileManager.PlayerProfiles[_playerIndex].Shield--;
-        if (playerProfileManager.PlayerProfiles[_playerIndex].Shield < 1)
+        if (PlayerProfileManager.Instance.PlayerProfiles[_playerIndex].Shield < 1) return false;
+        PlayerProfileManager.Instance.PlayerProfiles[_playerIndex].Shield--;
+        if (PlayerProfileManager.Instance.PlayerProfiles[_playerIndex].Shield < 1)
             EventBus<PlayerShieldDropEvent>.Publish(new PlayerShieldDropEvent(_playerIndex));
         return true;
     }

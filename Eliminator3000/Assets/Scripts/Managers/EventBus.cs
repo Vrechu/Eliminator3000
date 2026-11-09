@@ -179,6 +179,43 @@ public class LevelScoreCalculatedEvent : Event
 
 #endregion
 
+#region Player gun events
+
+public class PlayerGunPickupEvent : Event
+{
+    public int Player;
+    public int GunIndex;
+    public PlayerGunPickupEvent(int cPlayer, int cGunIndex)
+    {
+        Player = cPlayer;
+        GunIndex = cGunIndex;
+    }
+}
+
+public class PlayerGunSwapEvent : Event
+{
+    public int Player;
+    public int GunIndex;
+    public PlayerGunSwapEvent(int cPlayer, int cGunIndex)
+    {
+        Player = cPlayer;
+        GunIndex = cGunIndex;
+    }
+}
+
+public class PlayerGunAmmoChangedEvent : Event
+{
+    public int Player;
+    public int NewAmmo;
+    public PlayerGunAmmoChangedEvent(int cPlayer, int cNewAmmo)
+    {
+        Player = cPlayer;
+        NewAmmo = cNewAmmo;
+    }
+}
+
+#endregion
+
 #region Level events
 
 public class  LevelEnteredEvent : Event
@@ -213,28 +250,6 @@ public class EnemySpawnTriggeredEvent : Event
 #endregion
 
 #region Player pickup events
-
-public class PlayerGunPickupEvent : Event
-{
-    public int Player;
-    public int GunIndex;
-    public PlayerGunPickupEvent(int cPlayer, int cGunIndex)
-    {
-        Player = cPlayer;
-        GunIndex = cGunIndex;
-    }
-}
-
-public class PlayerGunSwapEvent : Event
-{
-    public int Player;
-    public int GunIndex;
-    public PlayerGunSwapEvent(int cPlayer, int cGunIndex)
-    {
-        Player = cPlayer;
-        GunIndex = cGunIndex;
-    }
-}
 
 public class PlayerShieldPickupEvent : Event
 {

@@ -11,6 +11,8 @@ public class GunProfile : ScriptableObject
 
     public bool Unlocked;
     public GameObject ProjectilePrefab;
+    public int MaxAmmo;
+    public int AmmoCostPerShot;
     public float FireRate;
     public bool Cluster;
     public float Angle;
