@@ -346,12 +346,14 @@ public class PlayerScoreMultiplierPickupEvent : Event
     }
 }
 
-public class PlayerScoreMultiplierResetEvent : Event
+public class PlayerScoreMultiplierChangedEvent : Event
 {
     public int Player;
-    public PlayerScoreMultiplierResetEvent(int cPlayer)
+    public int NewMultiplier;
+    public PlayerScoreMultiplierChangedEvent(int cPlayer, int cNewMultiplier)
     {
         Player = cPlayer;
+        NewMultiplier = cNewMultiplier;
     }
 }
 #endregion
