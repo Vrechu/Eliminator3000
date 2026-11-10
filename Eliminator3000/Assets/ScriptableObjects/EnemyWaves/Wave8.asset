@@ -18,7 +18,7 @@ MonoBehaviour:
   - {fileID: 3699308623078601662, guid: 808c374093f9b964982724dcbac8b515, type: 3}
   - {fileID: 3699308623078601662, guid: 808c374093f9b964982724dcbac8b515, type: 3}
   TimesBetweenSpawns:
-  - 1.5
+  - 0
   - 1.2
   EnemySpeed: 26
   WaypointOrder: 020000000b0000000c0000000a000000
