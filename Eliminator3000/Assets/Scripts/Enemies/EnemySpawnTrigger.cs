@@ -10,6 +10,7 @@ public class EnemySpawnTrigger : MonoBehaviour
         if (targetLayers == (targetLayers | (1 << _other.gameObject.layer)))
         {
             EventBus<EnemySpawnTriggeredEvent>.Publish(new EnemySpawnTriggeredEvent(waveNumber));
+            Debug.Log("spawning: " + waveNumber);
         }
     }
 }
