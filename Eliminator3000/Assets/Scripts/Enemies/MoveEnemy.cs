@@ -8,6 +8,10 @@ public class MoveEnemy : MonoBehaviour
     public float[] WaitTimes;
     public Transform EndPoint;
     [SerializeField] private float speed = 2f;
+    [SerializeField] private bool kamikaze = false;
+    [SerializeField] private float kamikazeOvershootDistance = 0.5f;
+    private bool kamikazeReached = false;
+    private Vector3 playerTrackedPosition;
     private float baseSpeed = 2f;
 
     private int currentWaypointIndex = 0;
@@ -15,6 +19,7 @@ public class MoveEnemy : MonoBehaviour
     private bool finalWaypointReached = false;
     private GameStateManager gameStatemanager;
     private BlackHoleManager blackHoleManager;
+    private PlayerProfileManager playerProfileManager = PlayerProfileManager.Instance;
 
     private void Start()
     {
@@ -42,6 +47,7 @@ public class MoveEnemy : MonoBehaviour
             if (!BlackHoleActive())
             {
                 if (finalWaypointReached) Destroy(gameObject);
+                if (kamikaze && kamikazeReached) finalWaypointReached = true;
                 if (waitTimer.IsFinished())
                 {
                     currentWaypointIndex++;
@@ -75,6 +81,15 @@ public class MoveEnemy : MonoBehaviour
         }
         else
         {
+            if (kamikaze && !finalWaypointReached)
+            {
+                if (!kamikazeReached)
+                {
+                    playerTrackedPosition = GetExtendedPlayerPosition();
+                    kamikazeReached = true;
+                }
+                return playerTrackedPosition;
+            }
             finalWaypointReached = true;
             return EndPoint.position; // Move to the end point if no more waypoints
         }
@@ -108,5 +123,33 @@ public class MoveEnemy : MonoBehaviour
             if (blackHoleManager.BlackHolesUp[i]) return true;
         }
         return false;
+    }
+
+    private Vector3 GetClosestPlayerPosition()
+    {
+        float closestTargetDistance = 100f;
+        Vector3 targetPosition = Vector3.zero;
+        for (int i = 0; i < playerProfileManager.PlayerProfiles.Length; i++)
+        {
+            if (!playerProfileManager.PlayersJoined[i]) continue;
+            if (!playerProfileManager.PlayerProfiles[i].AliveInLevel) continue;
+            Vector3 currentEnemyPositiion = playerProfileManager.PlayerProfiles[i].IngameAvatar.transform.position;
+            float currentEnemyDistance = (currentEnemyPositiion - transform.position).magnitude;
+            if (currentEnemyDistance < closestTargetDistance)
+            {
+                closestTargetDistance = currentEnemyDistance;
+                targetPosition = currentEnemyPositiion;
+            }
+        }
+        if (closestTargetDistance == 100f) Debug.LogWarning("Enemy too far away: " + gameObject.name);
+        return targetPosition;
+    }
+
+    private Vector3 GetExtendedPlayerPosition()
+    {
+               Vector3 closestPlayerPosition = GetClosestPlayerPosition();
+        Vector3 directionToPlayer = (closestPlayerPosition - transform.position).normalized;
+        float extensionDistance = 1f + kamikazeOvershootDistance;
+        return closestPlayerPosition + directionToPlayer * extensionDistance;
     }
 }
