@@ -1,0 +1,346 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eed5864476f84ce4b85454db09ca4eaa, type: 3}
+  m_Name: graph_0
+  m_EditorClassIdentifier: Adobe.Substance::Adobe.Substance.SubstanceGraphSO
+  AssetPath: Assets/Materials/Buildings/Walls_01/M_Buildings_Walls.sbsar
+  RawData: {fileID: -244192453324840774, guid: 9f7eccf4eb8cae640a32b41f859b66d4, type: 3}
+  Name: graph_0
+  IsRoot: 1
+  FlagedForDelete: 0
+  GUID: 0fabc0e2-88ef-4521-bbd1-f6cde283860d
+  Index: 0
+  Input:
+  - rid: 5060647645463707657
+  - rid: 5060647645463707658
+  - rid: 5060647645463707659
+  - rid: 5060647645463707660
+  - rid: 5060647645463707661
+  - rid: 5060647645463707662
+  - rid: 5060647645463707663
+  - rid: 5060647645463707664
+  - rid: 5060647645463707665
+  Output:
+  - Index: 0
+    VirtualOutputIndex: 6
+    Description:
+      Identifier: basecolor
+      Label: basecolor
+      Index: 0
+      Type: 8
+      Channel: baseColor
+    OutputTexture: {fileID: 2800000, guid: dcc57088f6cc3cf459f99a7b34497250, type: 3}
+    sRGB: 1
+    IsVirtual: 0
+    IsAlphaAssignable: 1
+    AlphaChannel: 
+    InvertAssignedAlpha: 0
+    Flags: 0
+    MaterialTextureTarget: _BaseMap
+  - Index: 1
+    VirtualOutputIndex: 7
+    Description:
+      Identifier: normal
+      Label: normal
+      Index: 1
+      Type: 8
+      Channel: normal
+    OutputTexture: {fileID: 2800000, guid: f8868dd8ec079e540a0d189915a944d7, type: 3}
+    sRGB: 0
+    IsVirtual: 0
+    IsAlphaAssignable: 0
+    AlphaChannel: 
+    InvertAssignedAlpha: 0
+    Flags: 0
+    MaterialTextureTarget: _BumpMap
+  - Index: 2
+    VirtualOutputIndex: 8
+    Description:
+      Identifier: roughness
+      Label: roughness
+      Index: 2
+      Type: 8
+      Channel: roughness
+    OutputTexture: {fileID: 0}
+    sRGB: 0
+    IsVirtual: 0
+    IsAlphaAssignable: 1
+    AlphaChannel: 
+    InvertAssignedAlpha: 0
+    Flags: 0
+    MaterialTextureTarget: _RoughnessMap
+  - Index: 3
+    VirtualOutputIndex: 9
+    Description:
+      Identifier: metallic
+      Label: metallic
+      Index: 3
+      Type: 8
+      Channel: metallic
+    OutputTexture: {fileID: 2800000, guid: 462eba710ca67cc4e89c6b6df2f23026, type: 3}
+    sRGB: 0
+    IsVirtual: 0
+    IsAlphaAssignable: 1
+    AlphaChannel: roughness
+    InvertAssignedAlpha: 1
+    Flags: 0
+    MaterialTextureTarget: _MetallicGlossMap
+  - Index: 4
+    VirtualOutputIndex: 10
+    Description:
+      Identifier: ambientocclusion
+      Label: ambientocclusion
+      Index: 4
+      Type: 8
+      Channel: ambientOcclusion
+    OutputTexture: {fileID: 2800000, guid: be33a4f702d8989428012bffb807f79c, type: 3}
+    sRGB: 0
+    IsVirtual: 0
+    IsAlphaAssignable: 1
+    AlphaChannel: 
+    InvertAssignedAlpha: 0
+    Flags: 0
+    MaterialTextureTarget: _OcclusionMap
+  - Index: 5
+    VirtualOutputIndex: 11
+    Description:
+      Identifier: emission
+      Label: emission
+      Index: 5
+      Type: 8
+      Channel: emissive
+    OutputTexture: {fileID: 2800000, guid: a2f39db092e8c8d44b7170a1f08b2f0f, type: 3}
+    sRGB: 1
+    IsVirtual: 0
+    IsAlphaAssignable: 1
+    AlphaChannel: 
+    InvertAssignedAlpha: 0
+    Flags: 0
+    MaterialTextureTarget: _EmissionMap
+  HasPhysicalSize: 0
+  PhysicalSize: {x: 0, y: 0, z: 0}
+  EnablePhysicalSize: 0
+  Thumbnail: 
+  CurrentStatePreset: " <sbspreset pkgurl=\"pkg://Windows\" label=\"\" >\n  <presetinput
+    identifier=\"$outputsize\" uid=\"478250106\" type=\"8\" value=\"10,10\" />\n 
+    <presetinput identifier=\"$randomseed\" uid=\"1274253864\" type=\"4\" value=\"1776\"
+    />\n  <presetinput identifier=\"WindowCount_x_amount\" uid=\"2026904220\" type=\"4\"
+    value=\"29\" />\n  <presetinput identifier=\"WindowCount_y_amount\" uid=\"2026904210\"
+    type=\"4\" value=\"18\" />\n  <presetinput identifier=\"Window_Master_FrameSize\"
+    uid=\"2026922630\" type=\"3\" value=\"0.13,0,0.03,0\" />\n  <presetinput identifier=\"Windows_Color\"
+    uid=\"2026918029\" type=\"3\" value=\"0,0,0,1\" />\n  <presetinput identifier=\"Windows_Roughness\"
+    uid=\"2026918112\" type=\"0\" value=\"17.82\" />\n  <presetinput identifier=\"Windows_LightSwitch_01\"
+    uid=\"2026917688\" type=\"0\" value=\"1\" />\n  <presetinput identifier=\"Windows_LightSwitch_02\"
+    uid=\"2026917673\" type=\"0\" value=\"1\" />\n </sbspreset>\n"
+  IsRuntimeOnly: 0
+  GenerateAllOutputs: 0
+  GenerateAllMipmaps: 1
+  OutputMaterial: {fileID: 2100000, guid: 78324b5fb146fc541b3bbecda3533473, type: 2}
+  DefaultPreset: " <sbspreset pkgurl=\"pkg://Windows\" label=\"\" >\n  <presetinput
+    identifier=\"$outputsize\" uid=\"478250106\" type=\"8\" value=\"10,10\" />\n
+    </sbspreset>\n"
+  MaterialShader: Universal Render Pipeline/Lit
+  RenderTextures: 0
+  OutputRemaped: 0
+  Presets: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 5060647645463707657
+      type: {class: SubstanceInputInt2, ns: Adobe.Substance.Input, asm: Adobe.Substance}
+      data:
+        Index: 0
+        Description:
+          Identifier: $outputsize
+          Label: $outputsize
+          GuiGroup: 
+          GuiDescription: 
+          Type: 5
+          WidgetType: 0
+        Data: {x: 10, y: 10}
+        NumericalDescription:
+          DefaultValue: {x: 8, y: 8}
+          MinValue: {x: 0, y: 0}
+          MaxValue: {x: 1, y: 1}
+          SliderClamp: 0
+          EnumValueCount: 0
+          EnumValues: []
+    - rid: 5060647645463707658
+      type: {class: SubstanceInputInt, ns: Adobe.Substance.Input, asm: Adobe.Substance}
+      data:
+        Index: 1
+        Description:
+          Identifier: $randomseed
+          Label: $randomseed
+          GuiGroup: 
+          GuiDescription: 
+          Type: 4
+          WidgetType: 0
+        Data: 1776
+        NumericalDescription:
+          DefaultValue: 0
+          MinValue: 0
+          MaxValue: 1
+          SliderStep: 0.01
+          SliderClamp: 0
+          LabelFalse: 
+          LabelTrue: 
+          EnumValueCount: 0
+          EnumValues: []
+    - rid: 5060647645463707659
+      type: {class: SubstanceInputInt, ns: Adobe.Substance.Input, asm: Adobe.Substance}
+      data:
+        Index: 2
+        Description:
+          Identifier: WindowCount_x_amount
+          Label: X amount
+          GuiGroup: WindowMaster
+          GuiDescription: Amount of patterns on the X axis.
+          Type: 4
+          WidgetType: 1
+        Data: 29
+        NumericalDescription:
+          DefaultValue: 4
+          MinValue: 1
+          MaxValue: 32
+          SliderStep: 1
+          SliderClamp: 0
+          LabelFalse: 
+          LabelTrue: 
+          EnumValueCount: 0
+          EnumValues: []
+    - rid: 5060647645463707660
+      type: {class: SubstanceInputInt, ns: Adobe.Substance.Input, asm: Adobe.Substance}
+      data:
+        Index: 3
+        Description:
+          Identifier: WindowCount_y_amount
+          Label: Y amount
+          GuiGroup: WindowMaster
+          GuiDescription: Amount of patterns on the Y axis.
+          Type: 4
+          WidgetType: 1
+        Data: 18
+        NumericalDescription:
+          DefaultValue: 3
+          MinValue: 1
+          MaxValue: 32
+          SliderStep: 1
+          SliderClamp: 0
+          LabelFalse: 
+          LabelTrue: 
+          EnumValueCount: 0
+          EnumValues: []
+    - rid: 5060647645463707661
+      type: {class: SubstanceInputFloat4, ns: Adobe.Substance.Input, asm: Adobe.Substance}
+      data:
+        Index: 4
+        Description:
+          Identifier: Window_Master_FrameSize
+          Label: Window_Master_FrameSize
+          GuiGroup: Frame Size
+          GuiDescription: 
+          Type: 3
+          WidgetType: 1
+        Data: {x: 0.13, y: 0, z: 0.03, w: 0}
+        NumericalDescription:
+          DefaultValue: {x: 0.04, y: 0, z: 0, w: 0}
+          MinValue: {x: 0, y: 0, z: 0, w: 0}
+          MaxValue: {x: 1, y: 1, z: 1, w: 1}
+          SliderStep: 0.01
+          SliderClamp: 0
+          EnumValueCount: 0
+          EnumValues: []
+    - rid: 5060647645463707662
+      type: {class: SubstanceInputFloat4, ns: Adobe.Substance.Input, asm: Adobe.Substance}
+      data:
+        Index: 5
+        Description:
+          Identifier: Windows_Color
+          Label: Windows_Color
+          GuiGroup: 
+          GuiDescription: The <b>Color output</b> parameter creates a uniform color
+            output image
+          Type: 3
+          WidgetType: 3
+        Data: {x: 0, y: 0, z: 0, w: 1}
+        NumericalDescription:
+          DefaultValue: {x: 0.980676, y: 0.0832089, z: 0.577467, w: 1}
+          MinValue: {x: 0, y: 0, z: 0, w: 0}
+          MaxValue: {x: 0, y: 0, z: 0, w: 0}
+          SliderStep: 0
+          SliderClamp: 0
+          EnumValueCount: 0
+          EnumValues: []
+    - rid: 5060647645463707663
+      type: {class: SubstanceInputFloat, ns: Adobe.Substance.Input, asm: Adobe.Substance}
+      data:
+        Index: 6
+        Description:
+          Identifier: Windows_Roughness
+          Label: Windows_Roughness
+          GuiGroup: 
+          GuiDescription: The <b>Color output</b> parameter creates a uniform color
+            output image
+          Type: 0
+          WidgetType: 3
+        Data: 17.82
+        NumericalDescription:
+          DefaultValue: 0.532446
+          MinValue: 0
+          MaxValue: 0
+          SliderStep: 0
+          SliderClamp: 0
+          EnumValueCount: 0
+          EnumValues: []
+    - rid: 5060647645463707664
+      type: {class: SubstanceInputFloat, ns: Adobe.Substance.Input, asm: Adobe.Substance}
+      data:
+        Index: 7
+        Description:
+          Identifier: Windows_LightSwitch_01
+          Label: Windows_LightSwitch_01
+          GuiGroup: 
+          GuiDescription: The <b>Level in low</b> parameter defines the input image's
+            lowlight levels
+          Type: 0
+          WidgetType: 1
+        Data: 1
+        NumericalDescription:
+          DefaultValue: 0.47
+          MinValue: 0
+          MaxValue: 1
+          SliderStep: 0.01
+          SliderClamp: 0
+          EnumValueCount: 0
+          EnumValues: []
+    - rid: 5060647645463707665
+      type: {class: SubstanceInputFloat, ns: Adobe.Substance.Input, asm: Adobe.Substance}
+      data:
+        Index: 8
+        Description:
+          Identifier: Windows_LightSwitch_02
+          Label: Windows_LightSwitch_02
+          GuiGroup: 
+          GuiDescription: The <b>Level in high</b> parameter defines the input image's
+            highlight levels
+          Type: 0
+          WidgetType: 1
+        Data: 1
+        NumericalDescription:
+          DefaultValue: 0.47
+          MinValue: 0
+          MaxValue: 1
+          SliderStep: 0.01
+          SliderClamp: 0
+          EnumValueCount: 0
+          EnumValues: []
