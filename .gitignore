@@ -10,3 +10,7 @@ Eliminator3000/.vs
 Eliminator3000/obj/Debug
 Eliminator3000/Assets/Scores.txt
 Eliminator3000/Assets/Scores.txt.meta
+Eliminator3000/Rive.Editor.Components.csproj
+Eliminator3000/Rive.Editor.csproj
+Eliminator3000/Rive.Runtime.Components.csproj
+Eliminator3000/Rive.Runtime.csproj
