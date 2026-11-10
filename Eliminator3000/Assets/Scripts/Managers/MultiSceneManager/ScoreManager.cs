@@ -78,12 +78,13 @@ public class ScoreManager : MonoBehaviour
 
     private void OnPlayerScored(PlayerScoredEvent _playerScoredEvent)
     {
-        ChangePlayerScore(_playerScoredEvent.Player, _playerScoredEvent.Score);
+        ChangePlayerScore(_playerScoredEvent.Player, _playerScoredEvent.Score * scoreMultipliers[_playerScoredEvent.Player]);
     }
 
     private void OnPlayerHit(PlayerHitEvent _playerHitEvent)
     {
         ChangePlayerScore(_playerHitEvent.Player, -_playerHitEvent.ScoreLoss);
+        ResetMultiplier(_playerHitEvent.Player);
     }
 
     /// <summary>
@@ -196,6 +197,7 @@ public class ScoreManager : MonoBehaviour
     {
         scoreMultipliers[_playerIndex] = _multiplier;
         multiplierTimers[_playerIndex] = new Timer(_duration);
+        EventBus<PlayerScoreMultiplierChangedEvent>.Publish(new PlayerScoreMultiplierChangedEvent(_playerIndex, _multiplier));
     }
 
     private void CountDownMultipliers()
@@ -205,8 +207,14 @@ public class ScoreManager : MonoBehaviour
             if (!playerProfileManager.PlayersJoined[i]) continue;
             if (multiplierTimers[i].IsFinished())
             {
-                scoreMultipliers[i] = 1;
+                ResetMultiplier(i);
             }
         }
+    }
+
+    private void ResetMultiplier(int _playerIndex)
+    {
+        scoreMultipliers[_playerIndex] = 1;
+        EventBus<PlayerScoreMultiplierChangedEvent>.Publish(new PlayerScoreMultiplierChangedEvent(_playerIndex, 1));
     }
 }
