@@ -18,6 +18,7 @@ public class LevelManagerWindow : EditorWindow
     private const string AnchorPrefKey = "LevelManager.AnchorOnSnap";
     private const string AnchorXPrefKey = "LevelManager.AnchorX";
     private const string KeepTargetPrefKey = "LevelManager.KeepTarget";
+    private const string AutoSnapToggleKey = "LevelManager.AutoSnapOnToggle";
     private const string RootName = "LevelRoot";
     private const double WaitWarnSeconds = 10.0;
     private const float FocusSliceDepth = 120f;
@@ -72,9 +73,18 @@ public class LevelManagerWindow : EditorWindow
         return path;
     }
 
+    // Active sections only (disabled sections are ignored by snap, anchor, win trigger, tracker).
     internal static List<LevelSection> GetSortedSections()
     {
         var sections = new List<LevelSection>(Object.FindObjectsByType<LevelSection>(FindObjectsSortMode.None));
+        sections.Sort((a, b) => CompareHierarchy(a.transform, b.transform));
+        return sections;
+    }
+
+    // All sections including disabled ones (used by the window list only).
+    internal static List<LevelSection> GetAllSections()
+    {
+        var sections = new List<LevelSection>(Object.FindObjectsByType<LevelSection>(FindObjectsInactive.Include, FindObjectsSortMode.None));
         sections.Sort((a, b) => CompareHierarchy(a.transform, b.transform));
         return sections;
     }
@@ -389,7 +399,7 @@ public class LevelManagerWindow : EditorWindow
         bool alignY = EditorPrefs.GetBool(AlignYPrefKey, false);
 
         Bounds fb = sections[0].GetBounds();
-        Debug.Log($"Level Manager: Section #1 '{sections[0].sectionLabel}' start={fb.min.z:F2} end={fb.max.z:F2} (length {fb.size.z:F2}).", sections[0]);
+        Debug.Log($"Level Manager: Section #{sections[0].sectionNumber} '{sections[0].sectionLabel}' start={fb.min.z:F2} end={fb.max.z:F2} (length {fb.size.z:F2}).", sections[0]);
 
         for (int i = 1; i < sections.Count; i++)
         {
@@ -409,7 +419,7 @@ public class LevelManagerWindow : EditorWindow
                 cur.transform.position += delta;
             }
             Bounds nb = cur.GetBounds();
-            Debug.Log($"Level Manager: Section #{i + 1} '{cur.sectionLabel}' moved by ({delta.x:F2}, {delta.y:F2}, {delta.z:F2}). Now start={nb.min.z:F2} end={nb.max.z:F2} (length {nb.size.z:F2}).", cur);
+            Debug.Log($"Level Manager: Section #{cur.sectionNumber} '{cur.sectionLabel}' moved by ({delta.x:F2}, {delta.y:F2}, {delta.z:F2}). Now start={nb.min.z:F2} end={nb.max.z:F2} (length {nb.size.z:F2}).", cur);
         }
         return true;
     }
@@ -464,7 +474,7 @@ public class LevelManagerWindow : EditorWindow
         Debug.Log($"Level Manager: Reset '{common.name}' from {before} to the world origin (everything inside kept its world position).");
     }
 
-    // Moves the whole level so section #1's start edge sits at Play Z + lead-in (and optionally X at the spawn X).
+    // Moves the whole level so the first active section's start edge sits at Play Z + lead-in (and optionally X at the spawn X).
     private static void AnchorLevel(List<LevelSection> sections)
     {
         foreach (var s in sections)
@@ -486,7 +496,7 @@ public class LevelManagerWindow : EditorWindow
 
         ShiftLevel(sections, delta, "Anchor Level To Spawn");
         Bounds nb = sections[0].GetBounds();
-        Debug.Log($"Level Manager: Anchored level by ({delta.x:F2}, 0, {delta.z:F2}). Section #1 start edge Z={nb.min.z:F2} (Play Z {playZ:F2} + lead-in {GetLeadIn():F2}), {xInfo}.", sections[0]);
+        Debug.Log($"Level Manager: Anchored level by ({delta.x:F2}, 0, {delta.z:F2}). First section start edge Z={nb.min.z:F2} (Play Z {playZ:F2} + lead-in {GetLeadIn():F2}), {xInfo}.", sections[0]);
         SceneView.RepaintAll();
     }
 
@@ -513,7 +523,23 @@ public class LevelManagerWindow : EditorWindow
         SceneView.RepaintAll();
     }
 
+    private static void SetSectionEnabled(LevelSection s, bool on)
+    {
+        Undo.RecordObject(s.gameObject, on ? "Enable Section" : "Disable Section");
+        s.gameObject.SetActive(on);
+        EditorUtility.SetDirty(s.gameObject);
+        Debug.Log($"Level Manager: Section #{s.sectionNumber} '{s.sectionLabel}' {(on ? "ENABLED" : "DISABLED (stays where it is, skipped by Snap)")}.", s);
+    }
+
     // ------------------------------------------------------------------ GUI
+
+    private static bool Fold(string key, string title, bool def)
+    {
+        bool v = EditorPrefs.GetBool(key, def);
+        bool nv = EditorGUILayout.Foldout(v, title, true, EditorStyles.foldoutHeader);
+        if (nv != v) EditorPrefs.SetBool(key, nv);
+        return nv;
+    }
 
     private static void PrefFloatField(string label, string key, float def)
     {
@@ -566,70 +592,71 @@ public class LevelManagerWindow : EditorWindow
         scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
 
         GUILayout.Label("Modular Level Section Dashboard", EditorStyles.boldLabel);
-        EditorGUILayout.HelpBox(
-            "1. Build LevelRoot once (one scrolling root, spawn points stay static).\n" +
-            "2. Snap sections in order whenever you add, remove, reorder or resize a section. It also moves the level to the spawn points and keeps the win trigger at the end of the last section.\n" +
-            "3. Test Here, then press Play: the root is shifted so that section's start edge sits at the Play Z. Pressing R restarts from the same section.",
-            MessageType.Info);
 
+        // ---- 1. One-click play area toggle (always visible)
+        bool showPlayArea = EditorPrefs.GetBool(PlayAreaGuide.ShowKey, false);
+        var paPrevColor = GUI.backgroundColor;
+        GUI.backgroundColor = showPlayArea ? new Color(0.4f, 0.9f, 0.5f) : Color.white;
+        if (GUILayout.Button(showPlayArea ? "Play area: ON  (click to hide)" : "Play area: OFF  (click to show)", GUILayout.Height(24)))
+        {
+            EditorPrefs.SetBool(PlayAreaGuide.ShowKey, !showPlayArea);
+            SceneView.RepaintAll();
+        }
+        GUI.backgroundColor = paPrevColor;
         EditorGUILayout.Space(4);
-        EditorGUILayout.LabelField("Step 1 - Setup (once)", EditorStyles.boldLabel);
+
+        // ---- 2. Setup (once)
         var movers = Object.FindObjectsByType<MoveTrack>(FindObjectsSortMode.None);
         int enabledCount = 0;
         foreach (var m in movers) if (m.enabled) enabledCount++;
-        EditorGUILayout.LabelField("Active MoveTrack components", enabledCount + (enabledCount == 1 ? "  (good)" : "  (should be 1)"));
-        if (GUILayout.Button("Build LevelRoot (single moving root)", GUILayout.Height(26)))
+        string moverInfo = enabledCount == 1 ? "1 active MoveTrack (good)" : enabledCount + " active MoveTracks (should be 1)";
+        if (Fold("LevelManager.Fold.Setup", "Setup (once)   -   " + moverInfo, false))
         {
-            if (EditorUtility.DisplayDialog("Build LevelRoot",
-                "This creates 'LevelRoot' with one MoveTrack, moves all sections under it, disables the old MoveTracks on sections, " +
-                "detaches the player spawn points from the scrolling objects and snaps the sections. You can undo it with Ctrl+Z.",
-                "Build", "Cancel"))
+            if (GUILayout.Button("Build LevelRoot (single moving root)", GUILayout.Height(26)))
             {
-                BuildLevelRoot();
+                if (EditorUtility.DisplayDialog("Build LevelRoot",
+                    "This creates 'LevelRoot' with one MoveTrack, moves all sections under it, disables the old MoveTracks on sections, " +
+                    "detaches the player spawn points from the scrolling objects and snaps the sections. You can undo it with Ctrl+Z.",
+                    "Build", "Cancel"))
+                {
+                    BuildLevelRoot();
+                }
+                GUIUtility.ExitGUI();
             }
-            GUIUtility.ExitGUI();
+            EditorGUILayout.Space(2);
         }
 
-        EditorGUILayout.Space(6);
-        EditorGUILayout.LabelField("Step 2 - Chain sections", EditorStyles.boldLabel);
-        PrefFloatField("Gap between sections", GapPrefKey, 0f);
-        PrefToggle("Align X of sections to section #1 (bounds centre)", AlignXPrefKey, true);
-        PrefToggle("Align Y of sections to section #1 (bounds bottom)", AlignYPrefKey, false);
-        PrefToggle("Anchor level to spawn points when snapping", AnchorPrefKey, true);
-        PrefToggle("   ...also match X to the spawn points' X", AnchorXPrefKey, true);
-        PrefFloatField("Lead-in (start edge ahead of Play Z)", LeadInPrefKey, 0f);
-
-        if (GUILayout.Button("Snap sections in order", GUILayout.Height(26)))
+        // ---- 3. Chain & Snap
+        if (Fold("LevelManager.Fold.Snap", "Chain & Snap sections", true))
         {
-            SnapSections();
-            GUIUtility.ExitGUI();
-        }
-        if (GUILayout.Button("Anchor level to spawn points only (no re-snap)"))
-        {
-            AnchorOnly();
-            GUIUtility.ExitGUI();
-        }
-        if (GUILayout.Button("Re-measure all sections"))
-        {
-            MeasureAll();
-            GUIUtility.ExitGUI();
+            if (GUILayout.Button("Snap sections in order", GUILayout.Height(26)))
+            {
+                SnapSections();
+                GUIUtility.ExitGUI();
+            }
+            if (GUILayout.Button("Anchor level to spawn points only (no re-snap)"))
+            {
+                AnchorOnly();
+                GUIUtility.ExitGUI();
+            }
+            if (GUILayout.Button("Re-measure all sections"))
+            {
+                MeasureAll();
+                GUIUtility.ExitGUI();
+            }
+            if (Fold("LevelManager.Fold.SnapOpt", "    Snap options", false))
+            {
+                PrefFloatField("Gap between sections", GapPrefKey, 0f);
+                PrefToggle("Align X of sections to section #1 (bounds centre)", AlignXPrefKey, true);
+                PrefToggle("Align Y of sections to section #1 (bounds bottom)", AlignYPrefKey, false);
+                PrefToggle("Anchor level to spawn points when snapping", AnchorPrefKey, true);
+                PrefToggle("   ...also match X to the spawn points' X", AnchorXPrefKey, true);
+                PrefFloatField("Lead-in (start edge ahead of Play Z)", LeadInPrefKey, 0f);
+            }
+            EditorGUILayout.Space(2);
         }
 
-        EditorGUILayout.Space(6);
-        EditorGUILayout.LabelField("Test settings", EditorStyles.boldLabel);
-        bool auto = EditorPrefs.GetBool(AutoZPrefKey, true);
-        bool newAuto = EditorGUILayout.ToggleLeft("Auto Play Z (read from SpawnPlayer spawn points)", auto);
-        if (newAuto != auto) EditorPrefs.SetBool(AutoZPrefKey, newAuto);
-
-        using (new EditorGUI.DisabledScope(newAuto))
-        {
-            float playZ = EditorPrefs.GetFloat(PlayZPrefKey, 0f);
-            float newPlayZ = EditorGUILayout.FloatField("Manual Play Z", playZ);
-            if (!Mathf.Approximately(newPlayZ, playZ)) EditorPrefs.SetFloat(PlayZPrefKey, newPlayZ);
-        }
-        EditorGUILayout.LabelField("Effective Play Z (+ lead-in)", $"{GetPlayZ():F2}  ( + {GetLeadIn():F2} )");
-        PrefToggle("Keep test start after Play (otherwise it clears itself)", KeepTargetPrefKey, false);
-
+        // ---- 4. Test start (status boxes always visible, settings in the foldout)
         if (TargetSection != -1)
         {
             EditorGUILayout.BeginHorizontal();
@@ -654,94 +681,184 @@ public class LevelManagerWindow : EditorWindow
             EditorGUILayout.EndHorizontal();
         }
 
-        EditorGUILayout.Space(6);
-        EditorGUILayout.LabelField("Section tracker (Play Mode)", EditorStyles.boldLabel);
-        EditorGUILayout.LabelField("Current section", SectionTracker.StatusText);
-        Rect pr = GUILayoutUtility.GetRect(18f, 16f, GUILayout.ExpandWidth(true));
-        EditorGUI.ProgressBar(pr, Mathf.Max(0f, SectionTracker.Progress),
-            SectionTracker.Progress < 0f ? "-" : Mathf.RoundToInt(SectionTracker.Progress * 100f) + "% through section");
-        PrefToggle("Log to Console when the section changes", SectionTracker.LogPrefKey, true);
-        PrefToggle("Show overlay in the Scene view", SectionTracker.OverlayPrefKey, true);
-        if (GUILayout.Button("Log current section now (Ctrl+Shift+L)")) SectionTracker.LogCurrentNow();
-
-        EditorGUILayout.Space(6);
-        EditorGUILayout.LabelField("Play area guide (Scene view)", EditorStyles.boldLabel);
-        EditorGUI.BeginChangeCheck();
-        PrefToggle("Show play area (walls, floor, ceiling)", PlayAreaGuide.ShowKey, false);
-        PrefToggle("Fill the faces", PlayAreaGuide.FillKey, true);
-        PrefRange("X  min / max", PlayAreaGuide.MinXKey, PlayAreaGuide.MaxXKey, -30f, 30f);
-        PrefRange("Y  min / max", PlayAreaGuide.MinYKey, PlayAreaGuide.MaxYKey, -15f, 15f);
-        PrefFloatField("Frame spacing (Z)", PlayAreaGuide.SpacingKey, 100f);
-        if (EditorGUI.EndChangeCheck()) SceneView.RepaintAll();
-        PrefToggle("Record ship extents while playing (fly to every edge)", PlayAreaGuide.RecordKey, false);
-        if (PlayAreaGuide.HasRecording)
+        if (Fold("LevelManager.Fold.Test", "Test settings", true))
         {
-            EditorGUILayout.LabelField("Recorded X", $"{PlayAreaGuide.RecMinX:F2}  to  {PlayAreaGuide.RecMaxX:F2}");
-            EditorGUILayout.LabelField("Recorded Y", $"{PlayAreaGuide.RecMinY:F2}  to  {PlayAreaGuide.RecMaxY:F2}");
-            EditorGUILayout.BeginHorizontal();
-            if (GUILayout.Button("Use recorded as play area")) PlayAreaGuide.ApplyRecording();
-            if (GUILayout.Button("Clear", GUILayout.Width(50))) PlayAreaGuide.ClearRecording();
-            EditorGUILayout.EndHorizontal();
+            bool auto = EditorPrefs.GetBool(AutoZPrefKey, true);
+            bool newAuto = EditorGUILayout.ToggleLeft("Auto Play Z (read from SpawnPlayer spawn points)", auto);
+            if (newAuto != auto) EditorPrefs.SetBool(AutoZPrefKey, newAuto);
+
+            using (new EditorGUI.DisabledScope(newAuto))
+            {
+                float playZ = EditorPrefs.GetFloat(PlayZPrefKey, 0f);
+                float newPlayZ = EditorGUILayout.FloatField("Manual Play Z", playZ);
+                if (!Mathf.Approximately(newPlayZ, playZ)) EditorPrefs.SetFloat(PlayZPrefKey, newPlayZ);
+            }
+            EditorGUILayout.LabelField("Effective Play Z (+ lead-in)", $"{GetPlayZ():F2}  ( + {GetLeadIn():F2} )");
+            PrefToggle("Keep test start after Play (otherwise it clears itself)", KeepTargetPrefKey, false);
+            EditorGUILayout.Space(2);
         }
 
-        EditorGUILayout.Space(6);
-        EditorGUILayout.LabelField("Triggers", EditorStyles.boldLabel);
-        RefreshTriggerCounts();
-        DrawVisibilityRow("Enemy spawn triggers", enemyTotal, enemyVisible,
-            v => LevelTriggerTools.SetVisible<EnemySpawnTrigger>(v, "enemy spawn triggers"));
-        DrawVisibilityRow("Win triggers", winTotal, winVisible,
-            v => LevelTriggerTools.SetVisible<WinTrigger>(v, "win triggers"));
-        PrefFloatField("Win trigger depth (Z)", LevelTriggerTools.WinDepthKey, 20f);
-        PrefFloatField("Win trigger min size (X/Y)", LevelTriggerTools.WinMinSizeKey, 200f);
-        if (GUILayout.Button("Add / move win trigger to the end of the level"))
-        {
-            LevelTriggerTools.CreateWinTrigger();
-            countsDirty = true;
-            GUIUtility.ExitGUI();
-        }
-        if (GUILayout.Button("Check win triggers (why doesn't it fire?)"))
-        {
-            LevelTriggerTools.CheckWinTriggers();
-        }
-
-        EditorGUILayout.Space(6);
-        if (GUILayout.Button("Refresh Sections", GUILayout.Height(24))) { countsDirty = true; Repaint(); SceneView.RepaintAll(); }
-
-        EditorGUILayout.Space(6);
-        List<LevelSection> sectionList = GetSortedSections();
-        if (sectionList.Count == 0)
-        {
-            EditorGUILayout.HelpBox("No Level Sections found in this scene! Create empty GameObjects and add the 'LevelSection' script to them.", MessageType.Info);
-            EditorGUILayout.EndScrollView();
-            return;
-        }
-
+        // ---- 5. Section list (renumbering / measuring always runs, drawing only when open)
+        // Numbers count ALL sections (also disabled ones) so they stay stable when you toggle.
+        List<LevelSection> sectionList = GetAllSections();
+        int disabledCount = 0;
         for (int i = 0; i < sectionList.Count; i++)
         {
-            if (sectionList[i] != null && sectionList[i].sectionNumber != i + 1)
+            var sec = sectionList[i];
+            if (sec == null) continue;
+            if (sec.sectionNumber != i + 1)
             {
-                Undo.RecordObject(sectionList[i], "Renumber Level Section");
-                sectionList[i].sectionNumber = i + 1;
-                EditorUtility.SetDirty(sectionList[i]);
+                Undo.RecordObject(sec, "Renumber Level Section");
+                sec.sectionNumber = i + 1;
+                EditorUtility.SetDirty(sec);
+            }
+            if (!sec.gameObject.activeInHierarchy) { disabledCount++; continue; }
+            if (!sec.HasMeasurement)
+            {
+                Undo.RecordObject(sec, "Measure Level Section");
+                sec.Measure();
+                EditorUtility.SetDirty(sec);
             }
         }
 
+        string secTitle = disabledCount > 0
+            ? $"Sections ({sectionList.Count}, {disabledCount} disabled)"
+            : $"Sections ({sectionList.Count})";
+        if (Fold("LevelManager.Fold.Sections", secTitle, true))
+        {
+            EditorGUILayout.BeginHorizontal();
+            if (GUILayout.Button("Refresh Sections", GUILayout.Height(22))) { countsDirty = true; Repaint(); SceneView.RepaintAll(); }
+            using (new EditorGUI.DisabledScope(disabledCount == 0))
+            {
+                if (GUILayout.Button("Enable all", GUILayout.Height(22), GUILayout.Width(80)))
+                {
+                    Undo.IncrementCurrentGroup();
+                    Undo.SetCurrentGroupName("Enable all sections");
+                    int g = Undo.GetCurrentGroup();
+                    foreach (var s in sectionList)
+                        if (s != null && !s.gameObject.activeSelf) SetSectionEnabled(s, true);
+                    Undo.CollapseUndoOperations(g);
+                    if (EditorPrefs.GetBool(AutoSnapToggleKey, true)) SnapSections();
+                    GUIUtility.ExitGUI();
+                }
+            }
+            EditorGUILayout.EndHorizontal();
+            PrefToggle("Auto-snap after switching a section on/off", AutoSnapToggleKey, true);
+
+            if (sectionList.Count == 0)
+            {
+                EditorGUILayout.HelpBox("No Level Sections found in this scene! Create empty GameObjects and add the 'LevelSection' script to them.", MessageType.Info);
+            }
+            else DrawSectionList(sectionList);
+            EditorGUILayout.Space(2);
+        }
+
+        // ---- 6. Section tracker (folded)
+        if (Fold("LevelManager.Fold.Tracker", "Section tracker (Play Mode)", false))
+        {
+            EditorGUILayout.LabelField("Current section", SectionTracker.StatusText);
+            Rect pr = GUILayoutUtility.GetRect(18f, 16f, GUILayout.ExpandWidth(true));
+            EditorGUI.ProgressBar(pr, Mathf.Max(0f, SectionTracker.Progress),
+                SectionTracker.Progress < 0f ? "-" : Mathf.RoundToInt(SectionTracker.Progress * 100f) + "% through section");
+            PrefToggle("Log to Console when the section changes", SectionTracker.LogPrefKey, true);
+            PrefToggle("Show overlay in the Scene view", SectionTracker.OverlayPrefKey, true);
+            if (GUILayout.Button("Log current section now (Ctrl+Shift+L)")) SectionTracker.LogCurrentNow();
+            EditorGUILayout.Space(2);
+        }
+
+        // ---- 7. Play area guide settings (folded)
+        if (Fold("LevelManager.Fold.PlayArea", "Play area guide (Scene view)", false))
+        {
+            EditorGUI.BeginChangeCheck();
+            PrefToggle("Fill the faces", PlayAreaGuide.FillKey, true);
+            PrefRange("X  min / max", PlayAreaGuide.MinXKey, PlayAreaGuide.MaxXKey, -30f, 30f);
+            PrefRange("Y  min / max", PlayAreaGuide.MinYKey, PlayAreaGuide.MaxYKey, -15f, 15f);
+            PrefFloatField("Frame spacing (Z)", PlayAreaGuide.SpacingKey, 100f);
+            if (EditorGUI.EndChangeCheck()) SceneView.RepaintAll();
+            PrefToggle("Record ship extents while playing (fly to every edge)", PlayAreaGuide.RecordKey, false);
+            if (PlayAreaGuide.HasRecording)
+            {
+                EditorGUILayout.LabelField("Recorded X", $"{PlayAreaGuide.RecMinX:F2}  to  {PlayAreaGuide.RecMaxX:F2}");
+                EditorGUILayout.LabelField("Recorded Y", $"{PlayAreaGuide.RecMinY:F2}  to  {PlayAreaGuide.RecMaxY:F2}");
+                EditorGUILayout.BeginHorizontal();
+                if (GUILayout.Button("Use recorded as play area")) PlayAreaGuide.ApplyRecording();
+                if (GUILayout.Button("Clear", GUILayout.Width(50))) PlayAreaGuide.ClearRecording();
+                EditorGUILayout.EndHorizontal();
+            }
+            EditorGUILayout.Space(2);
+        }
+
+        // ---- 8. Triggers (folded)
+        if (Fold("LevelManager.Fold.Triggers", "Triggers", false))
+        {
+            RefreshTriggerCounts();
+            DrawVisibilityRow("Enemy spawn triggers", enemyTotal, enemyVisible,
+                v => LevelTriggerTools.SetVisible<EnemySpawnTrigger>(v, "enemy spawn triggers"));
+            DrawVisibilityRow("Win triggers", winTotal, winVisible,
+                v => LevelTriggerTools.SetVisible<WinTrigger>(v, "win triggers"));
+            PrefFloatField("Win trigger depth (Z)", LevelTriggerTools.WinDepthKey, 20f);
+            PrefFloatField("Win trigger min size (X/Y)", LevelTriggerTools.WinMinSizeKey, 200f);
+            if (GUILayout.Button("Add / move win trigger to the end of the level"))
+            {
+                LevelTriggerTools.CreateWinTrigger();
+                countsDirty = true;
+                GUIUtility.ExitGUI();
+            }
+            EditorGUILayout.Space(2);
+        }
+
+        // ---- 9. Help (folded)
+        if (Fold("LevelManager.Fold.Help", "Help", false))
+        {
+            EditorGUILayout.HelpBox(
+                "1. Build LevelRoot once (one scrolling root, spawn points stay static).\n" +
+                "2. Snap sections in order whenever you add, remove, reorder or resize a section. It also moves the level to the spawn points and keeps the win trigger at the end of the last section.\n" +
+                "3. Test Here, then press Play: the root is shifted so that section's start edge sits at the Play Z. Pressing R restarts from the same section.\n" +
+                "4. Untick a section to switch it off temporarily. It stays where it is, Snap skips it and closes the gap. Tick it again to bring it back into the chain.",
+                MessageType.Info);
+        }
+
+        EditorGUILayout.EndScrollView();
+    }
+
+    private void DrawSectionList(List<LevelSection> sectionList)
+    {
         float gapSetting = EditorPrefs.GetFloat(GapPrefKey, 0f);
+        LevelSection prevActive = null;
 
         for (int i = 0; i < sectionList.Count; i++)
         {
             var section = sectionList[i];
             if (section == null) continue;
 
-            if (!section.HasMeasurement)
-            {
-                Undo.RecordObject(section, "Measure Level Section");
-                section.Measure();
-                EditorUtility.SetDirty(section);
-            }
+            bool on = section.gameObject.activeInHierarchy;
+            Color secColor = section.gizmoColor;
+            secColor.a = 1f;
 
             EditorGUILayout.BeginVertical("box");
             EditorGUILayout.BeginHorizontal();
+
+            // column 0: on/off toggle + gizmo colour
+            EditorGUILayout.BeginVertical(GUILayout.Width(38));
+            bool newOn = EditorGUILayout.Toggle(section.gameObject.activeSelf, GUILayout.Width(16));
+            if (newOn != section.gameObject.activeSelf)
+            {
+                SetSectionEnabled(section, newOn);
+                if (EditorPrefs.GetBool(AutoSnapToggleKey, true)) SnapSections();
+                countsDirty = true;
+                SceneView.RepaintAll();
+                GUIUtility.ExitGUI();
+            }
+            EditorGUI.BeginChangeCheck();
+            Color newCol = EditorGUILayout.ColorField(GUIContent.none, section.gizmoColor, false, false, false, GUILayout.Width(36));
+            if (EditorGUI.EndChangeCheck())
+            {
+                Undo.RecordObject(section, "Change Section Colour");
+                section.gizmoColor = newCol;
+                EditorUtility.SetDirty(section);
+                SceneView.RepaintAll();
+            }
+            EditorGUILayout.EndVertical();
 
             // column A: reorder
             EditorGUILayout.BeginVertical(GUILayout.Width(25));
@@ -776,15 +893,18 @@ public class LevelManagerWindow : EditorWindow
             bool isQueued = TargetSection == section.sectionNumber;
             var prevColor = GUI.backgroundColor;
             GUI.backgroundColor = isQueued ? Color.green : Color.white;
-            if (GUILayout.Button("Test Here", GUILayout.Width(70)))
+            using (new EditorGUI.DisabledScope(!on))
             {
-                if (isQueued) { TargetSection = -1; Debug.Log("Level Manager: Test start cleared."); }
-                else
+                if (GUILayout.Button("Test Here", GUILayout.Width(70)))
                 {
-                    TargetSection = section.sectionNumber;
-                    Debug.Log($"Level Manager: Queued test from Section #{section.sectionNumber} ({section.sectionLabel}). Press Play when ready!");
+                    if (isQueued) { TargetSection = -1; Debug.Log("Level Manager: Test start cleared."); }
+                    else
+                    {
+                        TargetSection = section.sectionNumber;
+                        Debug.Log($"Level Manager: Queued test from Section #{section.sectionNumber} ({section.sectionLabel}). Press Play when ready!");
+                    }
+                    SceneView.RepaintAll();
                 }
-                SceneView.RepaintAll();
             }
 
             GUI.backgroundColor = new Color(1f, 0.5f, 0.5f);
@@ -817,20 +937,30 @@ public class LevelManagerWindow : EditorWindow
             EditorGUILayout.EndHorizontal();
 
             // row 3: Z range, length, seam
-            string seam = "";
-            bool seamOk = true;
-            if (i > 0)
+            if (on)
             {
-                float g = section.StartZ - sectionList[i - 1].EndZ - gapSetting;
-                seamOk = Mathf.Abs(g) < 0.05f;
-                seam = seamOk ? "seam OK" : (g > 0f ? $"gap {g:F2}" : $"overlap {-g:F2}");
+                string seam = "";
+                bool seamOk = true;
+                if (prevActive != null)
+                {
+                    float g = section.StartZ - prevActive.EndZ - gapSetting;
+                    seamOk = Mathf.Abs(g) < 0.05f;
+                    seam = seamOk ? "seam OK" : (g > 0f ? $"gap {g:F2}" : $"overlap {-g:F2}");
+                }
+                var st = new GUIStyle(EditorStyles.miniLabel);
+                if (prevActive != null) st.normal.textColor = seamOk ? new Color(0.4f, 0.85f, 0.4f) : new Color(1f, 0.4f, 0.4f);
+                EditorGUILayout.LabelField($"Z {section.StartZ:F1} → {section.EndZ:F1}   len {section.Length:F1}   {seam}", st);
+                prevActive = section;
             }
-            var st = new GUIStyle(EditorStyles.miniLabel);
-            if (i > 0) st.normal.textColor = seamOk ? new Color(0.4f, 0.85f, 0.4f) : new Color(1f, 0.4f, 0.4f);
-            EditorGUILayout.LabelField($"Z {section.StartZ:F1} → {section.EndZ:F1}   len {section.Length:F1}   {seam}", st);
+            else
+            {
+                var st = new GUIStyle(EditorStyles.miniLabel);
+                st.normal.textColor = new Color(0.9f, 0.7f, 0.3f);
+                EditorGUILayout.LabelField("DISABLED - skipped by Snap, stays where it is", st);
+            }
 
             // row 4: where this section lives in the hierarchy
-            string state = section.gameObject.activeInHierarchy ? "" : "  (inactive)";
+            string state = on ? "" : "  (inactive)";
             EditorGUILayout.LabelField(GetPath(section.transform) + state, EditorStyles.miniLabel);
 
             EditorGUILayout.EndVertical();
@@ -845,8 +975,17 @@ public class LevelManagerWindow : EditorWindow
 
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.EndVertical();
+
+            // colour coding: bar on the left + faint tint over the whole box (dimmer when disabled)
+            Rect r = GUILayoutUtility.GetLastRect();
+            if (UnityEngine.Event.current.type == UnityEngine.EventType.Repaint)
+            {
+                Color bar = secColor; if (!on) bar.a = 0.3f;
+                Color tint = secColor; tint.a = on ? 0.12f : 0.04f;
+                EditorGUI.DrawRect(r, tint);
+                EditorGUI.DrawRect(new Rect(r.x, r.y, 4f, r.height), bar);
+            }
         }
-        EditorGUILayout.EndScrollView();
     }
 
     // ------------------------------------------------------------------ test start
