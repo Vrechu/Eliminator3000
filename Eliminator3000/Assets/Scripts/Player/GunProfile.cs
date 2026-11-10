@@ -15,6 +15,7 @@ public class GunProfile : ScriptableObject
     public int MaxAmmo;
     public int AmmoCostPerShot;
     public float FireRate;
+    public bool LockMovementWhileShooting;
     public bool Cluster;
     public float Angle;
     public int Rows;
