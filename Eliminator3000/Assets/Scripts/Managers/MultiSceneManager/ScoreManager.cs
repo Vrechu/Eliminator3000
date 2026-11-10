@@ -16,6 +16,9 @@ public class ScoreManager : MonoBehaviour
     [SerializeField] private string scoreFileName = "Scores";
     private string scoreFilePath;
 
+    private int[] scoreMultipliers = new int[2] { 1, 1 };
+    private Timer[] multiplierTimers = new Timer[2];
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -37,6 +40,7 @@ public class ScoreManager : MonoBehaviour
         EventBus<LevelFinishedEvent>.Subscribe(OnLevelFinished);
         EventBus<GameFinishedEvent>.Subscribe(OnGameFinished);
         EventBus<GameLoseEvent>.Subscribe(OnGameLost);
+        EventBus<PlayerScoreMultiplierPickupEvent>.Subscribe(OnScoreMultiplierPickup);
     }
 
     private void OnDestroy()
@@ -47,6 +51,7 @@ public class ScoreManager : MonoBehaviour
         EventBus<LevelFinishedEvent>.UnSubscribe(OnLevelFinished);
         EventBus<GameFinishedEvent>.UnSubscribe(OnGameFinished);
         EventBus<GameLoseEvent>.UnSubscribe(OnGameLost);
+        EventBus<PlayerScoreMultiplierPickupEvent>.UnSubscribe(OnScoreMultiplierPickup);
     }
 
     private void Start()
@@ -54,6 +59,16 @@ public class ScoreManager : MonoBehaviour
         playerProfileManager = PlayerProfileManager.Instance;
         scoreFilePath = Path.Combine(Application.dataPath, scoreFileName + ".txt");
         ReadScoreFile();
+        for (int i = 0; i < multiplierTimers.Length; i++)
+        {
+            multiplierTimers[i] = new Timer(0);
+        }
+    }
+
+    private void Update()
+    {
+        if (GameStateManager.Instance.CurrentState != GameStateManager.GameState.Ingame) return;
+        CountDownMultipliers();
     }
 
     private void OnPlayerSpawned(PlayerAvatarInstantiatedEvent _playerAvatarInstantiatedEvent)
@@ -168,5 +183,30 @@ public class ScoreManager : MonoBehaviour
             ScoreList = readScores;
         }
         SortScores();
+    }
+
+    private void OnScoreMultiplierPickup(PlayerScoreMultiplierPickupEvent _playerScoreMultiplierPickupEvent)
+    {
+        SetMultiplier(_playerScoreMultiplierPickupEvent.Player, 
+            _playerScoreMultiplierPickupEvent.NewMultiplier, 
+            _playerScoreMultiplierPickupEvent.Duration);
+    }
+
+    private void SetMultiplier(int _playerIndex, int _multiplier, float _duration)
+    {
+        scoreMultipliers[_playerIndex] = _multiplier;
+        multiplierTimers[_playerIndex] = new Timer(_duration);
+    }
+
+    private void CountDownMultipliers()
+    {
+        for (int i = 0; i < multiplierTimers.Length; i++)
+        {
+            if (!playerProfileManager.PlayersJoined[i]) continue;
+            if (multiplierTimers[i].IsFinished())
+            {
+                scoreMultipliers[i] = 1;
+            }
+        }
     }
 }
