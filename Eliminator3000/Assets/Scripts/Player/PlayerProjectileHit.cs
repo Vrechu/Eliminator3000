@@ -4,6 +4,7 @@ public class PlayerProjectileHit : MonoBehaviour
 {
     public int PlayerID;
     [SerializeField] LayerMask targetLayers;
+    [SerializeField] private int damage = 1;
 
     /// <summary>
     /// When the projectile collides with another object, check if the object is in the target layer mask. 
@@ -19,13 +20,14 @@ public class PlayerProjectileHit : MonoBehaviour
             if (_other.gameObject.TryGetComponent(out EnemyInfo EnemyInfo))
             {
                 scoreGained = EnemyInfo.ScoreValue;
+                EnemyInfo.TakeDamage(damage, PlayerID);
             }
             else
             {
                 scoreGained = 0;
+                Destroy(_other.gameObject);
+                Debug.LogWarning($"PlayerProjectileHit: Object {_other.gameObject.name} does not have an EnemyInfo component. Score gained is set to 0.");
             }
-            Destroy(_other.gameObject);
-            EventBus<PlayerScoredEvent>.Publish(new PlayerScoredEvent(PlayerID, scoreGained));
         }
         Destroy(gameObject);
     }

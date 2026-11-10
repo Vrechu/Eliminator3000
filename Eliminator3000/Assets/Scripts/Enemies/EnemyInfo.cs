@@ -9,4 +9,24 @@ public class EnemyInfo : MonoBehaviour
     private string Info;
 
     public int ScoreValue;
+    [SerializeField] private int health = 2;
+    private int lastPlayerHitID = -1;
+
+
+    public void TakeDamage(int _value, int _playerID)
+    {
+        health -= _value;
+        lastPlayerHitID = _playerID;
+        CheckHealth();
+    }
+
+    private void CheckHealth()
+    {
+        if (health <= 0)
+        {
+            EventBus<PlayerScoredEvent>.Publish(new PlayerScoredEvent(lastPlayerHitID, ScoreValue));
+            Destroy(gameObject);
+        }
+    }
+
 }
