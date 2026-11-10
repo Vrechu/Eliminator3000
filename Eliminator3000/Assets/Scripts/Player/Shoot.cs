@@ -8,6 +8,7 @@ public class Shoot : MonoBehaviour
 
     [SerializeField] private InputActionReference shootInputActionReference;
     private bool shooting = false;
+    public bool LockedShooting { get; private set; } = false;
 
     private void Start()
     {
@@ -17,9 +18,11 @@ public class Shoot : MonoBehaviour
 
     private void Update()
     {
+        LockedShooting = false;
         if (gameStateManager.CurrentState
             != GameStateManager.GameState.Ingame) return;
         if (!shooting) return;
+        if (setGunType.GetCurrentGunProfile().LockMovementWhileShooting) LockedShooting = true;
         if (!setGunType.canShoot) return;
         ShootProjectile();
     }
