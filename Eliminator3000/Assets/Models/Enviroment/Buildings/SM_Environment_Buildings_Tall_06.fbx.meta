@@ -7,6 +7,26 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: M_Buildings_Neon_Lights_01
+    second: {fileID: 2100000, guid: 56005e48f11bc8841856bc712d9c1a63, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Buildings_Walls
+    second: {fileID: 2100000, guid: e0b64a31d4d215140b2a65077df26087, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Buildings_Windows_Big
+    second: {fileID: 2100000, guid: 1bd68df4613c3b249a65cc1940aef1b9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Buildings_Windows_Small
+    second: {fileID: 2100000, guid: 64186027cda1f124e9f41d67ba010125, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: openPBR_shader1
     second: {fileID: 2100000, guid: 5ce4cc0fc36cc0740be9930c9e36c3f5, type: 2}
   materials:

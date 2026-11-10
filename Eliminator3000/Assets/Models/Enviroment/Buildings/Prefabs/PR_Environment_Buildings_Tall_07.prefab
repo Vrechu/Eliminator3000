@@ -80,9 +80,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -5619606041717248121, guid: 0a3bf1ab2fc9027449affc9913ad616e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5619606041717248121, guid: 0a3bf1ab2fc9027449affc9913ad616e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5619606041717248121, guid: 0a3bf1ab2fc9027449affc9913ad616e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 0a3bf1ab2fc9027449affc9913ad616e, type: 3}
       propertyPath: m_Name
       value: SM_Environment_Buildings_Tall_07
+      objectReference: {fileID: 0}
+    - target: {fileID: 7796331988754535990, guid: 0a3bf1ab2fc9027449affc9913ad616e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

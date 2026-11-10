@@ -84,6 +84,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Environment_Buildings_Mid_05
       objectReference: {fileID: 0}
+    - target: {fileID: 3411673188428292660, guid: ec51f0bcaf500a64fb84622e8268d49e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3411673188428292660, guid: ec51f0bcaf500a64fb84622e8268d49e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
