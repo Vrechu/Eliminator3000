@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 
 /// <summary>
 /// Information about an enemy, including its score value and descriptive text.
@@ -12,6 +13,12 @@ public class EnemyInfo : MonoBehaviour
     [SerializeField] private int health = 2;
     private int lastPlayerHitID = -1;
 
+    [SerializeField] TextMeshProUGUI healthText;
+
+    private void Start()
+    {
+        UpdateText();
+    }
 
     public void TakeDamage(int _value, int _playerID)
     {
@@ -22,6 +29,7 @@ public class EnemyInfo : MonoBehaviour
 
     private void CheckHealth()
     {
+        UpdateText();
         if (health <= 0)
         {
             EventBus<PlayerScoredEvent>.Publish(new PlayerScoredEvent(lastPlayerHitID, ScoreValue));
@@ -29,4 +37,11 @@ public class EnemyInfo : MonoBehaviour
         }
     }
 
+    private void UpdateText()
+    {
+        if (healthText != null)
+        {
+            healthText.text = health.ToString();
+        }
+    }
 }
