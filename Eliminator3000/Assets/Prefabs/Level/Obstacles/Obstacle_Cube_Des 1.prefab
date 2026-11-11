@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3035863154724065037}
   - component: {fileID: 6826200374914394844}
   - component: {fileID: 1832058872937928393}
-  m_Layer: 11
+  m_Layer: 10
   m_Name: Obstacle_Cube_Des 1
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -174,6 +174,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyInfo
   Info: 
   ScoreValue: 300
+  health: 2
+  healthText: {fileID: 0}
 --- !u!1001 &2735350664004560882
 PrefabInstance:
   m_ObjectHideFlags: 0
