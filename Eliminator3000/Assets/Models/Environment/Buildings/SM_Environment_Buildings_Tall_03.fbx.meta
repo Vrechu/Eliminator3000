@@ -8,7 +8,12 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: M_Buildings_Neon_Lights_01
-    second: {fileID: 2100000, guid: 56005e48f11bc8841856bc712d9c1a63, type: 2}
+    second: {fileID: 2100000, guid: 233f1d12f355e5f4487e874f33f4ca10, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Buildings_Solid_Black
+    second: {fileID: 2100000, guid: b8eb132324807c44cbc3520f834bdb55, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -18,7 +23,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: M_Buildings_Windows_Big
-    second: {fileID: 2100000, guid: 1bd68df4613c3b249a65cc1940aef1b9, type: 2}
+    second: {fileID: 2100000, guid: fa1ea5bc65f2a314999431c216d42c1f, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule

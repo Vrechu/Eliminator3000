@@ -12,6 +12,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: M_Buildings_Solid_Black
+    second: {fileID: 2100000, guid: b8eb132324807c44cbc3520f834bdb55, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: M_Buildings_Walls
     second: {fileID: 2100000, guid: e0b64a31d4d215140b2a65077df26087, type: 2}
   - first:
@@ -23,7 +28,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: M_Buildings_Windows_Small
-    second: {fileID: 2100000, guid: 64186027cda1f124e9f41d67ba010125, type: 2}
+    second: {fileID: 2100000, guid: b8a00bce8ab12224bb3a11337bf0e76b, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
