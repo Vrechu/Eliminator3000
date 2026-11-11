@@ -6,6 +6,7 @@ using System.Collections.Generic;
 /// Editor-only. Obstacle / powerup placement (5x5 grid per entry) and enemy trigger tools for each LevelSection.
 /// Place in Assets\TutorialInfo\Scripts\Editor\
 /// </summary>
+[InitializeOnLoad]
 public static class SectionContentTools
 {
     private const int Grid = 5;
@@ -20,6 +21,13 @@ public static class SectionContentTools
     private static LevelSection pickerSection;
     private static bool pickerPower;
     private static Texture2D dotTex;
+    private static double nextSyncTime;
+
+    static SectionContentTools()
+    {
+        EditorApplication.update -= SyncPoll;
+        EditorApplication.update += SyncPoll;
+    }
 
     // ------------------------------------------------------------------ helpers
 
@@ -97,6 +105,22 @@ public static class SectionContentTools
         return new Vector3(x, y, z);
     }
 
+    // Opposite of EntryPos: works out zone / along / cell from where an object really is (used for objects found in the Hierarchy).
+    private static void FitEntryToPosition(LevelSection s, LevelSection.PlacedAsset e, Vector3 p)
+    {
+        PlayArea(out float x0, out float x1, out float y0, out float y1);
+        Bounds b = s.GetBounds();
+        float m = Mathf.Min(Mathf.Max(0f, s.gridEdgeMargin), b.size.z * 0.4f);
+        float z0 = b.min.z + m;
+        float z1 = b.max.z - m;
+        float t = z1 > z0 ? Mathf.Clamp01((p.z - z0) / (z1 - z0)) * 3f : 1.5f;
+        e.zone = Mathf.Clamp(Mathf.FloorToInt(t), 0, 2);
+        e.along = Mathf.Clamp01(t - e.zone);
+        int cx = Mathf.Clamp(Mathf.FloorToInt((p.x - x0) / (x1 - x0) * Grid), 0, Grid - 1);
+        int cy = Mathf.Clamp(Mathf.FloorToInt((p.y - s.gridYOffset - y0) / (y1 - y0) * Grid), 0, Grid - 1);
+        e.cell = cy * Grid + cx;
+    }
+
     private static void ApplyEntry(LevelSection s, LevelSection.PlacedAsset e)
     {
         if (!Alive(s, e)) return;
@@ -110,12 +134,18 @@ public static class SectionContentTools
         SceneView.RepaintAll();
     }
 
+    // An entry counts as "in use" when it has a prefab or a live object.
+    private static bool HasContent(LevelSection.PlacedAsset o)
+    {
+        return o.prefab != null || o.instance != null;
+    }
+
     private static bool[] UsedCells(LevelSection s, int zone, LevelSection.PlacedAsset except)
     {
         var u = new bool[Cells];
         foreach (var o in s.assets)
         {
-            if (o == except || o.prefab == null || o.zone != zone) continue;
+            if (o == except || !HasContent(o) || o.zone != zone) continue;
             u[Mathf.Clamp(o.cell, 0, Cells - 1)] = true;
         }
         return u;
@@ -148,6 +178,86 @@ public static class SectionContentTools
         return go;
     }
 
+    // ------------------------------------------------------------------ hierarchy sync (finds duplicated / deleted objects)
+
+    private static void SyncPoll()
+    {
+        double now = EditorApplication.timeSinceStartup;
+        if (now < nextSyncTime) return;
+        nextSyncTime = now + 0.5;
+        if (EditorApplication.isPlayingOrWillChangePlaymode || EditorApplication.isCompiling || EditorApplication.isUpdating) return;
+        if (UnityEditor.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage() != null) return;
+        SyncAll();
+    }
+
+    private static void SyncAll()
+    {
+        var all = Object.FindObjectsByType<LevelSection>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        bool changed = false;
+        foreach (var s in all)
+        {
+            if (s == null || EditorUtility.IsPersistent(s)) continue;
+            if (SyncSection(s)) changed = true;
+        }
+        if (changed)
+        {
+            SceneView.RepaintAll();
+            UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
+        }
+    }
+
+    // Keeps the entry list in line with the objects in the Obstacles / Powerups groups.
+    // No Undo is recorded on purpose: Ctrl+Z then undoes the Hierarchy action itself and the list follows.
+    private static bool SyncSection(LevelSection s)
+    {
+        if (!s.enabled || !s.gameObject.activeInHierarchy) return false;
+        bool changed = false;
+
+        // 1. objects deleted in the Hierarchy: drop their entry
+        for (int i = s.assets.Count - 1; i >= 0; i--)
+        {
+            var e = s.assets[i];
+            if (e != null && e.instance != null) continue;
+            s.assets.RemoveAt(i);
+            changed = true;
+            Debug.Log($"[Content] Section #{s.sectionNumber}: an obstacle/powerup was deleted in the Hierarchy, its entry was removed from the manager.");
+        }
+
+        // 2. objects in the groups without an entry (Ctrl+D in the Hierarchy, dragged in, undo of a delete)
+        var known = new HashSet<GameObject>();
+        foreach (var e in s.assets) if (e.instance != null) known.Add(e.instance);
+
+        for (int c = 0; c < 2; c++)
+        {
+            bool power = c == 1;
+            Transform cont = s.FindContainer(power ? LevelSection.PowerupsName : LevelSection.ObstaclesName);
+            if (cont == null) continue;
+            for (int k = 0; k < cont.childCount; k++)
+            {
+                GameObject go = cont.GetChild(k).gameObject;
+                if (known.Contains(go)) continue;
+                known.Add(go);
+
+                var ne = new LevelSection.PlacedAsset();
+                ne.prefab = PrefabUtility.GetCorrespondingObjectFromSource(go);
+                ne.isPowerup = power;
+                ne.instance = go;
+                ne.open = false;
+                FitEntryToPosition(s, ne, go.transform.position);
+                s.assets.Insert(0, ne);
+                changed = true;
+                Debug.Log($"[Content] Section #{s.sectionNumber}: found '{go.name}' in {cont.name}, added to the manager ({PartNames[ne.zone]}, cell {ne.cell}). It was not moved.", go);
+            }
+        }
+
+        if (changed)
+        {
+            EditorUtility.SetDirty(s);
+            UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(s.gameObject.scene);
+        }
+        return changed;
+    }
+
     // ------------------------------------------------------------------ add / change / remove
 
     private static void AddAsset(LevelSection s, GameObject prefab, bool power)
@@ -171,6 +281,47 @@ public static class SectionContentTools
 
         Undo.CollapseUndoOperations(g);
         Debug.Log($"[Content] Section #{s.sectionNumber}: added {(power ? "powerup" : "obstacle")} '{prefab.name}' (Mid, cell {e.cell}).", e.instance);
+        SceneView.RepaintAll();
+        UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
+    }
+
+    // Copies an entry and its object (scale / rotation kept) into the first free cell of the same zone.
+    private static void DuplicateEntry(LevelSection s, int idx)
+    {
+        if (idx < 0 || idx >= s.assets.Count) return;
+        var src = s.assets[idx];
+        bool alive = Alive(s, src);
+        if (!alive && src.prefab == null) return;
+
+        Undo.IncrementCurrentGroup();
+        Undo.SetCurrentGroupName("Duplicate asset");
+        int g = Undo.GetCurrentGroup();
+
+        Undo.RecordObject(s, "Duplicate asset");
+        var e = new LevelSection.PlacedAsset();
+        e.prefab = src.prefab;
+        e.isPowerup = src.isPowerup;
+        e.zone = src.zone;
+        e.along = src.along;
+        e.open = true;
+        e.cell = FreeCell(s, src.zone, null);
+
+        if (alive)
+        {
+            Transform cont = EnsureContainer(s, src.isPowerup ? LevelSection.PowerupsName : LevelSection.ObstaclesName);
+            GameObject go = Object.Instantiate(src.instance, cont);
+            go.name = src.instance.name;
+            Undo.RegisterCreatedObjectUndo(go, "Duplicate asset");
+            e.instance = go;
+        }
+        else e.instance = Spawn(s, src.prefab, src.isPowerup);
+
+        s.assets.Insert(idx, e);
+        ApplyEntry(s, e);
+        EditorUtility.SetDirty(s);
+        Undo.CollapseUndoOperations(g);
+
+        Debug.Log($"[Content] Section #{s.sectionNumber}: duplicated '{e.instance.name}' ({PartNames[Mathf.Clamp(e.zone, 0, 2)]}, cell {e.cell}).", e.instance);
         SceneView.RepaintAll();
         UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
     }
@@ -525,14 +676,14 @@ public static class SectionContentTools
         return result;
     }
 
-    private static void DrawEntry(LevelSection s, int i, bool on, ref int removeIdx)
+    private static void DrawEntry(LevelSection s, int i, bool on, ref int removeIdx, ref int dupIdx)
     {
         var e = s.assets[i];
         bool alive = Alive(s, e);
         int number = 0;
         for (int j = i; j < s.assets.Count; j++) if (s.assets[j].isPowerup == e.isPowerup) number++;
         string kind = e.isPowerup ? "Powerup" : "Obstacle";
-        string pname = e.prefab != null ? e.prefab.name : "(empty)";
+        string pname = e.prefab != null ? e.prefab.name : (e.instance != null ? e.instance.name : "(empty)");
 
         EditorGUILayout.BeginVertical("box");
         EditorGUILayout.BeginHorizontal();
@@ -544,6 +695,9 @@ public static class SectionContentTools
             EditorGUI.BeginChangeCheck();
             int nz = GUILayout.Toolbar(Mathf.Clamp(e.zone, 0, 2), PartNames, EditorStyles.miniButton, GUILayout.Width(150));
             if (EditorGUI.EndChangeCheck()) SetEntry(s, e, nz, e.cell, e.along);
+
+            if (GUILayout.Button(new GUIContent("Dup", "Duplicate this entry and its object (first free cell in the same part)"), GUILayout.Width(34)))
+                dupIdx = i;
         }
         var prevBg = GUI.backgroundColor;
         GUI.backgroundColor = new Color(1f, 0.5f, 0.5f);
@@ -600,7 +754,7 @@ public static class SectionContentTools
         int nObs = 0, nPow = 0;
         foreach (var en in s.assets)
         {
-            if (en.prefab == null) continue;
+            if (!HasContent(en)) continue;
             if (en.isPowerup) nPow++; else nObs++;
         }
         var trigs = GetTriggers(s);
@@ -623,10 +777,16 @@ public static class SectionContentTools
 
         // obstacle / powerup entries, newest on top
         int removeIdx = -1;
-        for (int i = 0; i < s.assets.Count; i++) DrawEntry(s, i, on, ref removeIdx);
+        int dupIdx = -1;
+        for (int i = 0; i < s.assets.Count; i++) DrawEntry(s, i, on, ref removeIdx, ref dupIdx);
         if (removeIdx >= 0)
         {
             RemoveEntry(s, removeIdx);
+            GUIUtility.ExitGUI();
+        }
+        if (dupIdx >= 0)
+        {
+            DuplicateEntry(s, dupIdx);
             GUIUtility.ExitGUI();
         }
 
