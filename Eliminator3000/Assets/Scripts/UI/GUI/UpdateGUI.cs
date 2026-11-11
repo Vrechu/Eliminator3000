@@ -7,14 +7,14 @@ public class UpdateGUI : MonoBehaviour
     //player1
     [SerializeField] private GameObject player1GUI;
     [SerializeField] private TextMeshProUGUI
-        p1LivesGUI, p1HealthGUI, p1ScoreGUI;
+        p1LivesGUI, p1HealthGUI, p1ScoreGUI, P1MultiplierGUI;
     [SerializeField] private GameObject
         p1GunGUI, p1BaseGunGUI, p1RapidGunGUI, p1ClusterGunGUI;
     [SerializeField] private TextMeshProUGUI p1AmmoGUI;
     //player2
     [SerializeField] private GameObject player2GUI;
     [SerializeField] private TextMeshProUGUI
-        p2LivesGUI, p2HealthGUI, p2ScoreGUI;
+        p2LivesGUI, p2HealthGUI, p2ScoreGUI, P2MultiplierGUI;
     [SerializeField]
     private GameObject
         p2GunGUI, p2BaseGunGUI, p2RapidGunGUI, p2ClusterGunGUI;
@@ -30,6 +30,7 @@ public class UpdateGUI : MonoBehaviour
         EventBus<PlayerLivesChangedEvent>.Subscribe(SetLivesGUI);
         EventBus<PlayerHealthChangedEvent>.Subscribe(SetHealthGUI);
         EventBus<ScoreChangedEvent>.Subscribe(SetScoreGUI);
+        EventBus<PlayerScoreMultiplierChangedEvent>.Subscribe(SetMultiplierGUI);
         EventBus<GameWinEvent>.Subscribe(EnableWinGUI);
         EventBus<GameLoseEvent>.Subscribe(EnableLoseGUIgame);
         EventBus<PlayerGunSwapEvent>.Subscribe(OnGunSwap);
@@ -43,6 +44,7 @@ public class UpdateGUI : MonoBehaviour
         EventBus<PlayerLivesChangedEvent>.UnSubscribe(SetLivesGUI);
         EventBus<PlayerHealthChangedEvent>.UnSubscribe(SetHealthGUI);
         EventBus<ScoreChangedEvent>.UnSubscribe(SetScoreGUI);
+        EventBus<PlayerScoreMultiplierChangedEvent>.UnSubscribe(SetMultiplierGUI);
         EventBus<GameWinEvent>.UnSubscribe(EnableWinGUI);
         EventBus<GameLoseEvent>.UnSubscribe(EnableLoseGUIgame);
         EventBus<PlayerGunSwapEvent>.UnSubscribe(OnGunSwap);
@@ -88,6 +90,18 @@ public class UpdateGUI : MonoBehaviour
         else if (_scoreChangedEvent.Player == 1)
         {
             p2ScoreGUI.text = _scoreChangedEvent.Score.ToString();
+        }
+    }
+
+    private void SetMultiplierGUI(PlayerScoreMultiplierChangedEvent _playerScoreMultiplierChangedEvent)
+    {
+        if (_playerScoreMultiplierChangedEvent.Player == 0)
+        {
+            P1MultiplierGUI.text = "X" + _playerScoreMultiplierChangedEvent.NewMultiplier.ToString();
+        }
+        else if (_playerScoreMultiplierChangedEvent.Player == 1)
+        {
+            P2MultiplierGUI.text = "X" + _playerScoreMultiplierChangedEvent.NewMultiplier.ToString();
         }
     }
 
