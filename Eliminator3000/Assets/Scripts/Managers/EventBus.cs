@@ -332,4 +332,28 @@ public class BlackHoleDespawnEvent : Event
         Player = cPlayer;
     }
 }
+
+public class PlayerScoreMultiplierPickupEvent : Event
+{
+    public int Player;
+    public int NewMultiplier;
+    public float Duration; 
+    public PlayerScoreMultiplierPickupEvent(int cPlayer, int cNewMultiplier, float cDuration)
+    {
+        Player = cPlayer;
+        NewMultiplier = cNewMultiplier;
+        Duration = cDuration;
+    }
+}
+
+public class PlayerScoreMultiplierChangedEvent : Event
+{
+    public int Player;
+    public int NewMultiplier;
+    public PlayerScoreMultiplierChangedEvent(int cPlayer, int cNewMultiplier)
+    {
+        Player = cPlayer;
+        NewMultiplier = cNewMultiplier;
+    }
+}
 #endregion
