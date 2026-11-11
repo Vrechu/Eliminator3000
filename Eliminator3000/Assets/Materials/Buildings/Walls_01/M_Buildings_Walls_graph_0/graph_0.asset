@@ -135,10 +135,10 @@ MonoBehaviour:
     <presetinput identifier=\"$randomseed\" uid=\"1274253864\" type=\"4\" value=\"1776\"
     />\n  <presetinput identifier=\"WindowCount_x_amount\" uid=\"2026904220\" type=\"4\"
     value=\"29\" />\n  <presetinput identifier=\"WindowCount_y_amount\" uid=\"2026904210\"
-    type=\"4\" value=\"18\" />\n  <presetinput identifier=\"Window_Master_FrameSize\"
-    uid=\"2026922630\" type=\"3\" value=\"0.13,0,0.03,0\" />\n  <presetinput identifier=\"Windows_Color\"
+    type=\"4\" value=\"14\" />\n  <presetinput identifier=\"Window_Master_FrameSize\"
+    uid=\"2026922630\" type=\"3\" value=\"0.07,0,-0.27,0\" />\n  <presetinput identifier=\"Windows_Color\"
     uid=\"2026918029\" type=\"3\" value=\"0,0,0,1\" />\n  <presetinput identifier=\"Windows_Roughness\"
-    uid=\"2026918112\" type=\"0\" value=\"17.82\" />\n  <presetinput identifier=\"Windows_LightSwitch_01\"
+    uid=\"2026918112\" type=\"0\" value=\"85.48\" />\n  <presetinput identifier=\"Windows_LightSwitch_01\"
     uid=\"2026917688\" type=\"0\" value=\"1\" />\n  <presetinput identifier=\"Windows_LightSwitch_02\"
     uid=\"2026917673\" type=\"0\" value=\"1\" />\n </sbspreset>\n"
   IsRuntimeOnly: 0
@@ -229,7 +229,7 @@ MonoBehaviour:
           GuiDescription: Amount of patterns on the Y axis.
           Type: 4
           WidgetType: 1
-        Data: 18
+        Data: 14
         NumericalDescription:
           DefaultValue: 3
           MinValue: 1
@@ -251,7 +251,7 @@ MonoBehaviour:
           GuiDescription: 
           Type: 3
           WidgetType: 1
-        Data: {x: 0.13, y: 0, z: 0.03, w: 0}
+        Data: {x: 0.07, y: 0, z: -0.27, w: 0}
         NumericalDescription:
           DefaultValue: {x: 0.04, y: 0, z: 0, w: 0}
           MinValue: {x: 0, y: 0, z: 0, w: 0}
@@ -293,7 +293,7 @@ MonoBehaviour:
             output image
           Type: 0
           WidgetType: 3
-        Data: 17.82
+        Data: 85.48
         NumericalDescription:
           DefaultValue: 0.532446
           MinValue: 0

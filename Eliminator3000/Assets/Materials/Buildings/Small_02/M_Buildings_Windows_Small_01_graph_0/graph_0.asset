@@ -12,23 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eed5864476f84ce4b85454db09ca4eaa, type: 3}
   m_Name: graph_0
   m_EditorClassIdentifier: Adobe.Substance::Adobe.Substance.SubstanceGraphSO
-  AssetPath: Assets/Materials/Buildings/Windows_Big/M_Buildings_Windows_Big.sbsar
-  RawData: {fileID: -244192453324840774, guid: b612761a8988ab249bb483dc0224ca56, type: 3}
+  AssetPath: Assets/Materials/Buildings/Small_01 1/M_Buildings_Windows_Small_01.sbsar
+  RawData: {fileID: -244192453324840774, guid: 252a986db268a354b8e267c5c80c0ddd, type: 3}
   Name: graph_0
   IsRoot: 1
   FlagedForDelete: 0
-  GUID: cc628cc5-dbda-4e2e-9079-7cbbf79adc50
+  GUID: 1eb48740-2f93-4f39-b4d0-6facd91ff79a
   Index: 0
   Input:
-  - rid: 5060647644148269074
-  - rid: 5060647644148269075
-  - rid: 5060647644148269076
-  - rid: 5060647644148269077
-  - rid: 5060647644148269078
-  - rid: 5060647644148269079
-  - rid: 5060647644148269080
-  - rid: 5060647644148269081
-  - rid: 5060647644148269082
+  - rid: 687155445236236299
+  - rid: 687155445236236300
+  - rid: 687155445236236301
+  - rid: 687155445236236302
+  - rid: 687155445236236303
+  - rid: 687155445236236304
+  - rid: 687155445236236305
+  - rid: 687155445236236306
+  - rid: 687155445236236307
   Output:
   - Index: 0
     VirtualOutputIndex: 6
@@ -38,7 +38,7 @@ MonoBehaviour:
       Index: 0
       Type: 8
       Channel: baseColor
-    OutputTexture: {fileID: 2800000, guid: 9552bdbc93eae4c40b793c639becabc9, type: 3}
+    OutputTexture: {fileID: 2800000, guid: bc7c25d92088d7e46837f4074ee0b4d2, type: 3}
     sRGB: 1
     IsVirtual: 0
     IsAlphaAssignable: 1
@@ -54,7 +54,7 @@ MonoBehaviour:
       Index: 1
       Type: 8
       Channel: normal
-    OutputTexture: {fileID: 2800000, guid: 1dbfa528b23f84c49a2b5cd9bdb6b721, type: 3}
+    OutputTexture: {fileID: 2800000, guid: 6bf7b3ba8bed3ed43ab322521abc09bf, type: 3}
     sRGB: 0
     IsVirtual: 0
     IsAlphaAssignable: 0
@@ -86,7 +86,7 @@ MonoBehaviour:
       Index: 3
       Type: 8
       Channel: metallic
-    OutputTexture: {fileID: 2800000, guid: c260c8b226aed9546b1b14c989820b87, type: 3}
+    OutputTexture: {fileID: 2800000, guid: bc3520b09ae9eb54c9ab88f846a01ec2, type: 3}
     sRGB: 0
     IsVirtual: 0
     IsAlphaAssignable: 1
@@ -102,7 +102,7 @@ MonoBehaviour:
       Index: 4
       Type: 8
       Channel: ambientOcclusion
-    OutputTexture: {fileID: 2800000, guid: 98402cc6f77d78b44b076ed868585630, type: 3}
+    OutputTexture: {fileID: 2800000, guid: ca360523323ee5642a85ba91135c9e5b, type: 3}
     sRGB: 0
     IsVirtual: 0
     IsAlphaAssignable: 1
@@ -118,7 +118,7 @@ MonoBehaviour:
       Index: 5
       Type: 8
       Channel: emissive
-    OutputTexture: {fileID: 2800000, guid: 7b29f3c65ffb852408f7549b36a66f79, type: 3}
+    OutputTexture: {fileID: 2800000, guid: 1068ede7b5c20a449990f69b40e52647, type: 3}
     sRGB: 1
     IsVirtual: 0
     IsAlphaAssignable: 1
@@ -132,20 +132,16 @@ MonoBehaviour:
   Thumbnail: 
   CurrentStatePreset: " <sbspreset pkgurl=\"pkg://Windows\" label=\"\" >\n  <presetinput
     identifier=\"$outputsize\" uid=\"478250106\" type=\"8\" value=\"10,10\" />\n 
-    <presetinput identifier=\"$randomseed\" uid=\"1274253864\" type=\"4\" value=\"8226\"
-    />\n  <presetinput identifier=\"WindowCount_x_amount\" uid=\"2026904220\" type=\"4\"
+    <presetinput identifier=\"WindowCount_x_amount\" uid=\"2026904220\" type=\"4\"
     value=\"32\" />\n  <presetinput identifier=\"WindowCount_y_amount\" uid=\"2026904210\"
-    type=\"4\" value=\"16\" />\n  <presetinput identifier=\"Window_Master_FrameSize\"
-    uid=\"2026922630\" type=\"3\" value=\"0.07,0.1,0.23,0\" />\n  <presetinput identifier=\"Windows_Color\"
-    uid=\"2026918029\" type=\"3\" value=\"0.789308,0.797173,1,1\" />\n  <presetinput
-    identifier=\"Windows_Roughness\" uid=\"2026918112\" type=\"0\" value=\"-1.44\"
-    />\n  <presetinput identifier=\"Windows_LightSwitch_01\" uid=\"2026917688\" type=\"0\"
-    value=\"0.541\" />\n  <presetinput identifier=\"Windows_LightSwitch_02\" uid=\"2026917673\"
-    type=\"0\" value=\"1\" />\n </sbspreset>\n"
+    type=\"4\" value=\"28\" />\n  <presetinput identifier=\"Window_Master_FrameSize\"
+    uid=\"2026922630\" type=\"3\" value=\"0.1,1.85,1.2,0\" />\n  <presetinput identifier=\"Windows_LightSwitch_01\"
+    uid=\"2026917688\" type=\"0\" value=\"0.321\" />\n  <presetinput identifier=\"Windows_LightSwitch_02\"
+    uid=\"2026917673\" type=\"0\" value=\"0.848\" />\n </sbspreset>\n"
   IsRuntimeOnly: 0
   GenerateAllOutputs: 0
   GenerateAllMipmaps: 1
-  OutputMaterial: {fileID: 2100000, guid: 1bd68df4613c3b249a65cc1940aef1b9, type: 2}
+  OutputMaterial: {fileID: 2100000, guid: b8a00bce8ab12224bb3a11337bf0e76b, type: 2}
   DefaultPreset: " <sbspreset pkgurl=\"pkg://Windows\" label=\"\" >\n  <presetinput
     identifier=\"$outputsize\" uid=\"478250106\" type=\"8\" value=\"10,10\" />\n
     </sbspreset>\n"
@@ -156,7 +152,7 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 5060647644148269074
+    - rid: 687155445236236299
       type: {class: SubstanceInputInt2, ns: Adobe.Substance.Input, asm: Adobe.Substance}
       data:
         Index: 0
@@ -175,7 +171,7 @@ MonoBehaviour:
           SliderClamp: 0
           EnumValueCount: 0
           EnumValues: []
-    - rid: 5060647644148269075
+    - rid: 687155445236236300
       type: {class: SubstanceInputInt, ns: Adobe.Substance.Input, asm: Adobe.Substance}
       data:
         Index: 1
@@ -186,7 +182,7 @@ MonoBehaviour:
           GuiDescription: 
           Type: 4
           WidgetType: 0
-        Data: 8226
+        Data: 0
         NumericalDescription:
           DefaultValue: 0
           MinValue: 0
@@ -197,7 +193,7 @@ MonoBehaviour:
           LabelTrue: 
           EnumValueCount: 0
           EnumValues: []
-    - rid: 5060647644148269076
+    - rid: 687155445236236301
       type: {class: SubstanceInputInt, ns: Adobe.Substance.Input, asm: Adobe.Substance}
       data:
         Index: 2
@@ -219,7 +215,7 @@ MonoBehaviour:
           LabelTrue: 
           EnumValueCount: 0
           EnumValues: []
-    - rid: 5060647644148269077
+    - rid: 687155445236236302
       type: {class: SubstanceInputInt, ns: Adobe.Substance.Input, asm: Adobe.Substance}
       data:
         Index: 3
@@ -230,7 +226,7 @@ MonoBehaviour:
           GuiDescription: Amount of patterns on the Y axis.
           Type: 4
           WidgetType: 1
-        Data: 16
+        Data: 28
         NumericalDescription:
           DefaultValue: 3
           MinValue: 1
@@ -241,7 +237,7 @@ MonoBehaviour:
           LabelTrue: 
           EnumValueCount: 0
           EnumValues: []
-    - rid: 5060647644148269078
+    - rid: 687155445236236303
       type: {class: SubstanceInputFloat4, ns: Adobe.Substance.Input, asm: Adobe.Substance}
       data:
         Index: 4
@@ -252,7 +248,7 @@ MonoBehaviour:
           GuiDescription: 
           Type: 3
           WidgetType: 1
-        Data: {x: 0.07, y: 0.1, z: 0.23, w: 0}
+        Data: {x: 0.1, y: 1.85, z: 1.2, w: 0}
         NumericalDescription:
           DefaultValue: {x: 0.04, y: 0, z: 0, w: 0}
           MinValue: {x: 0, y: 0, z: 0, w: 0}
@@ -261,7 +257,7 @@ MonoBehaviour:
           SliderClamp: 0
           EnumValueCount: 0
           EnumValues: []
-    - rid: 5060647644148269079
+    - rid: 687155445236236304
       type: {class: SubstanceInputFloat4, ns: Adobe.Substance.Input, asm: Adobe.Substance}
       data:
         Index: 5
@@ -273,7 +269,7 @@ MonoBehaviour:
             output image
           Type: 3
           WidgetType: 3
-        Data: {x: 0.78930813, y: 0.7971734, z: 1, w: 1}
+        Data: {x: 0.980676, y: 0.0832089, z: 0.577467, w: 1}
         NumericalDescription:
           DefaultValue: {x: 0.980676, y: 0.0832089, z: 0.577467, w: 1}
           MinValue: {x: 0, y: 0, z: 0, w: 0}
@@ -282,7 +278,7 @@ MonoBehaviour:
           SliderClamp: 0
           EnumValueCount: 0
           EnumValues: []
-    - rid: 5060647644148269080
+    - rid: 687155445236236305
       type: {class: SubstanceInputFloat, ns: Adobe.Substance.Input, asm: Adobe.Substance}
       data:
         Index: 6
@@ -294,7 +290,7 @@ MonoBehaviour:
             output image
           Type: 0
           WidgetType: 3
-        Data: -1.44
+        Data: 0.532446
         NumericalDescription:
           DefaultValue: 0.532446
           MinValue: 0
@@ -303,7 +299,7 @@ MonoBehaviour:
           SliderClamp: 0
           EnumValueCount: 0
           EnumValues: []
-    - rid: 5060647644148269081
+    - rid: 687155445236236306
       type: {class: SubstanceInputFloat, ns: Adobe.Substance.Input, asm: Adobe.Substance}
       data:
         Index: 7
@@ -315,7 +311,7 @@ MonoBehaviour:
             lowlight levels
           Type: 0
           WidgetType: 1
-        Data: 0.541
+        Data: 0.321
         NumericalDescription:
           DefaultValue: 0.47
           MinValue: 0
@@ -324,7 +320,7 @@ MonoBehaviour:
           SliderClamp: 0
           EnumValueCount: 0
           EnumValues: []
-    - rid: 5060647644148269082
+    - rid: 687155445236236307
       type: {class: SubstanceInputFloat, ns: Adobe.Substance.Input, asm: Adobe.Substance}
       data:
         Index: 8
@@ -336,7 +332,7 @@ MonoBehaviour:
             highlight levels
           Type: 0
           WidgetType: 1
-        Data: 1
+        Data: 0.848
         NumericalDescription:
           DefaultValue: 0.47
           MinValue: 0
