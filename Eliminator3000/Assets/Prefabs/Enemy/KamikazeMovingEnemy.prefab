@@ -157,8 +157,8 @@ MonoBehaviour:
   WaitTimes: []
   EndPoint: {fileID: 0}
   speed: 10
-  kamikaze: 0
-  kamikazeOvershootDistance: 0.5
+  kamikaze: 1
+  kamikazeOvershootDistance: 5
 --- !u!114 &7460655747993194662
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,7 +166,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3699308623078601662}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 614d143dd2954f24880bb90b50351d60, type: 3}
   m_Name: 
