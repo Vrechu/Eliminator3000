@@ -78,7 +78,7 @@ public class ScoreManager : MonoBehaviour
 
     private void OnPlayerScored(PlayerScoredEvent _playerScoredEvent)
     {
-        ChangePlayerScore(_playerScoredEvent.Player, _playerScoredEvent.Score * scoreMultipliers[_playerScoredEvent.Player]);
+        ChangePlayerScore(_playerScoredEvent.PlayerIndex, _playerScoredEvent.Score * scoreMultipliers[_playerScoredEvent.PlayerIndex]);
     }
 
     private void OnPlayerHit(PlayerHitEvent _playerHitEvent)

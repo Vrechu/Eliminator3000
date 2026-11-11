@@ -148,22 +148,22 @@ public class  PlayerLivesAtZeroEvent : Event
 
 public class ScoreChangedEvent : Event
 {
-    public int Player;
-    public int Score;
-    public ScoreChangedEvent(int cPlayer, int cScore)
+    public int PlayerIndex;
+    public int NewScore;
+    public ScoreChangedEvent(int cPlayerIndex, int cNewScore)
     {
-        Player = cPlayer;
-        Score = cScore;
+        PlayerIndex = cPlayerIndex;
+        NewScore = cNewScore;
     }
 }
 
 public class PlayerScoredEvent : Event
 {
-    public int Player;
+    public int PlayerIndex;
     public int Score;
-    public PlayerScoredEvent(int cPlayer, int cScore)
+    public PlayerScoredEvent(int cPlayerIndex, int cScore)
     {
-        Player = cPlayer;
+        PlayerIndex = cPlayerIndex;
         Score = cScore;
     }
 }
@@ -196,21 +196,25 @@ public class PlayerGunSwapEvent : Event
 {
     public int Player;
     public int GunIndex;
-    public PlayerGunSwapEvent(int cPlayer, int cGunIndex)
+    public int[] AmmoCounts = new int[5];
+    public PlayerGunSwapEvent(int cPlayer, int cGunIndex, int[]cAmmoCounts)
     {
         Player = cPlayer;
         GunIndex = cGunIndex;
+        AmmoCounts = cAmmoCounts;
     }
 }
 
 public class PlayerGunAmmoChangedEvent : Event
 {
-    public int Player;
+    public int PlayerIndex;
+    public int GunIndex;
     public int NewAmmo;
     public bool InfiniteAmmo;
-    public PlayerGunAmmoChangedEvent(int cPlayer, int cNewAmmo, bool cInfiniteAmmo)
+    public PlayerGunAmmoChangedEvent(int cPlayer, int cGunIndex, int cNewAmmo, bool cInfiniteAmmo)
     {
-        Player = cPlayer;
+        PlayerIndex = cPlayer;
+        GunIndex = cGunIndex;
         NewAmmo = cNewAmmo;
         InfiniteAmmo = cInfiniteAmmo;
     }
