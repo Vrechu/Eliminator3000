@@ -285,13 +285,18 @@ public static class SectionContentTools
         UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
     }
 
-    // Copies an entry and its object (scale / rotation kept) into the first free cell of the same zone.
+    // Copies an entry into the first free cell of the same zone.
+    // With a prefab: a fresh prefab instance (stays linked, blue name), scale / rotation copied from the original.
     private static void DuplicateEntry(LevelSection s, int idx)
     {
         if (idx < 0 || idx >= s.assets.Count) return;
         var src = s.assets[idx];
         bool alive = Alive(s, src);
-        if (!alive && src.prefab == null) return;
+
+        // find the prefab asset: the entry's prefab, or the one the live object comes from
+        GameObject prefabAsset = src.prefab;
+        if (prefabAsset == null && alive) prefabAsset = PrefabUtility.GetCorrespondingObjectFromSource(src.instance);
+        if (!alive && prefabAsset == null) return;
 
         Undo.IncrementCurrentGroup();
         Undo.SetCurrentGroupName("Duplicate asset");
@@ -299,22 +304,34 @@ public static class SectionContentTools
 
         Undo.RecordObject(s, "Duplicate asset");
         var e = new LevelSection.PlacedAsset();
-        e.prefab = src.prefab;
+        e.prefab = prefabAsset;
         e.isPowerup = src.isPowerup;
         e.zone = src.zone;
         e.along = src.along;
         e.open = true;
         e.cell = FreeCell(s, src.zone, null);
 
-        if (alive)
+        if (prefabAsset != null)
         {
+            GameObject go = Spawn(s, prefabAsset, src.isPowerup);
+            if (alive)
+            {
+                go.transform.localScale = src.instance.transform.localScale;
+                go.transform.rotation = src.instance.transform.rotation;
+            }
+            e.instance = go;
+            Debug.Log($"[Content] Duplicate '{go.name}' is a prefab instance (linked: {PrefabUtility.IsPartOfPrefabInstance(go)}).", go);
+        }
+        else
+        {
+            // no prefab known: plain copy, cannot stay linked
             Transform cont = EnsureContainer(s, src.isPowerup ? LevelSection.PowerupsName : LevelSection.ObstaclesName);
             GameObject go = Object.Instantiate(src.instance, cont);
             go.name = src.instance.name;
             Undo.RegisterCreatedObjectUndo(go, "Duplicate asset");
             e.instance = go;
+            Debug.LogWarning("[Content] The original has no prefab, so the duplicate is a plain copy (not linked).", go);
         }
-        else e.instance = Spawn(s, src.prefab, src.isPowerup);
 
         s.assets.Insert(idx, e);
         ApplyEntry(s, e);
@@ -375,6 +392,14 @@ public static class SectionContentTools
         EditorUtility.SetDirty(s);
         Undo.CollapseUndoOperations(g);
         SceneView.RepaintAll();
+    }
+
+    // Selects the object and frames it in the Scene view.
+    private static void FocusEntry(LevelSection.PlacedAsset e)
+    {
+        if (e.instance == null) return;
+        Selection.activeGameObject = e.instance;
+        SceneView.FrameLastActiveSceneView();
     }
 
     // ------------------------------------------------------------------ add-asset menu and picker
@@ -686,23 +711,37 @@ public static class SectionContentTools
         string pname = e.prefab != null ? e.prefab.name : (e.instance != null ? e.instance.name : "(empty)");
 
         EditorGUILayout.BeginVertical("box");
+
+        // row 1: name + remove
         EditorGUILayout.BeginHorizontal();
         bool open = EditorGUILayout.Foldout(e.open, $"{kind} {number}: {pname}", true);
         if (open != e.open) e.open = open;
-
-        using (new EditorGUI.DisabledScope(!on))
-        {
-            EditorGUI.BeginChangeCheck();
-            int nz = GUILayout.Toolbar(Mathf.Clamp(e.zone, 0, 2), PartNames, EditorStyles.miniButton, GUILayout.Width(150));
-            if (EditorGUI.EndChangeCheck()) SetEntry(s, e, nz, e.cell, e.along);
-
-            if (GUILayout.Button(new GUIContent("Dup", "Duplicate this entry and its object (first free cell in the same part)"), GUILayout.Width(34)))
-                dupIdx = i;
-        }
         var prevBg = GUI.backgroundColor;
         GUI.backgroundColor = new Color(1f, 0.5f, 0.5f);
         if (GUILayout.Button(new GUIContent("X", "Remove this entry and its object from the section"), GUILayout.Width(22))) removeIdx = i;
         GUI.backgroundColor = prevBg;
+        EditorGUILayout.EndHorizontal();
+
+        // row 2: Start / Mid / End
+        using (new EditorGUI.DisabledScope(!on))
+        {
+            EditorGUI.BeginChangeCheck();
+            int nz = GUILayout.Toolbar(Mathf.Clamp(e.zone, 0, 2), PartNames, EditorStyles.miniButton);
+            if (EditorGUI.EndChangeCheck()) SetEntry(s, e, nz, e.cell, e.along);
+        }
+
+        // row 3: Dup / Focus
+        EditorGUILayout.BeginHorizontal();
+        using (new EditorGUI.DisabledScope(!on))
+        {
+            if (GUILayout.Button(new GUIContent("Dup", "Duplicate this entry and its object (first free cell in the same part)"), EditorStyles.miniButton))
+                dupIdx = i;
+        }
+        using (new EditorGUI.DisabledScope(!alive))
+        {
+            if (GUILayout.Button(new GUIContent("Focus", "Select this object and frame it in the Scene view"), EditorStyles.miniButton))
+                FocusEntry(e);
+        }
         EditorGUILayout.EndHorizontal();
 
         if (open)
@@ -737,13 +776,7 @@ public static class SectionContentTools
                 float na = EditorGUILayout.Slider(new GUIContent("Position in zone", "Moves it along the track inside the Start / Mid / End part."), e.along, 0f, 1f);
                 if (EditorGUI.EndChangeCheck()) SetEntry(s, e, e.zone, e.cell, na);
 
-                EditorGUILayout.BeginHorizontal();
                 if (GUILayout.Button("Random cell")) SetEntry(s, e, e.zone, RandomCell(s, e), e.along);
-                using (new EditorGUI.DisabledScope(!alive))
-                {
-                    if (GUILayout.Button("Select in scene")) Selection.activeGameObject = e.instance;
-                }
-                EditorGUILayout.EndHorizontal();
             }
         }
         EditorGUILayout.EndVertical();
