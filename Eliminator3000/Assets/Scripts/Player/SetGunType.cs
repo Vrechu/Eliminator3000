@@ -65,9 +65,9 @@ public class SetGunType : MonoBehaviour
         currentGunIndex = _gunIndex;
         gunModels[_gunIndex].SetActive(true);        
         shootTimer.Reset(0);
-        EventBus<PlayerGunSwapEvent>.Publish(new PlayerGunSwapEvent(playerID, _gunIndex));
+        EventBus<PlayerGunSwapEvent>.Publish(new PlayerGunSwapEvent(playerID, _gunIndex, ammos));
         EventBus<PlayerGunAmmoChangedEvent>.Publish(new PlayerGunAmmoChangedEvent(
-            playerID, ammos[_gunIndex], GetCurrentGunProfile().InfiniteAmmo));
+            playerID, _gunIndex, ammos[_gunIndex], GetCurrentGunProfile().InfiniteAmmo));
     }
 
     /// <summary>
@@ -212,7 +212,7 @@ public class SetGunType : MonoBehaviour
     {
         ammos[currentGunIndex] -= _amount;
         EventBus<PlayerGunAmmoChangedEvent>.Publish(new PlayerGunAmmoChangedEvent(
-            playerID, ammos[currentGunIndex], GetCurrentGunProfile().InfiniteAmmo));
+            playerID, currentGunIndex, ammos[currentGunIndex], GetCurrentGunProfile().InfiniteAmmo));
         if (ammos[currentGunIndex] <= 0)
         {
             RemoveGun();
