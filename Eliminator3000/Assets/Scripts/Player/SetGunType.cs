@@ -37,7 +37,7 @@ public class SetGunType : MonoBehaviour
         GunsViable();
         MarkProjectiles();
         ResetGunUnlocks();
-        UnlockBaseGuns();
+        SetBaseGuns();
     }
 
     private void SetPlayerID()
@@ -49,6 +49,7 @@ public class SetGunType : MonoBehaviour
         }
         else Debug.LogError("No InGameAvatarInfo component found. Every Playerprefab should have one!");
     }
+    
 
     private void Update()
     {
@@ -181,14 +182,14 @@ public class SetGunType : MonoBehaviour
     {
         for (int i = currentGunIndex + 1; i < guns.Length; i++)
         {
-            if (unlocked[i])
+            if (unlocked[i] && ammos[i] > 0)
             {
                 return i;
             }
         }
         for (int i = 0; i < currentGunIndex; i++)
         {
-            if (unlocked[i])
+            if (unlocked[i] && ammos[i] > 0)
             {
                 return i;
             }
@@ -221,7 +222,6 @@ public class SetGunType : MonoBehaviour
 
     private void RemoveGun()
     {
-        unlocked[currentGunIndex] = false;
         ammos[currentGunIndex] = 0;
         SetGun(0);
     }
@@ -231,7 +231,8 @@ public class SetGunType : MonoBehaviour
         return ammos[currentGunIndex] > 0 || guns[currentGunIndex].InfiniteAmmo;
     }
 
-    private void UnlockBaseGuns()
+
+    private void SetBaseGuns()
     {
         for (int i = 0; i < guns.Length; i++)
         {
@@ -239,6 +240,11 @@ public class SetGunType : MonoBehaviour
             {
                 unlocked[i] = true;
                 ammos[i] = guns[i].MaxAmmo;
+            }
+            else
+            {
+                unlocked[i] = false;
+                ammos[i] = -1;
             }
         }
         for (int i = 0; i < guns.Length; i++)
