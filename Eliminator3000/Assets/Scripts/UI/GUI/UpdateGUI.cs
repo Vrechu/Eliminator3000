@@ -111,18 +111,6 @@ public class UpdateGUI : MonoBehaviour
         }
     }
 
-    private void SetMultiplierGUI(PlayerScoreMultiplierChangedEvent _playerScoreMultiplierChangedEvent)
-    {
-        if (_playerScoreMultiplierChangedEvent.Player == 0)
-        {
-            P1MultiplierGUI.text = "X" + _playerScoreMultiplierChangedEvent.NewMultiplier.ToString();
-        }
-        else if (_playerScoreMultiplierChangedEvent.Player == 1)
-        {
-            P2MultiplierGUI.text = "X" + _playerScoreMultiplierChangedEvent.NewMultiplier.ToString();
-        }
-    }
-
     private void DisableGUI()
     {
         if (winGUI.enabled) winGUI.enabled = false;
