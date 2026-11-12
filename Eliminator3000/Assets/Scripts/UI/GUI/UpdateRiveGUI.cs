@@ -1,12 +1,8 @@
 ﻿using Rive;
 using Rive.Components;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using Unity.Multiplayer.Center.Common;
 using UnityEngine;
-using static UnityEditorInternal.ReorderableList;
 
-public class RiveTest : MonoBehaviour
+public class UpdateRiveGUI : MonoBehaviour
 {
     [Header("PLAYER GUI OBJECTS")]
     [SerializeField] private GameObject player0GUIObject;
