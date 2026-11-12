@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 6826200374914394844}
   - component: {fileID: 1832058872937928393}
   m_Layer: 11
-  m_Name: Obstacle_Pole_Des
+  m_Name: PR_Column_Des
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
