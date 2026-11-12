@@ -158,7 +158,7 @@ MonoBehaviour:
   EndPoint: {fileID: 0}
   speed: 10
   kamikaze: 1
-  kamikazeOvershootDistance: 5
+  kamikazeOvershootDistance: 0.5
 --- !u!114 &7460655747993194662
 MonoBehaviour:
   m_ObjectHideFlags: 0
