@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1207132313419687472}
   m_Layer: 0
-  m_Name: VerticalObstacle 1
+  m_Name: PR_ColumnModel_Ind
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
