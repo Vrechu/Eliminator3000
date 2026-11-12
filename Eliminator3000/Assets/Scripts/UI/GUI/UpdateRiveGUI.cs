@@ -160,13 +160,11 @@ public class UpdateRiveGUI : MonoBehaviour
         {
             p0HealthAmountProperty = p0HealthWidget.StateMachine.ViewModelInstance.GetNumberProperty(healthAmountPropertyName);
             p0LivesAmountProperty = p0HealthWidget.StateMachine.ViewModelInstance.GetNumberProperty(livesAmountPropertyName);
-            Debug.Log("0 " + p0HealthAmountProperty.Value);
         }
         if (p1HealthWidget.Status == WidgetStatus.Loaded)
         {
             p1HealthAmountProperty = p1HealthWidget.StateMachine.ViewModelInstance.GetNumberProperty(healthAmountPropertyName);
             p1LivesAmountProperty = p1HealthWidget.StateMachine.ViewModelInstance.GetNumberProperty(livesAmountPropertyName);
-            Debug.Log("1 " + p1HealthAmountProperty.Value);
         }
     }
 
@@ -264,12 +262,6 @@ public class UpdateRiveGUI : MonoBehaviour
         if (!showHealthAndLives) return;
         if (_playerHealthChangedEvent.Player == 0)
         {
-            Debug.Log("1 " + _playerHealthChangedEvent);
-            Debug.Log("2 " + _playerHealthChangedEvent.Player);
-            Debug.Log("3 " + _playerHealthChangedEvent.NewHealth);
-            Debug.Log("4 " + p0HealthAmountProperty);
-            Debug.Log("5 " + p0HealthAmountProperty.Value);
-
             p0HealthAmountProperty.Value = _playerHealthChangedEvent.NewHealth;
         }
         else if (_playerHealthChangedEvent.Player == 1)
