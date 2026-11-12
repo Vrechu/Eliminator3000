@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class UpdateRiveGUI : MonoBehaviour
 {
-    [Header("PLAYER GUI OBJECTS")]
+    [Header("PLAYER GUI OBJECTS")]    
     [SerializeField] private GameObject player0GUIObject;
     [SerializeField] private GameObject player1GUIObject;
 
-    [Header("HEALTH AND LIVES")]
+    [Header("HEALTH AND LIVES"), SerializeField]
+    private bool showHealthAndLives = false;
     [SerializeField] private RiveWidget p0HealthWidget;
     [SerializeField] private RiveWidget p1HealthWidget;
 
@@ -17,7 +18,8 @@ public class UpdateRiveGUI : MonoBehaviour
         p0HealthAmountProperty, p0LivesAmountProperty,
         p1HealthAmountProperty, p1LivesAmountProperty;
 
-    [Header("GUNS AND AMMO"),SerializeField] private RiveWidget p0GunWidget;
+    [Header("GUNS AND AMMO"),SerializeField] private bool showGunsAndAmmo = false;
+    [SerializeField]private RiveWidget p0GunWidget;
     [SerializeField] private RiveWidget p1GunWidget;
     [Header("Gun state property names:"), SerializeField] private string baseGunStatePropertyName;
     [SerializeField] private string rapidGunStatePropertyName, clusterGunStatePropertyName, boomerangGunStatePropertyName, homingGunStatePropertyName;
@@ -35,7 +37,8 @@ public class UpdateRiveGUI : MonoBehaviour
         p0BaseGunAmmoProperty, p0RapidGunAmmoProperty, p0ClusterGunAmmoProperty, p0BoomerangGunAmmoProperty, p0HomingGunAmmoProperty,
         p1BaseGunAmmoProperty, p1RapidGunAmmoProperty, p1ClusterGunAmmoProperty, p1BoomerangGunAmmoProperty, p1HomingGunAmmoProperty;
     private ViewModelInstanceNumberProperty[] p0GunAmmoProperties, p1GunAmmoProperties;
-    [Header("SCORE AND MULTIPLIER")]
+    [Header("SCORE AND MULTIPLIER"), SerializeField]
+    private bool showScoreAndMultiplier = false;
     [SerializeField] private RiveWidget p0ScoreWidget;
     [SerializeField] private RiveWidget p1ScoreWidget;
     [SerializeField] private string levelScoreAmountPropertyName, totalScoreAmountPropertyName, multiplierAmountPropertyname;
@@ -47,25 +50,33 @@ public class UpdateRiveGUI : MonoBehaviour
 
     private void OnEnable()
     {
-        ListProperties();
+        if (showGunsAndAmmo) ListGunProperties();
 
         EventBus<PlayerAvatarInstantiatedEvent>.Subscribe(OnPlayerAvatarInitiated);
 
-        p0HealthWidget.OnWidgetStatusChanged += HandleHealthWidgetStatusChanges;
-        p1HealthWidget.OnWidgetStatusChanged += HandleHealthWidgetStatusChanges;
-        EventBus<PlayerLivesChangedEvent>.Subscribe(SetLivesGUI);
-        EventBus<PlayerHealthChangedEvent>.Subscribe(SetHealthGUI);
+        if (showHealthAndLives)
+        {
+            if (p0HealthWidget != null) p0HealthWidget.OnWidgetStatusChanged += HandleHealthWidgetStatusChanges;
+            if (p1HealthWidget != null) p1HealthWidget.OnWidgetStatusChanged += HandleHealthWidgetStatusChanges;
+            EventBus<PlayerLivesChangedEvent>.Subscribe(SetLivesGUI);
+            EventBus<PlayerHealthChangedEvent>.Subscribe(SetHealthGUI);
+        }
 
-        p0GunWidget.OnWidgetStatusChanged += HandleGunWidgetStatusChanges;
-        p1GunWidget.OnWidgetStatusChanged += HandleGunWidgetStatusChanges;
-        EventBus<PlayerGunSwapEvent>.Subscribe(OnGunSwap);
-        EventBus<PlayerGunAmmoChangedEvent>.Subscribe(OnAmmoChanged);
+        if (showGunsAndAmmo)
+        {
+            if (p0GunWidget != null) p0GunWidget.OnWidgetStatusChanged += HandleGunWidgetStatusChanges;
+            if (p1GunWidget != null) p1GunWidget.OnWidgetStatusChanged += HandleGunWidgetStatusChanges;
+            EventBus<PlayerGunSwapEvent>.Subscribe(OnGunSwap);
+            EventBus<PlayerGunAmmoChangedEvent>.Subscribe(OnAmmoChanged);
+        }
 
-        p0ScoreWidget.OnWidgetStatusChanged += HandleScoreWidgetStatusChanges;
-        p1ScoreWidget.OnWidgetStatusChanged += HandleScoreWidgetStatusChanges;
-        EventBus<ScoreChangedEvent>.Subscribe(SetLevelScoreGUI);
-        EventBus<PlayerScoreMultiplierChangedEvent>.Subscribe(SetMultiplierGUI);
-
+        if(showScoreAndMultiplier)
+        {
+            if (p0ScoreWidget != null) p0ScoreWidget.OnWidgetStatusChanged += HandleScoreWidgetStatusChanges;
+            if (p1ScoreWidget != null) p1ScoreWidget.OnWidgetStatusChanged += HandleScoreWidgetStatusChanges;
+            EventBus<ScoreChangedEvent>.Subscribe(SetLevelScoreGUI);
+            EventBus<PlayerScoreMultiplierChangedEvent>.Subscribe(SetMultiplierGUI);
+        }
 
         //EventBus<GameWinEvent>.Subscribe(EnableWinGUI);
         //EventBus<GameLoseEvent>.Subscribe(EnableLoseGUIgame);
@@ -76,18 +87,18 @@ public class UpdateRiveGUI : MonoBehaviour
     {
         EventBus<PlayerAvatarInstantiatedEvent>.UnSubscribe(OnPlayerAvatarInitiated);
 
-        p0HealthWidget.OnWidgetStatusChanged -= HandleHealthWidgetStatusChanges;
-        p1HealthWidget.OnWidgetStatusChanged -= HandleHealthWidgetStatusChanges;
+        if (p0HealthWidget != null) p0HealthWidget.OnWidgetStatusChanged -= HandleHealthWidgetStatusChanges;
+        if (p1HealthWidget != null) p1HealthWidget.OnWidgetStatusChanged -= HandleHealthWidgetStatusChanges;
         EventBus<PlayerLivesChangedEvent>.UnSubscribe(SetLivesGUI);
         EventBus<PlayerHealthChangedEvent>.UnSubscribe(SetHealthGUI);
 
-        p0GunWidget.OnWidgetStatusChanged -= HandleGunWidgetStatusChanges;
-        p1GunWidget.OnWidgetStatusChanged -= HandleGunWidgetStatusChanges;
+        if (p0GunWidget != null) p0GunWidget.OnWidgetStatusChanged -= HandleGunWidgetStatusChanges;
+        if (p1GunWidget != null) p1GunWidget.OnWidgetStatusChanged -= HandleGunWidgetStatusChanges;
         EventBus<PlayerGunSwapEvent>.UnSubscribe(OnGunSwap);
         EventBus<PlayerGunAmmoChangedEvent>.UnSubscribe(OnAmmoChanged);
 
-        p0ScoreWidget.OnWidgetStatusChanged -= HandleScoreWidgetStatusChanges;
-        p1ScoreWidget.OnWidgetStatusChanged -= HandleScoreWidgetStatusChanges;
+        if (p0ScoreWidget != null) p0ScoreWidget.OnWidgetStatusChanged -= HandleScoreWidgetStatusChanges;
+        if (p1ScoreWidget != null) p1ScoreWidget.OnWidgetStatusChanged -= HandleScoreWidgetStatusChanges;
         EventBus<ScoreChangedEvent>.UnSubscribe(SetLevelScoreGUI);
         EventBus<PlayerScoreMultiplierChangedEvent>.UnSubscribe(SetMultiplierGUI);
 
@@ -112,36 +123,56 @@ public class UpdateRiveGUI : MonoBehaviour
         if (player1GUIObject.activeSelf) player1GUIObject.SetActive(false);
     }
 
-    private void ListProperties()
+    private void ListGunProperties()
     {
-        p0GunStateProperties = new ViewModelInstanceEnumProperty[] { p0BaseGunStateProperty, p0RapidGunStateProperty, p0ClusterGunStateProperty, p0BoomerangGunStateProperty, p0HomingGunStateProperty };
-        p1GunStateProperties = new ViewModelInstanceEnumProperty[] { p1BaseGunStateProperty, p1RapidGunStateProperty, p1ClusterGunStateProperty, p1BoomerangGunStateProperty, p1HomingGunStateProperty };
+        if (p0BaseGunStateProperty != null && p0RapidGunStateProperty != null && p0ClusterGunStateProperty != null && p0BoomerangGunStateProperty != null && p0HomingGunStateProperty != null)
+        {
+            p0GunStateProperties = new ViewModelInstanceEnumProperty[] { p0BaseGunStateProperty, p0RapidGunStateProperty, p0ClusterGunStateProperty, p0BoomerangGunStateProperty, p0HomingGunStateProperty };
+        }
+        if (p1BaseGunStateProperty != null && p1RapidGunStateProperty != null && p1ClusterGunStateProperty != null && p1BoomerangGunStateProperty != null && p1HomingGunStateProperty != null)
+        {
+            p1GunStateProperties = new ViewModelInstanceEnumProperty[] { p1BaseGunStateProperty, p1RapidGunStateProperty, p1ClusterGunStateProperty, p1BoomerangGunStateProperty, p1HomingGunStateProperty };
+        }
 
-        
+        if (p0BaseGunIconProperty != null && p0RapidGunIconProperty != null && p0ClusterGunIconProperty != null && p0BoomerangGunIconProperty != null && p0HomingGunIconProperty != null)
+        {
+            p0GunIconProperties = new ViewModelInstanceEnumProperty[] { p0BaseGunIconProperty, p0RapidGunIconProperty, p0ClusterGunIconProperty, p0BoomerangGunIconProperty, p0HomingGunIconProperty };
+        }
+        if (p1BaseGunIconProperty != null && p1RapidGunIconProperty != null && p1ClusterGunIconProperty != null && p1BoomerangGunIconProperty != null && p1HomingGunIconProperty != null)
+        {
+            p1GunIconProperties = new ViewModelInstanceEnumProperty[] { p1BaseGunIconProperty, p1RapidGunIconProperty, p1ClusterGunIconProperty, p1BoomerangGunIconProperty, p1HomingGunIconProperty };
+        }
 
-        p0GunIconProperties = new ViewModelInstanceEnumProperty[] { p0BaseGunIconProperty, p0RapidGunIconProperty, p0ClusterGunIconProperty, p0BoomerangGunIconProperty, p0HomingGunIconProperty };
-        p1GunIconProperties = new ViewModelInstanceEnumProperty[] { p1BaseGunIconProperty, p1RapidGunIconProperty, p1ClusterGunIconProperty, p1BoomerangGunIconProperty, p1HomingGunIconProperty }; 
-
-        p0GunAmmoProperties = new ViewModelInstanceNumberProperty[] { p0BaseGunAmmoProperty, p0RapidGunAmmoProperty, p0ClusterGunAmmoProperty, p0BoomerangGunAmmoProperty, p0HomingGunAmmoProperty };
-        p1GunAmmoProperties = new ViewModelInstanceNumberProperty[] { p1BaseGunAmmoProperty, p1RapidGunAmmoProperty, p1ClusterGunAmmoProperty, p1BoomerangGunAmmoProperty, p1HomingGunAmmoProperty };
+        if (p0BaseGunAmmoProperty != null && p0RapidGunAmmoProperty != null && p0ClusterGunAmmoProperty != null && p0BoomerangGunAmmoProperty != null && p0HomingGunAmmoProperty != null)
+        {
+            p0GunAmmoProperties = new ViewModelInstanceNumberProperty[] { p0BaseGunAmmoProperty, p0RapidGunAmmoProperty, p0ClusterGunAmmoProperty, p0BoomerangGunAmmoProperty, p0HomingGunAmmoProperty };
+        }
+        if (p1BaseGunAmmoProperty != null && p1RapidGunAmmoProperty != null && p1ClusterGunAmmoProperty != null && p1BoomerangGunAmmoProperty != null && p1HomingGunAmmoProperty != null)
+        {
+            p1GunAmmoProperties = new ViewModelInstanceNumberProperty[] { p1BaseGunAmmoProperty, p1RapidGunAmmoProperty, p1ClusterGunAmmoProperty, p1BoomerangGunAmmoProperty, p1HomingGunAmmoProperty };
+        }
     }
 
     private void HandleHealthWidgetStatusChanges()
     {
+        if (!showHealthAndLives) return;
         if (p0HealthWidget.Status == WidgetStatus.Loaded)
         {
             p0HealthAmountProperty = p0HealthWidget.StateMachine.ViewModelInstance.GetNumberProperty(healthAmountPropertyName);
             p0LivesAmountProperty = p0HealthWidget.StateMachine.ViewModelInstance.GetNumberProperty(livesAmountPropertyName);
+            Debug.Log("0 " + p0HealthAmountProperty.Value);
         }
         if (p1HealthWidget.Status == WidgetStatus.Loaded)
         {
             p1HealthAmountProperty = p1HealthWidget.StateMachine.ViewModelInstance.GetNumberProperty(healthAmountPropertyName);
             p1LivesAmountProperty = p1HealthWidget.StateMachine.ViewModelInstance.GetNumberProperty(livesAmountPropertyName);
+            Debug.Log("1 " + p1HealthAmountProperty.Value);
         }
     }
 
     private void HandleGunWidgetStatusChanges()
     {
+        if (!showGunsAndAmmo) return;
         if (p0GunWidget.Status == WidgetStatus.Loaded)
         {
             p0BaseGunStateProperty = p0GunWidget.StateMachine.ViewModelInstance.GetEnumProperty(baseGunStatePropertyName);
@@ -182,6 +213,7 @@ public class UpdateRiveGUI : MonoBehaviour
 
     private void HandleScoreWidgetStatusChanges()
     {
+        if (!showScoreAndMultiplier) return;
         if (p0ScoreWidget.Status == WidgetStatus.Loaded)
         {
             p0LevelScoreAmountProperty = p0ScoreWidget.StateMachine.ViewModelInstance.GetNumberProperty(levelScoreAmountPropertyName);
@@ -216,6 +248,7 @@ public class UpdateRiveGUI : MonoBehaviour
 
     private void SetLivesGUI(PlayerLivesChangedEvent _playerLivesChangedEvent)
     {
+        if (!showHealthAndLives) return;
         if (_playerLivesChangedEvent.Player == 0)
         {
             p0LivesAmountProperty.Value = _playerLivesChangedEvent.NewLives;
@@ -228,8 +261,15 @@ public class UpdateRiveGUI : MonoBehaviour
 
     private void SetHealthGUI(PlayerHealthChangedEvent _playerHealthChangedEvent)
     {
+        if (!showHealthAndLives) return;
         if (_playerHealthChangedEvent.Player == 0)
         {
+            Debug.Log("1 " + _playerHealthChangedEvent);
+            Debug.Log("2 " + _playerHealthChangedEvent.Player);
+            Debug.Log("3 " + _playerHealthChangedEvent.NewHealth);
+            Debug.Log("4 " + p0HealthAmountProperty);
+            Debug.Log("5 " + p0HealthAmountProperty.Value);
+
             p0HealthAmountProperty.Value = _playerHealthChangedEvent.NewHealth;
         }
         else if (_playerHealthChangedEvent.Player == 1)
@@ -240,6 +280,7 @@ public class UpdateRiveGUI : MonoBehaviour
 
     private void SetLevelScoreGUI(ScoreChangedEvent _scoreChangedEvent)
     {
+        if (!showScoreAndMultiplier) return;
         if (_scoreChangedEvent.PlayerIndex == 0)
         {
             p0LevelScoreAmountProperty.Value = _scoreChangedEvent.NewScore;
@@ -252,6 +293,7 @@ public class UpdateRiveGUI : MonoBehaviour
 
     private void SetMultiplierGUI(PlayerScoreMultiplierChangedEvent _playerScoreMultiplierChangedEvent)
     {
+        if (!showScoreAndMultiplier) return;
         if (_playerScoreMultiplierChangedEvent.Player == 0)
         {
             p0LevelScoreAmountProperty.Value = _playerScoreMultiplierChangedEvent.NewMultiplier;
@@ -269,6 +311,7 @@ public class UpdateRiveGUI : MonoBehaviour
 
     private void SwitchGunGUI(int _playerIndex, int _gunIndex, int[] _ammos)
     {
+        if (!showGunsAndAmmo) return;
         if (_playerIndex == 0)
         {
             if (_gunIndex >= p0GunStateProperties.Length || _gunIndex < 0)
@@ -329,6 +372,7 @@ public class UpdateRiveGUI : MonoBehaviour
 
     private void OnAmmoChanged(PlayerGunAmmoChangedEvent _playerGunAmmoChangedEvent)
     {
+        if (!showGunsAndAmmo) return;
         if (_playerGunAmmoChangedEvent.PlayerIndex == 0)
         {
             if (_playerGunAmmoChangedEvent.GunIndex >= p0GunAmmoProperties.Length || _playerGunAmmoChangedEvent.GunIndex < 0)
