@@ -138,7 +138,7 @@ MonoBehaviour:
     type=\"4\" value=\"14\" />\n  <presetinput identifier=\"Window_Master_FrameSize\"
     uid=\"2026922630\" type=\"3\" value=\"0.07,0,-0.27,0\" />\n  <presetinput identifier=\"Windows_Color\"
     uid=\"2026918029\" type=\"3\" value=\"0,0,0,1\" />\n  <presetinput identifier=\"Windows_Roughness\"
-    uid=\"2026918112\" type=\"0\" value=\"85.48\" />\n  <presetinput identifier=\"Windows_LightSwitch_01\"
+    uid=\"2026918112\" type=\"0\" value=\"0.4\" />\n  <presetinput identifier=\"Windows_LightSwitch_01\"
     uid=\"2026917688\" type=\"0\" value=\"1\" />\n  <presetinput identifier=\"Windows_LightSwitch_02\"
     uid=\"2026917673\" type=\"0\" value=\"1\" />\n </sbspreset>\n"
   IsRuntimeOnly: 0
@@ -293,7 +293,7 @@ MonoBehaviour:
             output image
           Type: 0
           WidgetType: 3
-        Data: 85.48
+        Data: 0.4
         NumericalDescription:
           DefaultValue: 0.532446
           MinValue: 0
