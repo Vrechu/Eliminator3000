@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6826200374914394844}
   - component: {fileID: 3035863154724065037}
   m_Layer: 10
-  m_Name: Obstacle_Rect_Indes
+  m_Name: PR_Truck_Ind
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31,8 +31,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 8, y: 4, z: 2}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 11, y: 5.5, z: 2.75}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3944621984465500265}
   m_Father: {fileID: 0}

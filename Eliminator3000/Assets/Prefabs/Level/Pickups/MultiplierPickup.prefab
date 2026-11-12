@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 44150789124489527}
   - component: {fileID: 6443549169675235032}
   m_Layer: 12
-  m_Name: MiltiplierPickup
+  m_Name: MultiplierPickup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

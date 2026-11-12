@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1304855864035910352}
   m_Layer: 0
-  m_Name: Temp_Truck_Destructible
+  m_Name: PR_TruckModel_Des
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
