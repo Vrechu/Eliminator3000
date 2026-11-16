@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6826200374914394844}
   - component: {fileID: 3035863154724065037}
   m_Layer: 10
-  m_Name: Obstacle_indestructable
+  m_Name: PR_Bridge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29,13 +29,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5519828220680120833}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_LocalScale: {x: 7, y: 46.666664, z: 3.5}
+  m_ConstrainProportionsScale: 1
+  m_Children:
+  - {fileID: 8070908044881041931}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!33 &7186699958618388317
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -51,7 +52,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5519828220680120833}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -158,3 +159,81 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!1001 &6799537145214517575
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1016135611604295379}
+    m_Modifications:
+    - target: {fileID: 3340948651281210188, guid: f7d10e5089c18954fb8aaa0ad113a837, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.024999995
+      objectReference: {fileID: 0}
+    - target: {fileID: 3340948651281210188, guid: f7d10e5089c18954fb8aaa0ad113a837, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.16666663
+      objectReference: {fileID: 0}
+    - target: {fileID: 3340948651281210188, guid: f7d10e5089c18954fb8aaa0ad113a837, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 3340948651281210188, guid: f7d10e5089c18954fb8aaa0ad113a837, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3340948651281210188, guid: f7d10e5089c18954fb8aaa0ad113a837, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -5.615
+      objectReference: {fileID: 0}
+    - target: {fileID: 3340948651281210188, guid: f7d10e5089c18954fb8aaa0ad113a837, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 89.66
+      objectReference: {fileID: 0}
+    - target: {fileID: 3340948651281210188, guid: f7d10e5089c18954fb8aaa0ad113a837, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 3340948651281210188, guid: f7d10e5089c18954fb8aaa0ad113a837, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3340948651281210188, guid: f7d10e5089c18954fb8aaa0ad113a837, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3340948651281210188, guid: f7d10e5089c18954fb8aaa0ad113a837, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 3340948651281210188, guid: f7d10e5089c18954fb8aaa0ad113a837, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3340948651281210188, guid: f7d10e5089c18954fb8aaa0ad113a837, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3340948651281210188, guid: f7d10e5089c18954fb8aaa0ad113a837, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3340948651281210188, guid: f7d10e5089c18954fb8aaa0ad113a837, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9094411357467106862, guid: f7d10e5089c18954fb8aaa0ad113a837, type: 3}
+      propertyPath: m_Name
+      value: OnlyBridgeModel
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f7d10e5089c18954fb8aaa0ad113a837, type: 3}
+--- !u!4 &8070908044881041931 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3340948651281210188, guid: f7d10e5089c18954fb8aaa0ad113a837, type: 3}
+  m_PrefabInstance: {fileID: 6799537145214517575}
+  m_PrefabAsset: {fileID: 0}

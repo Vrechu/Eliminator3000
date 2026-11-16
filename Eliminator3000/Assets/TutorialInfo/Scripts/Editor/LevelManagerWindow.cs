@@ -19,6 +19,9 @@ public class LevelManagerWindow : EditorWindow
     private const string AnchorXPrefKey = "LevelManager.AnchorX";
     private const string KeepTargetPrefKey = "LevelManager.KeepTarget";
     private const string AutoSnapToggleKey = "LevelManager.AutoSnapOnToggle";
+    private const string ParkDistKey = "LevelManager.ParkDistance";
+    private const string ParkEastKey = "LevelManager.ParkEast";
+    private const string HideParkedKey = "LevelManager.HideParked";
     private const string RootName = "LevelRoot";
     private const double WaitWarnSeconds = 10.0;
     private const float FocusSliceDepth = 120f;
@@ -73,15 +76,23 @@ public class LevelManagerWindow : EditorWindow
         return path;
     }
 
-    // Active sections only (disabled sections are ignored by snap, anchor, win trigger, tracker).
+    // A section is OFF when its LevelSection component is disabled (parked aside) or its object is inactive.
+    internal static bool IsOff(LevelSection s)
+    {
+        return s == null || !s.enabled || !s.gameObject.activeInHierarchy;
+    }
+
+    // Switched-on sections only (off sections are ignored by snap, anchor, win trigger, tracker).
     internal static List<LevelSection> GetSortedSections()
     {
-        var sections = new List<LevelSection>(Object.FindObjectsByType<LevelSection>(FindObjectsSortMode.None));
+        var all = Object.FindObjectsByType<LevelSection>(FindObjectsSortMode.None);
+        var sections = new List<LevelSection>();
+        foreach (var s in all) if (!IsOff(s)) sections.Add(s);
         sections.Sort((a, b) => CompareHierarchy(a.transform, b.transform));
         return sections;
     }
 
-    // All sections including disabled ones (used by the window list only).
+    // All sections including off ones (used by the window list only).
     internal static List<LevelSection> GetAllSections()
     {
         var sections = new List<LevelSection>(Object.FindObjectsByType<LevelSection>(FindObjectsInactive.Include, FindObjectsSortMode.None));
@@ -425,7 +436,7 @@ public class LevelManagerWindow : EditorWindow
     }
 
     // Shifts the whole level. If all sections share a parent (LevelRoot), the parent's CHILDREN are moved,
-    // so the parent itself stays where it is (ideally at the origin).
+    // so the parent itself stays where it is (ideally at the origin). Parked sections move along with it.
     private static void ShiftLevel(List<LevelSection> sections, Vector3 delta, string undoName)
     {
         Transform common = sections[0].transform.parent;
@@ -523,12 +534,50 @@ public class LevelManagerWindow : EditorWindow
         SceneView.RepaintAll();
     }
 
+    // Off = parked aside (moved sideways, same Z, still visible) and skipped by Snap.
+    // On = moved back in line with the first active section.
     private static void SetSectionEnabled(LevelSection s, bool on)
     {
+        Undo.RecordObject(s, on ? "Enable Section" : "Disable Section");
+        Undo.RecordObject(s.transform, on ? "Enable Section" : "Disable Section");
         Undo.RecordObject(s.gameObject, on ? "Enable Section" : "Disable Section");
-        s.gameObject.SetActive(on);
+
+        if (on)
+        {
+            s.gameObject.SetActive(true);
+            s.enabled = true;
+
+            LevelSection firstOther = null;
+            foreach (var o in GetSortedSections()) if (o != s) { firstOther = o; break; }
+            if (firstOther != null)
+            {
+                float dx = firstOther.GetBounds().center.x - s.GetBounds().center.x;
+                if (Mathf.Abs(dx) > 0.0001f) s.transform.position += new Vector3(dx, 0f, 0f);
+            }
+            Debug.Log($"Level Manager: Section #{s.sectionNumber} '{s.sectionLabel}' ENABLED (moved back in line, press Snap if you have auto-snap off).", s);
+        }
+        else
+        {
+            LevelSection firstOther = null;
+            foreach (var o in GetSortedSections()) if (o != s) { firstOther = o; break; }
+            Bounds sb = s.GetBounds();
+            float refX = firstOther != null ? firstOther.GetBounds().center.x : sb.center.x;
+
+            int alreadyParked = 0;
+            foreach (var o in GetAllSections()) if (o != s && IsOff(o)) alreadyParked++;
+
+            float side = EditorPrefs.GetBool(ParkEastKey, true) ? 1f : -1f;
+            float dist = Mathf.Max(0f, EditorPrefs.GetFloat(ParkDistKey, 300f));
+            float targetX = refX + side * (dist + alreadyParked * (sb.size.x + 20f));
+            s.transform.position += new Vector3(targetX - sb.center.x, 0f, 0f);
+
+            s.enabled = false;
+            if (EditorPrefs.GetBool(HideParkedKey, false)) s.gameObject.SetActive(false);
+            Debug.Log($"Level Manager: Section #{s.sectionNumber} '{s.sectionLabel}' DISABLED and parked to the {(side > 0 ? "east (+X)" : "west (-X)")}. It stays visible, Snap skips it.", s);
+        }
+        EditorUtility.SetDirty(s);
+        EditorUtility.SetDirty(s.transform);
         EditorUtility.SetDirty(s.gameObject);
-        Debug.Log($"Level Manager: Section #{s.sectionNumber} '{s.sectionLabel}' {(on ? "ENABLED" : "DISABLED (stays where it is, skipped by Snap)")}.", s);
     }
 
     // ------------------------------------------------------------------ GUI
@@ -589,6 +638,8 @@ public class LevelManagerWindow : EditorWindow
 
     private void OnGUI()
     {
+        SectionContentTools.HandlePicker();
+
         scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
 
         GUILayout.Label("Modular Level Section Dashboard", EditorStyles.boldLabel);
@@ -699,7 +750,7 @@ public class LevelManagerWindow : EditorWindow
         }
 
         // ---- 5. Section list (renumbering / measuring always runs, drawing only when open)
-        // Numbers count ALL sections (also disabled ones) so they stay stable when you toggle.
+        // Numbers count ALL sections (also off ones) so they stay stable when you toggle.
         List<LevelSection> sectionList = GetAllSections();
         int disabledCount = 0;
         for (int i = 0; i < sectionList.Count; i++)
@@ -712,7 +763,7 @@ public class LevelManagerWindow : EditorWindow
                 sec.sectionNumber = i + 1;
                 EditorUtility.SetDirty(sec);
             }
-            if (!sec.gameObject.activeInHierarchy) { disabledCount++; continue; }
+            if (IsOff(sec)) { disabledCount++; continue; }
             if (!sec.HasMeasurement)
             {
                 Undo.RecordObject(sec, "Measure Level Section");
@@ -722,7 +773,7 @@ public class LevelManagerWindow : EditorWindow
         }
 
         string secTitle = disabledCount > 0
-            ? $"Sections ({sectionList.Count}, {disabledCount} disabled)"
+            ? $"Sections ({sectionList.Count}, {disabledCount} off)"
             : $"Sections ({sectionList.Count})";
         if (Fold("LevelManager.Fold.Sections", secTitle, true))
         {
@@ -736,7 +787,7 @@ public class LevelManagerWindow : EditorWindow
                     Undo.SetCurrentGroupName("Enable all sections");
                     int g = Undo.GetCurrentGroup();
                     foreach (var s in sectionList)
-                        if (s != null && !s.gameObject.activeSelf) SetSectionEnabled(s, true);
+                        if (s != null && IsOff(s)) SetSectionEnabled(s, true);
                     Undo.CollapseUndoOperations(g);
                     if (EditorPrefs.GetBool(AutoSnapToggleKey, true)) SnapSections();
                     GUIUtility.ExitGUI();
@@ -744,6 +795,9 @@ public class LevelManagerWindow : EditorWindow
             }
             EditorGUILayout.EndHorizontal();
             PrefToggle("Auto-snap after switching a section on/off", AutoSnapToggleKey, true);
+            PrefToggle("Park switched-off sections to the EAST (+X). Off = west (-X)", ParkEastKey, true);
+            PrefFloatField("Park distance (X)", ParkDistKey, 300f);
+            PrefToggle("Hide parked sections completely (deactivate the object)", HideParkedKey, false);
 
             if (sectionList.Count == 0)
             {
@@ -753,15 +807,24 @@ public class LevelManagerWindow : EditorWindow
             EditorGUILayout.Space(2);
         }
 
-        // ---- 6. Section tracker (folded)
-        if (Fold("LevelManager.Fold.Tracker", "Section tracker (Play Mode)", false))
+        // ---- 6. Section tracker + progress (folded)
+        if (Fold("LevelManager.Fold.Tracker", "Section tracker and progress (Play Mode)", false))
         {
+            LevelProgressOverlay.EnsureFresh();
+
             EditorGUILayout.LabelField("Current section", SectionTracker.StatusText);
-            Rect pr = GUILayoutUtility.GetRect(18f, 16f, GUILayout.ExpandWidth(true));
-            EditorGUI.ProgressBar(pr, Mathf.Max(0f, SectionTracker.Progress),
-                SectionTracker.Progress < 0f ? "-" : Mathf.RoundToInt(SectionTracker.Progress * 100f) + "% through section");
+
+            Rect pr = GUILayoutUtility.GetRect(18f, 18f, GUILayout.ExpandWidth(true));
+            EditorGUI.ProgressBar(pr, Mathf.Max(0f, LevelProgressOverlay.SecProgress), LevelProgressOverlay.SectionText());
+
+            Rect wr = GUILayoutUtility.GetRect(18f, 18f, GUILayout.ExpandWidth(true));
+            EditorGUI.ProgressBar(wr, Mathf.Max(0f, LevelProgressOverlay.Progress), LevelProgressOverlay.WholeText());
+
+            EditorGUILayout.Space(2);
+            LevelProgressOverlay.DrawSettings();
             PrefToggle("Log to Console when the section changes", SectionTracker.LogPrefKey, true);
-            PrefToggle("Show overlay in the Scene view", SectionTracker.OverlayPrefKey, true);
+            PrefToggle("Show the old section % overlay in the Scene view", SectionTracker.OverlayPrefKey, true);
+
             if (GUILayout.Button("Log current section now (Ctrl+Shift+L)")) SectionTracker.LogCurrentNow();
             EditorGUILayout.Space(2);
         }
@@ -807,14 +870,24 @@ public class LevelManagerWindow : EditorWindow
             EditorGUILayout.Space(2);
         }
 
-        // ---- 9. Help (folded)
+        // ---- 9. Asset library (folded)
+        if (Fold("LevelManager.Fold.Library", "Asset library (prefab folders for 'Add asset')", false))
+        {
+            SectionContentTools.DrawLibrarySettings();
+            EditorGUILayout.Space(2);
+        }
+
+        // ---- 10. Help (folded)
         if (Fold("LevelManager.Fold.Help", "Help", false))
         {
             EditorGUILayout.HelpBox(
                 "1. Build LevelRoot once (one scrolling root, spawn points stay static).\n" +
                 "2. Snap sections in order whenever you add, remove, reorder or resize a section. It also moves the level to the spawn points and keeps the win trigger at the end of the last section.\n" +
                 "3. Test Here, then press Play: the root is shifted so that section's start edge sits at the Play Z. Pressing R restarts from the same section.\n" +
-                "4. Untick a section to switch it off temporarily. It stays where it is, Snap skips it and closes the gap. Tick it again to bring it back into the chain.",
+                "4. Untick a section to switch it off temporarily. It is parked to the side (same Z, still visible), Snap skips it and closes the gap. Tick it again to bring it back into the chain.\n" +
+                "5. Assets (under each section): tick 'Show assets grid'. 'Add asset' adds one obstacle or powerup. Pick Start / Mid / End and click a cell of the 5x5 grid to choose where it sits on screen. Set the prefab folders once in 'Asset library'. 'Area covered' shows how much of the screen grid the section uses.\n" +
+                "6. Enemies: 'Add enemy', pick the wave, and choose Start / Mid / End along the track.\n" +
+                "7. Progress: 'Section tracker and progress' shows section and whole-level time (% / seconds / both). The same bars can be shown in the Game view and the Scene view; tick or untick them there.",
                 MessageType.Info);
         }
 
@@ -831,7 +904,7 @@ public class LevelManagerWindow : EditorWindow
             var section = sectionList[i];
             if (section == null) continue;
 
-            bool on = section.gameObject.activeInHierarchy;
+            bool on = !IsOff(section);
             Color secColor = section.gizmoColor;
             secColor.a = 1f;
 
@@ -840,8 +913,8 @@ public class LevelManagerWindow : EditorWindow
 
             // column 0: on/off toggle + gizmo colour
             EditorGUILayout.BeginVertical(GUILayout.Width(38));
-            bool newOn = EditorGUILayout.Toggle(section.gameObject.activeSelf, GUILayout.Width(16));
-            if (newOn != section.gameObject.activeSelf)
+            bool newOn = EditorGUILayout.Toggle(on, GUILayout.Width(16));
+            if (newOn != on)
             {
                 SetSectionEnabled(section, newOn);
                 if (EditorPrefs.GetBool(AutoSnapToggleKey, true)) SnapSections();
@@ -956,11 +1029,11 @@ public class LevelManagerWindow : EditorWindow
             {
                 var st = new GUIStyle(EditorStyles.miniLabel);
                 st.normal.textColor = new Color(0.9f, 0.7f, 0.3f);
-                EditorGUILayout.LabelField("DISABLED - skipped by Snap, stays where it is", st);
+                EditorGUILayout.LabelField($"OFF - parked aside (X {section.GetBounds().center.x:F0}), skipped by Snap", st);
             }
 
             // row 4: where this section lives in the hierarchy
-            string state = on ? "" : "  (inactive)";
+            string state = section.gameObject.activeInHierarchy ? "" : "  (hidden)";
             EditorGUILayout.LabelField(GetPath(section.transform) + state, EditorStyles.miniLabel);
 
             EditorGUILayout.EndVertical();
@@ -976,7 +1049,7 @@ public class LevelManagerWindow : EditorWindow
             EditorGUILayout.EndHorizontal();
             EditorGUILayout.EndVertical();
 
-            // colour coding: bar on the left + faint tint over the whole box (dimmer when disabled)
+            // colour coding: bar on the left + faint tint over the whole box (dimmer when off)
             Rect r = GUILayoutUtility.GetLastRect();
             if (UnityEngine.Event.current.type == UnityEngine.EventType.Repaint)
             {
@@ -985,6 +1058,10 @@ public class LevelManagerWindow : EditorWindow
                 EditorGUI.DrawRect(r, tint);
                 EditorGUI.DrawRect(new Rect(r.x, r.y, 4f, r.height), bar);
             }
+
+            // assets / enemies of this section (collapsible)
+            SectionSpeedTools.DrawRow(section, on);
+            SectionContentTools.DrawContent(section, on);
         }
     }
 

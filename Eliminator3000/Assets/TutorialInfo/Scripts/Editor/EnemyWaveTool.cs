@@ -14,6 +14,8 @@ public class EnemyWaveTool : EditorWindow
     private const string RootName = "EnemyPaths";
     private const string SelKey = "EnemyWaves.Selected";
     private const string ShowBoxKey = "EnemyWaves.ShowBox";
+    private const string ShowFillKey = "EnemyWaves.ShowFill";
+    private const string DepthStepKey = "EnemyWaves.DepthStep";
     private const string ShowDropKey = "EnemyWaves.ShowDrop";
     private const string ShowProjKey = "EnemyWaves.ShowProj";
     private const string ShowLabelsKey = "EnemyWaves.ShowLabels";
@@ -21,6 +23,19 @@ public class EnemyWaveTool : EditorWindow
     private const string ShowGhostKey = "EnemyWaves.ShowGhost";
     private const string AllEnemiesKey = "EnemyWaves.AllEnemies";
     private const string SpeedKey = "EnemyWaves.TimeScale";
+    private const string ScaleAllKey = "EnemyWaves.ScaleAll";
+    private const string SpeedFromKey = "EnemyWaves.SpeedFrom";
+    private const string ShowHitKey = "EnemyWaves.ShowHit";
+    private const string HitManualKey = "EnemyWaves.HitManual";
+    private const string HitMinXKey = "EnemyWaves.HitMinX";
+    private const string HitMaxXKey = "EnemyWaves.HitMaxX";
+    private const string HitMinYKey = "EnemyWaves.HitMinY";
+    private const string HitMaxYKey = "EnemyWaves.HitMaxY";
+    private const string HitMinZKey = "EnemyWaves.HitMinZ";
+    private const string HitMaxZKey = "EnemyWaves.HitMaxZ";
+    private const string ShipPrefabKey = "EnemyWaves.ShipPrefabPath";
+    private const string CapHasKey = "EnemyWaves.HitCap.Has";
+    private const string CapKey = "EnemyWaves.HitCap.";
 
     // ------------------------------------------------------------------ types
 
@@ -61,6 +76,47 @@ public class EnemyWaveTool : EditorWindow
             alive = false;
             return cur;
         }
+
+        // First moment the path reaches the given Z (the ship plane). Returns false if it never does.
+        public bool CrossPlane(float planeZ, out float time, out Vector3 point)
+        {
+            time = 0f;
+            point = pos[0];
+            float t0 = 0f;
+            for (int i = 0; i <= N; i++)
+            {
+                Vector3 a = pos[i], b = pos[i + 1];
+                float dur = Vector3.Distance(a, b) / Mathf.Max(segSpeed[i], 0.0001f);
+                float da = a.z - planeZ, db = b.z - planeZ;
+                if ((da >= 0f && db <= 0f) || (da <= 0f && db >= 0f))
+                {
+                    float f = Mathf.Abs(da - db) > 0.0001f ? da / (da - db) : 0f;
+                    time = t0 + dur * f;
+                    point = Vector3.Lerp(a, b, f);
+                    return true;
+                }
+                t0 += dur;
+                if (i < N) t0 += wait[i];
+            }
+            return false;
+        }
+
+        // First moment the path is inside the box (sampled). Returns false if it never is.
+        public bool FirstEnter(Bounds box, out float time, out Vector3 point)
+        {
+            time = 0f;
+            point = pos[0];
+            float maxT = Mathf.Max(0.1f, duration);
+            float step = Mathf.Max(0.02f, maxT / 800f);
+            for (float t = 0f; t <= maxT + step; t += step)
+            {
+                bool alive;
+                Vector3 v = Eval(t, out alive);
+                if (box.Contains(v)) { time = t; point = v; return true; }
+                if (!alive) break;
+            }
+            return false;
+        }
     }
 
     private class GhostPart
@@ -87,6 +143,19 @@ public class EnemyWaveTool : EditorWindow
     private GUIStyle labelStyle;
     private float cachedPlayZ;
     private double nextPlayZ;
+    private float rangeLo, rangeHi;
+    private double nextRange;
+
+    // ship hitbox (offsets from the ship's own position)
+    private Transform hbShip;
+    private string hbShipSrc = "";
+    private bool hbOk;
+    private Vector3 hbMin, hbMax;
+    private string hbSource = "";
+    private string hbLogged = "";
+    private double nextHb;
+
+    private static Gradient ramp;
 
     private readonly Dictionary<string, List<string>> sharedCache = new Dictionary<string, List<string>>();
     private readonly Dictionary<GameObject, List<GhostPart>> ghostCache = new Dictionary<GameObject, List<GhostPart>>();
@@ -242,6 +311,304 @@ public class EnemyWaveTool : EditorWindow
         return cachedPlayZ;
     }
 
+    private static void GetArea(out float x0, out float x1, out float y0, out float y1)
+    {
+        x0 = EditorPrefs.GetFloat(PlayAreaGuide.MinXKey, -30f);
+        x1 = EditorPrefs.GetFloat(PlayAreaGuide.MaxXKey, 30f);
+        y0 = EditorPrefs.GetFloat(PlayAreaGuide.MinYKey, -15f);
+        y1 = EditorPrefs.GetFloat(PlayAreaGuide.MaxYKey, 15f);
+        if (x1 < x0) { float t = x0; x0 = x1; x1 = t; }
+        if (y1 < y0) { float t = y0; y0 = y1; y1 = t; }
+    }
+
+    // ------------------------------------------------------------------ ship hitbox
+
+    private static bool HasMoveShip(GameObject g)
+    {
+        foreach (var mb in g.GetComponentsInChildren<MonoBehaviour>(true))
+            if (mb != null && mb.GetType().Name == "MoveShip") return true;
+        return false;
+    }
+
+    private static Transform MoveShipTransform(GameObject g)
+    {
+        foreach (var mb in g.GetComponentsInChildren<MonoBehaviour>(true))
+            if (mb != null && mb.GetType().Name == "MoveShip") return mb.transform;
+        return null;
+    }
+
+    // First prefab in the project that has the MoveShip script.
+    private static string ScanProjectForShip()
+    {
+        foreach (string guid in AssetDatabase.FindAssets("t:Prefab"))
+        {
+            string path = AssetDatabase.GUIDToAssetPath(guid);
+            var g = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+            if (g != null && HasMoveShip(g)) return path;
+        }
+        return null;
+    }
+
+    // Order: the prefab picked in the window, a live ship in the scene, the player prefab referenced by SpawnPlayer.
+    private static Transform FindShip(out string src)
+    {
+        src = "";
+
+        string ovPath = EditorPrefs.GetString(ShipPrefabKey, "");
+        if (!string.IsNullOrEmpty(ovPath))
+        {
+            var og = AssetDatabase.LoadAssetAtPath<GameObject>(ovPath);
+            if (og != null)
+            {
+                Transform ot = MoveShipTransform(og);
+                if (ot != null) { src = "picked ship prefab '" + og.name + "'"; return ot; }
+            }
+        }
+
+        foreach (var mb in Object.FindObjectsByType<MonoBehaviour>(FindObjectsInactive.Exclude, FindObjectsSortMode.None))
+        {
+            if (mb != null && mb.GetType().Name == "MoveShip")
+            {
+                src = "live ship '" + mb.name + "' in the scene";
+                return mb.transform;
+            }
+        }
+
+        var sp = Object.FindFirstObjectByType<SpawnPlayer>(FindObjectsInactive.Include);
+        if (sp == null) return null;
+        var it = new SerializedObject(sp).GetIterator();
+        while (it.NextVisible(true))
+        {
+            if (it.propertyType != SerializedPropertyType.ObjectReference) continue;
+            Object o = it.objectReferenceValue;
+            GameObject g = o as GameObject;
+            if (g == null && o is Component cmp) g = cmp.gameObject;
+            if (g == null) continue;
+            Transform t = MoveShipTransform(g);
+            if (t != null)
+            {
+                src = "player prefab '" + g.name + "' (from SpawnPlayer)";
+                return t;
+            }
+        }
+        return null;
+    }
+
+    // The 8 corners (world space) of a collider's box.
+    private static Vector3[] Corners(Collider c)
+    {
+        Matrix4x4 m = c.transform.localToWorldMatrix;
+        Bounds lb;
+        var bc = c as BoxCollider;
+        var sc = c as SphereCollider;
+        var cc = c as CapsuleCollider;
+        var mc = c as MeshCollider;
+        if (bc != null) lb = new Bounds(bc.center, bc.size);
+        else if (sc != null) lb = new Bounds(sc.center, Vector3.one * sc.radius * 2f);
+        else if (cc != null)
+        {
+            Vector3 s = Vector3.one * cc.radius * 2f;
+            s[Mathf.Clamp(cc.direction, 0, 2)] = Mathf.Max(cc.height, cc.radius * 2f);
+            lb = new Bounds(cc.center, s);
+        }
+        else if (mc != null && mc.sharedMesh != null) lb = mc.sharedMesh.bounds;
+        else { lb = c.bounds; m = Matrix4x4.identity; }
+
+        var pts = new Vector3[8];
+        Vector3 e = lb.extents;
+        for (int i = 0; i < 8; i++)
+        {
+            Vector3 local = lb.center + new Vector3((i & 1) == 0 ? -e.x : e.x, (i & 2) == 0 ? -e.y : e.y, (i & 4) == 0 ? -e.z : e.z);
+            pts[i] = m.MultiplyPoint3x4(local);
+        }
+        return pts;
+    }
+
+    // Remember the hitbox measured on a live ship, so Edit Mode can use it later.
+    private static void SaveCap(Vector3 mn, Vector3 mx)
+    {
+        EditorPrefs.SetBool(CapHasKey, true);
+        EditorPrefs.SetFloat(CapKey + "minx", mn.x);
+        EditorPrefs.SetFloat(CapKey + "miny", mn.y);
+        EditorPrefs.SetFloat(CapKey + "minz", mn.z);
+        EditorPrefs.SetFloat(CapKey + "maxx", mx.x);
+        EditorPrefs.SetFloat(CapKey + "maxy", mx.y);
+        EditorPrefs.SetFloat(CapKey + "maxz", mx.z);
+    }
+
+    private static bool LoadCap(out Vector3 mn, out Vector3 mx)
+    {
+        mn = Vector3.zero;
+        mx = Vector3.zero;
+        if (!EditorPrefs.GetBool(CapHasKey, false)) return false;
+        mn = new Vector3(EditorPrefs.GetFloat(CapKey + "minx", 0f), EditorPrefs.GetFloat(CapKey + "miny", 0f), EditorPrefs.GetFloat(CapKey + "minz", 0f));
+        mx = new Vector3(EditorPrefs.GetFloat(CapKey + "maxx", 0f), EditorPrefs.GetFloat(CapKey + "maxy", 0f), EditorPrefs.GetFloat(CapKey + "maxz", 0f));
+        return true;
+    }
+
+    // Hitbox size as offsets from the ship's own position (refreshed twice a second).
+    private void RefreshHitbox()
+    {
+        double now = EditorApplication.timeSinceStartup;
+        if (now < nextHb) return;
+        nextHb = now + 0.5;
+
+        if (EditorPrefs.GetBool(HitManualKey, false))
+        {
+            hbMin = new Vector3(EditorPrefs.GetFloat(HitMinXKey, -1f), EditorPrefs.GetFloat(HitMinYKey, -1f), EditorPrefs.GetFloat(HitMinZKey, -2f));
+            hbMax = new Vector3(EditorPrefs.GetFloat(HitMaxXKey, 1f), EditorPrefs.GetFloat(HitMaxYKey, 1f), EditorPrefs.GetFloat(HitMaxZKey, 2f));
+            hbOk = true;
+            hbSource = "manual values";
+            LogHitSource();
+            return;
+        }
+
+        hbOk = false;
+        // look again when nothing is cached, or when only a prefab is cached but the game is running (the live ship may exist now)
+        if (hbShip == null || (EditorUtility.IsPersistent(hbShip) && EditorApplication.isPlaying))
+            hbShip = FindShip(out hbShipSrc);
+
+        bool got = false;
+        if (hbShip != null)
+        {
+            bool any = false;
+            Vector3 mn = Vector3.one * float.MaxValue;
+            Vector3 mx = Vector3.one * -float.MaxValue;
+            foreach (var c in hbShip.GetComponentsInChildren<Collider>(false))
+            {
+                if (c == null || c.isTrigger || !c.enabled) continue;
+                foreach (var corner in Corners(c))
+                {
+                    Vector3 o = corner - hbShip.position;
+                    mn = Vector3.Min(mn, o);
+                    mx = Vector3.Max(mx, o);
+                    any = true;
+                }
+            }
+            if (any)
+            {
+                hbMin = mn;
+                hbMax = mx;
+                hbOk = true;
+                hbSource = hbShipSrc;
+                got = true;
+                if (EditorApplication.isPlaying && !EditorUtility.IsPersistent(hbShip)) SaveCap(mn, mx);
+            }
+        }
+
+        if (!got)
+        {
+            Vector3 cmn, cmx;
+            if (LoadCap(out cmn, out cmx))
+            {
+                hbMin = cmn;
+                hbMax = cmx;
+                hbOk = true;
+                hbSource = "remembered from the last Play Mode (no ship prefab found right now)";
+            }
+            else if (hbShip == null)
+                hbSource = "no ship found. Pick the ship prefab below, press 'Find ship prefab in project', or press Space once in Play Mode.";
+            else
+                hbSource = "no solid colliders on " + hbShipSrc + " (use manual values)";
+        }
+        LogHitSource();
+    }
+
+    private void LogHitSource()
+    {
+        if (hbSource == hbLogged) return;
+        hbLogged = hbSource;
+        Debug.Log("[Diag] Enemy Waves hitbox: " + hbSource);
+    }
+
+    // Everywhere the ship's hitbox can reach: recorded centre area + hitbox size, and the real Z depth.
+    private bool Swept(out Bounds b)
+    {
+        b = new Bounds();
+        RefreshHitbox();
+        if (!hbOk) return false;
+        float x0, x1, y0, y1;
+        GetArea(out x0, out x1, out y0, out y1);
+        float z = PlayZ();
+        b.SetMinMax(new Vector3(x0 + hbMin.x, y0 + hbMin.y, z + hbMin.z), new Vector3(x1 + hbMax.x, y1 + hbMax.y, z + hbMax.z));
+        return true;
+    }
+
+    // ------------------------------------------------------------------ speed colours
+
+    private static void EnsureRamp()
+    {
+        if (ramp != null) return;
+        ramp = new Gradient();
+        ramp.SetKeys(
+            new[]
+            {
+                new GradientColorKey(new Color(0.25f, 0.55f, 1f), 0f),
+                new GradientColorKey(new Color(0.3f, 1f, 0.4f), 0.4f),
+                new GradientColorKey(new Color(1f, 0.9f, 0.2f), 0.7f),
+                new GradientColorKey(new Color(1f, 0.25f, 0.2f), 1f)
+            },
+            new[] { new GradientAlphaKey(1f, 0f), new GradientAlphaKey(1f, 1f) });
+    }
+
+    private static Color SpeedColor(float s, float lo, float hi)
+    {
+        EnsureRamp();
+        float t = hi - lo > 0.0001f ? Mathf.Clamp01((s - lo) / (hi - lo)) : 0.4f;
+        return ramp.Evaluate(t);
+    }
+
+    private static void MinMax(float[] a, out float lo, out float hi)
+    {
+        lo = float.MaxValue;
+        hi = 0f;
+        foreach (float v in a)
+        {
+            if (v <= 0f) continue;
+            lo = Mathf.Min(lo, v);
+            hi = Mathf.Max(hi, v);
+        }
+        if (lo > hi) { lo = 0f; hi = 0f; }
+    }
+
+    // Slowest / fastest speed used for the colour scale (this wave only, or all waves of the scene).
+    private void SpeedRange(PathInfo p, out float lo, out float hi)
+    {
+        if (!EditorPrefs.GetBool(ScaleAllKey, false))
+        {
+            MinMax(p.segSpeed, out lo, out hi);
+            return;
+        }
+        double now = EditorApplication.timeSinceStartup;
+        if (now >= nextRange)
+        {
+            nextRange = now + 1.0;
+            bool from = EditorPrefs.GetBool(SpeedFromKey, false);
+            float mn = float.MaxValue, mx = 0f;
+            for (int j = 0; j < pWaves.arraySize; j++)
+            {
+                var o = GetWave(j);
+                if (o == null) continue;
+                int[] ord = A(o.WaypointOrder);
+                float[] sp = A(o.WaypointSpeeds);
+                for (int i = 0; i <= ord.Length; i++)
+                {
+                    int src = from ? i - 1 : i;
+                    float s = (src >= 0 && src < ord.Length && src < sp.Length) ? sp[src] : 0f;
+                    if (s <= 0f) s = o.EnemySpeed;
+                    if (s <= 0f) continue;
+                    mn = Mathf.Min(mn, s);
+                    mx = Mathf.Max(mx, s);
+                }
+            }
+            if (mn > mx) { mn = 0f; mx = 0f; }
+            rangeLo = mn;
+            rangeHi = mx;
+        }
+        lo = rangeLo;
+        hi = rangeHi;
+    }
+
     // ------------------------------------------------------------------ path building / simulation
 
     private PathInfo BuildPath(EnemyWaveInfo w)
@@ -280,9 +647,13 @@ public class EnemyWaveTool : EditorWindow
         }
         if (w.EnemySpeed <= 0f) p.problems.Add("EnemySpeed is 0 or negative.");
 
+        // Which speed entry belongs to which line:
+        // default: waypoint k's speed = the line ARRIVING at it. Option: the line LEAVING it.
+        bool from = EditorPrefs.GetBool(SpeedFromKey, false);
         for (int i = 0; i <= n; i++)
         {
-            float s = (i < n && i < spd.Length) ? spd[i] : 0f;
+            int src = from ? i - 1 : i;
+            float s = (src >= 0 && src < n && src < spd.Length) ? spd[src] : 0f;
             if (s <= 0f) s = w.EnemySpeed;
             p.segSpeed[i] = s;
             if (i < n) p.wait[i] = i < wt.Length ? Mathf.Max(0f, wt[i]) : 0f;
@@ -728,11 +1099,6 @@ public class EnemyWaveTool : EditorWindow
     private void OnSceneGUI(SceneView sv)
     {
         if (!EnsureSpawner()) return;
-        var w = GetWave(Mathf.Clamp(Selected, 0, Mathf.Max(0, pWaves.arraySize - 1)));
-        if (w == null) return;
-        PathInfo p = BuildPath(w);
-        if (!p.ok) return;
-        cachedTotal = TotalTime(w, p);
 
         if (labelStyle == null)
         {
@@ -741,49 +1107,148 @@ public class EnemyWaveTool : EditorWindow
             labelStyle.fontSize = 11;
         }
 
+        var w = GetWave(Mathf.Clamp(Selected, 0, Mathf.Max(0, pWaves.arraySize - 1)));
+        PathInfo p = w != null ? BuildPath(w) : null;
+        bool pathOk = p != null && p.ok;
+
+        float zFar = PlayZ() + 100f;
+        if (pathOk)
+        {
+            zFar = PlayZ() + 10f;
+            foreach (var v in p.pos) zFar = Mathf.Max(zFar, v.z);
+        }
+
         bool repaint = UnityEngine.Event.current.type == UnityEngine.EventType.Repaint;
         var oldColor = Handles.color;
         var oldZ = Handles.zTest;
         Handles.zTest = UnityEngine.Rendering.CompareFunction.Always;
 
-        if (repaint)
+        if (repaint && EditorPrefs.GetBool(ShowBoxKey, true)) DrawPlayArea(zFar);
+        if (repaint && EditorPrefs.GetBool(ShowHitKey, true)) DrawHitVolume();
+
+        if (pathOk)
         {
-            if (EditorPrefs.GetBool(ShowBoxKey, true)) DrawBox(p);
-            DrawGuides(p);
-            DrawLines(p);
-            if (EditorPrefs.GetBool(ShowLabelsKey, true)) DrawLabels(w, p);
-            if (p.canPlay) DrawPreviewGhosts(w, p, sv);
+            cachedTotal = TotalTime(w, p);
+            float lo, hi;
+            SpeedRange(p, out lo, out hi);
+
+            if (repaint)
+            {
+                DrawGuides(p);
+                DrawLines(p, lo, hi);
+                DrawCrossing(p);
+                if (EditorPrefs.GetBool(ShowLabelsKey, true)) DrawLabels(w, p);
+                if (p.canPlay) DrawPreviewGhosts(w, p, sv);
+            }
+            DrawPointHandles(p);
         }
-        DrawPointHandles(p);
 
         Handles.color = oldColor;
         Handles.zTest = oldZ;
     }
 
-    private void DrawBox(PathInfo p)
+    // The ship's movement box: filled plane where the ship flies, frames every N units in front of it.
+    private void DrawPlayArea(float zFar)
     {
-        float x0 = EditorPrefs.GetFloat(PlayAreaGuide.MinXKey, -30f);
-        float x1 = EditorPrefs.GetFloat(PlayAreaGuide.MaxXKey, 30f);
-        float y0 = EditorPrefs.GetFloat(PlayAreaGuide.MinYKey, -15f);
-        float y1 = EditorPrefs.GetFloat(PlayAreaGuide.MaxYKey, 15f);
+        float x0, x1, y0, y1;
+        GetArea(out x0, out x1, out y0, out y1);
         float zNear = PlayZ();
-        float zFar = zNear + 10f;
-        foreach (var v in p.pos) zFar = Mathf.Max(zFar, v.z);
+        Color yellow = new Color(1f, 0.9f, 0.1f, 1f);
 
-        Handles.color = new Color(0.3f, 0.9f, 0.9f, 0.45f);
+        // long edges
+        Handles.color = new Color(0.3f, 0.9f, 0.9f, 0.5f);
         Handles.DrawLine(new Vector3(x0, y0, zNear), new Vector3(x0, y0, zFar));
         Handles.DrawLine(new Vector3(x1, y0, zNear), new Vector3(x1, y0, zFar));
         Handles.DrawLine(new Vector3(x0, y1, zNear), new Vector3(x0, y1, zFar));
         Handles.DrawLine(new Vector3(x1, y1, zNear), new Vector3(x1, y1, zFar));
-        Frame(x0, x1, y0, y1, zFar);
-        Handles.color = new Color(1f, 0.9f, 0.1f, 1f);
-        Frame(x0, x1, y0, y1, zNear);
-        Handles.Label(new Vector3(x0, y1, zNear), "  Ship plane", labelStyle);
+
+        // depth frames
+        float step = Mathf.Max(1f, EditorPrefs.GetFloat(DepthStepKey, 25f));
+        int count = Mathf.Clamp(Mathf.FloorToInt((zFar - zNear) / step), 0, 40);
+        for (int k = 1; k <= count; k++)
+        {
+            float z = zNear + k * step;
+            Handles.color = new Color(0.3f, 0.9f, 0.9f, 0.3f);
+            Frame(x0, x1, y0, y1, z);
+            Handles.Label(new Vector3(x1, y1, z), "  +" + (k * step).ToString("0.#"), labelStyle);
+        }
+
+        // ship plane
+        var corners = new[]
+        {
+            new Vector3(x0, y0, zNear), new Vector3(x1, y0, zNear),
+            new Vector3(x1, y1, zNear), new Vector3(x0, y1, zNear)
+        };
+        if (EditorPrefs.GetBool(ShowFillKey, true))
+            Handles.DrawSolidRectangleWithOutline(corners, new Color(1f, 0.9f, 0.1f, 0.12f), yellow);
+        Handles.color = yellow;
+        Handles.DrawAAPolyLine(4f, corners[0], corners[1], corners[2], corners[3], corners[0]);
+        Handles.Label(new Vector3(x0, y1, zNear), $"  Ship centre area   X {x0:0.#}..{x1:0.#}   Y {y0:0.#}..{y1:0.#}", labelStyle);
+    }
+
+    // Everywhere the ship's 3D hitbox can reach (magenta), plus one hitbox at the middle for scale.
+    private void DrawHitVolume()
+    {
+        Bounds b;
+        if (!Swept(out b)) return;
+        Color mag = new Color(1f, 0.3f, 0.9f, 1f);
+
+        Handles.color = new Color(1f, 0.3f, 0.9f, 0.8f);
+        Handles.DrawWireCube(b.center, b.size);
+
+        var front = new[]
+        {
+            new Vector3(b.min.x, b.min.y, b.max.z), new Vector3(b.max.x, b.min.y, b.max.z),
+            new Vector3(b.max.x, b.max.y, b.max.z), new Vector3(b.min.x, b.max.y, b.max.z)
+        };
+        Handles.DrawSolidRectangleWithOutline(front, new Color(1f, 0.3f, 0.9f, 0.10f), mag);
+        float pz = PlayZ();
+        Handles.Label(new Vector3(b.min.x, b.max.y, b.max.z),
+            $"  Ship hit volume: front Z {(b.max.z - pz):+0.#;-0.#;0}, back Z {(b.min.z - pz):+0.#;-0.#;0} (from ship plane)", labelStyle);
+
+        float x0, x1, y0, y1;
+        GetArea(out x0, out x1, out y0, out y1);
+        Vector3 c = new Vector3((x0 + x1) * 0.5f, (y0 + y1) * 0.5f, pz);
+        Handles.color = new Color(1f, 0.3f, 0.9f, 0.5f);
+        Handles.DrawWireCube(c + (hbMin + hbMax) * 0.5f, hbMax - hbMin);
     }
 
     private static void Frame(float x0, float x1, float y0, float y1, float z)
     {
         Handles.DrawPolyLine(new Vector3(x0, y0, z), new Vector3(x1, y0, z), new Vector3(x1, y1, z), new Vector3(x0, y1, z), new Vector3(x0, y0, z));
+    }
+
+    // Markers where the path reaches the ship plane and enters the ship's hit volume.
+    private void DrawCrossing(PathInfo p)
+    {
+        float t;
+        Vector3 pt;
+        float x0, x1, y0, y1;
+        GetArea(out x0, out x1, out y0, out y1);
+        if (p.CrossPlane(PlayZ(), out t, out pt))
+        {
+            bool inside = pt.x >= x0 && pt.x <= x1 && pt.y >= y0 && pt.y <= y1;
+            Handles.color = inside ? new Color(0.3f, 1f, 0.4f) : new Color(1f, 0.55f, 0.1f);
+            float s = HandleUtility.GetHandleSize(pt) * 0.2f;
+            Handles.DrawWireDisc(pt, Vector3.forward, s);
+            Handles.DrawWireDisc(pt, Vector3.forward, s * 1.4f);
+            Handles.Label(pt + Vector3.down * s * 1.8f, $"Crosses ship plane @ {t:0.0}s  ({(inside ? "inside" : "OUTSIDE")} the ship centre area)", labelStyle);
+        }
+
+        Bounds hb;
+        if (Swept(out hb))
+        {
+            float te;
+            Vector3 pe;
+            if (p.FirstEnter(hb, out te, out pe))
+            {
+                Handles.color = new Color(1f, 0.3f, 0.9f);
+                float s = HandleUtility.GetHandleSize(pe) * 0.25f;
+                Handles.DrawWireDisc(pe, Vector3.forward, s);
+                Handles.DrawWireDisc(pe, Vector3.up, s);
+                Handles.Label(pe + Vector3.up * s * 1.8f, $"Enters ship hit volume @ {te:0.0}s  (Z {(pe.z - PlayZ()):+0.#;-0.#;0})", labelStyle);
+            }
+        }
     }
 
     private void DrawGuides(PathInfo p)
@@ -819,29 +1284,31 @@ public class EnemyWaveTool : EditorWindow
         if (proj) { Handles.color = new Color(0.3f, 0.9f, 1f, 0.45f); Handles.DrawAAPolyLine(2f, projPts); }
     }
 
-    private void DrawLines(PathInfo p)
+    // One solid colour per line, by that line's real speed (blue = slow, red = fast), with the number on it.
+    private void DrawLines(PathInfo p, float lo, float hi)
     {
-        float maxS = 0f;
-        foreach (float s in p.segSpeed) maxS = Mathf.Max(maxS, s);
+        bool labels = EditorPrefs.GetBool(ShowLabelsKey, true);
         for (int i = 0; i <= p.N; i++)
         {
             Vector3 a = p.pos[i], b = p.pos[i + 1];
-            float k = maxS > 0f ? Mathf.Clamp01(p.segSpeed[i] / maxS) : 1f;
-            Handles.color = Color.Lerp(new Color(0.3f, 0.12f, 0f), new Color(1f, 0.85f, 0.1f), k);
-            Handles.DrawAAPolyLine(5f, a, b);
+            Color c = SpeedColor(p.segSpeed[i], lo, hi);
+            Handles.color = c;
+            Handles.DrawAAPolyLine(6f, a, b);
             Vector3 dir = b - a;
+            Vector3 mid = (a + b) * 0.5f;
+            float s = HandleUtility.GetHandleSize(mid) * 0.15f;
             if (dir.sqrMagnitude > 0.0001f)
-            {
-                Vector3 mid = (a + b) * 0.5f;
-                float s = HandleUtility.GetHandleSize(mid) * 0.15f;
                 Handles.ConeHandleCap(0, mid, Quaternion.LookRotation(dir.normalized), s, UnityEngine.EventType.Repaint);
-            }
+            if (labels)
+                Handles.Label(mid + Vector3.up * HandleUtility.GetHandleSize(mid) * 0.25f, p.segSpeed[i].ToString("0.##") + "/s", labelStyle);
         }
     }
 
     private void DrawLabels(EnemyWaveInfo w, PathInfo p)
     {
         int[] order = A(w.WaypointOrder);
+        bool from = EditorPrefs.GetBool(SpeedFromKey, false);
+        float playZ = PlayZ();
         for (int j = 0; j < p.pos.Length; j++)
         {
             Vector3 v = p.pos[j];
@@ -850,9 +1317,11 @@ public class EnemyWaveTool : EditorWindow
             else if (j == p.N + 1) text = $"E  end  @ {p.arrive[j]:0.0}s";
             else
             {
-                text = $"{j}   spd {p.segSpeed[j - 1]:0.##}   wait {p.wait[j - 1]:0.##}s   @ {p.arrive[j]:0.0}s";
+                float sp = from ? p.segSpeed[j] : p.segSpeed[j - 1];
+                text = $"{j}   spd {sp:0.##}   wait {p.wait[j - 1]:0.##}s   @ {p.arrive[j]:0.0}s";
                 if (OtherUsers(1, order[j - 1], w) > 0) text += "   (SHARED)";
             }
+            text += "\n" + (v.z - playZ).ToString("+0.#;-0.#;0") + " from ship plane";
             Handles.Label(v + Vector3.up * HandleUtility.GetHandleSize(v) * 0.2f, text, labelStyle);
         }
     }
@@ -934,7 +1403,10 @@ public class EnemyWaveTool : EditorWindow
         float size = HandleUtility.GetHandleSize(pos) * 0.12f;
         Handles.color = new Color(1f, 0.45f, 0.1f, 1f);
         Handles.DrawWireDisc(pos, sv.camera.transform.forward, size);
-        if (!string.IsNullOrEmpty(label)) Handles.Label(pos + Vector3.up * size * 1.5f, label, labelStyle);
+        string txt = (string.IsNullOrEmpty(label) ? "" : label + "  ") + "dZ " + (pos.z - PlayZ()).ToString("+0.#;-0.#;0");
+        Bounds hb;
+        if (Swept(out hb)) txt += "   to hit volume " + (pos.z - hb.max.z).ToString("+0.#;-0.#;0");
+        Handles.Label(pos + Vector3.up * size * 1.5f, txt, labelStyle);
     }
 
     private List<GhostPart> GetGhost(GameObject prefab)
@@ -971,6 +1443,26 @@ public class EnemyWaveTool : EditorWindow
         bool v = EditorPrefs.GetBool(key, def);
         bool nv = EditorGUILayout.ToggleLeft(label, v);
         if (nv != v) { EditorPrefs.SetBool(key, nv); SceneView.RepaintAll(); }
+    }
+
+    private static void PrefFloat(string label, string key, float def)
+    {
+        float v = EditorPrefs.GetFloat(key, def);
+        float nv = EditorGUILayout.FloatField(label, v);
+        if (!Mathf.Approximately(nv, v)) { EditorPrefs.SetFloat(key, nv); SceneView.RepaintAll(); }
+    }
+
+    private static void PrefRange(string label, string minKey, string maxKey, float defMin, float defMax)
+    {
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.PrefixLabel(label);
+        float a = EditorPrefs.GetFloat(minKey, defMin);
+        float b = EditorPrefs.GetFloat(maxKey, defMax);
+        float na = EditorGUILayout.FloatField(a, GUILayout.MinWidth(40));
+        float nb = EditorGUILayout.FloatField(b, GUILayout.MinWidth(40));
+        if (!Mathf.Approximately(na, a)) { EditorPrefs.SetFloat(minKey, na); SceneView.RepaintAll(); }
+        if (!Mathf.Approximately(nb, b)) { EditorPrefs.SetFloat(maxKey, nb); SceneView.RepaintAll(); }
+        EditorGUILayout.EndHorizontal();
     }
 
     private void OnGUI()
@@ -1051,6 +1543,7 @@ public class EnemyWaveTool : EditorWindow
         if (w == null)
         {
             EditorGUILayout.HelpBox(count == 0 ? "This scene has no waves yet. Click 'New wave'." : "This wave slot is empty.", MessageType.Info);
+            if (Fold("EnemyWaves.Fold.Area", "Player area (ship movement box)", true)) DrawPlayAreaUI();
             EditorGUILayout.EndScrollView();
             return;
         }
@@ -1088,6 +1581,7 @@ public class EnemyWaveTool : EditorWindow
             if (Fold("EnemyWaves.Fold.Points", $"Path points ({p.N} waypoints)", true)) DrawPoints(w, p, shared, sel);
         }
         if (Fold("EnemyWaves.Fold.Preview", "Preview", true)) DrawPreviewUI(w, p);
+        if (Fold("EnemyWaves.Fold.Area", "Player area (ship movement box)", true)) DrawPlayAreaUI();
         if (Fold("EnemyWaves.Fold.Display", "Scene display options", false)) DrawDisplayUI();
         using (new EditorGUI.DisabledScope(play))
         {
@@ -1100,7 +1594,7 @@ public class EnemyWaveTool : EditorWindow
     private void DrawSettings(EnemyWaveInfo w, PathInfo p)
     {
         EditorGUI.BeginChangeCheck();
-        float ns = EditorGUILayout.FloatField(new GUIContent("Enemy speed", "Base speed (used when a point's speed is 0, and after the last waypoint)."), w.EnemySpeed);
+        float ns = EditorGUILayout.FloatField(new GUIContent("Enemy speed", "Base speed (used when a point's speed is 0, and for the line that has no speed entry of its own)."), w.EnemySpeed);
         if (EditorGUI.EndChangeCheck()) Edit(w, so => so.FindProperty("EnemySpeed").floatValue = ns);
 
         EditorGUILayout.LabelField("Enemies (delay = seconds before this enemy spawns)", EditorStyles.miniBoldLabel);
@@ -1145,9 +1639,26 @@ public class EnemyWaveTool : EditorWindow
         }
     }
 
+    private void DrawSpeedLegend(float lo, float hi)
+    {
+        EnsureRamp();
+        Rect r = GUILayoutUtility.GetRect(10f, 14f, GUILayout.ExpandWidth(true));
+        int steps = 40;
+        float sw = r.width / steps;
+        for (int i = 0; i < steps; i++)
+            EditorGUI.DrawRect(new Rect(r.x + i * sw, r.y, sw + 1f, r.height), ramp.Evaluate(i / (float)(steps - 1)));
+        string txt = hi - lo > 0.0001f
+            ? $"Line colour = speed:  slow {lo:0.##}   ->   fast {hi:0.##}   (units/s)"
+            : $"All lines use the same speed ({hi:0.##}), so they share one colour.";
+        EditorGUILayout.LabelField(txt, EditorStyles.miniLabel);
+    }
+
     private void DrawPoints(EnemyWaveInfo w, PathInfo p, bool shared, int sel)
     {
-        EditorGUILayout.LabelField("Line colour: darker = slower. Click a dot in the Scene view to select and move it.", EditorStyles.miniLabel);
+        float lo, hi;
+        SpeedRange(p, out lo, out hi);
+        DrawSpeedLegend(lo, hi);
+        EditorGUILayout.LabelField("Click a dot in the Scene view to select and move it.", EditorStyles.miniLabel);
         int n = p.N;
         int[] order = A(w.WaypointOrder);
         float[] spd = A(w.WaypointSpeeds);
@@ -1244,6 +1755,34 @@ public class EnemyWaveTool : EditorWindow
 
     private void DrawPreviewUI(EnemyWaveInfo w, PathInfo p)
     {
+        // where does this path reach the ship?
+        if (p.ok)
+        {
+            float ct;
+            Vector3 cp;
+            if (p.CrossPlane(PlayZ(), out ct, out cp))
+            {
+                float x0, x1, y0, y1;
+                GetArea(out x0, out x1, out y0, out y1);
+                bool inside = cp.x >= x0 && cp.x <= x1 && cp.y >= y0 && cp.y <= y1;
+                EditorGUILayout.HelpBox($"Reaches the ship plane after {ct:0.0}s at X {cp.x:0.#}, Y {cp.y:0.#}: " +
+                                        (inside ? "inside the ship centre area." : "OUTSIDE the ship centre area."),
+                                        inside ? MessageType.None : MessageType.Warning);
+            }
+            else EditorGUILayout.HelpBox("This path never reaches the ship plane (Z of the ship).", MessageType.None);
+
+            Bounds hb;
+            if (Swept(out hb))
+            {
+                float te;
+                Vector3 pe;
+                if (p.FirstEnter(hb, out te, out pe))
+                    EditorGUILayout.HelpBox($"Enters the ship's hit volume after {te:0.0}s at X {pe.x:0.#}, Y {pe.y:0.#}, Z {(pe.z - PlayZ()):+0.#;-0.#;0} from the ship plane. From here the enemy can hit the player.", MessageType.None);
+                else
+                    EditorGUILayout.HelpBox("This path never enters the ship's hit volume, so it cannot hit the player.", MessageType.Warning);
+            }
+        }
+
         if (!p.canPlay)
         {
             EditorGUILayout.HelpBox("Preview needs a complete path and Enemy speed > 0.", MessageType.Info);
@@ -1287,13 +1826,95 @@ public class EnemyWaveTool : EditorWindow
         EditorGUILayout.LabelField($"Flight time per enemy: {p.duration:0.0}s   |   whole wave: {cachedTotal:0.0}s", EditorStyles.miniLabel);
     }
 
+    // The ship's movement box: show it, set it by hand or record it from a real Play session. Plus the 3D hitbox.
+    private void DrawPlayAreaUI()
+    {
+        if (!EditorPrefs.HasKey(PlayAreaGuide.MinXKey) && !PlayAreaGuide.HasRecording)
+            EditorGUILayout.HelpBox("The play area is still the default (X -30..30, Y -15..15). Record the real one below.", MessageType.Warning);
+
+        PrefToggle("Show ship plane + depth frames in the Scene view", ShowBoxKey, true);
+        PrefToggle("Fill the ship plane", ShowFillKey, true);
+        PrefFloat("Depth frame spacing (Z)", DepthStepKey, 25f);
+        PrefRange("X  min / max (ship centre)", PlayAreaGuide.MinXKey, PlayAreaGuide.MaxXKey, -30f, 30f);
+        PrefRange("Y  min / max (ship centre)", PlayAreaGuide.MinYKey, PlayAreaGuide.MaxYKey, -15f, 15f);
+        PrefToggle("Record ship extents while playing (fly to every edge)", PlayAreaGuide.RecordKey, false);
+        if (PlayAreaGuide.HasRecording)
+        {
+            EditorGUILayout.LabelField("Recorded X", $"{PlayAreaGuide.RecMinX:F2}  to  {PlayAreaGuide.RecMaxX:F2}");
+            EditorGUILayout.LabelField("Recorded Y", $"{PlayAreaGuide.RecMinY:F2}  to  {PlayAreaGuide.RecMaxY:F2}");
+            EditorGUILayout.BeginHorizontal();
+            if (GUILayout.Button("Use recorded as play area")) { PlayAreaGuide.ApplyRecording(); SceneView.RepaintAll(); }
+            if (GUILayout.Button("Clear", GUILayout.Width(50))) PlayAreaGuide.ClearRecording();
+            EditorGUILayout.EndHorizontal();
+        }
+
+        EditorGUILayout.Space(4);
+        EditorGUILayout.LabelField("Ship hitbox (3D)", EditorStyles.boldLabel);
+        PrefToggle("Show the ship's hit volume (magenta) in the Scene view", ShowHitKey, true);
+
+        // ship prefab (the ship is not in the scene in Edit Mode, so the tool reads this prefab)
+        string ovPath = EditorPrefs.GetString(ShipPrefabKey, "");
+        GameObject ovObj = string.IsNullOrEmpty(ovPath) ? null : AssetDatabase.LoadAssetAtPath<GameObject>(ovPath);
+        EditorGUI.BeginChangeCheck();
+        var newOv = EditorGUILayout.ObjectField(new GUIContent("Ship prefab", "The player prefab that has the MoveShip script. Used in Edit Mode, when the ship is not in the scene."), ovObj, typeof(GameObject), false) as GameObject;
+        if (EditorGUI.EndChangeCheck())
+        {
+            EditorPrefs.SetString(ShipPrefabKey, newOv != null ? AssetDatabase.GetAssetPath(newOv) : "");
+            hbShip = null;
+            nextHb = 0;
+            SceneView.RepaintAll();
+        }
+        if (GUILayout.Button("Find ship prefab in project (looks for the MoveShip script)"))
+        {
+            string found = ScanProjectForShip();
+            if (found != null)
+            {
+                EditorPrefs.SetString(ShipPrefabKey, found);
+                hbShip = null;
+                nextHb = 0;
+                Debug.Log("[Diag] Enemy Waves: ship prefab set to '" + found + "'.");
+            }
+            else Debug.LogWarning("[Diag] Enemy Waves: no prefab with a MoveShip script was found in the project.");
+            SceneView.RepaintAll();
+            GUIUtility.ExitGUI();
+        }
+
+        bool manual = EditorPrefs.GetBool(HitManualKey, false);
+        bool nm = EditorGUILayout.ToggleLeft("Manual hitbox offsets (instead of reading the colliders)", manual);
+        if (nm != manual) { EditorPrefs.SetBool(HitManualKey, nm); nextHb = 0; SceneView.RepaintAll(); }
+
+        if (nm)
+        {
+            PrefRange("X offset min / max", HitMinXKey, HitMaxXKey, -1f, 1f);
+            PrefRange("Y offset min / max", HitMinYKey, HitMaxYKey, -1f, 1f);
+            PrefRange("Z offset min / max", HitMinZKey, HitMaxZKey, -2f, 2f);
+            EditorGUILayout.LabelField("Offsets are measured from the ship's own position.", EditorStyles.miniLabel);
+        }
+        RefreshHitbox();
+        if (hbOk)
+        {
+            EditorGUILayout.LabelField($"Hitbox from {hbSource}", EditorStyles.miniLabel);
+            EditorGUILayout.LabelField($"Offsets: X {hbMin.x:0.##}..{hbMax.x:0.##}   Y {hbMin.y:0.##}..{hbMax.y:0.##}   Z {hbMin.z:0.##}..{hbMax.z:0.##}   (size {hbMax.x - hbMin.x:0.##} x {hbMax.y - hbMin.y:0.##} x {hbMax.z - hbMin.z:0.##})", EditorStyles.miniLabel);
+        }
+        else EditorGUILayout.HelpBox("No hitbox: " + hbSource, MessageType.Warning);
+
+        if (GUILayout.Button("Re-detect hitbox"))
+        {
+            hbShip = null;
+            nextHb = 0;
+            SceneView.RepaintAll();
+        }
+        EditorGUILayout.Space(2);
+    }
+
     private void DrawDisplayUI()
     {
-        PrefToggle("Play-area box + ship plane", ShowBoxKey, true);
         PrefToggle("Drop lines to the floor", ShowDropKey, true);
         PrefToggle("Projection onto the ship plane (what the player sees)", ShowProjKey, true);
-        PrefToggle("Labels (speed, wait, arrival time)", ShowLabelsKey, true);
+        PrefToggle("Labels (speed, wait, arrival time, distance to ship)", ShowLabelsKey, true);
         PrefToggle("Move handle on the selected point", ShowHandlesKey, true);
+        PrefToggle("Speed colours: same scale for ALL waves (off = this wave only)", ScaleAllKey, false);
+        PrefToggle("Waypoint speed applies to the line LEAVING it (off = line arriving at it)", SpeedFromKey, false);
     }
 
     private void DrawToolsUI(EnemyWaveInfo w, bool shared)
