@@ -18,28 +18,16 @@ MonoBehaviour:
   - {fileID: 3699308623078601662, guid: 808c374093f9b964982724dcbac8b515, type: 3}
   - {fileID: 3699308623078601662, guid: 808c374093f9b964982724dcbac8b515, type: 3}
   - {fileID: 3699308623078601662, guid: 808c374093f9b964982724dcbac8b515, type: 3}
-  - {fileID: 3699308623078601662, guid: 808c374093f9b964982724dcbac8b515, type: 3}
-  - {fileID: 3699308623078601662, guid: 808c374093f9b964982724dcbac8b515, type: 3}
-  - {fileID: 3699308623078601662, guid: 808c374093f9b964982724dcbac8b515, type: 3}
-  - {fileID: 3699308623078601662, guid: 808c374093f9b964982724dcbac8b515, type: 3}
-  - {fileID: 3699308623078601662, guid: 808c374093f9b964982724dcbac8b515, type: 3}
-  - {fileID: 3699308623078601662, guid: 808c374093f9b964982724dcbac8b515, type: 3}
-  - {fileID: 3699308623078601662, guid: 808c374093f9b964982724dcbac8b515, type: 3}
   TimesBetweenSpawns:
   - 1
-  - 1
-  - 1
-  - 1
-  - 1
-  - 1
-  - 1
-  - 1
-  - 1
-  - 1
+  - 1.5
+  - 1.5
   EnemySpeed: 10
-  WaypointOrder: 11000000
+  WaypointOrder: 1100000017000000
   WaypointSpeeds:
-  - 0
+  - 10
+  - 10
   WaitTimes:
   - 0
+  - 1
   EndPointIndex: 8
