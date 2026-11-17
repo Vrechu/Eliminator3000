@@ -22,11 +22,11 @@ MonoBehaviour:
   - 1
   - 1.5
   - 1.5
-  EnemySpeed: 10
+  EnemySpeed: 7
   WaypointOrder: 1100000017000000
   WaypointSpeeds:
   - 10
-  - 10
+  - 7
   WaitTimes:
   - 0
   - 1
