@@ -9,8 +9,9 @@ public class EnemyInfo : MonoBehaviour
     [TextArea(15, 20), SerializeField]
     private string Info;
 
-    public int ScoreValue;
+    [SerializeField] private int ScoreValue;
     [SerializeField] private int health = 2;
+    [SerializeField] private int scoreMultiplierGain = 1;
     private int lastPlayerHitID = -1;
 
     [SerializeField] TextMeshProUGUI healthText;
@@ -33,6 +34,7 @@ public class EnemyInfo : MonoBehaviour
         if (health <= 0)
         {
             EventBus<PlayerScoredEvent>.Publish(new PlayerScoredEvent(lastPlayerHitID, ScoreValue));
+            EventBus<PlayerScoreMultiplierGainedEvent>.Publish(new PlayerScoreMultiplierGainedEvent(lastPlayerHitID, scoreMultiplierGain));
             Destroy(gameObject);
         }
     }

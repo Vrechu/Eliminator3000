@@ -47,6 +47,8 @@ public class ScoreManager : MonoBehaviour
         EventBus<LevelFinishedEvent>.Subscribe(OnLevelFinished);
         EventBus<GameFinishedEvent>.Subscribe(OnGameFinished);
         EventBus<GameLoseEvent>.Subscribe(OnGameLost);
+        EventBus<PlayerScoreMultiplierGainedEvent>.Subscribe(OnEnemyKilled);
+        EventBus<PlayerprojectileMissedEvent>.Subscribe(OnPlayerMissed);
         EventBus<PlayerScoreMultiplierPickupEvent>.Subscribe(OnScoreMultiplierPickup);
     }
 
@@ -58,6 +60,8 @@ public class ScoreManager : MonoBehaviour
         EventBus<LevelFinishedEvent>.UnSubscribe(OnLevelFinished);
         EventBus<GameFinishedEvent>.UnSubscribe(OnGameFinished);
         EventBus<GameLoseEvent>.UnSubscribe(OnGameLost);
+        EventBus<PlayerScoreMultiplierGainedEvent>.UnSubscribe(OnEnemyKilled);
+        EventBus<PlayerprojectileMissedEvent>.UnSubscribe(OnPlayerMissed);
         EventBus<PlayerScoreMultiplierPickupEvent>.UnSubscribe(OnScoreMultiplierPickup);
     }
 
