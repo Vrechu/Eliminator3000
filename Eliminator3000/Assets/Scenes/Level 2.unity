@@ -134026,8 +134026,8 @@ MonoBehaviour:
   assets: []
   gridEdgeMargin: 30
   gridYOffset: 0
-  centerOffset: {x: 0.017177582, y: 48.192013, z: -7555.753}
-  measuredSize: {x: 122.762085, y: 97.47963, z: 997.14844}
+  centerOffset: {x: 0.017177582, y: 48.192013, z: -7555.755}
+  measuredSize: {x: 122.762085, y: 97.47963, z: 997.15234}
   hasMeasurement: 1
 --- !u!114 &2069018893
 MonoBehaviour:

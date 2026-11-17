@@ -651,13 +651,14 @@ public static class SectionContentTools
 
     private static void AddTrigger(LevelSection s, string[] titles)
     {
+
         Undo.IncrementCurrentGroup();
         Undo.SetCurrentGroupName("Add enemy trigger");
         int g = Undo.GetCurrentGroup();
 
         // measure again, so "middle of the section" is where this section really is right now
         Undo.RecordObject(s, "Add enemy trigger");
-        s.Measure();
+        LevelManagerWindow.MeasureKeepManual(s);
         EditorUtility.SetDirty(s);
 
         Transform cont = EnsureContainer(s, LevelSection.EnemyTriggersName);

@@ -522,6 +522,12 @@ public class LevelManagerWindow : EditorWindow
         LevelTriggerTools.EnsureWinTriggerLast(sections);
         Undo.CollapseUndoOperations(g);
     }
+    // Sections with a manual length keep their box exactly as it is (no re-measure).
+    internal static bool MeasureKeepManual(LevelSection s)
+    {
+        if (s.useManualLength && s.HasMeasurement) return true;
+        return s.Measure();
+    }
 
     private static void MeasureAll()
     {
