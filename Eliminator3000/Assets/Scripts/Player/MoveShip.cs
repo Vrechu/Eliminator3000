@@ -3,10 +3,19 @@ using UnityEngine.InputSystem;
 public class MoveShip : MonoBehaviour
 {
     private Vector2 movementInputVector;
-    [SerializeField] private float horizontalSpeed = 7f;
-    [SerializeField] private float trackWidth = 12f, maxHeight = 5f, minHeight;
 
-    [Header("Banking"), SerializeField] private bool bankEnabled = true;
+    [Header("Track boundaries"), SerializeField] private float trackWidth = 12f;
+    [SerializeField] private float maxHeight = 5f, minHeight;
+
+    [Header("Movement speed settings"),SerializeField]
+    private float horizontalMaxSpeed = 7f;
+    [SerializeField] private float 
+         verticalMaxSpeed = 7f,
+        horizontalAcceleration = 10f, verticalAcceleration = 10f,
+        horizontalDeceleration = 10f, verticalDeceleration = 10f;
+    private float horizontalCurrentSpeed, verticalCurrentSpeed;
+
+    [Header("Banking settings"), SerializeField] private bool bankEnabled = true;
     [SerializeField] private float 
         horizontalInputBankSpeed = 5f, verticalInputBankSpeed = 5f, 
         horizontalIdleBankSpeed = 2f, verticalIdleBankSpeed = 2f;
@@ -27,6 +36,7 @@ public class MoveShip : MonoBehaviour
         if (gameStateManager.CurrentState != GameStateManager.GameState.Ingame) return;
         if (shoot != null && shoot.LockedShooting) return;
 
+        Accelerate();
         Move();
         Bank();
     }
@@ -38,40 +48,42 @@ public class MoveShip : MonoBehaviour
 
     private void Move()
     {
-        if (transform.position.x < -trackWidth * 0.5f
-            && movementInputVector.x < 0)
-            movementInputVector.x = 0;
+        transform.localPosition += new Vector3(
+            horizontalCurrentSpeed * Time.deltaTime,
+            verticalCurrentSpeed * Time.deltaTime,
+            0);
 
-        if (transform.position.x > trackWidth * 0.5f
-            && movementInputVector.x > 0)
-            movementInputVector.x = 0;
+        transform.localPosition = new Vector3(
+            Mathf.Clamp(transform.localPosition.x, -trackWidth * 0.5f, trackWidth * 0.5f),
+            Mathf.Clamp(transform.localPosition.y, minHeight, maxHeight),
+            transform.localPosition.z);
+    }
 
-        if (transform.position.y < minHeight
-            && movementInputVector.y < 0)
-            movementInputVector.y = 0;
+    private void Accelerate()
+    {
+        if (movementInputVector.x == 0)
+            horizontalCurrentSpeed = Mathf.MoveTowards(horizontalCurrentSpeed, 0, horizontalDeceleration * Time.deltaTime);
+        else horizontalCurrentSpeed = Mathf.MoveTowards(horizontalCurrentSpeed, movementInputVector.x * horizontalMaxSpeed, horizontalAcceleration * Time.deltaTime);
 
-        if (transform.position.y > maxHeight
-            && movementInputVector.y > 0)
-            movementInputVector.y = 0;
-
-        transform.localPosition += horizontalSpeed * Time.deltaTime
-           * new Vector3(movementInputVector.x, movementInputVector.y, 0).normalized;
+        if (movementInputVector.y == 0)
+            verticalCurrentSpeed = Mathf.MoveTowards(verticalCurrentSpeed, 0, verticalDeceleration * Time.deltaTime);
+        else verticalCurrentSpeed = Mathf.MoveTowards(verticalCurrentSpeed, movementInputVector.y * verticalMaxSpeed, verticalAcceleration * Time.deltaTime);
     }
 
     private void Bank()
     {
         if (movementInputVector.x > 0)
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, -horixontalBankAngle), horizontalInputBankSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, -horixontalBankAngle), horizontalInputBankSpeed * Time.deltaTime);
         else if (movementInputVector.x < 0)
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, horixontalBankAngle), horizontalInputBankSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, horixontalBankAngle), horizontalInputBankSpeed * Time.deltaTime);
         else
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, 0), horizontalIdleBankSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, 0), horizontalIdleBankSpeed * Time.deltaTime);
 
         if (movementInputVector.y > 0)
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(-verticalBankAngle, 0, transform.rotation.eulerAngles.z), verticalInputBankSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(-verticalBankAngle, 0, transform.rotation.eulerAngles.z), verticalInputBankSpeed * Time.deltaTime);
         else if (movementInputVector.y < 0)
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(verticalBankAngle, 0, transform.rotation.eulerAngles.z), verticalInputBankSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(verticalBankAngle, 0, transform.rotation.eulerAngles.z), verticalInputBankSpeed * Time.deltaTime);
         else
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z), verticalIdleBankSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z), verticalIdleBankSpeed * Time.deltaTime);
     }
 }
