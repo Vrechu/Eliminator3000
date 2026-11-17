@@ -120,6 +120,8 @@ public class LevelSection : MonoBehaviour
     /// </summary>
     public bool Measure()
     {
+        // Manual length: the box is frozen. Untick "Manual len" to re-measure.
+        if (useManualLength && hasMeasurement) return true;
         bool found = false;
         Bounds total = new Bounds(transform.position, Vector3.zero);
         Renderer[] renderers = GetComponentsInChildren<Renderer>(false);
