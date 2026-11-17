@@ -74,6 +74,16 @@ public class MoveShip : MonoBehaviour
         if (movementInputVector.y == 0)
             verticalCurrentSpeed = Mathf.MoveTowards(verticalCurrentSpeed, 0, verticalDeceleration * Time.deltaTime);
         else verticalCurrentSpeed = Mathf.MoveTowards(verticalCurrentSpeed, movementInputVector.y * verticalMaxSpeed, verticalAcceleration * Time.deltaTime);
+
+        if (transform.localPosition.x >= trackWidth * 0.5f && movementInputVector.x > 0)
+            horizontalCurrentSpeed = 0;
+        else if (transform.localPosition.x <= -trackWidth * 0.5f && movementInputVector.x < 0)
+            horizontalCurrentSpeed = 0;
+
+        if (transform.localPosition.y >= maxHeight && movementInputVector.y > 0)
+            verticalCurrentSpeed = 0;
+        else if (transform.localPosition.y <= minHeight && movementInputVector.y < 0)
+            verticalCurrentSpeed = 0;
     }
 
     private void Bank()
