@@ -13,11 +13,13 @@ MonoBehaviour:
   m_Name: ClusterGun
   m_EditorClassIdentifier: Assembly-CSharp::GunProfile
   Info: 
-  Unlocked: 0
-  ProjectilePrefab: {fileID: 2946831950281905418, guid: d05272a0ed26efd4784b8878e6b1e2c8, type: 3}
+  UnlockedFromStart: 0
+  ProjectilePrefab: {fileID: 2946831950281905418, guid: 158e07f0d53b63c4cb8ce6954af9bc5f, type: 3}
+  InfiniteAmmo: 0
   MaxAmmo: 100
   AmmoCostPerShot: 20
   FireRate: 0.5
+  LockMovementWhileShooting: 0
   Cluster: 1
   Angle: 3.5
   Rows: 5
