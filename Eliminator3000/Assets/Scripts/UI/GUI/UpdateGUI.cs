@@ -1,9 +1,13 @@
 ﻿using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
+using Rive;
+using System.ComponentModel;
+using Rive.Components;
 
 public class UpdateGUI : MonoBehaviour
 {
+
     //player1
     [SerializeField] private GameObject player1GUI;
     [SerializeField] private TextMeshProUGUI
@@ -55,12 +59,14 @@ public class UpdateGUI : MonoBehaviour
     private void Start()
     {
         DisableGUI();
+
     }
 
     private void SetLivesGUI(PlayerLivesChangedEvent _playerLivesChangedEvent)
     {
         if (_playerLivesChangedEvent.Player == 0)
         {
+            
             p1LivesGUI.text = _playerLivesChangedEvent.NewLives.ToString();
         }
         else if (_playerLivesChangedEvent.Player == 1)
@@ -83,13 +89,13 @@ public class UpdateGUI : MonoBehaviour
 
     private void SetScoreGUI(ScoreChangedEvent _scoreChangedEvent)
     {
-        if (_scoreChangedEvent.Player == 0)
+        if (_scoreChangedEvent.PlayerIndex == 0)
         {
-            p1ScoreGUI.text = _scoreChangedEvent.Score.ToString();
+            p1ScoreGUI.text = _scoreChangedEvent.NewScore.ToString();
         }
-        else if (_scoreChangedEvent.Player == 1)
+        else if (_scoreChangedEvent.PlayerIndex == 1)
         {
-            p2ScoreGUI.text = _scoreChangedEvent.Score.ToString();
+            p2ScoreGUI.text = _scoreChangedEvent.NewScore.ToString();
         }
     }
 
@@ -113,9 +119,6 @@ public class UpdateGUI : MonoBehaviour
 
         if (player1GUI.activeSelf) player1GUI.SetActive(false);
         if (player2GUI.activeSelf) player2GUI.SetActive(false);
-
-        
-
     }
 
     private void EnableWinGUI(GameWinEvent _winEvent)
@@ -232,7 +235,7 @@ public class UpdateGUI : MonoBehaviour
 
     private void OnAmmoChanged(PlayerGunAmmoChangedEvent _playerGunAmmoChangedEvent)
     {
-        if (_playerGunAmmoChangedEvent.Player == 0)
+        if (_playerGunAmmoChangedEvent.PlayerIndex == 0)
         {
             if (_playerGunAmmoChangedEvent.InfiniteAmmo)
             {
@@ -241,7 +244,7 @@ public class UpdateGUI : MonoBehaviour
             else
             p1AmmoGUI.text = _playerGunAmmoChangedEvent.NewAmmo.ToString();
         }
-        else if (_playerGunAmmoChangedEvent.Player == 1)
+        else if (_playerGunAmmoChangedEvent.PlayerIndex == 1)
         {
             if (_playerGunAmmoChangedEvent.InfiniteAmmo)
             {
