@@ -219,6 +219,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1304855864035910352, guid: a4791bd9fda04b248bba64c23c8e2019, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6293654110981439870, guid: a4791bd9fda04b248bba64c23c8e2019, type: 3}
       propertyPath: m_Name
       value: Temp_Truck_Indestructible 1
