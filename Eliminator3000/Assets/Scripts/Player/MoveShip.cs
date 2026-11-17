@@ -33,11 +33,10 @@ public class MoveShip : MonoBehaviour
     private void Update()
     {
         if (gameStateManager.CurrentState != GameStateManager.GameState.Ingame) return;
-        if (shoot != null && shoot.LockedShooting) return;
-
+        
+        Bank();
         Accelerate();
         Move();
-        Bank();
     }
 
     public void GetHorizontalImputs(InputAction.CallbackContext _context)
@@ -67,11 +66,11 @@ public class MoveShip : MonoBehaviour
             return;
         }
 
-        if (movementInputVector.x == 0)
+        if (movementInputVector.x == 0 || shoot != null && shoot.LockedShooting)
             horizontalCurrentSpeed = Mathf.MoveTowards(horizontalCurrentSpeed, 0, horizontalDeceleration * Time.deltaTime);
         else horizontalCurrentSpeed = Mathf.MoveTowards(horizontalCurrentSpeed, movementInputVector.x * horizontalMaxSpeed, horizontalAcceleration * Time.deltaTime);
 
-        if (movementInputVector.y == 0)
+        if (movementInputVector.y == 0 || shoot != null && shoot.LockedShooting)
             verticalCurrentSpeed = Mathf.MoveTowards(verticalCurrentSpeed, 0, verticalDeceleration * Time.deltaTime);
         else verticalCurrentSpeed = Mathf.MoveTowards(verticalCurrentSpeed, movementInputVector.y * verticalMaxSpeed, verticalAcceleration * Time.deltaTime);
 
@@ -90,18 +89,19 @@ public class MoveShip : MonoBehaviour
     {
         if (!bankEnabled) return;
 
-        if (movementInputVector.x > 0)
+
+        if (movementInputVector.x == 0 || shoot != null && shoot.LockedShooting)
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, 0), horizontalIdleBankSpeed * Time.deltaTime);
+        else if (movementInputVector.x > 0)
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, -horixontalBankAngle), horizontalInputBankSpeed * Time.deltaTime);
         else if (movementInputVector.x < 0)
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, horixontalBankAngle), horizontalInputBankSpeed * Time.deltaTime);
-        else
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, 0), horizontalIdleBankSpeed * Time.deltaTime);
 
-        if (movementInputVector.y > 0)
+        if (movementInputVector.y == 0 || shoot != null && shoot.LockedShooting)
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, 0), horizontalIdleBankSpeed * Time.deltaTime);
+        else if (movementInputVector.y > 0)
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(-verticalBankAngle, 0, transform.rotation.eulerAngles.z), verticalInputBankSpeed * Time.deltaTime);
         else if (movementInputVector.y < 0)
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(verticalBankAngle, 0, transform.rotation.eulerAngles.z), verticalInputBankSpeed * Time.deltaTime);
-        else
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z), verticalIdleBankSpeed * Time.deltaTime);
     }
 }
