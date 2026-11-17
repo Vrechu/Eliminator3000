@@ -7,10 +7,9 @@ public class MoveShip : MonoBehaviour
     [Header("Track boundaries"), SerializeField] private float trackWidth = 12f;
     [SerializeField] private float maxHeight = 5f, minHeight;
 
-    [Header("Movement speed settings"),SerializeField]
-    private float horizontalMaxSpeed = 7f;
-    [SerializeField] private float 
-         verticalMaxSpeed = 7f,
+    [Header("Movement speed settings"),SerializeField] private bool accelerationEnabled = true;
+    [SerializeField] private float
+        horizontalMaxSpeed = 7f, verticalMaxSpeed = 7f,
         horizontalAcceleration = 10f, verticalAcceleration = 10f,
         horizontalDeceleration = 10f, verticalDeceleration = 10f;
     private float horizontalCurrentSpeed, verticalCurrentSpeed;
@@ -61,6 +60,13 @@ public class MoveShip : MonoBehaviour
 
     private void Accelerate()
     {
+        if (!accelerationEnabled)
+        {
+            horizontalCurrentSpeed = horizontalMaxSpeed * movementInputVector.x;
+            verticalCurrentSpeed = verticalMaxSpeed * movementInputVector.y;
+            return;
+        }
+
         if (movementInputVector.x == 0)
             horizontalCurrentSpeed = Mathf.MoveTowards(horizontalCurrentSpeed, 0, horizontalDeceleration * Time.deltaTime);
         else horizontalCurrentSpeed = Mathf.MoveTowards(horizontalCurrentSpeed, movementInputVector.x * horizontalMaxSpeed, horizontalAcceleration * Time.deltaTime);
@@ -72,6 +78,8 @@ public class MoveShip : MonoBehaviour
 
     private void Bank()
     {
+        if (!bankEnabled) return;
+
         if (movementInputVector.x > 0)
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, -horixontalBankAngle), horizontalInputBankSpeed * Time.deltaTime);
         else if (movementInputVector.x < 0)
