@@ -16,8 +16,15 @@ public class ScoreManager : MonoBehaviour
     [SerializeField] private string scoreFileName = "Scores";
     private string scoreFilePath;
 
+    [Header("Multiplier Settings"),SerializeField] private int minMultiplier = 1;
+    [SerializeField] private int maxMultiplier = 99;
     private int[] scoreMultipliers = new int[2] { 1, 1 };
-    private Timer[] multiplierTimers = new Timer[2];
+
+    private Timer[] startDecreaseTimers = new Timer[2], decreaseIntervalTimers = new Timer[2], multiplierPickupTimers = new Timer[2];
+    [SerializeField] private float startMultiplierDecreaseTime = 10f, decreaseIntervalTime = 0.5f;
+    [SerializeField]private int multiplierDecreaseAmount = 1;
+
+    private float[] multiplierScaleFactors = new float[2] { 1, 1 };
 
     private void Awake()
     {
@@ -59,16 +66,18 @@ public class ScoreManager : MonoBehaviour
         playerProfileManager = PlayerProfileManager.Instance;
         scoreFilePath = Path.Combine(Application.dataPath, scoreFileName + ".txt");
         ReadScoreFile();
-        for (int i = 0; i < multiplierTimers.Length; i++)
+        for (int i = 0; i < multiplierPickupTimers.Length; i++)
         {
-            multiplierTimers[i] = new Timer(0);
+            multiplierPickupTimers[i] = new Timer(0);
+            startDecreaseTimers[i] = new Timer(startMultiplierDecreaseTime);
+            decreaseIntervalTimers[i] = new Timer(decreaseIntervalTime, true);
         }
     }
 
     private void Update()
     {
         if (GameStateManager.Instance.CurrentState != GameStateManager.GameState.Ingame) return;
-        CountDownMultipliers();
+        CountDownMultiplierTimers();
     }
 
     private void OnPlayerSpawned(PlayerAvatarInstantiatedEvent _playerAvatarInstantiatedEvent)
@@ -78,24 +87,25 @@ public class ScoreManager : MonoBehaviour
 
     private void OnPlayerScored(PlayerScoredEvent _playerScoredEvent)
     {
-        ChangePlayerScore(_playerScoredEvent.PlayerIndex, _playerScoredEvent.Score * scoreMultipliers[_playerScoredEvent.PlayerIndex]);
+        IncreasePlayerScore(_playerScoredEvent.PlayerIndex, _playerScoredEvent.Score);
+    }
+    
+
+    private void IncreasePlayerScore(int _playerIndex, int _scoreIncrease)
+    {
+        playerProfileManager.PlayerProfiles[_playerIndex].LevelScores[currentLevelIndex] += _scoreIncrease * scoreMultipliers[_playerIndex] * (int)multiplierScaleFactors[_playerIndex];
+        EventBus<ScoreChangedEvent>.Publish(new ScoreChangedEvent(_playerIndex, playerProfileManager.PlayerProfiles[_playerIndex].LevelScores[currentLevelIndex]));
     }
 
     private void OnPlayerHit(PlayerHitEvent _playerHitEvent)
     {
-        ChangePlayerScore(_playerHitEvent.Player, -_playerHitEvent.ScoreLoss);
+        DecreasePlayerScore(_playerHitEvent.Player, _playerHitEvent.ScoreLoss);
         ResetMultiplier(_playerHitEvent.Player);
     }
 
-    /// <summary>
-    /// Changes the score of the specified player by the given amount. If the resulting score is less than 0, it will be set to 0. 
-    /// After changing the score, a ScoreChangedEvent is published to notify other systems of the change.
-    /// </summary>
-    /// <param name="_playerIndex">The player whose score is to be changed.</param>
-    /// <param name="_score">The amount by which to change the player's score.</param>
-    private void ChangePlayerScore(int _playerIndex, int _score)
+    private void DecreasePlayerScore(int _playerIndex, int _scoreDecrease)
     {
-        playerProfileManager.PlayerProfiles[_playerIndex].LevelScores[currentLevelIndex] += _score;
+        playerProfileManager.PlayerProfiles[_playerIndex].LevelScores[currentLevelIndex] -= _scoreDecrease;
         if (playerProfileManager.PlayerProfiles[_playerIndex].LevelScores[currentLevelIndex] < 0)
         {
             playerProfileManager.PlayerProfiles[_playerIndex].LevelScores[currentLevelIndex] = 0;
@@ -186,35 +196,66 @@ public class ScoreManager : MonoBehaviour
         SortScores();
     }
 
-    private void OnScoreMultiplierPickup(PlayerScoreMultiplierPickupEvent _playerScoreMultiplierPickupEvent)
+    private void CountDownMultiplierTimers()
     {
-        SetMultiplier(_playerScoreMultiplierPickupEvent.Player, 
-            _playerScoreMultiplierPickupEvent.NewMultiplier, 
-            _playerScoreMultiplierPickupEvent.Duration);
-    }
-
-    private void SetMultiplier(int _playerIndex, int _multiplier, float _duration)
-    {
-        scoreMultipliers[_playerIndex] = _multiplier;
-        multiplierTimers[_playerIndex] = new Timer(_duration);
-        EventBus<PlayerScoreMultiplierChangedEvent>.Publish(new PlayerScoreMultiplierChangedEvent(_playerIndex, _multiplier));
-    }
-
-    private void CountDownMultipliers()
-    {
-        for (int i = 0; i < multiplierTimers.Length; i++)
+        for (int _playerIndex = 0; _playerIndex < playerProfileManager.PlayersJoined.Length; _playerIndex++)
         {
-            if (!playerProfileManager.PlayersJoined[i]) continue;
-            if (multiplierTimers[i].IsFinished())
+            if (!playerProfileManager.PlayersJoined[_playerIndex]) continue; // Skip to the next player if the current player is not joined.
+
+            if (multiplierPickupTimers[_playerIndex].IsFinished()) // If the multiplier pickup timer has finished, reset the multiplier scale factor to 1 and publish the change event.
             {
-                ResetMultiplier(i);
+                multiplierScaleFactors[_playerIndex] = 1;
+                EventBus<PlayerScoreMultiplierChangedEvent>.Publish(new PlayerScoreMultiplierChangedEvent(_playerIndex, scoreMultipliers[_playerIndex] * (int)multiplierScaleFactors[_playerIndex], (int)multiplierScaleFactors[_playerIndex]));
+            }
+
+            if (multiplierScaleFactors[_playerIndex] > 1 && !startDecreaseTimers[_playerIndex].IsFinished() ) continue;
+
+            if (decreaseIntervalTimers[_playerIndex].IsFinished()) // If the decrease interval timer has finished, decrease the multiplier and reset the decrease interval timer.
+            {
+                DecreaseMultiplier(_playerIndex, multiplierDecreaseAmount);
             }
         }
     }
 
+    private void OnEnemyKilled(PlayerScoreMultiplierGainedEvent _playerScoreMultiplierGainedEvent)
+    {
+        IncreaseMultiplier(_playerScoreMultiplierGainedEvent.PlayerIndex, _playerScoreMultiplierGainedEvent.MultiplierGained);
+    }
+
+    private void IncreaseMultiplier(int _playerIndex, int _multiplierIncrease)
+    {        
+        if (scoreMultipliers[_playerIndex] < maxMultiplier) scoreMultipliers[_playerIndex] += _multiplierIncrease;
+        startDecreaseTimers[_playerIndex].Reset(startMultiplierDecreaseTime);
+        decreaseIntervalTimers[_playerIndex].Reset(decreaseIntervalTime);
+        EventBus<PlayerScoreMultiplierChangedEvent>.Publish(new PlayerScoreMultiplierChangedEvent(_playerIndex, scoreMultipliers[_playerIndex] * (int)multiplierScaleFactors[_playerIndex], (int)multiplierScaleFactors[_playerIndex]));
+    }
+
+    private void OnPlayerMissed(PlayerprojectileMissedEvent _playerprojectileMissedEvent)
+    {
+        DecreaseMultiplier(_playerprojectileMissedEvent.PlayerIndex, _playerprojectileMissedEvent.MultiplierLost);
+    }
+
+    private void DecreaseMultiplier(int _playerIndex, int _multiplierDecrease)
+    {
+        if (scoreMultipliers[_playerIndex] > minMultiplier) scoreMultipliers[_playerIndex] -= _multiplierDecrease;
+        EventBus<PlayerScoreMultiplierChangedEvent>.Publish(new PlayerScoreMultiplierChangedEvent(_playerIndex, scoreMultipliers[_playerIndex] * (int)multiplierScaleFactors[_playerIndex], (int)multiplierScaleFactors[_playerIndex]));
+    }
+
     private void ResetMultiplier(int _playerIndex)
     {
-        scoreMultipliers[_playerIndex] = 1;
-        EventBus<PlayerScoreMultiplierChangedEvent>.Publish(new PlayerScoreMultiplierChangedEvent(_playerIndex, 1));
+        scoreMultipliers[_playerIndex] = minMultiplier;
+        EventBus<PlayerScoreMultiplierChangedEvent>.Publish(new PlayerScoreMultiplierChangedEvent(_playerIndex, scoreMultipliers[_playerIndex] * (int)multiplierScaleFactors[_playerIndex], (int)multiplierScaleFactors[_playerIndex]));
     }
+
+    private void OnScoreMultiplierPickup(PlayerScoreMultiplierPickupEvent _playerScoreMultiplierPickupEvent)
+    {
+        SetMultiplierScaleFactor(_playerScoreMultiplierPickupEvent.PlayerIndex, _playerScoreMultiplierPickupEvent.ScaleFactor);
+        multiplierPickupTimers[_playerScoreMultiplierPickupEvent.PlayerIndex].Reset(_playerScoreMultiplierPickupEvent.Duration);
+    }
+
+    private void SetMultiplierScaleFactor(int _playerIndex, float _scaleFactor)
+    {
+        multiplierScaleFactors[_playerIndex] = _scaleFactor;
+        EventBus<PlayerScoreMultiplierChangedEvent>.Publish(new PlayerScoreMultiplierChangedEvent(_playerIndex, scoreMultipliers[_playerIndex] * (int)multiplierScaleFactors[_playerIndex], (int)multiplierScaleFactors[_playerIndex]));
+    }    
 }

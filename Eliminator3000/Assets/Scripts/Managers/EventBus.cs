@@ -177,6 +177,53 @@ public class LevelScoreCalculatedEvent : Event
     }
 }
 
+public class PlayerScoreMultiplierGainedEvent : Event
+{
+    public int PlayerIndex;
+    public int MultiplierGained;
+        public PlayerScoreMultiplierGainedEvent(int cPlayerIndex, int cMultiplierGained)
+    {   PlayerIndex = cPlayerIndex;
+        MultiplierGained = cMultiplierGained;
+    }
+}
+
+public class PlayerprojectileMissedEvent : Event
+{
+    public int PlayerIndex;
+    public int MultiplierLost;
+    public PlayerprojectileMissedEvent(int cPlayerIndex, int cMultiplierLost)
+    {
+        PlayerIndex = cPlayerIndex;
+        MultiplierLost = cMultiplierLost;
+    }
+}
+
+public class PlayerScoreMultiplierPickupEvent : Event
+{
+    public int PlayerIndex;
+    public int ScaleFactor;
+    public float Duration;
+    public PlayerScoreMultiplierPickupEvent(int cPlayer, int cNewMultiplier, float cDuration)
+    {
+        PlayerIndex = cPlayer;
+        ScaleFactor = cNewMultiplier;
+        Duration = cDuration;
+    }
+}
+
+public class PlayerScoreMultiplierChangedEvent : Event
+{
+    public int Player;
+    public int NewMultiplier;
+    public int Scale;
+    public PlayerScoreMultiplierChangedEvent(int cPlayer, int cNewMultiplier, int cScale)
+    {
+        Player = cPlayer;
+        NewMultiplier = cNewMultiplier;
+        Scale = cScale;
+    }
+}
+
 #endregion
 
 #region Player gun events
@@ -255,7 +302,7 @@ public class EnemySpawnTriggeredEvent : Event
 
 #endregion
 
-#region Player pickup events
+#region Player powerup events
 
 public class PlayerShieldPickupEvent : Event
 {
@@ -337,27 +384,5 @@ public class BlackHoleDespawnEvent : Event
     }
 }
 
-public class PlayerScoreMultiplierPickupEvent : Event
-{
-    public int Player;
-    public int NewMultiplier;
-    public float Duration; 
-    public PlayerScoreMultiplierPickupEvent(int cPlayer, int cNewMultiplier, float cDuration)
-    {
-        Player = cPlayer;
-        NewMultiplier = cNewMultiplier;
-        Duration = cDuration;
-    }
-}
 
-public class PlayerScoreMultiplierChangedEvent : Event
-{
-    public int Player;
-    public int NewMultiplier;
-    public PlayerScoreMultiplierChangedEvent(int cPlayer, int cNewMultiplier)
-    {
-        Player = cPlayer;
-        NewMultiplier = cNewMultiplier;
-    }
-}
 #endregion
