@@ -98,7 +98,7 @@ public class MoveShip : MonoBehaviour
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, horixontalBankAngle), horizontalInputBankSpeed * Time.deltaTime);
 
         if (movementInputVector.y == 0 || shoot != null && shoot.LockedShooting)
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, 0), horizontalIdleBankSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, 0), verticalIdleBankSpeed * Time.deltaTime);
         else if (movementInputVector.y > 0)
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(-verticalBankAngle, 0, transform.rotation.eulerAngles.z), verticalInputBankSpeed * Time.deltaTime);
         else if (movementInputVector.y < 0)
