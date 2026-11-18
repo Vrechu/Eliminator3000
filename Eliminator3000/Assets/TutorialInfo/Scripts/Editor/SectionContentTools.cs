@@ -128,7 +128,7 @@ public static class SectionContentTools
         int cy = cell / Grid;
         float x = x0 + (cx + 0.5f) * (x1 - x0) / Grid;
         float y = y0 + (cy + 0.5f) * (y1 - y0) / Grid + s.gridYOffset;
-        return new Vector3(x, y, z);
+        return new Vector3(x + e.offset.x, y + e.offset.y, z);
     }
 
     // Opposite of EntryPos: works out zone / along / cell from where an object really is (used for objects found in the Hierarchy).
@@ -144,7 +144,9 @@ public static class SectionContentTools
         e.along = Mathf.Clamp01(t - e.zone);
         int cx = Mathf.Clamp(Mathf.FloorToInt((p.x - x0) / (x1 - x0) * Grid), 0, Grid - 1);
         int cy = Mathf.Clamp(Mathf.FloorToInt((p.y - s.gridYOffset - y0) / (y1 - y0) * Grid), 0, Grid - 1);
-        e.cell = cy * Grid + cx;
+        float xc = x0 + (cx + 0.5f) * (x1 - x0) / Grid;
+        float yc = y0 + (cy + 0.5f) * (y1 - y0) / Grid + s.gridYOffset;
+        e.offset = new Vector2(p.x - xc, p.y - yc);
     }
 
     private static void ApplyEntry(LevelSection s, LevelSection.PlacedAsset e)
@@ -323,7 +325,16 @@ public static class SectionContentTools
                 Debug.Log($"[Content] Section #{s.sectionNumber}: found '{go.name}' in {cont.name}, added to the manager ({PartNames[ne.zone]}, cell {ne.cell}). It was not moved.", go);
             }
         }
-
+        // 3. objects moved by hand: the entry follows the object
+        foreach (var e in s.assets)
+        {
+            if (!Alive(s, e)) continue;
+            Vector3 p = e.instance.transform.position;
+            if ((p - EntryPos(s, e)).sqrMagnitude < 0.0025f) continue;
+            int oz = e.zone, oc = e.cell; float oa = e.along; Vector2 oo = e.offset;
+            FitEntryToPosition(s, e, p);
+            if (oz != e.zone || oc != e.cell || !Mathf.Approximately(oa, e.along) || oo != e.offset) changed = true;
+        }
         if (changed)
         {
             EditorUtility.SetDirty(s);
@@ -421,7 +432,9 @@ public static class SectionContentTools
     {
         Undo.RecordObject(s, "Edit asset placement");
         e.zone = Mathf.Clamp(zone, 0, 2);
-        e.cell = Mathf.Clamp(cell, 0, Cells - 1);
+        int nc = Mathf.Clamp(cell, 0, Cells - 1);
+        if (nc != e.cell) e.offset = Vector2.zero;   // clicking a grid cell snaps to its centre
+        e.cell = nc;
         e.along = Mathf.Clamp01(along);
         EditorUtility.SetDirty(s);
         ApplyEntry(s, e);

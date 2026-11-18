@@ -16,7 +16,7 @@ MonoBehaviour:
   UnlockedFromStart: 0
   ProjectilePrefab: {fileID: 2946831950281905418, guid: 158e07f0d53b63c4cb8ce6954af9bc5f, type: 3}
   InfiniteAmmo: 0
-  MaxAmmo: 100
+  MaxAmmo: 280
   AmmoCostPerShot: 20
   FireRate: 0.5
   LockMovementWhileShooting: 0

@@ -174,7 +174,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyInfo
   Info: 
   ScoreValue: 300
-  health: 2
+  health: 1
   healthText: {fileID: 0}
 --- !u!1001 &7660604796852919892
 PrefabInstance:

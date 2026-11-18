@@ -23,6 +23,7 @@ public class LevelSection : MonoBehaviour
         public int cell = 12;       // 0..24 on the 5x5 grid (row by row from the bottom-left)
         public float along = 0.5f;  // 0..1 position inside the zone
         public GameObject instance; // the object in the scene
+        public Vector2 offset;      // hand-placed X/Y offset from the cell centre
         public bool open = true;    // foldout state in the window
     }
 
