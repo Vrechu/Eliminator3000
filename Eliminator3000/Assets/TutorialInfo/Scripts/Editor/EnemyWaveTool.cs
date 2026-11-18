@@ -1395,7 +1395,9 @@ public class EnemyWaveTool : EditorWindow
                     for (int s = 0; s < part.mesh.subMeshCount; s++)
                     {
                         Material mat = part.mats[Mathf.Min(s, part.mats.Length - 1)];
-                        if (mat != null) Graphics.DrawMesh(part.mesh, m, mat, 0, sv.camera, s);
+                        if (mat == null) continue;
+                        GhostDrawMat(mat).SetPass(0);
+                        Graphics.DrawMeshNow(part.mesh, m, s);
                     }
                 }
             }
@@ -1417,6 +1419,60 @@ public class EnemyWaveTool : EditorWindow
             t = t.parent;
         }
         return true;
+    }
+    private static Material ghostMat;
+
+    private static Material GhostMat()
+    {
+        if (ghostMat == null)
+        {
+            ghostMat = new Material(Shader.Find("Hidden/Internal-Colored"));
+            ghostMat.hideFlags = HideFlags.HideAndDontSave;
+            ghostMat.SetInt("_Cull", 2);
+            ghostMat.SetInt("_ZWrite", 1);
+            ghostMat.SetInt("_ZTest", 4);
+        }
+        return ghostMat;
+    }
+    private static readonly Dictionary<Material, Material> drawMats = new Dictionary<Material, Material>();
+
+    // Unlit copy of an enemy material that keeps its texture (or its colour when it has none).
+    private static Material GhostDrawMat(Material src)
+    {
+        Material m;
+        if (drawMats.TryGetValue(src, out m) && m != null) return m;
+
+        Texture tex = null;
+        if (src.HasProperty("_BaseMap")) tex = src.GetTexture("_BaseMap");
+        if (tex == null && src.HasProperty("_MainTex")) tex = src.GetTexture("_MainTex");
+
+        if (tex != null)
+        {
+            m = new Material(Shader.Find("Unlit/Texture"));
+            m.mainTexture = tex;
+            string prop = src.HasProperty("_BaseMap") ? "_BaseMap" : "_MainTex";
+            m.mainTextureScale = src.GetTextureScale(prop);
+            m.mainTextureOffset = src.GetTextureOffset(prop);
+        }
+        else
+        {
+            m = new Material(Shader.Find("Hidden/Internal-Colored"));
+            Color c = MatColor(src);
+            c.a = 1f;
+            m.color = c;
+            m.SetInt("_Cull", 2);
+            m.SetInt("_ZWrite", 1);
+            m.SetInt("_ZTest", 4);
+        }
+        m.hideFlags = HideFlags.HideAndDontSave;
+        drawMats[src] = m;
+        return m;
+    }
+    private static Color MatColor(Material m)
+    {
+        if (m.HasProperty("_BaseColor")) return m.GetColor("_BaseColor");
+        if (m.HasProperty("_Color")) return m.GetColor("_Color");
+        return Color.gray;
     }
     private List<GhostPart> GetGhost(GameObject prefab)
     {
