@@ -197,11 +197,13 @@ public class PlayerGunSwapEvent : Event
     public int Player;
     public int GunIndex;
     public int[] AmmoCounts = new int[5];
-    public PlayerGunSwapEvent(int cPlayer, int cGunIndex, int[]cAmmoCounts)
+    public bool[] InfiniteAmmos = new bool[5];
+    public PlayerGunSwapEvent(int cPlayer, int cGunIndex, int[]cAmmoCounts, bool[] cInfiniteAmmos)
     {
         Player = cPlayer;
         GunIndex = cGunIndex;
         AmmoCounts = cAmmoCounts;
+        InfiniteAmmos = cInfiniteAmmos;
     }
 }
 

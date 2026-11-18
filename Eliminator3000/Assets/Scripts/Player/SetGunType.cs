@@ -8,6 +8,7 @@ public class SetGunType : MonoBehaviour
     [SerializeField] private GunProfile[] guns;
     private bool[] unlocked;
     private int[] ammos;
+    private bool[] infiteAmmos;
     private int currentGunIndex = 0;
 
     private Timer shootTimer = new Timer(0, false);
@@ -29,6 +30,7 @@ public class SetGunType : MonoBehaviour
     {
         ammos = new int[guns.Length];
         unlocked = new bool[guns.Length];
+        infiteAmmos = new bool[guns.Length];
         SetPlayerID();
 
         gameStateManager = GameStateManager.Instance;
@@ -38,6 +40,7 @@ public class SetGunType : MonoBehaviour
         MarkProjectiles();
         ResetGunUnlocks();
         SetBaseGuns();
+        SetInfinteAmmos();
     }
 
     private void SetPlayerID()
@@ -66,7 +69,7 @@ public class SetGunType : MonoBehaviour
         currentGunIndex = _gunIndex;
         gunModels[_gunIndex].SetActive(true);        
         shootTimer.Reset(0);
-        EventBus<PlayerGunSwapEvent>.Publish(new PlayerGunSwapEvent(playerID, _gunIndex, ammos));
+        EventBus<PlayerGunSwapEvent>.Publish(new PlayerGunSwapEvent(playerID, _gunIndex, ammos, infiteAmmos));
         EventBus<PlayerGunAmmoChangedEvent>.Publish(new PlayerGunAmmoChangedEvent(
             playerID, _gunIndex, ammos[_gunIndex], GetCurrentGunProfile().InfiniteAmmo));
     }
@@ -182,14 +185,14 @@ public class SetGunType : MonoBehaviour
     {
         for (int i = currentGunIndex + 1; i < guns.Length; i++)
         {
-            if (unlocked[i] && ammos[i] > 0)
+            if (unlocked[i] && ((ammos[i] > 0) || guns[i].InfiniteAmmo))
             {
                 return i;
             }
         }
         for (int i = 0; i < currentGunIndex; i++)
         {
-            if (unlocked[i] && ammos[i] > 0)
+            if (unlocked[i] && ((ammos[i] > 0) || guns[i].InfiniteAmmo))
             {
                 return i;
             }
@@ -254,6 +257,14 @@ public class SetGunType : MonoBehaviour
                 SetGun(i);
                 break;
             }
+        }
+    }
+
+    private void SetInfinteAmmos()
+    {
+        for (int i = 0; i < guns.Length; i++)
+        {
+            infiteAmmos[i] = guns[i].InfiniteAmmo;
         }
     }
 }
