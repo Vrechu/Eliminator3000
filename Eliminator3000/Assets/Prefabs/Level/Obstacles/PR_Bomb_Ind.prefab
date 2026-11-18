@@ -184,6 +184,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1016135611604295379}
     m_Modifications:
+    - target: {fileID: 182109086952150692, guid: 7c239d4a8f85f5440a01ab1c938857d6, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1159019632928954735, guid: 7c239d4a8f85f5440a01ab1c938857d6, type: 3}
       propertyPath: m_Name
       value: PR_BombModel_Ind

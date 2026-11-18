@@ -26,17 +26,36 @@ public static class SectionContentTools
     private static bool pickerPower;
     private static Texture2D dotTex;
     private static double nextSyncTime;
-
+    private static GameObject selectedObj;
+    public static bool ScrollRequest;
+    public static bool HasScrollTarget;
+    public static float ScrollTargetY;
     // last object name seen per section (keeps the Level Manager label and the Hierarchy name in line)
     private static readonly Dictionary<int, string> lastNames = new Dictionary<int, string>();
+
+
 
     static SectionContentTools()
     {
         EditorApplication.update -= SyncPoll;
         EditorApplication.update += SyncPoll;
+        Selection.selectionChanged -= OnSelectionChanged;
+        Selection.selectionChanged += OnSelectionChanged;
     }
 
     // ------------------------------------------------------------------ helpers
+    private static void OnSelectionChanged()
+    {
+        selectedObj = Selection.activeGameObject;
+        ScrollRequest = true;
+        UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
+    }
+    private static bool IsSelected(LevelSection.PlacedAsset e)
+    {
+        if (e.instance == null || selectedObj == null) return false;
+        return selectedObj == e.instance || selectedObj.transform.IsChildOf(e.instance.transform);
+    }
+
 
     private static Texture2D Dot()
     {
@@ -693,11 +712,20 @@ public static class SectionContentTools
             var bc = go.AddComponent<BoxCollider>();
             bc.isTrigger = true;
             bc.size = new Vector3(80f, 60f, 2f);
+            int tl = LayerMask.NameToLayer("LevelTrigger");
+            if (tl >= 0) go.layer = tl;
+            else Debug.LogWarning("[Triggers] No layer named 'LevelTrigger' exists, so the new trigger stays on the Default layer.", go);
             var trig = go.AddComponent<EnemySpawnTrigger>();
             int pl = LayerMask.NameToLayer("Player");
             var tso = new SerializedObject(trig);
             var lp = tso.FindProperty("targetLayers");
-            if (lp != null) { lp.intValue = pl >= 0 ? (1 << pl) : 0; tso.ApplyModifiedProperties(); }
+            if (lp == null) Debug.LogWarning("[Triggers] EnemySpawnTrigger has no field named 'targetLayers'. Set Target Layers by hand.", go);
+            else
+            {
+                lp.intValue = pl >= 0 ? (1 << pl) : 0;
+                tso.ApplyModifiedProperties();
+                if (pl < 0) Debug.LogWarning("[Triggers] No layer named 'Player' exists, so Target Layers was left empty.", go);
+            }
             float cx = (EditorPrefs.GetFloat(PlayAreaGuide.MinXKey, -30f) + EditorPrefs.GetFloat(PlayAreaGuide.MaxXKey, 30f)) * 0.5f;
             float cy = (EditorPrefs.GetFloat(PlayAreaGuide.MinYKey, -15f) + EditorPrefs.GetFloat(PlayAreaGuide.MaxYKey, 15f)) * 0.5f;
             pos = new Vector3(cx, cy, b.center.z);
@@ -797,6 +825,8 @@ public static class SectionContentTools
     {
         var e = s.assets[i];
         bool alive = Alive(s, e);
+        bool selected = IsSelected(e);             
+        if (selected && !e.open) e.open = true;     
         int number = 0;
         for (int j = i; j < s.assets.Count; j++) if (s.assets[j].isPowerup == e.isPowerup) number++;
         string kind = e.isPowerup ? "Powerup" : "Obstacle";
@@ -873,6 +903,13 @@ public static class SectionContentTools
         }
         EditorGUILayout.EndVertical();
         SideBar(e.isPowerup ? PowerupColor : ObstacleColor);
+        if (selected && UnityEngine.Event.current.type == UnityEngine.EventType.Repaint)
+        {
+            Rect hr = GUILayoutUtility.GetLastRect();
+            EditorGUI.DrawRect(hr, new Color(1f, 0.92f, 0.2f, 0.18f));
+            if (ScrollRequest) { ScrollTargetY = hr.y; HasScrollTarget = true; }
+        }
+
     }
 
     public static void DrawContent(LevelSection s, bool on)
@@ -887,6 +924,11 @@ public static class SectionContentTools
 
         string showKey = "LevelManager.SecShow." + s.GetInstanceID();
         bool show = EditorPrefs.GetBool(showKey, false);
+        if (!show && selectedObj != null)
+        {
+            foreach (var en in s.assets)
+                if (IsSelected(en)) { show = true; EditorPrefs.SetBool(showKey, true); break; }
+        }
         bool ns = EditorGUILayout.Foldout(show, $"Assets & enemies   ({nObs} obstacles, {nPow} powerups, {trigs.Count} enemies)", true);
         if (ns != show) EditorPrefs.SetBool(showKey, ns);
         if (!ns)
