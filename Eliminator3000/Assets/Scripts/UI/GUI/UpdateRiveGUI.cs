@@ -19,20 +19,23 @@ public class UpdateRiveGUI : MonoBehaviour
         p1HealthAmountProperty, p1LivesAmountProperty;
 
     [Header("GUNS AND AMMO"),SerializeField] private bool showGunsAndAmmo = false;
-    [SerializeField]private RiveWidget p0GunWidget;
+    [Header("Gun widgets: "), SerializeField] private RiveWidget p0GunWidget;
     [SerializeField] private RiveWidget p1GunWidget;
-    [Header("Gun state property names:"), SerializeField] private string baseGunStatePropertyName;
-    [SerializeField] private string rapidGunStatePropertyName, clusterGunStatePropertyName, boomerangGunStatePropertyName, homingGunStatePropertyName;
-    [Header("Gun ammo property names:"), SerializeField] private string baseGunAmmoPropertyName;
-    [SerializeField] private string rapidGunAmmoPropertyName, clusterGunAmmoPropertyName, boomerangGunAmmoPropertyName, homingGunAmmoPropertyName;
-    [Header("Gun icon property names:"), SerializeField] private string baseGunIconPropertyName;
-    [SerializeField] private string rapidGunIconPropertyName, clusterGunIconPropertyName, boomerangGunIconPropertyName, homingGunIconPropertyName;
+    
+
+    [Header("Gun Property names: "), SerializeField] private string gunInstancePropertyName;
+    [SerializeField] private string gunStatePropertyName;
+    [SerializeField] private string gunIconPropertyName;
+    [SerializeField] private string gunAmmoPropertyName;
+
     private ViewModelInstanceEnumProperty
-        p0BaseGunStateProperty, p0RapidGunStateProperty, p0ClusterGunStateProperty, p0BoomerangGunStateProperty, p0HomingGunStateProperty,
+        p0BaseGunStateProperty, p0RapidGunStateProperty, p0ClusterGunStateProperty, p0BoomerangGunStateProperty, p0HomingGunStateProperty, // p0
         p1BaseGunStateProperty, p1RapidGunStateProperty, p1ClusterGunStateProperty, p1BoomerangGunStateProperty, p1HomingGunStateProperty,
-        p0BaseGunIconProperty, p0RapidGunIconProperty, p0ClusterGunIconProperty, p0BoomerangGunIconProperty, p0HomingGunIconProperty,
+        p0BaseGunIconProperty, p0RapidGunIconProperty, p0ClusterGunIconProperty, p0BoomerangGunIconProperty, p0HomingGunIconProperty, // p1
         p1BaseGunIconProperty, p1RapidGunIconProperty, p1ClusterGunIconProperty, p1BoomerangGunIconProperty, p1HomingGunIconProperty;
+
     private ViewModelInstanceEnumProperty[] p0GunStateProperties, p1GunStateProperties, p0GunIconProperties, p1GunIconProperties;
+
     private ViewModelInstanceNumberProperty 
         p0BaseGunAmmoProperty, p0RapidGunAmmoProperty, p0ClusterGunAmmoProperty, p0BoomerangGunAmmoProperty, p0HomingGunAmmoProperty,
         p1BaseGunAmmoProperty, p1RapidGunAmmoProperty, p1ClusterGunAmmoProperty, p1BoomerangGunAmmoProperty, p1HomingGunAmmoProperty;
@@ -50,8 +53,6 @@ public class UpdateRiveGUI : MonoBehaviour
 
     private void OnEnable()
     {
-        if (showGunsAndAmmo) ListGunProperties();
-
         EventBus<PlayerAvatarInstantiatedEvent>.Subscribe(OnPlayerAvatarInitiated);
 
         if (showHealthAndLives)
@@ -66,6 +67,7 @@ public class UpdateRiveGUI : MonoBehaviour
         {
             if (p0GunWidget != null) p0GunWidget.OnWidgetStatusChanged += HandleGunWidgetStatusChanges;
             if (p1GunWidget != null) p1GunWidget.OnWidgetStatusChanged += HandleGunWidgetStatusChanges;
+            
             EventBus<PlayerGunSwapEvent>.Subscribe(OnGunSwap);
             EventBus<PlayerGunAmmoChangedEvent>.Subscribe(OnAmmoChanged);
         }
@@ -123,36 +125,6 @@ public class UpdateRiveGUI : MonoBehaviour
         if (player1GUIObject.activeSelf) player1GUIObject.SetActive(false);
     }
 
-    private void ListGunProperties()
-    {
-        if (p0BaseGunStateProperty != null && p0RapidGunStateProperty != null && p0ClusterGunStateProperty != null && p0BoomerangGunStateProperty != null && p0HomingGunStateProperty != null)
-        {
-            p0GunStateProperties = new ViewModelInstanceEnumProperty[] { p0BaseGunStateProperty, p0RapidGunStateProperty, p0ClusterGunStateProperty, p0BoomerangGunStateProperty, p0HomingGunStateProperty };
-        }
-        if (p1BaseGunStateProperty != null && p1RapidGunStateProperty != null && p1ClusterGunStateProperty != null && p1BoomerangGunStateProperty != null && p1HomingGunStateProperty != null)
-        {
-            p1GunStateProperties = new ViewModelInstanceEnumProperty[] { p1BaseGunStateProperty, p1RapidGunStateProperty, p1ClusterGunStateProperty, p1BoomerangGunStateProperty, p1HomingGunStateProperty };
-        }
-
-        if (p0BaseGunIconProperty != null && p0RapidGunIconProperty != null && p0ClusterGunIconProperty != null && p0BoomerangGunIconProperty != null && p0HomingGunIconProperty != null)
-        {
-            p0GunIconProperties = new ViewModelInstanceEnumProperty[] { p0BaseGunIconProperty, p0RapidGunIconProperty, p0ClusterGunIconProperty, p0BoomerangGunIconProperty, p0HomingGunIconProperty };
-        }
-        if (p1BaseGunIconProperty != null && p1RapidGunIconProperty != null && p1ClusterGunIconProperty != null && p1BoomerangGunIconProperty != null && p1HomingGunIconProperty != null)
-        {
-            p1GunIconProperties = new ViewModelInstanceEnumProperty[] { p1BaseGunIconProperty, p1RapidGunIconProperty, p1ClusterGunIconProperty, p1BoomerangGunIconProperty, p1HomingGunIconProperty };
-        }
-
-        if (p0BaseGunAmmoProperty != null && p0RapidGunAmmoProperty != null && p0ClusterGunAmmoProperty != null && p0BoomerangGunAmmoProperty != null && p0HomingGunAmmoProperty != null)
-        {
-            p0GunAmmoProperties = new ViewModelInstanceNumberProperty[] { p0BaseGunAmmoProperty, p0RapidGunAmmoProperty, p0ClusterGunAmmoProperty, p0BoomerangGunAmmoProperty, p0HomingGunAmmoProperty };
-        }
-        if (p1BaseGunAmmoProperty != null && p1RapidGunAmmoProperty != null && p1ClusterGunAmmoProperty != null && p1BoomerangGunAmmoProperty != null && p1HomingGunAmmoProperty != null)
-        {
-            p1GunAmmoProperties = new ViewModelInstanceNumberProperty[] { p1BaseGunAmmoProperty, p1RapidGunAmmoProperty, p1ClusterGunAmmoProperty, p1BoomerangGunAmmoProperty, p1HomingGunAmmoProperty };
-        }
-    }
-
     private void HandleHealthWidgetStatusChanges()
     {
         if (!showHealthAndLives) return;
@@ -171,42 +143,38 @@ public class UpdateRiveGUI : MonoBehaviour
     private void HandleGunWidgetStatusChanges()
     {
         if (!showGunsAndAmmo) return;
-        if (p0GunWidget.Status == WidgetStatus.Loaded)
+
+        if (p0GunWidget != null && p0GunWidget.Status == WidgetStatus.Loaded)
+            BindGunProperties(p0GunWidget, 0);
+
+        if (p1GunWidget != null && p1GunWidget.Status == WidgetStatus.Loaded)
+            BindGunProperties(p1GunWidget, 1);
+    }
+
+    private void BindGunProperties(RiveWidget widget, int player)
+    {
+        ViewModelInstance viewModelInstance = widget.StateMachine.ViewModelInstance;
+        if (viewModelInstance == null) { Debug.LogError($"P{player} gun widget has no ViewModelInstance"); return; }
+
+        const int gunCount = 5;
+        ViewModelInstanceEnumProperty[] states = new ViewModelInstanceEnumProperty[gunCount];
+        ViewModelInstanceEnumProperty[] icons = new ViewModelInstanceEnumProperty[gunCount];
+        ViewModelInstanceNumberProperty[] ammos = new ViewModelInstanceNumberProperty[gunCount];
+        string[] iconNames = { "Default", "RapidFire", "WeaponBarrage", "Boomerang", "Homing" };
+
+        for (int i = 0; i < gunCount; i++)
         {
-            p0BaseGunStateProperty = p0GunWidget.StateMachine.ViewModelInstance.GetEnumProperty(baseGunStatePropertyName);
-            p0RapidGunStateProperty = p0GunWidget.StateMachine.ViewModelInstance.GetEnumProperty(rapidGunStatePropertyName);
-            p0ClusterGunStateProperty = p0GunWidget.StateMachine.ViewModelInstance.GetEnumProperty(clusterGunStatePropertyName);
-            p0BoomerangGunStateProperty = p0GunWidget.StateMachine.ViewModelInstance.GetEnumProperty(boomerangGunStatePropertyName);
-            p0HomingGunStateProperty = p0GunWidget.StateMachine.ViewModelInstance.GetEnumProperty(homingGunStatePropertyName);
-            p0BaseGunIconProperty = p0GunWidget.StateMachine.ViewModelInstance.GetEnumProperty(baseGunIconPropertyName);
-            p0RapidGunIconProperty = p0GunWidget.StateMachine.ViewModelInstance.GetEnumProperty(rapidGunIconPropertyName);
-            p0ClusterGunIconProperty = p0GunWidget.StateMachine.ViewModelInstance.GetEnumProperty(clusterGunIconPropertyName);
-            p0BoomerangGunIconProperty = p0GunWidget.StateMachine.ViewModelInstance.GetEnumProperty(boomerangGunIconPropertyName);
-            p0HomingGunIconProperty = p0GunWidget.StateMachine.ViewModelInstance.GetEnumProperty(homingGunIconPropertyName);
-            p0BaseGunAmmoProperty = p0GunWidget.StateMachine.ViewModelInstance.GetNumberProperty(baseGunAmmoPropertyName);
-            p0RapidGunAmmoProperty = p0GunWidget.StateMachine.ViewModelInstance.GetNumberProperty(rapidGunAmmoPropertyName);
-            p0ClusterGunAmmoProperty = p0GunWidget.StateMachine.ViewModelInstance.GetNumberProperty(clusterGunAmmoPropertyName);
-            p0BoomerangGunAmmoProperty = p0GunWidget.StateMachine.ViewModelInstance.GetNumberProperty(boomerangGunAmmoPropertyName);
-            p0HomingGunAmmoProperty = p0GunWidget.StateMachine.ViewModelInstance.GetNumberProperty(homingGunAmmoPropertyName);
+            var gun = viewModelInstance.GetViewModelInstanceProperty(gunInstancePropertyName + (i + 1));
+            if (gun == null) { Debug.LogError($"Gun instance {i + 1} not found"); return; }
+
+            states[i] = gun.GetEnumProperty(gunStatePropertyName);
+            icons[i] = gun.GetEnumProperty(gunIconPropertyName);
+            ammos[i] = gun.GetNumberProperty(gunAmmoPropertyName);
+            icons[i].Value = iconNames[i];   // replaces SetGunIcons()
         }
-        if (p1GunWidget.Status == WidgetStatus.Loaded)
-        {
-            p1BaseGunStateProperty = p1GunWidget.StateMachine.ViewModelInstance.GetEnumProperty(baseGunStatePropertyName);
-            p1RapidGunStateProperty = p1GunWidget.StateMachine.ViewModelInstance.GetEnumProperty(rapidGunStatePropertyName);
-            p1ClusterGunStateProperty = p1GunWidget.StateMachine.ViewModelInstance.GetEnumProperty(clusterGunStatePropertyName);
-            p1BoomerangGunStateProperty = p1GunWidget.StateMachine.ViewModelInstance.GetEnumProperty(boomerangGunStatePropertyName);
-            p1HomingGunStateProperty = p1GunWidget.StateMachine.ViewModelInstance.GetEnumProperty(homingGunStatePropertyName);
-            p1BaseGunIconProperty = p1GunWidget.StateMachine.ViewModelInstance.GetEnumProperty(baseGunIconPropertyName);
-            p1RapidGunIconProperty = p1GunWidget.StateMachine.ViewModelInstance.GetEnumProperty(rapidGunIconPropertyName);
-            p1ClusterGunIconProperty = p1GunWidget.StateMachine.ViewModelInstance.GetEnumProperty(clusterGunIconPropertyName);
-            p1BoomerangGunIconProperty = p1GunWidget.StateMachine.ViewModelInstance.GetEnumProperty(boomerangGunIconPropertyName);
-            p1HomingGunIconProperty = p1GunWidget.StateMachine.ViewModelInstance.GetEnumProperty(homingGunIconPropertyName);
-            p1BaseGunAmmoProperty = p1GunWidget.StateMachine.ViewModelInstance.GetNumberProperty(baseGunAmmoPropertyName);
-            p1RapidGunAmmoProperty = p1GunWidget.StateMachine.ViewModelInstance.GetNumberProperty(rapidGunAmmoPropertyName);
-            p1ClusterGunAmmoProperty = p1GunWidget.StateMachine.ViewModelInstance.GetNumberProperty(clusterGunAmmoPropertyName);
-            p1BoomerangGunAmmoProperty = p1GunWidget.StateMachine.ViewModelInstance.GetNumberProperty(boomerangGunAmmoPropertyName);
-            p1HomingGunAmmoProperty = p1GunWidget.StateMachine.ViewModelInstance.GetNumberProperty(homingGunAmmoPropertyName);
-        }
+
+        if (player == 0) { p0GunStateProperties = states; p0GunIconProperties = icons; p0GunAmmoProperties = ammos; }
+        else { p1GunStateProperties = states; p1GunIconProperties = icons; p1GunAmmoProperties = ammos; }
     }
 
     private void HandleScoreWidgetStatusChanges()
@@ -243,9 +211,10 @@ public class UpdateRiveGUI : MonoBehaviour
         }
     }
 
-
     private void SetLivesGUI(PlayerLivesChangedEvent _playerLivesChangedEvent)
     {
+        if (p0LivesAmountProperty == null) return;
+        if (p1LivesAmountProperty == null) return;
         if (!showHealthAndLives) return;
         if (_playerLivesChangedEvent.Player == 0)
         {
@@ -259,6 +228,9 @@ public class UpdateRiveGUI : MonoBehaviour
 
     private void SetHealthGUI(PlayerHealthChangedEvent _playerHealthChangedEvent)
     {
+        if (p0HealthAmountProperty == null) return;
+        if (p1HealthAmountProperty == null) return;
+        if (p0GunStateProperties == null) return;
         if (!showHealthAndLives) return;
         if (_playerHealthChangedEvent.Player == 0)
         {
@@ -272,6 +244,8 @@ public class UpdateRiveGUI : MonoBehaviour
 
     private void SetLevelScoreGUI(ScoreChangedEvent _scoreChangedEvent)
     {
+        if (p0LevelScoreAmountProperty == null) return;
+        if (p1LevelScoreAmountProperty == null) return;
         if (!showScoreAndMultiplier) return;
         if (_scoreChangedEvent.PlayerIndex == 0)
         {
@@ -285,23 +259,25 @@ public class UpdateRiveGUI : MonoBehaviour
 
     private void SetMultiplierGUI(PlayerScoreMultiplierChangedEvent _playerScoreMultiplierChangedEvent)
     {
+        if (p0MultiplierAmountProperty == null) return;
+        if (p1MultiplierAmountProperty == null) return;
         if (!showScoreAndMultiplier) return;
         if (_playerScoreMultiplierChangedEvent.Player == 0)
         {
-            p0LevelScoreAmountProperty.Value = _playerScoreMultiplierChangedEvent.NewMultiplier;
+            p0MultiplierAmountProperty.Value = _playerScoreMultiplierChangedEvent.NewMultiplier;
         }
         else if (_playerScoreMultiplierChangedEvent.Player == 1)
         {
-            p1LevelScoreAmountProperty.Value = _playerScoreMultiplierChangedEvent.NewMultiplier;
+            p1MultiplierAmountProperty.Value = _playerScoreMultiplierChangedEvent.NewMultiplier;
         }
     }
 
     private void OnGunSwap(PlayerGunSwapEvent _playerGunSwapEvent)
     {
-        SwitchGunGUI(_playerGunSwapEvent.Player, _playerGunSwapEvent.GunIndex, _playerGunSwapEvent.AmmoCounts);
+        SwitchGunGUI(_playerGunSwapEvent.Player, _playerGunSwapEvent.GunIndex, _playerGunSwapEvent.AmmoCounts, _playerGunSwapEvent.InfiniteAmmos);
     }
 
-    private void SwitchGunGUI(int _playerIndex, int _gunIndex, int[] _ammos)
+    private void SwitchGunGUI(int _playerIndex, int _gunIndex, int[] _ammos, bool[] _infiniteAmmos)
     {
         if (!showGunsAndAmmo) return;
         if (_playerIndex == 0)
@@ -314,12 +290,13 @@ public class UpdateRiveGUI : MonoBehaviour
 
             for (int i = 0; p0GunStateProperties.Length > i; i++)
             {
+                if (i >= _ammos.Length) break;
                 if (i == _gunIndex)
                 {
                     p0GunStateProperties[i].Value = "Selected";
                     continue;
                 }
-                if (_ammos[i] > 0)
+                if (_ammos[i] > 0 || _infiniteAmmos[i])
                 {
                     p0GunStateProperties[i].Value = "Active";
                     continue;
@@ -334,7 +311,7 @@ public class UpdateRiveGUI : MonoBehaviour
         }
         if (_playerIndex == 1)
         {
-            if (_gunIndex >= p0GunStateProperties.Length || _gunIndex < 0)
+            if (_gunIndex >= p1GunStateProperties.Length || _gunIndex < 0)
             {
                 Debug.LogError("GunIndex Out of bounds!");
                 return;
@@ -342,12 +319,13 @@ public class UpdateRiveGUI : MonoBehaviour
 
             for (int i = 0; p1GunStateProperties.Length > i; i++)
             {
+                if (i >= _ammos.Length) break;
                 if (i == _gunIndex)
                 {
                     p1GunStateProperties[i].Value = "Selected";
                     continue;
                 }
-                if (_ammos[i] > 0)
+                if (_ammos[i] > 0 || _infiniteAmmos[i])
                 {
                     p1GunStateProperties[i].Value = "Active";
                     continue;
