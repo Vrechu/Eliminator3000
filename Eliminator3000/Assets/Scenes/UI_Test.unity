@@ -236,14 +236,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UpdateRiveGUI
   player0GUIObject: {fileID: 0}
   player1GUIObject: {fileID: 0}
-  showHealthAndLives: 0
+  showHealthAndLives: 1
   p0HealthWidget: {fileID: 1991738049}
   p1HealthWidget: {fileID: 1842309167}
   healthAmountPropertyName: 
   livesAmountPropertyName: 
   showGunsAndAmmo: 1
   p0GunWidget: {fileID: 650314463}
-  p1GunWidget: {fileID: 650314463}
+  p1GunWidget: {fileID: 1826161235}
   gunInstancePropertyName: slot
   gunStatePropertyName: weaponState
   gunIconPropertyName: weaponIcon
@@ -654,6 +654,7 @@ RectTransform:
   - {fileID: 1991738048}
   - {fileID: 1842309166}
   - {fileID: 650314462}
+  - {fileID: 1826161234}
   m_Father: {fileID: 116252173}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -744,6 +745,72 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Rive.Runtime.Components::Rive.Components.PanelContextPreviewManager
   m_rivePanel: {fileID: 1115887757}
+--- !u!1 &1826161233
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1826161234}
+  - component: {fileID: 1826161235}
+  m_Layer: 0
+  m_Name: Rive Widget - WeaponP2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1826161234
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1826161233}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 1115887756}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 834, y: -296}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1826161235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1826161233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30b5bc34e03734ee49f044caba90a384, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Rive.Runtime.Components::Rive.Components.RiveWidget
+  m_rivePanel: {fileID: 1115887757}
+  m_asset: {fileID: -4516626237390682484, guid: a43c4eb9f6bb5d24c8efe598c9b3faf2, type: 3}
+  m_artboardName: Player1WeaponHUD 2
+  m_stateMachineName: State Machine 1
+  m_fit: 1
+  m_alignment:
+    m_x: 0
+    m_y: 0
+  m_layoutScaleFactor: 1
+  m_layoutScalingMode: 1
+  m_fallbackDPI: 96
+  m_referenceDPI: 150
+  m_hitTestBehavior: 0
+  m_eventPoolingMode: 0
+  m_speed: 1
+  m_dataBindingMode: 0
+  m_viewModelInstanceName: 
+  m_customAudioProvider: {fileID: 0}
 --- !u!1 &1842309165
 GameObject:
   m_ObjectHideFlags: 0
