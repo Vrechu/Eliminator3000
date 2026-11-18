@@ -21,9 +21,9 @@ public class InGameMenuFunctions : MonoBehaviour
         inGameMenu.SetActive(false);
     }
 
-    public void OnMainMenuButtonPressed()
+    public void OnSceneLoadButtonPressed(string sceneName = "MenuScene")
     {
-        EventBus<LoadSceneEvent>.Publish(new LoadSceneEvent("MenuScene"));
+        EventBus<LoadSceneEvent>.Publish(new LoadSceneEvent(sceneName));
     }
 
     private void EnableMenu()

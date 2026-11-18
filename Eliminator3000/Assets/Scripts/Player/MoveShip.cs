@@ -6,6 +6,7 @@ public class MoveShip : MonoBehaviour
 
     [Header("Track boundaries"), SerializeField] private float trackWidth = 12f;
     [SerializeField] private float maxHeight = 5f, minHeight;
+    [SerializeField, Range(0, 1)] private float edgeBounceResidualSpeed = 0.3f;
 
     [Header("Movement speed settings"),SerializeField] private bool accelerationEnabled = true;
     [SerializeField] private float
@@ -33,11 +34,10 @@ public class MoveShip : MonoBehaviour
     private void Update()
     {
         if (gameStateManager.CurrentState != GameStateManager.GameState.Ingame) return;
-        if (shoot != null && shoot.LockedShooting) return;
-
+        
+        Bank();
         Accelerate();
         Move();
-        Bank();
     }
 
     public void GetHorizontalImputs(InputAction.CallbackContext _context)
@@ -46,17 +46,43 @@ public class MoveShip : MonoBehaviour
     }
 
     private void Move()
-    {
-        transform.localPosition += new Vector3(
-            horizontalCurrentSpeed * Time.deltaTime,
-            verticalCurrentSpeed * Time.deltaTime,
-            0);
+{
+    Vector3 position = transform.localPosition;
+    position.x += horizontalCurrentSpeed * Time.deltaTime;
+    position.y += verticalCurrentSpeed * Time.deltaTime;
 
-        transform.localPosition = new Vector3(
-            Mathf.Clamp(transform.localPosition.x, -trackWidth * 0.5f, trackWidth * 0.5f),
-            Mathf.Clamp(transform.localPosition.y, minHeight, maxHeight),
-            transform.localPosition.z);
+    float halfWidth = trackWidth * 0.5f;
+
+    // Horizontal edges
+    if (position.x > halfWidth)
+    {
+        position.x = halfWidth;
+        if (horizontalCurrentSpeed > 0)
+            horizontalCurrentSpeed = -horizontalCurrentSpeed * edgeBounceResidualSpeed;
     }
+    else if (position.x < -halfWidth)
+    {
+        position.x = -halfWidth;
+        if (horizontalCurrentSpeed < 0)
+            horizontalCurrentSpeed = -horizontalCurrentSpeed * edgeBounceResidualSpeed;
+    }
+
+    // Vertical edges
+    if (position.y > maxHeight)
+    {
+        position.y = maxHeight;
+        if (verticalCurrentSpeed > 0)
+            verticalCurrentSpeed = -verticalCurrentSpeed * edgeBounceResidualSpeed;
+    }
+    else if (position.y < minHeight)
+    {
+        position.y = minHeight;
+        if (verticalCurrentSpeed < 0)
+            verticalCurrentSpeed = -verticalCurrentSpeed * edgeBounceResidualSpeed;
+    }
+
+    transform.localPosition = position;
+}
 
     private void Accelerate()
     {
@@ -67,41 +93,32 @@ public class MoveShip : MonoBehaviour
             return;
         }
 
-        if (movementInputVector.x == 0)
+        if (movementInputVector.x == 0 || shoot != null && shoot.LockedShooting)
             horizontalCurrentSpeed = Mathf.MoveTowards(horizontalCurrentSpeed, 0, horizontalDeceleration * Time.deltaTime);
         else horizontalCurrentSpeed = Mathf.MoveTowards(horizontalCurrentSpeed, movementInputVector.x * horizontalMaxSpeed, horizontalAcceleration * Time.deltaTime);
 
-        if (movementInputVector.y == 0)
+        if (movementInputVector.y == 0 || shoot != null && shoot.LockedShooting)
             verticalCurrentSpeed = Mathf.MoveTowards(verticalCurrentSpeed, 0, verticalDeceleration * Time.deltaTime);
         else verticalCurrentSpeed = Mathf.MoveTowards(verticalCurrentSpeed, movementInputVector.y * verticalMaxSpeed, verticalAcceleration * Time.deltaTime);
-
-        if (transform.localPosition.x >= trackWidth * 0.5f && movementInputVector.x > 0)
-            horizontalCurrentSpeed = 0;
-        else if (transform.localPosition.x <= -trackWidth * 0.5f && movementInputVector.x < 0)
-            horizontalCurrentSpeed = 0;
-
-        if (transform.localPosition.y >= maxHeight && movementInputVector.y > 0)
-            verticalCurrentSpeed = 0;
-        else if (transform.localPosition.y <= minHeight && movementInputVector.y < 0)
-            verticalCurrentSpeed = 0;
     }
 
     private void Bank()
     {
         if (!bankEnabled) return;
 
-        if (movementInputVector.x > 0)
+
+        if (movementInputVector.x == 0 || shoot != null && shoot.LockedShooting)
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, 0), horizontalIdleBankSpeed * Time.deltaTime);
+        else if (movementInputVector.x > 0)
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, -horixontalBankAngle), horizontalInputBankSpeed * Time.deltaTime);
         else if (movementInputVector.x < 0)
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, horixontalBankAngle), horizontalInputBankSpeed * Time.deltaTime);
-        else
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, 0), horizontalIdleBankSpeed * Time.deltaTime);
 
-        if (movementInputVector.y > 0)
+        if (movementInputVector.y == 0 || shoot != null && shoot.LockedShooting)
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, 0), verticalIdleBankSpeed * Time.deltaTime);
+        else if (movementInputVector.y > 0)
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(-verticalBankAngle, 0, transform.rotation.eulerAngles.z), verticalInputBankSpeed * Time.deltaTime);
         else if (movementInputVector.y < 0)
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(verticalBankAngle, 0, transform.rotation.eulerAngles.z), verticalInputBankSpeed * Time.deltaTime);
-        else
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z), verticalIdleBankSpeed * Time.deltaTime);
     }
 }

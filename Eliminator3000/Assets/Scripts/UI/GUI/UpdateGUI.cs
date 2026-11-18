@@ -1,9 +1,6 @@
 ﻿using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
-using Rive;
-using System.ComponentModel;
-using Rive.Components;
 
 public class UpdateGUI : MonoBehaviour
 {
@@ -28,38 +25,59 @@ public class UpdateGUI : MonoBehaviour
 
     private bool levelScoreCalculated = false;
 
+    [SerializeField] private bool showHealth = true, showGuns = true, showScore = true, showWin = true, showFinalScore = true;
+
     private void OnEnable()
     {
         EventBus<PlayerAvatarInstantiatedEvent>.Subscribe(OnPlayerAvatarInitiated);
-        EventBus<PlayerLivesChangedEvent>.Subscribe(SetLivesGUI);
-        EventBus<PlayerHealthChangedEvent>.Subscribe(SetHealthGUI);
-        EventBus<ScoreChangedEvent>.Subscribe(SetScoreGUI);
-        EventBus<PlayerScoreMultiplierChangedEvent>.Subscribe(SetMultiplierGUI);
-        EventBus<GameWinEvent>.Subscribe(EnableWinGUI);
-        EventBus<GameLoseEvent>.Subscribe(EnableLoseGUIgame);
-        EventBus<PlayerGunSwapEvent>.Subscribe(OnGunSwap);
-        EventBus<PlayerGunAmmoChangedEvent>.Subscribe(OnAmmoChanged);
-        EventBus<LevelScoreCalculatedEvent>.Subscribe(OnLevelScoreCalculated);
+        if (showHealth) EventBus<PlayerLivesChangedEvent>.Subscribe(SetLivesGUI);
+        if (showHealth) EventBus<PlayerHealthChangedEvent>.Subscribe(SetHealthGUI);
+        if (showScore) EventBus<ScoreChangedEvent>.Subscribe(SetScoreGUI);
+        if (showScore) EventBus<PlayerScoreMultiplierChangedEvent>.Subscribe(SetMultiplierGUI);
+        if (showWin) EventBus<GameWinEvent>.Subscribe(EnableWinGUI);
+        if (showWin) EventBus<GameLoseEvent>.Subscribe(EnableLoseGUIgame);
+        if (showGuns) EventBus<PlayerGunSwapEvent>.Subscribe(OnGunSwap);
+       if (showGuns) EventBus<PlayerGunAmmoChangedEvent>.Subscribe(OnAmmoChanged);
+        if (showFinalScore)EventBus<LevelScoreCalculatedEvent>.Subscribe(OnLevelScoreCalculated);
     }
 
     private void OnDestroy()
     {
         EventBus<PlayerAvatarInstantiatedEvent>.UnSubscribe(OnPlayerAvatarInitiated);
-        EventBus<PlayerLivesChangedEvent>.UnSubscribe(SetLivesGUI);
-        EventBus<PlayerHealthChangedEvent>.UnSubscribe(SetHealthGUI);
-        EventBus<ScoreChangedEvent>.UnSubscribe(SetScoreGUI);
-        EventBus<PlayerScoreMultiplierChangedEvent>.UnSubscribe(SetMultiplierGUI);
-        EventBus<GameWinEvent>.UnSubscribe(EnableWinGUI);
-        EventBus<GameLoseEvent>.UnSubscribe(EnableLoseGUIgame);
-        EventBus<PlayerGunSwapEvent>.UnSubscribe(OnGunSwap);
-        EventBus<PlayerGunAmmoChangedEvent>.UnSubscribe(OnAmmoChanged);
-        EventBus<LevelScoreCalculatedEvent>.UnSubscribe(OnLevelScoreCalculated);
+        if (showHealth) EventBus<PlayerLivesChangedEvent>.UnSubscribe(SetLivesGUI);
+        if (showHealth) EventBus<PlayerHealthChangedEvent>.UnSubscribe(SetHealthGUI);
+        if (showScore) EventBus<ScoreChangedEvent>.UnSubscribe(SetScoreGUI);
+        if (showWin) EventBus<PlayerScoreMultiplierChangedEvent>.UnSubscribe(SetMultiplierGUI);
+        if (showWin) EventBus<GameWinEvent>.UnSubscribe(EnableWinGUI);
+        if (showWin) EventBus<GameLoseEvent>.UnSubscribe(EnableLoseGUIgame);
+        if (showGuns) EventBus<PlayerGunSwapEvent>.UnSubscribe(OnGunSwap);
+        if (showGuns) EventBus<PlayerGunAmmoChangedEvent>.UnSubscribe(OnAmmoChanged);
+        if (showFinalScore) EventBus<LevelScoreCalculatedEvent>.UnSubscribe(OnLevelScoreCalculated);
     }
 
     private void Start()
     {
-        DisableGUI();
+        if (!showHealth)
+        {
+            p1HealthGUI.enabled = false;
+            p2HealthGUI.enabled = false;
+            p1LivesGUI.enabled = false;
+            p2LivesGUI.enabled = false;
+        }
+        if (!showGuns)
+        {
+            p1GunGUI.SetActive(false);
+            p2GunGUI.SetActive(false);
+        }
+        if(!showScore)
+        {
+            p1ScoreGUI.enabled = false;
+            p2ScoreGUI.enabled = false;
+            P1MultiplierGUI.enabled = false;
+            P2MultiplierGUI.enabled = false;
+        }
 
+        DisableGUI();
     }
 
     private void SetLivesGUI(PlayerLivesChangedEvent _playerLivesChangedEvent)

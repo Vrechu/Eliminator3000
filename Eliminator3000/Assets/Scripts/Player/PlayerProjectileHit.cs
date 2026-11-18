@@ -16,15 +16,12 @@ public class PlayerProjectileHit : MonoBehaviour
     {
         if (targetLayers == (targetLayers | (1 << _other.gameObject.layer)))
         {
-            int scoreGained;
             if (_other.gameObject.TryGetComponent(out EnemyInfo EnemyInfo))
             {
-                scoreGained = EnemyInfo.ScoreValue;
                 EnemyInfo.TakeDamage(damage, PlayerID);
             }
             else
             {
-                scoreGained = 0;
                 Destroy(_other.gameObject);
                 Debug.LogWarning($"PlayerProjectileHit: Object {_other.gameObject.name} does not have an EnemyInfo component. Score gained is set to 0.");
             }
