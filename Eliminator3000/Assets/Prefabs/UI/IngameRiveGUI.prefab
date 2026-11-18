@@ -169,9 +169,9 @@ RectTransform:
   - {fileID: 4022957447849872391}
   m_Father: {fileID: 5258174139373443566}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 50, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2025022834603883951
@@ -633,9 +633,9 @@ RectTransform:
   m_Father: {fileID: 1993797720694247649}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 954.9023, y: 540}
-  m_SizeDelta: {x: 700, y: 540.6015}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 1000, y: 590}
+  m_SizeDelta: {x: 800, y: 640}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1889804205303787868
 MonoBehaviour:
@@ -819,7 +819,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 694, y: 288}
+  m_AnchoredPosition: {x: 134, y: 52}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &7043374327882986861
@@ -884,9 +884,9 @@ RectTransform:
   m_Father: {fileID: 4022957447849872391}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -352, y: -198}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 48, y: 122}
+  m_SizeDelta: {x: 800, y: 640}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &7699728881449327238
 MonoBehaviour:
@@ -1120,7 +1120,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -674, y: 272}
+  m_AnchoredPosition: {x: -689, y: 324}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &8232072847079585722
@@ -1190,9 +1190,9 @@ RectTransform:
   m_Father: {fileID: 1993797720694247649}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 954.9022, y: 540}
-  m_SizeDelta: {x: 1820, y: 980}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 1000, y: 590}
+  m_SizeDelta: {x: 800, y: 640}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &291324823810917186
 MonoBehaviour:
@@ -1337,13 +1337,13 @@ MonoBehaviour:
   p1HealthWidget: {fileID: 8232072847079585722}
   healthAmountPropertyName: healthAmount
   livesAmountPropertyName: revivesAmount
-  showGunsAndAmmo: 0
+  showGunsAndAmmo: 1
   p0GunWidget: {fileID: 7699728881449327238}
-  p1GunWidget: {fileID: 0}
-  gunInstancePropertyName: 
-  gunStatePropertyName: 
-  gunIconPropertyName: 
-  gunAmmoPropertyName: 
+  p1GunWidget: {fileID: 3241001051501136474}
+  gunInstancePropertyName: slot
+  gunStatePropertyName: weaponState
+  gunIconPropertyName: weaponIcon
+  gunAmmoPropertyName: ammoAmount
   showScoreAndMultiplier: 0
   p0ScoreWidget: {fileID: 0}
   p1ScoreWidget: {fileID: 0}
