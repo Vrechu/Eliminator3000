@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 1475674583376573057}
   - component: {fileID: 1214931577529102721}
   - component: {fileID: 8074006940179282354}
-  - component: {fileID: 5561093896301216690}
+  - component: {fileID: 8502708673094698663}
+  - component: {fileID: 2318015700709347082}
   - component: {fileID: 6822232896801534946}
   - component: {fileID: 3322396033197620980}
   m_Layer: 7
@@ -93,8 +94,8 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &5561093896301216690
-SphereCollider:
+--- !u!65 &8502708673094698663
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -112,6 +113,27 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
+  m_Size: {x: 1.229087, y: 1.2264363, z: 1.4001758}
+  m_Center: {x: 0.003834784, y: 0.0015513301, z: 0.03220296}
+--- !u!135 &2318015700709347082
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2946831950281905418}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &6822232896801534946
@@ -127,7 +149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MoveProjectile
   speed: 120
-  lifeSeconds: 1.2
+  lifeSeconds: 1.6
 --- !u!114 &3322396033197620980
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -144,3 +166,4 @@ MonoBehaviour:
   targetLayers:
     serializedVersion: 2
     m_Bits: 2304
+  damage: 1

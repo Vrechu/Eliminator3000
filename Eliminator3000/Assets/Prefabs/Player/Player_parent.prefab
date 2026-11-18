@@ -258,12 +258,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dcdbe9d7cbe2db4aa21c5df000b0eb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MoveShip
-  horizontalSpeed: 22
   trackWidth: 25
   maxHeight: 15.5
   minHeight: 2
-  inputBankSpeed: 20
-  idleBankSpeed: 10
+  accelerationEnabled: 1
+  horizontalMaxSpeed: 50
+  verticalMaxSpeed: 50
+  horizontalAcceleration: 50
+  verticalAcceleration: 50
+  horizontalDeceleration: 210
+  verticalDeceleration: 100
+  bankEnabled: 1
+  horizontalInputBankSpeed: 7
+  verticalInputBankSpeed: 7
+  horizontalIdleBankSpeed: 5
+  verticalIdleBankSpeed: 5
   horixontalBankAngle: 30
   verticalBankAngle: 30
 --- !u!114 &7019095551105211704

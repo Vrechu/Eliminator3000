@@ -16,20 +16,46 @@ public static class SectionContentTools
     public const string PowerupFolderKey = "LevelManager.Library.Powerups";
     private static readonly string[] PartNames = { "Start", "Mid", "End" };
 
+    private static readonly Color ObstacleColor = new Color(1f, 0.35f, 0.35f);
+    private static readonly Color PowerupColor = new Color(0.2f, 0.8f, 0.35f);
+    private static readonly Color EnemyColor = new Color(0.95f, 0.65f, 0.15f);
+
     private static string[] cachedTitles;
     private static double cacheTime;
     private static LevelSection pickerSection;
     private static bool pickerPower;
     private static Texture2D dotTex;
     private static double nextSyncTime;
+    private static GameObject selectedObj;
+    public static bool ScrollRequest;
+    public static bool HasScrollTarget;
+    public static float ScrollTargetY;
+    // last object name seen per section (keeps the Level Manager label and the Hierarchy name in line)
+    private static readonly Dictionary<int, string> lastNames = new Dictionary<int, string>();
+
+
 
     static SectionContentTools()
     {
         EditorApplication.update -= SyncPoll;
         EditorApplication.update += SyncPoll;
+        Selection.selectionChanged -= OnSelectionChanged;
+        Selection.selectionChanged += OnSelectionChanged;
     }
 
     // ------------------------------------------------------------------ helpers
+    private static void OnSelectionChanged()
+    {
+        selectedObj = Selection.activeGameObject;
+        ScrollRequest = true;
+        UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
+    }
+    private static bool IsSelected(LevelSection.PlacedAsset e)
+    {
+        if (e.instance == null || selectedObj == null) return false;
+        return selectedObj == e.instance || selectedObj.transform.IsChildOf(e.instance.transform);
+    }
+
 
     private static Texture2D Dot()
     {
@@ -102,7 +128,7 @@ public static class SectionContentTools
         int cy = cell / Grid;
         float x = x0 + (cx + 0.5f) * (x1 - x0) / Grid;
         float y = y0 + (cy + 0.5f) * (y1 - y0) / Grid + s.gridYOffset;
-        return new Vector3(x, y, z);
+        return new Vector3(x + e.offset.x, y + e.offset.y, z);
     }
 
     // Opposite of EntryPos: works out zone / along / cell from where an object really is (used for objects found in the Hierarchy).
@@ -118,7 +144,9 @@ public static class SectionContentTools
         e.along = Mathf.Clamp01(t - e.zone);
         int cx = Mathf.Clamp(Mathf.FloorToInt((p.x - x0) / (x1 - x0) * Grid), 0, Grid - 1);
         int cy = Mathf.Clamp(Mathf.FloorToInt((p.y - s.gridYOffset - y0) / (y1 - y0) * Grid), 0, Grid - 1);
-        e.cell = cy * Grid + cx;
+        float xc = x0 + (cx + 0.5f) * (x1 - x0) / Grid;
+        float yc = y0 + (cy + 0.5f) * (y1 - y0) / Grid + s.gridYOffset;
+        e.offset = new Vector2(p.x - xc, p.y - yc);
     }
 
     private static void ApplyEntry(LevelSection s, LevelSection.PlacedAsset e)
@@ -197,6 +225,7 @@ public static class SectionContentTools
         foreach (var s in all)
         {
             if (s == null || EditorUtility.IsPersistent(s)) continue;
+            if (SyncLabel(s)) changed = true;
             if (SyncSection(s)) changed = true;
         }
         if (changed)
@@ -204,6 +233,53 @@ public static class SectionContentTools
             SceneView.RepaintAll();
             UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
         }
+    }
+
+    // Keeps the Level Manager label and the Hierarchy name of a section the same.
+    // Renamed in the Hierarchy: the label follows. Edited in the Level Manager: the object is renamed.
+    private static bool SyncLabel(LevelSection s)
+    {
+        GameObject go = s.gameObject;
+        string n = go.name;
+        string l = s.sectionLabel ?? "";
+        int id = s.GetInstanceID();
+
+        string last;
+        if (!lastNames.TryGetValue(id, out last))
+        {
+            // first time we see this section: the Hierarchy name wins
+            lastNames[id] = n;
+            if (l == n) return false;
+            s.sectionLabel = n;
+            EditorUtility.SetDirty(s);
+            UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(go.scene);
+            Debug.Log($"[Label] Section #{s.sectionNumber}: label set to the Hierarchy name '{n}'.", s);
+            return true;
+        }
+
+        if (n != last)
+        {
+            // renamed in the Hierarchy
+            lastNames[id] = n;
+            if (l == n) return false;
+            s.sectionLabel = n;
+            EditorUtility.SetDirty(s);
+            UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(go.scene);
+            Debug.Log($"[Label] Section #{s.sectionNumber}: Hierarchy name changed, label is now '{n}'.", s);
+            return true;
+        }
+
+        if (l.Length > 0 && l != last)
+        {
+            // label edited in the Level Manager
+            go.name = l;
+            lastNames[id] = l;
+            EditorUtility.SetDirty(go);
+            UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(go.scene);
+            Debug.Log($"[Label] Section #{s.sectionNumber}: label changed, Hierarchy object renamed to '{l}'.", s);
+            return true;
+        }
+        return false;
     }
 
     // Keeps the entry list in line with the objects in the Obstacles / Powerups groups.
@@ -249,7 +325,16 @@ public static class SectionContentTools
                 Debug.Log($"[Content] Section #{s.sectionNumber}: found '{go.name}' in {cont.name}, added to the manager ({PartNames[ne.zone]}, cell {ne.cell}). It was not moved.", go);
             }
         }
-
+        // 3. objects moved by hand: the entry follows the object
+        foreach (var e in s.assets)
+        {
+            if (!Alive(s, e)) continue;
+            Vector3 p = e.instance.transform.position;
+            if ((p - EntryPos(s, e)).sqrMagnitude < 0.0025f) continue;
+            int oz = e.zone, oc = e.cell; float oa = e.along; Vector2 oo = e.offset;
+            FitEntryToPosition(s, e, p);
+            if (oz != e.zone || oc != e.cell || !Mathf.Approximately(oa, e.along) || oo != e.offset) changed = true;
+        }
         if (changed)
         {
             EditorUtility.SetDirty(s);
@@ -347,7 +432,9 @@ public static class SectionContentTools
     {
         Undo.RecordObject(s, "Edit asset placement");
         e.zone = Mathf.Clamp(zone, 0, 2);
-        e.cell = Mathf.Clamp(cell, 0, Cells - 1);
+        int nc = Mathf.Clamp(cell, 0, Cells - 1);
+        if (nc != e.cell) e.offset = Vector2.zero;   // clicking a grid cell snaps to its centre
+        e.cell = nc;
         e.along = Mathf.Clamp01(along);
         EditorUtility.SetDirty(s);
         ApplyEntry(s, e);
@@ -596,18 +683,29 @@ public static class SectionContentTools
 
     private static void AddTrigger(LevelSection s, string[] titles)
     {
+
         Undo.IncrementCurrentGroup();
         Undo.SetCurrentGroupName("Add enemy trigger");
         int g = Undo.GetCurrentGroup();
+
+        // measure again, so "middle of the section" is where this section really is right now
+        Undo.RecordObject(s, "Add enemy trigger");
+        LevelManagerWindow.MeasureKeepManual(s);
+        EditorUtility.SetDirty(s);
 
         Transform cont = EnsureContainer(s, LevelSection.EnemyTriggersName);
         var existing = GetTriggers(s);
 
         EnemySpawnTrigger template = existing.Count > 0 ? existing[0] : null;
+        string copiedFrom = "a trigger of this section";
         if (template == null)
         {
             var all = Object.FindObjectsByType<EnemySpawnTrigger>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-            if (all.Length > 0) template = all[0];
+            if (all.Length > 0)
+            {
+                template = all[0];
+                copiedFrom = "a trigger of another section ('" + template.name + "')";
+            }
         }
 
         Bounds b = s.GetBounds();
@@ -615,27 +713,39 @@ public static class SectionContentTools
         Vector3 pos;
         if (template != null)
         {
-            go = Object.Instantiate(template.gameObject);
             pos = template.transform.position;
+            // created directly inside THIS section's group (never loose in the scene root)
+            go = Object.Instantiate(template.gameObject, cont, false);
+            go.name = template.gameObject.name;
         }
         else
         {
+            copiedFrom = "nothing (basic trigger created)";
             go = new GameObject("Enemy Trigger");
             var bc = go.AddComponent<BoxCollider>();
             bc.isTrigger = true;
             bc.size = new Vector3(80f, 60f, 2f);
+            int tl = LayerMask.NameToLayer("LevelTrigger");
+            if (tl >= 0) go.layer = tl;
+            else Debug.LogWarning("[Triggers] No layer named 'LevelTrigger' exists, so the new trigger stays on the Default layer.", go);
             var trig = go.AddComponent<EnemySpawnTrigger>();
             int pl = LayerMask.NameToLayer("Player");
             var tso = new SerializedObject(trig);
             var lp = tso.FindProperty("targetLayers");
-            if (lp != null) { lp.intValue = pl >= 0 ? (1 << pl) : 0; tso.ApplyModifiedProperties(); }
+            if (lp == null) Debug.LogWarning("[Triggers] EnemySpawnTrigger has no field named 'targetLayers'. Set Target Layers by hand.", go);
+            else
+            {
+                lp.intValue = pl >= 0 ? (1 << pl) : 0;
+                tso.ApplyModifiedProperties();
+                if (pl < 0) Debug.LogWarning("[Triggers] No layer named 'Player' exists, so Target Layers was left empty.", go);
+            }
             float cx = (EditorPrefs.GetFloat(PlayAreaGuide.MinXKey, -30f) + EditorPrefs.GetFloat(PlayAreaGuide.MaxXKey, 30f)) * 0.5f;
             float cy = (EditorPrefs.GetFloat(PlayAreaGuide.MinYKey, -15f) + EditorPrefs.GetFloat(PlayAreaGuide.MaxYKey, 15f)) * 0.5f;
             pos = new Vector3(cx, cy, b.center.z);
             Debug.LogWarning("[Triggers] No existing EnemySpawnTrigger found to copy, so a basic one was created. Check its Target Layers and collider size once; later triggers copy from it.", go);
         }
         Undo.RegisterCreatedObjectUndo(go, "Add enemy trigger");
-        go.transform.SetParent(cont, true);
+        if (go.transform.parent != cont) go.transform.SetParent(cont, true);
         pos.z = b.center.z;
         go.transform.position = pos;
 
@@ -650,11 +760,34 @@ public static class SectionContentTools
 
         Undo.CollapseUndoOperations(g);
         Selection.activeGameObject = go;
-        Debug.Log($"[Triggers] Added '{go.name}' in Section #{s.sectionNumber} (middle). Pick its wave in the Level Manager.", go);
+
+        float zNow = go.transform.position.z;
+        Bounds nb = s.GetBounds();
+        Debug.Log($"[Triggers] Added '{go.name}' to Section #{s.sectionNumber} '{s.sectionLabel}' (middle). Trigger Z={zNow:F1}, section Z range {nb.min.z:F1}..{nb.max.z:F1}, copied from {copiedFrom}. Pick its wave in the Level Manager.", go);
+        if (zNow < nb.min.z - 0.01f || zNow > nb.max.z + 0.01f)
+            Debug.LogWarning($"[Triggers] The new trigger is OUTSIDE the Z range of Section #{s.sectionNumber}. Press 'Re-measure all sections' and add it again.", go);
         SceneView.RepaintAll();
     }
 
     // ------------------------------------------------------------------ GUI
+
+    // Small heading with a coloured line under it (Enemies / Obstacles / Powerups).
+    private static void SubHeader(string title, int count, Color c)
+    {
+        EditorGUILayout.LabelField($"{title} ({count})", EditorStyles.miniBoldLabel);
+        Rect r = GUILayoutUtility.GetLastRect();
+        if (UnityEngine.Event.current.type == UnityEngine.EventType.Repaint)
+            EditorGUI.DrawRect(new Rect(r.x, r.yMax, r.width, 2f), c);
+        GUILayout.Space(3);
+    }
+
+    // Thin coloured bar on the left edge of the box that was just drawn.
+    private static void SideBar(Color c)
+    {
+        Rect r = GUILayoutUtility.GetLastRect();
+        if (UnityEngine.Event.current.type == UnityEngine.EventType.Repaint)
+            EditorGUI.DrawRect(new Rect(r.x, r.y, 3f, r.height), c);
+    }
 
     // Draws the 5x5 grid, returns the (possibly new) selected cell.
     private static int DrawGrid(Rect r, LevelSection s, LevelSection.PlacedAsset e)
@@ -705,6 +838,8 @@ public static class SectionContentTools
     {
         var e = s.assets[i];
         bool alive = Alive(s, e);
+        bool selected = IsSelected(e);             
+        if (selected && !e.open) e.open = true;     
         int number = 0;
         for (int j = i; j < s.assets.Count; j++) if (s.assets[j].isPowerup == e.isPowerup) number++;
         string kind = e.isPowerup ? "Powerup" : "Obstacle";
@@ -780,6 +915,14 @@ public static class SectionContentTools
             }
         }
         EditorGUILayout.EndVertical();
+        SideBar(e.isPowerup ? PowerupColor : ObstacleColor);
+        if (selected && UnityEngine.Event.current.type == UnityEngine.EventType.Repaint)
+        {
+            Rect hr = GUILayoutUtility.GetLastRect();
+            EditorGUI.DrawRect(hr, new Color(1f, 0.92f, 0.2f, 0.18f));
+            if (ScrollRequest) { ScrollTargetY = hr.y; HasScrollTarget = true; }
+        }
+
     }
 
     public static void DrawContent(LevelSection s, bool on)
@@ -794,7 +937,12 @@ public static class SectionContentTools
 
         string showKey = "LevelManager.SecShow." + s.GetInstanceID();
         bool show = EditorPrefs.GetBool(showKey, false);
-        bool ns = EditorGUILayout.ToggleLeft($"Show assets grid   ({nObs} obstacles, {nPow} powerups, {trigs.Count} enemies)", show);
+        if (!show && selectedObj != null)
+        {
+            foreach (var en in s.assets)
+                if (IsSelected(en)) { show = true; EditorPrefs.SetBool(showKey, true); break; }
+        }
+        bool ns = EditorGUILayout.Foldout(show, $"Assets & enemies   ({nObs} obstacles, {nPow} powerups, {trigs.Count} enemies)", true);
         if (ns != show) EditorPrefs.SetBool(showKey, ns);
         if (!ns)
         {
@@ -808,10 +956,47 @@ public static class SectionContentTools
 
         if (!on) EditorGUILayout.HelpBox("Section is off (parked). Switch it on to place things.", MessageType.None);
 
-        // obstacle / powerup entries, newest on top
+        // ---- both add buttons on top
+        string[] titles = GetWaveTitles();
+        EditorGUILayout.BeginHorizontal();
+        using (new EditorGUI.DisabledScope(!on))
+        {
+            if (GUILayout.Button("Add enemy"))
+            {
+                AddTrigger(s, titles);
+                GUIUtility.ExitGUI();
+            }
+            if (EditorGUILayout.DropdownButton(new GUIContent("Add asset  (obstacle / powerup)"), FocusType.Passive))
+                ShowAddMenu(s);
+        }
+        EditorGUILayout.EndHorizontal();
+        EditorGUILayout.Space(2);
+
+        // ---- enemies
+        if (trigs.Count > 0)
+        {
+            SubHeader("Enemies", trigs.Count, EnemyColor);
+            DrawEnemies(s, on, trigs, titles);
+        }
+
+        // ---- obstacles, then powerups (newest on top inside each group)
         int removeIdx = -1;
         int dupIdx = -1;
-        for (int i = 0; i < s.assets.Count; i++) DrawEntry(s, i, on, ref removeIdx, ref dupIdx);
+        int obsCount = 0, powCount = 0;
+        foreach (var en in s.assets) { if (en.isPowerup) powCount++; else obsCount++; }
+
+        if (obsCount > 0)
+        {
+            SubHeader("Obstacles", obsCount, ObstacleColor);
+            for (int i = 0; i < s.assets.Count; i++)
+                if (!s.assets[i].isPowerup) DrawEntry(s, i, on, ref removeIdx, ref dupIdx);
+        }
+        if (powCount > 0)
+        {
+            SubHeader("Powerups", powCount, PowerupColor);
+            for (int i = 0; i < s.assets.Count; i++)
+                if (s.assets[i].isPowerup) DrawEntry(s, i, on, ref removeIdx, ref dupIdx);
+        }
         if (removeIdx >= 0)
         {
             RemoveEntry(s, removeIdx);
@@ -823,20 +1008,11 @@ public static class SectionContentTools
             GUIUtility.ExitGUI();
         }
 
-        using (new EditorGUI.DisabledScope(!on))
-        {
-            if (EditorGUILayout.DropdownButton(new GUIContent("Add asset  (obstacle / powerup)"), FocusType.Passive))
-                ShowAddMenu(s);
-        }
-
         // area covered
         float cov = Coverage(s, out float[] pz);
         EditorGUILayout.LabelField($"Area covered: {Mathf.RoundToInt(cov * 100f)}%    (Start {Mathf.RoundToInt(pz[0] * 100f)}%, Mid {Mathf.RoundToInt(pz[1] * 100f)}%, End {Mathf.RoundToInt(pz[2] * 100f)}%)", EditorStyles.boldLabel);
         EditorGUILayout.LabelField("Share of the 5x5 screen grid used by obstacles and powerups, averaged over the three parts.", EditorStyles.miniLabel);
         EditorGUILayout.Space(4);
-
-        // enemies
-        DrawEnemies(s, on, trigs);
 
         // placement settings
         string pk = "LevelManager.SecShow.Place." + s.GetInstanceID();
@@ -877,9 +1053,9 @@ public static class SectionContentTools
         EditorGUILayout.Space(2);
     }
 
-    private static void DrawEnemies(LevelSection s, bool on, List<EnemySpawnTrigger> trigs)
+    // Enemy rows only (the "Add enemy" button is drawn at the top of the section by DrawContent).
+    private static void DrawEnemies(LevelSection s, bool on, List<EnemySpawnTrigger> trigs, string[] titles)
     {
-        string[] titles = GetWaveTitles();
         EnemySpawnTrigger toDelete = null;
         int n = 0;
         foreach (var t in trigs)
@@ -928,6 +1104,7 @@ public static class SectionContentTools
             if (titles != null && (wave < 0 || wave >= titles.Length))
                 EditorGUILayout.HelpBox($"Wave {wave} does not exist in this scene's SpawnEnemy (it has {titles.Length}).", MessageType.Warning);
             EditorGUILayout.EndVertical();
+            SideBar(EnemyColor);
         }
 
         if (toDelete != null)
@@ -937,14 +1114,6 @@ public static class SectionContentTools
             GUIUtility.ExitGUI();
         }
 
-        using (new EditorGUI.DisabledScope(!on))
-        {
-            if (GUILayout.Button("Add enemy"))
-            {
-                AddTrigger(s, titles);
-                GUIUtility.ExitGUI();
-            }
-        }
         EditorGUILayout.Space(4);
     }
 }

@@ -114,8 +114,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.4790977, y: 1.3159969, z: 1.3989282}
-  m_Center: {x: 0.01589207, y: 0.052915215, z: 0.024920862}
+  m_Size: {x: 1.2432116, y: 1.228167, z: 1.0732236}
+  m_Center: {x: 0.0008354783, y: -0.0035469532, z: -0.013571769}
 --- !u!54 &3035863154724065037
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -174,7 +174,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyInfo
   Info: 
   ScoreValue: 300
-  health: 2
+  health: 1
   healthText: {fileID: 0}
 --- !u!1001 &4361809745058146087
 PrefabInstance:

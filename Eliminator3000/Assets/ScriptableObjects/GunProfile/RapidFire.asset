@@ -13,11 +13,13 @@ MonoBehaviour:
   m_Name: RapidFire
   m_EditorClassIdentifier: Assembly-CSharp::GunProfile
   Info: 
-  Unlocked: 0
-  ProjectilePrefab: {fileID: 2946831950281905418, guid: d05272a0ed26efd4784b8878e6b1e2c8, type: 3}
+  UnlockedFromStart: 0
+  ProjectilePrefab: {fileID: 2946831950281905418, guid: 89da7ebe5aa07a643ac185f5a8e5bfe5, type: 3}
+  InfiniteAmmo: 0
   MaxAmmo: 100
   AmmoCostPerShot: 1
   FireRate: 0.02
+  LockMovementWhileShooting: 0
   Cluster: 0
   Angle: 0
   Rows: 0

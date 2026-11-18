@@ -522,6 +522,12 @@ public class LevelManagerWindow : EditorWindow
         LevelTriggerTools.EnsureWinTriggerLast(sections);
         Undo.CollapseUndoOperations(g);
     }
+    // Sections with a manual length keep their box exactly as it is (no re-measure).
+    internal static bool MeasureKeepManual(LevelSection s)
+    {
+        if (s.useManualLength && s.HasMeasurement) return true;
+        return s.Measure();
+    }
 
     private static void MeasureAll()
     {
@@ -892,6 +898,16 @@ public class LevelManagerWindow : EditorWindow
         }
 
         EditorGUILayout.EndScrollView();
+        if (UnityEngine.Event.current.type == UnityEngine.EventType.Repaint)
+        {
+            if (SectionContentTools.HasScrollTarget)
+            {
+                scrollPos.y = Mathf.Max(0f, SectionContentTools.ScrollTargetY - 80f);
+                Repaint();
+            }
+            SectionContentTools.ScrollRequest = false;
+            SectionContentTools.HasScrollTarget = false;
+        }
     }
 
     private void DrawSectionList(List<LevelSection> sectionList)

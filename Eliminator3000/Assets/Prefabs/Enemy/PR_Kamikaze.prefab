@@ -117,8 +117,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.2348113, y: 1.3798475, z: 1.8442087}
-  m_Center: {x: -0.023316782, y: 0.11560532, z: 0.01028665}
+  m_Size: {x: 1.1513064, y: 1.5209405, z: 1.2605312}
+  m_Center: {x: 0.015602905, y: 0.32343182, z: -0.17790833}
 --- !u!114 &-1965939530698700420
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156,9 +156,9 @@ MonoBehaviour:
   WaypointSpeeds: []
   WaitTimes: []
   EndPoint: {fileID: 0}
-  speed: 10
+  speed: 50
   kamikaze: 1
-  kamikazeOvershootDistance: 0.5
+  kamikazeOvershootDistance: 10
 --- !u!114 &7460655747993194662
 MonoBehaviour:
   m_ObjectHideFlags: 0
