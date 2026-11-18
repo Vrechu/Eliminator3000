@@ -20,10 +20,10 @@ MonoBehaviour:
   - {fileID: 3699308623078601662, guid: 67d2085d610b8244bb74e95e6df6b45b, type: 3}
   - {fileID: 3699308623078601662, guid: 67d2085d610b8244bb74e95e6df6b45b, type: 3}
   TimesBetweenSpawns:
-  - 1.2
-  - 1.2
-  - 1.2
-  - 1.2
+  - 2
+  - 2
+  - 2
+  - 2
   EnemySpeed: 25
   WaypointOrder: 150000001600000022000000230000002400000025000000
   WaypointSpeeds:
