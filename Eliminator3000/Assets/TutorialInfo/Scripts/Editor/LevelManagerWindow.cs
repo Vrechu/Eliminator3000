@@ -898,6 +898,16 @@ public class LevelManagerWindow : EditorWindow
         }
 
         EditorGUILayout.EndScrollView();
+        if (UnityEngine.Event.current.type == UnityEngine.EventType.Repaint)
+        {
+            if (SectionContentTools.HasScrollTarget)
+            {
+                scrollPos.y = Mathf.Max(0f, SectionContentTools.ScrollTargetY - 80f);
+                Repaint();
+            }
+            SectionContentTools.ScrollRequest = false;
+            SectionContentTools.HasScrollTarget = false;
+        }
     }
 
     private void DrawSectionList(List<LevelSection> sectionList)
