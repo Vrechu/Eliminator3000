@@ -1408,7 +1408,16 @@ public class EnemyWaveTool : EditorWindow
         if (Swept(out hb)) txt += "   to hit volume " + (pos.z - hb.max.z).ToString("+0.#;-0.#;0");
         Handles.Label(pos + Vector3.up * size * 1.5f, txt, labelStyle);
     }
-
+    private static bool ActiveInPrefab(Transform t, Transform root)
+    {
+        while (t != null)
+        {
+            if (!t.gameObject.activeSelf) return false;
+            if (t == root) break;
+            t = t.parent;
+        }
+        return true;
+    }
     private List<GhostPart> GetGhost(GameObject prefab)
     {
         if (prefab == null) return null;
@@ -1417,11 +1426,22 @@ public class EnemyWaveTool : EditorWindow
         var list = new List<GhostPart>();
         Matrix4x4 rootScale = Matrix4x4.Scale(prefab.transform.localScale);
         Matrix4x4 w2l = prefab.transform.worldToLocalMatrix;
+        var lodHide = new HashSet<Renderer>();
+        var lodGroup = prefab.GetComponentInChildren<LODGroup>(true);
+        if (lodGroup != null)
+        {
+            var lods = lodGroup.GetLODs();
+            for (int li = 1; li < lods.Length; li++)
+                foreach (var lr in lods[li].renderers) if (lr != null) lodHide.Add(lr);
+        }
         foreach (var mf in prefab.GetComponentsInChildren<MeshFilter>(true))
         {
             if (mf.sharedMesh == null) continue;
             var mr = mf.GetComponent<MeshRenderer>();
-            if (mr == null) continue;
+            if (mr == null || !mr.enabled) continue;
+            if (mr.shadowCastingMode == UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly) continue;
+            if (lodHide.Contains(mr)) continue;
+            if (!ActiveInPrefab(mf.transform, prefab.transform)) continue;
             list.Add(new GhostPart { mesh = mf.sharedMesh, mats = mr.sharedMaterials, local = rootScale * (w2l * mf.transform.localToWorldMatrix) });
         }
         ghostCache[prefab] = list;

@@ -50,6 +50,11 @@ public static class SectionContentTools
         ScrollRequest = true;
         UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
     }
+    private static bool IsTriggerSelected(EnemySpawnTrigger t)
+    {
+        if (t == null || selectedObj == null) return false;
+        return selectedObj == t.gameObject || selectedObj.transform.IsChildOf(t.transform);
+    }
     private static bool IsSelected(LevelSection.PlacedAsset e)
     {
         if (e.instance == null || selectedObj == null) return false;
@@ -941,13 +946,9 @@ public static class SectionContentTools
         {
             foreach (var en in s.assets)
                 if (IsSelected(en)) { show = true; EditorPrefs.SetBool(showKey, true); break; }
-        }
-        bool ns = EditorGUILayout.Foldout(show, $"Assets & enemies   ({nObs} obstacles, {nPow} powerups, {trigs.Count} enemies)", true);
-        if (ns != show) EditorPrefs.SetBool(showKey, ns);
-        if (!ns)
-        {
-            EditorGUILayout.Space(2);
-            return;
+            if (!show)
+                foreach (var tg in trigs)
+                    if (IsTriggerSelected(tg)) { show = true; EditorPrefs.SetBool(showKey, true); break; }
         }
 
         GUILayout.BeginHorizontal();
@@ -1105,6 +1106,12 @@ public static class SectionContentTools
                 EditorGUILayout.HelpBox($"Wave {wave} does not exist in this scene's SpawnEnemy (it has {titles.Length}).", MessageType.Warning);
             EditorGUILayout.EndVertical();
             SideBar(EnemyColor);
+            if (IsTriggerSelected(t) && UnityEngine.Event.current.type == UnityEngine.EventType.Repaint)
+            {
+                Rect hr = GUILayoutUtility.GetLastRect();
+                EditorGUI.DrawRect(hr, new Color(1f, 0.92f, 0.2f, 0.18f));
+                if (ScrollRequest) { ScrollTargetY = hr.y; HasScrollTarget = true; }
+            }
         }
 
         if (toDelete != null)
