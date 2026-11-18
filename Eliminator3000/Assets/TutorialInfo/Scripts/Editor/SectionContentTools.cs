@@ -712,11 +712,20 @@ public static class SectionContentTools
             var bc = go.AddComponent<BoxCollider>();
             bc.isTrigger = true;
             bc.size = new Vector3(80f, 60f, 2f);
+            int tl = LayerMask.NameToLayer("LevelTrigger");
+            if (tl >= 0) go.layer = tl;
+            else Debug.LogWarning("[Triggers] No layer named 'LevelTrigger' exists, so the new trigger stays on the Default layer.", go);
             var trig = go.AddComponent<EnemySpawnTrigger>();
             int pl = LayerMask.NameToLayer("Player");
             var tso = new SerializedObject(trig);
             var lp = tso.FindProperty("targetLayers");
-            if (lp != null) { lp.intValue = pl >= 0 ? (1 << pl) : 0; tso.ApplyModifiedProperties(); }
+            if (lp == null) Debug.LogWarning("[Triggers] EnemySpawnTrigger has no field named 'targetLayers'. Set Target Layers by hand.", go);
+            else
+            {
+                lp.intValue = pl >= 0 ? (1 << pl) : 0;
+                tso.ApplyModifiedProperties();
+                if (pl < 0) Debug.LogWarning("[Triggers] No layer named 'Player' exists, so Target Layers was left empty.", go);
+            }
             float cx = (EditorPrefs.GetFloat(PlayAreaGuide.MinXKey, -30f) + EditorPrefs.GetFloat(PlayAreaGuide.MaxXKey, 30f)) * 0.5f;
             float cy = (EditorPrefs.GetFloat(PlayAreaGuide.MinYKey, -15f) + EditorPrefs.GetFloat(PlayAreaGuide.MaxYKey, 15f)) * 0.5f;
             pos = new Vector3(cx, cy, b.center.z);
