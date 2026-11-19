@@ -1395,7 +1395,9 @@ public class EnemyWaveTool : EditorWindow
                     for (int s = 0; s < part.mesh.subMeshCount; s++)
                     {
                         Material mat = part.mats[Mathf.Min(s, part.mats.Length - 1)];
-                        if (mat != null) Graphics.DrawMesh(part.mesh, m, mat, 0, sv.camera, s);
+                        if (mat == null) continue;
+                        GhostDrawMat(mat).SetPass(0);
+                        Graphics.DrawMeshNow(part.mesh, m, s);
                     }
                 }
             }
@@ -1408,7 +1410,70 @@ public class EnemyWaveTool : EditorWindow
         if (Swept(out hb)) txt += "   to hit volume " + (pos.z - hb.max.z).ToString("+0.#;-0.#;0");
         Handles.Label(pos + Vector3.up * size * 1.5f, txt, labelStyle);
     }
+    private static bool ActiveInPrefab(Transform t, Transform root)
+    {
+        while (t != null)
+        {
+            if (!t.gameObject.activeSelf) return false;
+            if (t == root) break;
+            t = t.parent;
+        }
+        return true;
+    }
+    private static Material ghostMat;
 
+    private static Material GhostMat()
+    {
+        if (ghostMat == null)
+        {
+            ghostMat = new Material(Shader.Find("Hidden/Internal-Colored"));
+            ghostMat.hideFlags = HideFlags.HideAndDontSave;
+            ghostMat.SetInt("_Cull", 2);
+            ghostMat.SetInt("_ZWrite", 1);
+            ghostMat.SetInt("_ZTest", 4);
+        }
+        return ghostMat;
+    }
+    private static readonly Dictionary<Material, Material> drawMats = new Dictionary<Material, Material>();
+
+    // Unlit copy of an enemy material that keeps its texture (or its colour when it has none).
+    private static Material GhostDrawMat(Material src)
+    {
+        Material m;
+        if (drawMats.TryGetValue(src, out m) && m != null) return m;
+
+        Texture tex = null;
+        if (src.HasProperty("_BaseMap")) tex = src.GetTexture("_BaseMap");
+        if (tex == null && src.HasProperty("_MainTex")) tex = src.GetTexture("_MainTex");
+
+        if (tex != null)
+        {
+            m = new Material(Shader.Find("Unlit/Texture"));
+            m.mainTexture = tex;
+            string prop = src.HasProperty("_BaseMap") ? "_BaseMap" : "_MainTex";
+            m.mainTextureScale = src.GetTextureScale(prop);
+            m.mainTextureOffset = src.GetTextureOffset(prop);
+        }
+        else
+        {
+            m = new Material(Shader.Find("Hidden/Internal-Colored"));
+            Color c = MatColor(src);
+            c.a = 1f;
+            m.color = c;
+            m.SetInt("_Cull", 2);
+            m.SetInt("_ZWrite", 1);
+            m.SetInt("_ZTest", 4);
+        }
+        m.hideFlags = HideFlags.HideAndDontSave;
+        drawMats[src] = m;
+        return m;
+    }
+    private static Color MatColor(Material m)
+    {
+        if (m.HasProperty("_BaseColor")) return m.GetColor("_BaseColor");
+        if (m.HasProperty("_Color")) return m.GetColor("_Color");
+        return Color.gray;
+    }
     private List<GhostPart> GetGhost(GameObject prefab)
     {
         if (prefab == null) return null;
@@ -1417,11 +1482,22 @@ public class EnemyWaveTool : EditorWindow
         var list = new List<GhostPart>();
         Matrix4x4 rootScale = Matrix4x4.Scale(prefab.transform.localScale);
         Matrix4x4 w2l = prefab.transform.worldToLocalMatrix;
+        var lodHide = new HashSet<Renderer>();
+        var lodGroup = prefab.GetComponentInChildren<LODGroup>(true);
+        if (lodGroup != null)
+        {
+            var lods = lodGroup.GetLODs();
+            for (int li = 1; li < lods.Length; li++)
+                foreach (var lr in lods[li].renderers) if (lr != null) lodHide.Add(lr);
+        }
         foreach (var mf in prefab.GetComponentsInChildren<MeshFilter>(true))
         {
             if (mf.sharedMesh == null) continue;
             var mr = mf.GetComponent<MeshRenderer>();
-            if (mr == null) continue;
+            if (mr == null || !mr.enabled) continue;
+            if (mr.shadowCastingMode == UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly) continue;
+            if (lodHide.Contains(mr)) continue;
+            if (!ActiveInPrefab(mf.transform, prefab.transform)) continue;
             list.Add(new GhostPart { mesh = mf.sharedMesh, mats = mr.sharedMaterials, local = rootScale * (w2l * mf.transform.localToWorldMatrix) });
         }
         ghostCache[prefab] = list;
