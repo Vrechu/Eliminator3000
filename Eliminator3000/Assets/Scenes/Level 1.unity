@@ -347505,10 +347505,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PillarDropIn
   reference: {fileID: 0}
-  triggerDistance: 600
+  triggerDistance: 450
   dropHeight: 500
-  dropDuration: 3
-  randomDelay: 0.25
+  dropDuration: 1
+  randomDelay: 0
 --- !u!114 &611427607
 MonoBehaviour:
   m_ObjectHideFlags: 0
