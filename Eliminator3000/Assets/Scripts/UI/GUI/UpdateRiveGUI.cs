@@ -160,7 +160,7 @@ public class UpdateRiveGUI : MonoBehaviour
         ViewModelInstanceEnumProperty[] states = new ViewModelInstanceEnumProperty[gunCount];
         ViewModelInstanceEnumProperty[] icons = new ViewModelInstanceEnumProperty[gunCount];
         ViewModelInstanceNumberProperty[] ammos = new ViewModelInstanceNumberProperty[gunCount];
-        string[] iconNames = { "Default", "RapidFire", "WeaponBarrage", "Boomerang", "Homing" };
+        string[] iconNames = { "Default", "RapidFire", "ProjectileBarrage", "Boomerang", "Homing" };
 
         for (int i = 0; i < gunCount; i++)
         {

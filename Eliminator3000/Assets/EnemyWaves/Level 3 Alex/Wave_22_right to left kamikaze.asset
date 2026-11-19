@@ -10,22 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2837c145cb0d9ab47803c610bdff03a0, type: 3}
-  m_Name: Wave_14
+  m_Name: Wave_22_right to left kamikaze
   m_EditorClassIdentifier: Assembly-CSharp::EnemyWaveInfo
   Info: 
-  SpawnPointIndex: 14
+  SpawnPointIndex: 23
   EnemyPrefabs:
   - {fileID: 3699308623078601662, guid: 67d2085d610b8244bb74e95e6df6b45b, type: 3}
   TimesBetweenSpawns:
   - 1
-  EnemySpeed: 10
-  WaypointOrder: 200000002100000022000000
+  EnemySpeed: 50
+  WaypointOrder: 3800000039000000
   WaypointSpeeds:
-  - 0
-  - 0
-  - 0
+  - 10
+  - 10
   WaitTimes:
   - 0
   - 0
-  - 0
-  EndPointIndex: 11
+  EndPointIndex: 20
