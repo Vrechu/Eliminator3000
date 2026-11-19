@@ -777,13 +777,17 @@ public static class SectionContentTools
     // ------------------------------------------------------------------ GUI
 
     // Small heading with a coloured line under it (Enemies / Obstacles / Powerups).
-    private static void SubHeader(string title, int count, Color c)
+    private static bool SubHeader(LevelSection s, string title, int count, Color c)
     {
-        EditorGUILayout.LabelField($"{title} ({count})", EditorStyles.miniBoldLabel);
+        string key = "LevelManager.SubOpen." + title + "." + s.GetInstanceID();
+        bool open = EditorPrefs.GetBool(key, true);
+        bool no = EditorGUILayout.Foldout(open, $"{title} ({count})", true);
+        if (no != open) EditorPrefs.SetBool(key, no);
         Rect r = GUILayoutUtility.GetLastRect();
         if (UnityEngine.Event.current.type == UnityEngine.EventType.Repaint)
             EditorGUI.DrawRect(new Rect(r.x, r.yMax, r.width, 2f), c);
         GUILayout.Space(3);
+        return no;
     }
 
     // Thin coloured bar on the left edge of the box that was just drawn.
@@ -973,11 +977,12 @@ public static class SectionContentTools
         EditorGUILayout.EndHorizontal();
         EditorGUILayout.Space(2);
 
-        // ---- enemies
+        // ---- enemies= 0; i < s.assets.Count; i++)
+                
         if (trigs.Count > 0)
         {
-            SubHeader("Enemies", trigs.Count, EnemyColor);
-            DrawEnemies(s, on, trigs, titles);
+            if (SubHeader(s, "Enemies", trigs.Count, EnemyColor))
+                DrawEnemies(s, on, trigs, titles);
         }
 
         // ---- obstacles, then powerups (newest on top inside each group)
@@ -988,15 +993,15 @@ public static class SectionContentTools
 
         if (obsCount > 0)
         {
-            SubHeader("Obstacles", obsCount, ObstacleColor);
-            for (int i = 0; i < s.assets.Count; i++)
-                if (!s.assets[i].isPowerup) DrawEntry(s, i, on, ref removeIdx, ref dupIdx);
+            if (SubHeader(s, "Obstacles", obsCount, ObstacleColor))
+                for (int i = 0; i < s.assets.Count; i++)
+                    if (!s.assets[i].isPowerup) DrawEntry(s, i, on, ref removeIdx, ref dupIdx);
         }
         if (powCount > 0)
         {
-            SubHeader("Powerups", powCount, PowerupColor);
-            for (int i = 0; i < s.assets.Count; i++)
-                if (s.assets[i].isPowerup) DrawEntry(s, i, on, ref removeIdx, ref dupIdx);
+            if (SubHeader(s, "Powerups", powCount, PowerupColor))
+                for (int i = 0; i < s.assets.Count; i++)
+                    if (s.assets[i].isPowerup) DrawEntry(s, i, on, ref removeIdx, ref dupIdx);
         }
         if (removeIdx >= 0)
         {
