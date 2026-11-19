@@ -28,6 +28,7 @@ public static class SectionContentTools
     private static double nextSyncTime;
     private static GameObject selectedObj;
     public static bool ScrollRequest;
+    public static bool ExpandRequest;
     public static bool HasScrollTarget;
     public static float ScrollTargetY;
     // last object name seen per section (keeps the Level Manager label and the Hierarchy name in line)
@@ -48,6 +49,7 @@ public static class SectionContentTools
     {
         selectedObj = Selection.activeGameObject;
         ScrollRequest = true;
+        ExpandRequest = true;
         UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
     }
     private static bool IsTriggerSelected(EnemySpawnTrigger t)
@@ -575,6 +577,16 @@ public static class SectionContentTools
         }
         EditorGUILayout.EndHorizontal();
     }
+    public static void SetAllCategories(bool open)
+    {
+        foreach (var s in Object.FindObjectsByType<LevelSection>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+        {
+            int id = s.GetInstanceID();
+            EditorPrefs.SetBool("LevelManager.CatOpen." + id, open);
+            EditorPrefs.SetBool("LevelManager.SecShow." + id, open);
+        }
+        UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
+    }
 
     /// <summary>Two folder fields (obstacle prefabs / powerup prefabs) that feed the 'Add asset' menu.</summary>
     public static void DrawLibrarySettings()
@@ -978,30 +990,44 @@ public static class SectionContentTools
         EditorGUILayout.Space(2);
 
         // ---- enemies= 0; i < s.assets.Count; i++)
-                
-        if (trigs.Count > 0)
-        {
-            if (SubHeader(s, "Enemies", trigs.Count, EnemyColor))
-                DrawEnemies(s, on, trigs, titles);
-        }
 
-        // ---- obstacles, then powerups (newest on top inside each group)
         int removeIdx = -1;
         int dupIdx = -1;
         int obsCount = 0, powCount = 0;
         foreach (var en in s.assets) { if (en.isPowerup) powCount++; else obsCount++; }
 
-        if (obsCount > 0)
+        string catKey = "LevelManager.CatOpen." + s.GetInstanceID();
+        bool catOpen = EditorPrefs.GetBool(catKey, false);
+        if (!catOpen && ExpandRequest && selectedObj != null)
         {
-            if (SubHeader(s, "Obstacles", obsCount, ObstacleColor))
-                for (int i = 0; i < s.assets.Count; i++)
-                    if (!s.assets[i].isPowerup) DrawEntry(s, i, on, ref removeIdx, ref dupIdx);
+            foreach (var en in s.assets)
+                if (IsSelected(en)) { catOpen = true; EditorPrefs.SetBool(catKey, true); break; }
+            if (!catOpen)
+                foreach (var tg in trigs)
+                    if (IsTriggerSelected(tg)) { catOpen = true; EditorPrefs.SetBool(catKey, true); break; }
         }
-        if (powCount > 0)
+        bool catNew = EditorGUILayout.Foldout(catOpen, $"Enemies / Obstacles / Powerups   ({trigs.Count} / {obsCount} / {powCount})", true, EditorStyles.foldoutHeader);
+        if (catNew != catOpen) EditorPrefs.SetBool(catKey, catNew);
+
+        if (catNew)
         {
-            if (SubHeader(s, "Powerups", powCount, PowerupColor))
-                for (int i = 0; i < s.assets.Count; i++)
-                    if (s.assets[i].isPowerup) DrawEntry(s, i, on, ref removeIdx, ref dupIdx);
+            if (trigs.Count > 0)
+            {
+                if (SubHeader(s, "Enemies", trigs.Count, EnemyColor))
+                    DrawEnemies(s, on, trigs, titles);
+            }
+            if (obsCount > 0)
+            {
+                if (SubHeader(s, "Obstacles", obsCount, ObstacleColor))
+                    for (int i = 0; i < s.assets.Count; i++)
+                        if (!s.assets[i].isPowerup) DrawEntry(s, i, on, ref removeIdx, ref dupIdx);
+            }
+            if (powCount > 0)
+            {
+                if (SubHeader(s, "Powerups", powCount, PowerupColor))
+                    for (int i = 0; i < s.assets.Count; i++)
+                        if (s.assets[i].isPowerup) DrawEntry(s, i, on, ref removeIdx, ref dupIdx);
+            }
         }
         if (removeIdx >= 0)
         {
