@@ -347505,9 +347505,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PillarDropIn
   reference: {fileID: 0}
-  triggerDistance: 400
-  dropHeight: 60
-  dropDuration: 0.6
+  triggerDistance: 600
+  dropHeight: 500
+  dropDuration: 3
   randomDelay: 0.25
 --- !u!114 &611427607
 MonoBehaviour:
@@ -1193373,7 +1193373,7 @@ MonoBehaviour:
     along: 0
     instance: {fileID: 611427604}
     offset: {x: -1.0171776, y: -0.5500002}
-    open: 0
+    open: 1
   - prefab: {fileID: 5519828220680120833, guid: 934dcf21e32127243a43d4a64a0bec5f, type: 3}
     isPowerup: 0
     zone: 1
