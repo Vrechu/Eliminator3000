@@ -248,7 +248,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyInfo
   Info: 
   ScoreValue: 1000
-  health: 100
+  health: 4
   scoreMultiplierGain: 1
   healthText: {fileID: 388257941410945096}
 --- !u!114 &9023769287737402404
