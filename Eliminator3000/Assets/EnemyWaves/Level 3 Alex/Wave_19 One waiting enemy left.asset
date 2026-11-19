@@ -19,9 +19,11 @@ MonoBehaviour:
   TimesBetweenSpawns:
   - 1
   EnemySpeed: 10
-  WaypointOrder: 2f000000
+  WaypointOrder: 2f00000046000000
   WaypointSpeeds:
   - 0
+  - 0
   WaitTimes:
-  - 10
+  - 2
+  - 7
   EndPointIndex: 16
