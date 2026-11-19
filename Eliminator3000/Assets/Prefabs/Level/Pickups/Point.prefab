@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1060505435744410699}
   - component: {fileID: 5577139355805099946}
   - component: {fileID: 5078330017362349694}
-  - component: {fileID: 4847237277978986282}
+  - component: {fileID: 3152735946571912677}
   - component: {fileID: 6293937440007397290}
   m_Layer: 11
   m_Name: Point
@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 1404456324764638387}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.6, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 4, y: 4, z: 4}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -92,8 +92,8 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &4847237277978986282
-SphereCollider:
+--- !u!65 &3152735946571912677
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -111,7 +111,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.8206477
+  m_Size: {x: 1.2, y: 1.2, z: 1.2}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &6293937440007397290
 MonoBehaviour:

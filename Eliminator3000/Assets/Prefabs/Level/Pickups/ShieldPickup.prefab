@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4613908912130899047}
   - component: {fileID: 9202548355266573845}
   - component: {fileID: 3409660247138429796}
-  - component: {fileID: 3795022890452737512}
+  - component: {fileID: 7142157130631326732}
   - component: {fileID: 579400254720319568}
   m_Layer: 11
   m_Name: ShieldPickup
@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 5705680382198687851}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.08, y: 0.5, z: 12.64}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -92,8 +92,8 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &3795022890452737512
-SphereCollider:
+--- !u!65 &7142157130631326732
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -111,8 +111,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.7240653
-  m_Center: {x: 0, y: 0, z: 0.2240653}
+  m_Size: {x: 1.2, y: 1.2, z: 1.2}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &579400254720319568
 MonoBehaviour:
   m_ObjectHideFlags: 0

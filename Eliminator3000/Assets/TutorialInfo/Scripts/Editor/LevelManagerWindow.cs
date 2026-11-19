@@ -800,6 +800,18 @@ public class LevelManagerWindow : EditorWindow
                 }
             }
             EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginHorizontal();
+            if (GUILayout.Button("Collapse all", GUILayout.Height(22)))
+            {
+                SectionContentTools.SetAllCategories(false);
+                GUIUtility.ExitGUI();
+            }
+            if (GUILayout.Button("Expand all", GUILayout.Height(22)))
+            {
+                SectionContentTools.SetAllCategories(true);
+                GUIUtility.ExitGUI();
+            }
+            EditorGUILayout.EndHorizontal();
             PrefToggle("Auto-snap after switching a section on/off", AutoSnapToggleKey, true);
             PrefToggle("Park switched-off sections to the EAST (+X). Off = west (-X)", ParkEastKey, true);
             PrefFloatField("Park distance (X)", ParkDistKey, 300f);
@@ -906,6 +918,7 @@ public class LevelManagerWindow : EditorWindow
                 Repaint();
             }
             SectionContentTools.ScrollRequest = false;
+            SectionContentTools.ExpandRequest = false;
             SectionContentTools.HasScrollTarget = false;
         }
     }
