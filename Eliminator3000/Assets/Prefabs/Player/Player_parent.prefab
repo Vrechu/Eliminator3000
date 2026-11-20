@@ -263,9 +263,9 @@ MonoBehaviour:
   minHeight: 2
   edgeBounceResidualSpeed: 0.3
   accelerationEnabled: 1
-  horizontalMaxSpeed: 25
+  horizontalMaxSpeed: 20
   verticalMaxSpeed: 15
-  horizontalAcceleration: 130
+  horizontalAcceleration: 150
   verticalAcceleration: 90
   horizontalDeceleration: 80
   verticalDeceleration: 50
