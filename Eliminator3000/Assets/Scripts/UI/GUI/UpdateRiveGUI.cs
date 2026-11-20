@@ -347,6 +347,7 @@ public class UpdateRiveGUI : MonoBehaviour
         if (!showGunsAndAmmo) return;
         if (_playerGunAmmoChangedEvent.PlayerIndex == 0)
         {
+            if (p0GunAmmoProperties == null) return;
             if (_playerGunAmmoChangedEvent.GunIndex >= p0GunAmmoProperties.Length || _playerGunAmmoChangedEvent.GunIndex < 0)
             {
                 Debug.LogError("GunIndex Out of bounds!");
@@ -356,6 +357,7 @@ public class UpdateRiveGUI : MonoBehaviour
         }
         if (_playerGunAmmoChangedEvent.PlayerIndex == 1)
         {
+            if (p1GunAmmoProperties == null) return;
             if (_playerGunAmmoChangedEvent.GunIndex >= p1GunAmmoProperties.Length || _playerGunAmmoChangedEvent.GunIndex < 0)
             {
                 Debug.LogError("GunIndex Out of bounds!");
