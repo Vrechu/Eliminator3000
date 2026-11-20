@@ -257005,6 +257005,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8709003143907446262, guid: 8fcb51de545b5574cb7faccf2a839e82, type: 3}
   m_PrefabInstance: {fileID: 453467009}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &453489066 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 665985602192241792, guid: 89b8ec0f2854ea640ae5387ff08fdcfb, type: 3}
+  m_PrefabInstance: {fileID: 2063235230}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30b5bc34e03734ee49f044caba90a384, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Rive.Runtime.Components::Rive.Components.RiveWidget
 --- !u!1001 &453542943
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -584723,11 +584734,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4094488515039500472, guid: c52f1f9464ec92442b14739a4e27a585, type: 3}
   m_PrefabInstance: {fileID: 1042767298}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1043163199 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1559786577849807385, guid: 4fdbaafad46bb5c4bbbb2f0f29147245, type: 3}
-  m_PrefabInstance: {fileID: 6770570080867247574}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1043320713
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -724710,7 +724716,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.EventSystem
-  m_FirstSelected: {fileID: 1043163199}
+  m_FirstSelected: {fileID: 0}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
 --- !u!4 &1272043404
@@ -1167645,6 +1167651,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 133456793690505970, guid: 89b8ec0f2854ea640ae5387ff08fdcfb, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 143883413722675519, guid: 89b8ec0f2854ea640ae5387ff08fdcfb, type: 3}
       propertyPath: m_Material
       value: 
@@ -1167733,6 +1167743,14 @@ PrefabInstance:
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 2846610253554017119, guid: 89b8ec0f2854ea640ae5387ff08fdcfb, type: 3}
+      propertyPath: m_matchCanvasResolution
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4341805166661130589, guid: 89b8ec0f2854ea640ae5387ff08fdcfb, type: 3}
+      propertyPath: m_Name
+      value: P1HealthPanelOO
+      objectReference: {fileID: 0}
     - target: {fileID: 6932207862764635773, guid: 89b8ec0f2854ea640ae5387ff08fdcfb, type: 3}
       propertyPath: m_Name
       value: IngameCanvas
@@ -1167745,6 +1167763,26 @@ PrefabInstance:
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 7403678266864112833, guid: 89b8ec0f2854ea640ae5387ff08fdcfb, type: 3}
+      propertyPath: p1HealthWidget
+      value: 
+      objectReference: {fileID: 453489066}
+    - target: {fileID: 7714149248864374505, guid: 89b8ec0f2854ea640ae5387ff08fdcfb, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7714149248864374505, guid: 89b8ec0f2854ea640ae5387ff08fdcfb, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2063235231}
+    - target: {fileID: 7714149248864374505, guid: 89b8ec0f2854ea640ae5387ff08fdcfb, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnSceneLoadButtonPressed
+      objectReference: {fileID: 0}
+    - target: {fileID: 7714149248864374505, guid: 89b8ec0f2854ea640ae5387ff08fdcfb, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: Level 3 Alex
+      objectReference: {fileID: 0}
     - target: {fileID: 8316486111028544994, guid: 89b8ec0f2854ea640ae5387ff08fdcfb, type: 3}
       propertyPath: m_Material
       value: 
@@ -1167754,6 +1167792,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 89b8ec0f2854ea640ae5387ff08fdcfb, type: 3}
+--- !u!114 &2063235231 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4818636713872870564, guid: 89b8ec0f2854ea640ae5387ff08fdcfb, type: 3}
+  m_PrefabInstance: {fileID: 2063235230}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48d560e452141774eba7c6504177dc8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InGameMenuFunctions
 --- !u!1 &2063286056 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1404456324764638387, guid: 06d5bac05f9588641937ae8448d8d2e9, type: 3}

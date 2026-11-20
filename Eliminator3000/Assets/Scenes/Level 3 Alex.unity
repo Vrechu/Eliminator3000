@@ -59037,6 +59037,22 @@ PrefabInstance:
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 7714149248864374505, guid: 89b8ec0f2854ea640ae5387ff08fdcfb, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7714149248864374505, guid: 89b8ec0f2854ea640ae5387ff08fdcfb, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 514755283}
+    - target: {fileID: 7714149248864374505, guid: 89b8ec0f2854ea640ae5387ff08fdcfb, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnSceneLoadButtonPressed
+      objectReference: {fileID: 0}
+    - target: {fileID: 7714149248864374505, guid: 89b8ec0f2854ea640ae5387ff08fdcfb, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: MenuScene
+      objectReference: {fileID: 0}
     - target: {fileID: 8316486111028544994, guid: 89b8ec0f2854ea640ae5387ff08fdcfb, type: 3}
       propertyPath: m_Material
       value: 
@@ -59046,6 +59062,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 89b8ec0f2854ea640ae5387ff08fdcfb, type: 3}
+--- !u!114 &514755283 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4818636713872870564, guid: 89b8ec0f2854ea640ae5387ff08fdcfb, type: 3}
+  m_PrefabInstance: {fileID: 514755282}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48d560e452141774eba7c6504177dc8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InGameMenuFunctions
 --- !u!4 &515777929 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 699768524825278143, guid: a3637df444b5e1541bd0858d5c1c0bb0, type: 3}

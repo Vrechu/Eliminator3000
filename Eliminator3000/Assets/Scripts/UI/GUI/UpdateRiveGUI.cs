@@ -282,6 +282,7 @@ public class UpdateRiveGUI : MonoBehaviour
         if (!showGunsAndAmmo) return;
         if (_playerIndex == 0)
         {
+            if (p0GunStateProperties == null) return;
             if (_gunIndex >= p0GunStateProperties.Length || _gunIndex < 0)
             {
                 Debug.LogError("GunIndex Out of bounds!");
@@ -309,6 +310,7 @@ public class UpdateRiveGUI : MonoBehaviour
                 p0GunStateProperties[i].Value = "Inactive";
             }
         }
+        if (p1GunStateProperties == null) return;
         if (_playerIndex == 1)
         {
             if (_gunIndex >= p1GunStateProperties.Length || _gunIndex < 0)
