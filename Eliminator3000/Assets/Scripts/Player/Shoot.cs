@@ -53,7 +53,8 @@ public class Shoot : MonoBehaviour
 
     private void ShootSingle()
     {
-        Instantiate(setGunType.GetCurrentGunProfile().ProjectilePrefab, transform.position, Quaternion.identity);
+        GameObject projectile = Instantiate(setGunType.GetCurrentGunProfile().ProjectilePrefab, transform.position, Quaternion.identity);
+        MarkProjectile(projectile);
         if (!setGunType.GetCurrentGunProfile().InfiniteAmmo) setGunType.ReduceAmmo(setGunType.GetCurrentGunProfile().AmmoCostPerShot);
     }
 
@@ -66,13 +67,26 @@ public class Shoot : MonoBehaviour
         {
             for (int column = 0; column < setGunType.GetCurrentGunProfile().Columns; column++)
             {
-                Instantiate(setGunType.GetCurrentGunProfile().ProjectilePrefab, transform.position,
+                GameObject projectile = Instantiate(setGunType.GetCurrentGunProfile().ProjectilePrefab, transform.position,
                             Quaternion.Euler(
                                 0f - height / 2 + setGunType.GetCurrentGunProfile().Angle * row,
                                 0f - width / 2 + setGunType.GetCurrentGunProfile().Angle * column,
                               0));
+                MarkProjectile(projectile);
             }
         }
         if (!setGunType.GetCurrentGunProfile().InfiniteAmmo) setGunType.ReduceAmmo(setGunType.GetCurrentGunProfile().AmmoCostPerShot);
+    }
+
+    private void MarkProjectile(GameObject _projectile)
+    {
+        if (_projectile.TryGetComponent(out PlayerProjectileHit playerProjectileHit))
+        {
+            playerProjectileHit.PlayerID = setGunType.playerID;
+        }
+        else
+        {
+            Debug.LogWarning($"Gun does not have a PlayerProjectileHit component.");
+        }
     }
 }
