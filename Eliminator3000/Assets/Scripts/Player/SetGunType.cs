@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 public class SetGunType : MonoBehaviour
 {
-    private int playerID = -1;
+    public int playerID = -1;
     [SerializeField] private GameObject[] gunModels;
     [SerializeField] private GunProfile[] guns;
     private bool[] unlocked;
@@ -37,7 +37,6 @@ public class SetGunType : MonoBehaviour
         DisableModels();
         gunModels[0].SetActive(true); // Activate the base gun model by default
         GunsViable();
-        MarkProjectiles();
         ResetGunUnlocks();
         SetBaseGuns();
         SetInfinteAmmos();
@@ -147,24 +146,6 @@ public class SetGunType : MonoBehaviour
         }
         return guns[currentGunIndex];
     }
-
-    /// <summary>
-    /// Sets the PlayerID for each gun's projectile prefab that has a PlayerProjectileHit component.
-    /// </summary>
-    private void MarkProjectiles()
-    {
-        for (int i = 0; i < guns.Length; i++)
-        {
-            if (guns[i].ProjectilePrefab.TryGetComponent<PlayerProjectileHit>(out PlayerProjectileHit playerProjectileHit))
-            {
-                playerProjectileHit.PlayerID = playerID;
-            }
-            else
-            {
-                Debug.LogWarning($"Gun at index {i} does not have a PlayerProjectileHit component.");
-            }
-        }
-    } 
 
     public void ResetShootTimer()
     {
