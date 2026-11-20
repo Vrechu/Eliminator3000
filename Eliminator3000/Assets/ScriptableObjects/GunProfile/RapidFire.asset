@@ -19,7 +19,7 @@ MonoBehaviour:
   MaxAmmo: 100
   AmmoCostPerShot: 1
   FireRate: 0.09
-  LockMovementWhileShooting: 0
+  LockMovementWhileShooting: 1
   Cluster: 0
   Angle: 0
   Rows: 0

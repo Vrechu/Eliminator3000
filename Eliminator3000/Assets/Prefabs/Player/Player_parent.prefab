@@ -261,20 +261,21 @@ MonoBehaviour:
   trackWidth: 25
   maxHeight: 15.5
   minHeight: 2
+  edgeBounceResidualSpeed: 0.3
   accelerationEnabled: 1
-  horizontalMaxSpeed: 50
-  verticalMaxSpeed: 50
-  horizontalAcceleration: 50
-  verticalAcceleration: 50
-  horizontalDeceleration: 210
-  verticalDeceleration: 100
+  horizontalMaxSpeed: 20
+  verticalMaxSpeed: 15
+  horizontalAcceleration: 150
+  verticalAcceleration: 90
+  horizontalDeceleration: 80
+  verticalDeceleration: 50
   bankEnabled: 1
   horizontalInputBankSpeed: 7
   verticalInputBankSpeed: 7
   horizontalIdleBankSpeed: 5
   verticalIdleBankSpeed: 5
-  horixontalBankAngle: 30
-  verticalBankAngle: 30
+  horixontalBankAngle: 40
+  verticalBankAngle: 20
 --- !u!114 &7019095551105211704
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -287,6 +288,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7d5466f0f1105243965e0d5cb97c50e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SetGunType
+  playerID: -1
   gunModels:
   - {fileID: 2038160204921866548}
   - {fileID: 5107522450115076944}
