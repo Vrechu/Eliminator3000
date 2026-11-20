@@ -1,8 +1,23 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 [ExecuteAlways]
 public class BuildingSideSpawner : MonoBehaviour
 {
+    [System.Serializable]
+    public class OpenZone
+    {
+        public string label = "Open field";
+        public float fromZ = 500f;
+        public float toZ = 900f;
+        [Tooltip("Left side stays empty.")] public bool emptyLeft = false;
+        [Tooltip("Right side stays empty.")] public bool emptyRight = false;
+        [Tooltip("0 = completely empty, 0.1 = an occasional building.")]
+        [Range(0f, 1f)] public float buildingChance = 0.08f;
+        [Tooltip("Buildings in this zone sit this much further from the road.")]
+        public float extraOffset = 25f;
+    }
+
     [Header("Building Prefabs")]
     [Tooltip("Drag your building prefabs here.")]
     public GameObject[] buildingPrefabs;
@@ -25,49 +40,68 @@ public class BuildingSideSpawner : MonoBehaviour
     public int randomSeed = 0;
 
     [Header("Horizontal Variety")]
-    [Tooltip("Max sideways shift per building (units). Every building gets a random shift between -value and +value, so some sit closer to the ship and some further away. Keep it small (3 to 6) so it does not look chaotic. 0 = off (old layout).")]
+    [Tooltip("Max sideways shift per building (units). Keep it small (3 to 6). 0 = off.")]
     public float horizontalVariation = 4f;
-    [Tooltip("Safety: a building never gets closer to the centre line than this, so a big variation cannot push it onto the road.")]
+    [Tooltip("Safety: a building never gets closer to the centre line than this.")]
     public float minDistanceFromCenter = 8f;
+
+    [Header("Open Zones (everything else is full city)")]
+    public List<OpenZone> openZones = new List<OpenZone>();
 
     public void GenerateBuildings()
     {
         if (Application.isPlaying) return;
 
         // Clear existing generated buildings
-        int childCount = transform.childCount;
-        for (int i = childCount - 1; i >= 0; i--)
-        {
+        for (int i = transform.childCount - 1; i >= 0; i--)
             DestroyImmediate(transform.GetChild(i).gameObject);
-        }
 
         if (buildingPrefabs == null || buildingPrefabs.Length == 0) return;
 
+        if (spacing < 1f)
+        {
+            Debug.LogWarning("Building spawner: Spacing must be at least 1.");
+            return;
+        }
+
         Random.InitState(randomSeed);
-
-        // Separate random stream for the sideways shift, so the prefab / rotation choices
-        // above stay exactly the same as before for a given seed.
         var sideRng = new System.Random(randomSeed + 12345);
+        var zoneRng = new System.Random(randomSeed + 999);
 
-        // Loop down the track using strict, non-overlapping spacing
         for (float z = startZ; z <= endZ; z += spacing)
         {
-            SpawnBuildingSide(z, leftOffset, sideRng);
-            SpawnBuildingSide(z, rightOffset, sideRng);
+            OpenZone zone = null;
+            foreach (var oz in openZones)
+            {
+                if (z >= oz.fromZ && z <= oz.toZ) { zone = oz; break; }
+            }
+
+            // always consume the random numbers so the layout stays stable
+            double rl = zoneRng.NextDouble();
+            double rr = zoneRng.NextDouble();
+            float extraL = (float)zoneRng.NextDouble();
+            float extraR = (float)zoneRng.NextDouble();
+
+            bool leftOn = zone == null || (!zone.emptyLeft && rl < zone.buildingChance);
+            bool rightOn = zone == null || (!zone.emptyRight && rr < zone.buildingChance);
+            float offL = zone != null ? extraL * zone.extraOffset : 0f;
+            float offR = zone != null ? extraR * zone.extraOffset : 0f;
+
+            SpawnBuildingSide(z, leftOffset, sideRng, leftOn, offL);
+            SpawnBuildingSide(z, rightOffset, sideRng, rightOn, offR);
         }
 
         Debug.Log("Buildings generated cleanly without overlap!");
     }
 
-    private void SpawnBuildingSide(float zPos, float xPos, System.Random sideRng)
+    private void SpawnBuildingSide(float zPos, float xPos, System.Random sideRng, bool allowSpawn, float extraOut)
     {
         int randomIndex = Random.Range(0, buildingPrefabs.Length);
         GameObject prefab = buildingPrefabs[randomIndex];
 
-        // Always consume the random numbers, even if the prefab slot is empty, to keep the layout stable.
         float shift = ((float)sideRng.NextDouble() * 2f - 1f) * horizontalVariation;
 
-        if (prefab == null) return;
+        if (prefab == null || !allowSpawn) return;
 
 #if UNITY_EDITOR
         GameObject newBuilding = UnityEditor.PrefabUtility.InstantiatePrefab(prefab, transform) as GameObject;
@@ -77,16 +111,13 @@ public class BuildingSideSpawner : MonoBehaviour
 
         if (newBuilding != null)
         {
-            float x = xPos + shift;
+            float x = xPos + shift + (xPos < 0f ? -extraOut : extraOut);
 
-            // Keep the building on its own side and not closer than the safety distance.
             if (xPos < 0f) x = Mathf.Min(x, -minDistanceFromCenter);
             else x = Mathf.Max(x, minDistanceFromCenter);
 
-            // Apply exact grid placement with the height offset to fix sinking models
             newBuilding.transform.localPosition = new Vector3(x, heightOffset, zPos);
 
-            // Clean 90-degree rotations so they face the track correctly
             float randomYRot = randomizeRotation ? Random.Range(0, 4) * 90f : 0f;
             newBuilding.transform.localRotation = Quaternion.Euler(0f, randomYRot, 0f);
         }
