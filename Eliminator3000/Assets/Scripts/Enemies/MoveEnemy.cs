@@ -7,7 +7,7 @@ public class MoveEnemy : MonoBehaviour
     public float[] WaypointSpeeds;
     public float[] WaitTimes;
     public Transform EndPoint;
-    [SerializeField] private float speed = 2f;
+    private float speed = 2f;
     [SerializeField] private bool kamikaze = false;
     [SerializeField] private float kamikazeOvershootDistance = 0.5f;
     private bool kamikazeReached = false;
@@ -122,8 +122,11 @@ public class MoveEnemy : MonoBehaviour
     {
         for (int i = 0; i < blackHoleManager.BlackHolesUp.Length; i++)
         {
-            blackHoleAffected = true;
-            if (blackHoleManager.BlackHolesUp[i]) return true;
+            if (blackHoleManager.BlackHolesUp[i])
+            {
+                blackHoleAffected = true;
+                return true;
+            }
         }
         return false;
     }
@@ -154,5 +157,10 @@ public class MoveEnemy : MonoBehaviour
         Vector3 directionToPlayer = (closestPlayerPosition - transform.position).normalized;
         float extensionDistance = 1f + kamikazeOvershootDistance;
         return closestPlayerPosition + directionToPlayer * extensionDistance;
+    }
+
+    public float DistanceBehindPlayer()
+    {
+        return transform.position.z - GetClosestPlayerPosition().z;
     }
 }
