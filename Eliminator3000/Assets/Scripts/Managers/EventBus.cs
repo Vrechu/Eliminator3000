@@ -273,6 +273,21 @@ public class PlayerGunAmmoChangedEvent : Event
 
 #region Level events
 
+public class  SpawnerReadyEvent : Event
+{
+    public SpawnerReadyEvent() { }
+}
+
+public class  GUIReadyEvent : Event
+{
+    public GUIReadyEvent() { }
+}
+
+public class LevelReadyEvent : Event
+{
+    public LevelReadyEvent() { }
+}
+
 public class  LevelEnteredEvent : Event
 {
     public int LevelIndex;
