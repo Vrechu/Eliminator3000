@@ -19,6 +19,7 @@ public class MoveEnemy : MonoBehaviour
     private bool finalWaypointReached = false;
     private GameStateManager gameStatemanager;
     private BlackHoleManager blackHoleManager;
+    private bool blackHoleAffected = false;
     private PlayerProfileManager playerProfileManager = PlayerProfileManager.Instance;
 
     private void Start()
@@ -75,6 +76,7 @@ public class MoveEnemy : MonoBehaviour
     private Vector3 NextWaypointPosition()
     {        
         if (BlackHoleActive()) return blackHoleManager.BlackHolePosition;
+        if (blackHoleAffected) return EndPoint.position;
         if (currentWaypointIndex < WaypointOrder.Length)
         {
             return Waypoints[WaypointOrder[currentWaypointIndex]].position;
@@ -120,6 +122,7 @@ public class MoveEnemy : MonoBehaviour
     {
         for (int i = 0; i < blackHoleManager.BlackHolesUp.Length; i++)
         {
+            blackHoleAffected = true;
             if (blackHoleManager.BlackHolesUp[i]) return true;
         }
         return false;
