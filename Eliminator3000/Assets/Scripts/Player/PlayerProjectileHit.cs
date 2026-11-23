@@ -5,6 +5,7 @@ public class PlayerProjectileHit : MonoBehaviour
     public int PlayerID;
     [SerializeField] LayerMask targetLayers;
     [SerializeField] private int damage = 1;
+    private bool hasHit = false;
 
     /// <summary>
     /// When the projectile collides with another object, check if the object is in the target layer mask. 
@@ -14,8 +15,10 @@ public class PlayerProjectileHit : MonoBehaviour
     /// <param name="_other">The collider of the object the projectile has collided with.</param>
     private void OnTriggerEnter(Collider _other)
     {
+        if (hasHit) return;
         if (targetLayers == (targetLayers | (1 << _other.gameObject.layer)))
         {
+            hasHit = true;
             if (_other.gameObject.TryGetComponent(out EnemyInfo EnemyInfo))
             {
                 EnemyInfo.TakeDamage(damage, PlayerID);

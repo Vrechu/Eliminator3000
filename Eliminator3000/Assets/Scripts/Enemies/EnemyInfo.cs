@@ -12,6 +12,7 @@ public class EnemyInfo : MonoBehaviour
     [SerializeField] private int ScoreValue;
     [SerializeField] private int health = 2;
     [SerializeField] private int scoreMultiplierGain = 1;
+    private bool dead = false;
     private int lastPlayerHitID = -1;
 
     [SerializeField] TextMeshProUGUI healthText;
@@ -30,11 +31,13 @@ public class EnemyInfo : MonoBehaviour
 
     private void CheckHealth()
     {
+        if (dead) return;
         UpdateText();
         if (health <= 0)
         {
             EventBus<PlayerScoredEvent>.Publish(new PlayerScoredEvent(lastPlayerHitID, ScoreValue));
             EventBus<PlayerScoreMultiplierGainedEvent>.Publish(new PlayerScoreMultiplierGainedEvent(lastPlayerHitID, scoreMultiplierGain));
+            dead = true;
             Destroy(gameObject);
         }
     }

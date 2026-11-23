@@ -5,11 +5,14 @@ public class EnemyProjectileHit : MonoBehaviour
     [SerializeField] private LayerMask targetLayers;
     [SerializeField] private int damage = 1;
     [SerializeField] private int scoreLoss = 20;
+    private bool hasHit = false;
 
     private void OnTriggerEnter(Collider _other)
     {
+        if (hasHit) return;
         if (targetLayers == (targetLayers | (1 << _other.gameObject.layer)))
         {
+            hasHit = true;
             if (_other.CompareTag("Player1"))
             {
                 EventBus<PlayerHitEvent>.Publish(new PlayerHitEvent(0, damage, scoreLoss));

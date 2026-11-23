@@ -21,6 +21,7 @@ public class FogTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (triggered) return;
         if (!IsFogOn()) return;
         if (targetLayers == (targetLayers | (1 << other.gameObject.layer)))
         {

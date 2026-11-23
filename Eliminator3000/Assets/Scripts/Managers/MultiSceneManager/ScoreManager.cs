@@ -212,7 +212,7 @@ public class ScoreManager : MonoBehaviour
                 EventBus<PlayerScoreMultiplierChangedEvent>.Publish(new PlayerScoreMultiplierChangedEvent(_playerIndex, scoreMultipliers[_playerIndex] * (int)multiplierScaleFactors[_playerIndex], (int)multiplierScaleFactors[_playerIndex]));
             }
 
-            if (multiplierScaleFactors[_playerIndex] > 1 && !startDecreaseTimers[_playerIndex].IsFinished() ) continue;
+            if (!startDecreaseTimers[_playerIndex].IsFinished() ) continue;
 
             if (decreaseIntervalTimers[_playerIndex].IsFinished()) // If the decrease interval timer has finished, decrease the multiplier and reset the decrease interval timer.
             {
