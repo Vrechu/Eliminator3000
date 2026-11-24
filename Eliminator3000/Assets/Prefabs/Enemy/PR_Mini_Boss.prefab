@@ -272,7 +272,6 @@ MonoBehaviour:
   WaypointSpeeds: []
   WaitTimes: []
   EndPoint: {fileID: 0}
-  speed: 6
   kamikaze: 0
   kamikazeOvershootDistance: 0.5
 --- !u!114 &7460655747993194662
@@ -290,6 +289,7 @@ MonoBehaviour:
   projectilePrefab: {fileID: 4603973788345293308, guid: 0b47b98ede419214dbe5631d4d588960, type: 3}
   aimAtPlayer: 1
   shootInterval: 1
+  stopShootingDistance: 2
   multiShot: 1
   shotOrigins:
   - {fileID: 9151973694371936873}
@@ -747,6 +747,10 @@ PrefabInstance:
     - target: {fileID: 983379886671887589, guid: ab2db9d7c86f0194aa60ca0a96d13115, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2218959641077387811, guid: ab2db9d7c86f0194aa60ca0a96d13115, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5734044290910311396, guid: ab2db9d7c86f0194aa60ca0a96d13115, type: 3}
       propertyPath: m_Name

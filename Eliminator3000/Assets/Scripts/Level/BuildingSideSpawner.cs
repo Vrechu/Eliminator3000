@@ -308,9 +308,16 @@ public class BuildingSideSpawner : MonoBehaviour
         if (!UnityEditor.AssetDatabase.IsValidFolder(MatFolder))
             UnityEditor.AssetDatabase.CreateFolder("Assets", "GeneratedBuildingMaterials");
 
+        // one sub-folder per scene so scenes never overwrite each other's materials
+        string sceneName = string.IsNullOrEmpty(gameObject.scene.name) ? "Unsaved" : gameObject.scene.name;
+        foreach (char ch in System.IO.Path.GetInvalidFileNameChars()) sceneName = sceneName.Replace(ch, '_');
+        string sceneFolder = MatFolder + "/" + sceneName;
+        if (!UnityEditor.AssetDatabase.IsValidFolder(sceneFolder))
+            UnityEditor.AssetDatabase.CreateFolder(MatFolder, sceneName);
+
         string safe = src.name + (isWindow ? "_W" : "_B") + index + "_" + preset.name;
         foreach (char c in System.IO.Path.GetInvalidFileNameChars()) safe = safe.Replace(c, '_');
-        string path = MatFolder + "/" + safe + ".mat";
+        string path = sceneFolder + "/" + safe + ".mat";
 
         Material m = UnityEditor.AssetDatabase.LoadAssetAtPath<Material>(path);
         if (m == null)
@@ -321,15 +328,21 @@ public class BuildingSideSpawner : MonoBehaviour
 
         if (m.HasProperty(target.colorProperty))
         {
+            // only touch the asset when something really changed (keeps git diffs small)
+            bool dirty = false;
             if (target.colorProperty == "_EmissionColor")
             {
-                m.EnableKeyword("_EMISSION");
-                m.globalIlluminationFlags = MaterialGlobalIlluminationFlags.BakedEmissive;
+                if (!m.IsKeywordEnabled("_EMISSION")) { m.EnableKeyword("_EMISSION"); dirty = true; }
+                if (m.globalIlluminationFlags != MaterialGlobalIlluminationFlags.BakedEmissive)
+                {
+                    m.globalIlluminationFlags = MaterialGlobalIlluminationFlags.BakedEmissive;
+                    dirty = true;
+                }
             }
             Color c = preset.color * target.intensity;
             c.a = 1f;
-            m.SetColor(target.colorProperty, c);
-            UnityEditor.EditorUtility.SetDirty(m);
+            if (m.GetColor(target.colorProperty) != c) { m.SetColor(target.colorProperty, c); dirty = true; }
+            if (dirty) UnityEditor.EditorUtility.SetDirty(m);
         }
         return m;
     }

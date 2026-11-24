@@ -57506,6 +57506,43 @@ MonoBehaviour:
   randomSeed: 2
   horizontalVariation: 4
   minDistanceFromCenter: 8
+  useColorPresets: 1
+  materialTargets:
+  - nameContains: Emission
+    colorProperty: _EmissionColor
+    intensity: 1
+    sameAsBuilding: 0
+  - nameContains: Windows
+    colorProperty: _EmissionColor
+    intensity: 0.6
+    sameAsBuilding: 0
+  colorPresets:
+  - name: Pink
+    color: {r: 4, g: 0.3, b: 2.5, a: 1}
+    weight: 1
+    inGlobalPool: 1
+  - name: Blue
+    color: {r: 0.3, g: 1.5, b: 5, a: 1}
+    weight: 1
+    inGlobalPool: 1
+  - name: Orange
+    color: {r: 5, g: 1.5, b: 0.2, a: 1}
+    weight: 1
+    inGlobalPool: 1
+  windowPresets:
+  - name: Warm
+    color: {r: 5, g: 2.5, b: 0.8, a: 1}
+    weight: 1
+    inGlobalPool: 1
+  - name: Cool
+    color: {r: 0.8, g: 2, b: 5, a: 1}
+    weight: 1
+    inGlobalPool: 1
+  - name: White
+    color: {r: 3, g: 3, b: 3, a: 1}
+    weight: 1
+    inGlobalPool: 1
+  buildingRules: []
   openZones: []
 --- !u!1001 &163234228
 PrefabInstance:
@@ -221044,6 +221081,8 @@ GameObject:
   - component: {fileID: 730550623}
   - component: {fileID: 730550622}
   - component: {fileID: 730550621}
+  - component: {fileID: 730550626}
+  - component: {fileID: 730550625}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -221169,6 +221208,59 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -9.703, y: 0, z: 0}
+--- !u!114 &730550625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 730550620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: added8e9c8ee2d04f9432454e43ec58b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::JuiceEffects
+  maxShakeAngle: 2.5
+  maxShakeOffset: 0.25
+  shakeFrequency: 25
+  effects:
+  - name: Boost
+    fovAdd: 12
+    shake: 0.25
+    speedMultiplier: 1.6
+    playerMoveMultiplier: 1
+    attack: 0.4
+    hold: 2
+    release: 0.8
+  - name: Slow
+    fovAdd: -6
+    shake: 0
+    speedMultiplier: 0.5
+    playerMoveMultiplier: 1
+    attack: 0.3
+    hold: 2
+    release: 1
+  - name: Hit
+    fovAdd: 3
+    shake: 0.7
+    speedMultiplier: 1
+    playerMoveMultiplier: 1
+    attack: 0.02
+    hold: 0.1
+    release: 0.5
+--- !u!114 &730550626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 730550620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1277b51405f98c42ba2963fd85266eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::JuiceHitListener
+  effectName: Hit
 --- !u!1001 &730699420
 PrefabInstance:
   m_ObjectHideFlags: 0
