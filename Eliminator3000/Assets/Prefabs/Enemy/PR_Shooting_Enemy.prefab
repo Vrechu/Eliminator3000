@@ -65,7 +65,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyTelegraph
   style: 2
   intensityMultiplier: 6
-  flashColor: {r: 1, g: 0.7054629, b: 0.25098038, a: 1}
+  flashColor: {r: 22.627417, g: 15.962802, b: 5.6790376, a: 1}
   blinkRate: 0.1
   speedCurve:
     serializedVersion: 2
@@ -146,7 +146,7 @@ MonoBehaviour:
   turnSpeed: 4
   maxAngle: 60
   rotationOffsetEuler: {x: 0, y: 270, z: 0}
-  stopTrackingBehind: 0
+  stopTrackingBehind: 5
   hover: 1
   bobHeight: 0.35
   bobSpeed: 1.6
