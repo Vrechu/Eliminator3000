@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
 using TMPro;
-using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class UpdateGUI : MonoBehaviour
 {
@@ -25,7 +26,16 @@ public class UpdateGUI : MonoBehaviour
 
     private bool levelScoreCalculated = false;
 
-    [SerializeField] private bool showHealth = true, showGuns = true, showScore = true, showWin = true, showFinalScore = true;
+    [SerializeField] private bool showHealth = true, showGuns = true, showScore = true, showWin = true, showFinalScore = true, showP2JoinPopup = true;
+
+    private bool p2JoinPopupActive = false, p2CanRequestJoin = true;
+    [Header("Player joining"), SerializeField] private GameObject p2JoinConsentPopup;
+    private Timer p2JoinConsentTimeOutTimer;
+    private Timer p2JoinResetTimer;
+    [SerializeField] private float p2JoinConsentTimeOutTime = 10f, p2JoinResetime = 20f;
+    [SerializeField] private TextMeshProUGUI p2JoinConsentTimerVisual;
+
+
 
     private void OnEnable()
     {
@@ -78,6 +88,29 @@ public class UpdateGUI : MonoBehaviour
         }
 
         DisableGUI();
+
+        p2JoinConsentPopup.SetActive(false);
+        p2JoinConsentTimeOutTimer = new Timer(p2JoinConsentTimeOutTime);
+        p2JoinResetTimer = new Timer(p2JoinResetime);
+
+        if (PlayerProfileManager.Instance.PlayersJoined[1])
+        {
+            p2CanRequestJoin = false;
+        }
+    }
+
+    private void Update()
+    {
+        switch (GameStateManager.Instance.CurrentState)
+        {
+            case GameStateManager.GameState.Pregame:
+            case GameStateManager.GameState.Ingame:
+            case GameStateManager.GameState.Paused:
+                P2JoinRequest();
+                AwnserP2JoinConsentPopup();
+                CountdownPopupTimers();
+                break;
+        }
     }
 
     private void SetLivesGUI(PlayerLivesChangedEvent _playerLivesChangedEvent)
@@ -270,6 +303,84 @@ public class UpdateGUI : MonoBehaviour
             }
             else
                 p2AmmoGUI.text = _playerGunAmmoChangedEvent.NewAmmo.ToString();
+        }
+    }
+
+
+    // ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    private void SendJoinSignal(int _playerIdex)
+    {
+        EventBus<PlayerIngameJoinInputEvent>.Publish(new PlayerIngameJoinInputEvent(_playerIdex));
+    }
+
+    private void P2JoinRequest()
+    {   
+        if (!PlayerProfileManager.Instance.PlayersJoined[0])
+        {
+            if (Keyboard.current == null) return;
+            else if (Keyboard.current.digit1Key.wasReleasedThisFrame)
+            {
+                SendJoinSignal(0);
+                return;
+            }
+        }
+
+        if (!p2CanRequestJoin) return;
+        if (Keyboard.current == null) return;
+        else if (Keyboard.current.digit2Key.wasReleasedThisFrame)
+        {
+            OpenP2JoinConsentPopup();
+        }
+    }
+
+    private void OpenP2JoinConsentPopup()
+    {
+        p2JoinConsentPopup.SetActive(true);
+        p2JoinPopupActive = true;
+        p2JoinConsentTimeOutTimer.Reset(p2JoinConsentTimeOutTime);
+        p2CanRequestJoin = false;
+    }
+
+    private void AwnserP2JoinConsentPopup()
+    {
+        if (!p2JoinPopupActive) return;
+        if (Keyboard.current == null) return;
+        if (Keyboard.current.digit1Key.isPressed)
+        {
+            SendJoinSignal(1);
+            CloseP2JoinConsentPopup();
+        }
+        else if (Keyboard.current.digit2Key.isPressed)
+        {
+            CloseP2JoinConsentPopup();
+            p2JoinResetTimer.Reset(p2JoinResetime);
+        }
+    }
+
+    private void CloseP2JoinConsentPopup()
+    {
+        p2JoinConsentPopup.SetActive(false);
+        p2JoinPopupActive = false;
+    }
+
+    private void CountdownPopupTimers()
+    {
+        if (p2JoinPopupActive)
+        {
+            if (p2JoinConsentTimeOutTimer.IsFinished())
+            {
+                CloseP2JoinConsentPopup();
+                p2JoinResetTimer.Reset(p2JoinResetime);
+            }
+            p2JoinConsentTimerVisual.text = p2JoinConsentTimeOutTimer.TimeLeft.ToString("F1");
+        }
+        else if (!p2JoinPopupActive && !p2CanRequestJoin)
+        {
+            if (p2JoinResetTimer.IsFinished())
+            {
+                p2CanRequestJoin = true;
+            }
         }
     }
 }

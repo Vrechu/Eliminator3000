@@ -189,7 +189,6 @@ public class MainMenuManager : MonoBehaviour
         if (Keyboard.current == null) return;
         else if (Keyboard.current.digit2Key.wasReleasedThisFrame)
         {
-            Debug.Log("P2 join request");
             OpenP2JoinConsentPopup();
         }
     }

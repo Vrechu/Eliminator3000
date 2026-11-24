@@ -27,6 +27,7 @@ public class PlayerProfileManager : MonoBehaviour
     {
         EventBus<MainMenuEnterEvent>.Subscribe(OnGameBoot);
         EventBus<PlayerMenuJoinInputEvent>.Subscribe(OnMenuPlayerJoin);
+        EventBus<PlayerIngameJoinInputEvent>.Subscribe(OnIngamePlayerJoin);
         EventBus<PlayerShieldPickupEvent>.Subscribe(OnShieldPickup);
         EventBus<PlayerDummyPickupEvent>.Subscribe(OnDummyPickup);
         EventBus<PlayerBlackHolePickupEvent>.Subscribe(OnBlackHolePickup);
@@ -36,6 +37,7 @@ public class PlayerProfileManager : MonoBehaviour
     {
         EventBus<MainMenuEnterEvent>.UnSubscribe(OnGameBoot);
         EventBus<PlayerMenuJoinInputEvent>.UnSubscribe(OnMenuPlayerJoin);
+        EventBus<PlayerIngameJoinInputEvent>.UnSubscribe(OnIngamePlayerJoin);
         EventBus<PlayerShieldPickupEvent>.UnSubscribe(OnShieldPickup);
         EventBus<PlayerDummyPickupEvent>.UnSubscribe(OnDummyPickup);
         EventBus<PlayerBlackHolePickupEvent>.UnSubscribe(OnBlackHolePickup);
@@ -43,7 +45,7 @@ public class PlayerProfileManager : MonoBehaviour
 
     private void Update()
     {
-        CheckJoinInput();
+        //CheckJoinInput();
     }
 
     private void OnGameBoot(MainMenuEnterEvent _mainMenuEnterEvent)
@@ -99,6 +101,11 @@ public class PlayerProfileManager : MonoBehaviour
     private void OnMenuPlayerJoin(PlayerMenuJoinInputEvent _playerMenuJoinInputEvent)
     {
         if (!PlayersJoined[_playerMenuJoinInputEvent.PlayerIndex]) CreateNewProfile(_playerMenuJoinInputEvent.PlayerIndex);
+    }
+
+    private void OnIngamePlayerJoin(PlayerIngameJoinInputEvent _playerIngameJoinInputEvent)
+    {
+        if (!PlayersJoined[_playerIngameJoinInputEvent.PlayerIndex]) CreateNewProfile(_playerIngameJoinInputEvent.PlayerIndex);
     }
 
     public bool BothPlayersAlive()

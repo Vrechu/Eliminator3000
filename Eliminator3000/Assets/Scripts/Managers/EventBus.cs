@@ -79,6 +79,15 @@ public class PlayerMenuJoinInputEvent : Event
     }
 }
 
+public class  PlayerIngameJoinInputEvent : Event
+{
+    public int PlayerIndex;
+    public PlayerIngameJoinInputEvent(int cPlayerIndex)
+    {
+        PlayerIndex = cPlayerIndex;
+    }
+}
+
 #endregion
 
 #region Main menu events
