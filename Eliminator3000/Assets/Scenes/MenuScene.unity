@@ -119,17 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!114 &112057420 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6986525356213129457, guid: 20a9d5c84a9998843882a87a5a5b965f, type: 3}
-  m_PrefabInstance: {fileID: 4314568022338775539}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &129701137
 GameObject:
   m_ObjectHideFlags: 0
@@ -734,11 +723,6 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
---- !u!1 &1918054219 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8245310210163215510, guid: 20a9d5c84a9998843882a87a5a5b965f, type: 3}
-  m_PrefabInstance: {fileID: 4314568022338775539}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4314568022338775539
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -747,10 +731,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1510909861}
     m_Modifications:
-    - target: {fileID: 1924386017273019466, guid: 20a9d5c84a9998843882a87a5a5b965f, type: 3}
-      propertyPath: m_text
-      value: Press V / B1 to continue
-      objectReference: {fileID: 0}
     - target: {fileID: 2561629389253215592, guid: 20a9d5c84a9998843882a87a5a5b965f, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -834,52 +814,6 @@ PrefabInstance:
     - target: {fileID: 3758860418344439176, guid: 20a9d5c84a9998843882a87a5a5b965f, type: 3}
       propertyPath: m_Name
       value: MainMenu
-      objectReference: {fileID: 0}
-    - target: {fileID: 4100065236330115410, guid: 20a9d5c84a9998843882a87a5a5b965f, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Level 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7336845284255103702, guid: 20a9d5c84a9998843882a87a5a5b965f, type: 3}
-      propertyPath: continueTimerVisual
-      value: 
-      objectReference: {fileID: 112057420}
-    - target: {fileID: 7336845284255103702, guid: 20a9d5c84a9998843882a87a5a5b965f, type: 3}
-      propertyPath: controlsContinueVisual
-      value: 
-      objectReference: {fileID: 1918054219}
-    - target: {fileID: 7552950975974869423, guid: 20a9d5c84a9998843882a87a5a5b965f, type: 3}
-      propertyPath: m_text
-      value: 'P1 Controls:
-
-        - Move: WASD / Joystick
-
-        - Shoot: FV/
-        B1
-
-        - Switch weapon: B / B2'
-      objectReference: {fileID: 0}
-    - target: {fileID: 7552950975974869423, guid: 20a9d5c84a9998843882a87a5a5b965f, type: 3}
-      propertyPath: m_fontSize
-      value: 38.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8236690991870061621, guid: 20a9d5c84a9998843882a87a5a5b965f, type: 3}
-      propertyPath: m_text
-      value: 'P2 Controls:
-
-        - Move: IJKL / Joystick
-
-        - Shoot: V /
-        B1
-
-        - Switch weapon: B / B2'
-      objectReference: {fileID: 0}
-    - target: {fileID: 8236690991870061621, guid: 20a9d5c84a9998843882a87a5a5b965f, type: 3}
-      propertyPath: m_fontSize
-      value: 37.65
-      objectReference: {fileID: 0}
-    - target: {fileID: 8245310210163215510, guid: 20a9d5c84a9998843882a87a5a5b965f, type: 3}
-      propertyPath: m_Name
-      value: Press V to continue
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
