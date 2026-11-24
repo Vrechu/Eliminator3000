@@ -8,9 +8,18 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private MainMenuPage startingPage = MainMenuPage.AttractScreen;
     [SerializeField] private GameObject[] pages;
     [SerializeField] private Button defaultButtonMainPage, defaultButtonLeaderboardPage, defaultButtonLevelSelectPage;
+
+    private bool p2JoinPopupActive = false, p2CanRequestJoin = true;
+    [Header("Player joining"), SerializeField] private GameObject p2JoinConsentPopup;
+    private Timer p2JoinConsentTimeOutTimer;
+    private Timer p2JoinResetTimer;
+    [SerializeField] private float p2JoinConsentTimeOutTime = 10f, p2JoinResetime = 20f;
+    [SerializeField] private TextMeshProUGUI p2JoinConsentTimerVisual;
+
+
     [SerializeField] private GameObject p1JoinedUI, p2JoinedUI;
 
-    [Header(" ControlScreen"),SerializeField] private GameObject controlsContinueVisual;
+    [Header("Control screen"),SerializeField] private GameObject controlsContinueVisual;
     [SerializeField] private float continueTime = 4f;
     [SerializeField] TextMeshProUGUI continueTimerVisual;
     private Timer controlsContinueTimer;
@@ -48,6 +57,10 @@ public class MainMenuManager : MonoBehaviour
         OpenPage((int)startingPage);
         controlsContinueTimer = new Timer(continueTime);
         controlsContinueVisual.SetActive(false);
+
+        p2JoinConsentPopup.SetActive(false);
+        p2JoinConsentTimeOutTimer = new Timer(p2JoinConsentTimeOutTime);
+        p2JoinResetTimer = new Timer(p2JoinResetime);
     }
 
     private void Update()
@@ -66,14 +79,18 @@ public class MainMenuManager : MonoBehaviour
                 break;
 
             case MainMenuPage.MainPage:
-                InMenuPlayerJoinInputs();
                 LevelSelectCodeInputs();
+                P2JoinRequest();
+                AwnserP2JoinConsentPopup();
+                CountdownPopupTimers();
                 break;
 
             case MainMenuPage.LeaderboardPage:
             case MainMenuPage.LevelSelectPage:
-                InMenuPlayerJoinInputs();
                 BackInputs();
+                P2JoinRequest();
+                AwnserP2JoinConsentPopup();
+                CountdownPopupTimers();
                 break;
         }
     }
@@ -166,15 +183,65 @@ public class MainMenuManager : MonoBehaviour
         }
     }
 
-    private void InMenuPlayerJoinInputs()
+    private void P2JoinRequest()
     {
-
+        if (!p2CanRequestJoin) return;
         if (Keyboard.current == null) return;
-        else if (Keyboard.current.digit2Key.wasPressedThisFrame)
+        else if (Keyboard.current.digit2Key.wasReleasedThisFrame)
         {
-            SendJoinSignal(1);
+            OpenP2JoinConsentPopup();
         }
     }
+
+    private void OpenP2JoinConsentPopup()
+    {
+        p2JoinConsentPopup.SetActive(true);
+        p2JoinPopupActive = true;
+        p2JoinConsentTimeOutTimer.Reset(p2JoinConsentTimeOutTime);
+        p2CanRequestJoin = false;
+    }
+
+    private void AwnserP2JoinConsentPopup()
+    {   if (!p2JoinPopupActive) return;
+        if (Keyboard.current == null) return;
+        if (Keyboard.current.digit1Key.isPressed)
+        {
+            SendJoinSignal(1);
+            CloseP2JoinConsentPopup();
+        }
+        else if (Keyboard.current.digit2Key.isPressed)
+        {
+            CloseP2JoinConsentPopup();
+            p2JoinResetTimer.Reset(p2JoinResetime);
+        }
+    }
+
+    private void CloseP2JoinConsentPopup()
+    {
+        p2JoinConsentPopup.SetActive(false);
+        p2JoinPopupActive = false;
+    }
+
+    private void CountdownPopupTimers()
+    {
+        if (p2JoinPopupActive)
+        {
+            if (p2JoinConsentTimeOutTimer.IsFinished())
+            {
+                CloseP2JoinConsentPopup();
+                p2JoinResetTimer.Reset(p2JoinResetime);
+            }
+            p2JoinConsentTimerVisual.text = p2JoinConsentTimeOutTimer.TimeLeft.ToString("F1");
+        }
+        else if (!p2JoinPopupActive && !p2CanRequestJoin)
+        {
+            if (p2JoinResetTimer.IsFinished())
+            {
+                p2CanRequestJoin = true;
+            }
+        }
+    }
+
 
     private void OnPlayerJoined(PlayerJoinedEvent _playerJoinedEvent)
     {
