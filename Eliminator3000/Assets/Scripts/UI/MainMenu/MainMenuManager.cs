@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -8,16 +9,21 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private GameObject[] pages;
     [SerializeField] private Button defaultButtonMainPage, defaultButtonLeaderboardPage, defaultButtonLevelSelectPage;
     [SerializeField] private GameObject p1JoinedUI, p2JoinedUI;
-    [SerializeField] private GameObject Player2JoinCheck;
+
+    [Header(" ControlScreen"),SerializeField] private GameObject controlsContinueVisual;
+    [SerializeField] private float continueTime = 4f;
+    [SerializeField] TextMeshProUGUI continueTimerVisual;
+    private Timer controlsContinueTimer;
 
 
     public enum MainMenuPage
     {
         AttractScreen = 0,
-        PlayerSelectPage = 1,
-        MainPage = 2,
-        LeaderboardPage = 3,
-        LevelSelectPage = 4,
+        ControlsPage = 1,
+        PlayerSelectPage = 2,
+        MainPage = 3,
+        LeaderboardPage = 4,
+        LevelSelectPage = 5,
     }
 
     private MainMenuPage currentMenuPage;
@@ -40,6 +46,8 @@ public class MainMenuManager : MonoBehaviour
     private void Start()
     {
         OpenPage((int)startingPage);
+        controlsContinueTimer = new Timer(continueTime);
+        controlsContinueVisual.SetActive(false);
     }
 
     private void Update()
@@ -48,6 +56,9 @@ public class MainMenuManager : MonoBehaviour
         {
             case MainMenuPage.AttractScreen:
                 AttractScreenInputListener();
+                break;
+            case MainMenuPage.ControlsPage:
+                ControlsPageInputListener();
                 break;
 
             case MainMenuPage.PlayerSelectPage:
@@ -70,18 +81,6 @@ public class MainMenuManager : MonoBehaviour
     public void StartLevel(string _levelName)
     {
         EventBus<LoadSceneEvent>.Publish(new LoadSceneEvent(_levelName));
-    }
-
-    private void OnPlayerJoined(PlayerJoinedEvent _playerJoinedEvent)
-    {
-        if (_playerJoinedEvent.PlayerIndex == 0)
-        {
-            p1JoinedUI.SetActive(true);
-        }
-        else if (_playerJoinedEvent.PlayerIndex == 1)
-        {
-            p2JoinedUI.SetActive(true);
-        }
     }
 
     private void ResetPlayerJoinedUI()
@@ -123,8 +122,27 @@ public class MainMenuManager : MonoBehaviour
         if (Keyboard.current == null) return;
         if (Keyboard.current.anyKey.wasPressedThisFrame)
         {
+            OpenPage((int)MainMenuPage.ControlsPage);
+        }
+    }
+
+    private void ControlsPageInputListener()
+    {
+        if (Keyboard.current.fKey.isPressed && Keyboard.current.gKey.isPressed)
+        {
             OpenPage((int)MainMenuPage.PlayerSelectPage);
         }
+
+        if ((controlsContinueTimer.IsFinished()))
+        {
+            controlsContinueVisual.SetActive(true);
+            continueTimerVisual.enabled = false;
+            if (Keyboard.current.vKey.wasPressedThisFrame)
+            {
+                OpenPage((int)MainMenuPage.PlayerSelectPage);
+            }
+        }
+        continueTimerVisual.text = controlsContinueTimer.TimeLeft.ToString("F1");
     }
 
     private void SendJoinSignal(int _playerIdex)
@@ -155,6 +173,18 @@ public class MainMenuManager : MonoBehaviour
         else if (Keyboard.current.digit2Key.wasPressedThisFrame)
         {
             SendJoinSignal(1);
+        }
+    }
+
+    private void OnPlayerJoined(PlayerJoinedEvent _playerJoinedEvent)
+    {
+        if (_playerJoinedEvent.PlayerIndex == 0)
+        {
+            p1JoinedUI.SetActive(true);
+        }
+        else if (_playerJoinedEvent.PlayerIndex == 1)
+        {
+            p2JoinedUI.SetActive(true);
         }
     }
 

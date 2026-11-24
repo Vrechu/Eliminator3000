@@ -119,6 +119,17 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &112057420 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6986525356213129457, guid: 20a9d5c84a9998843882a87a5a5b965f, type: 3}
+  m_PrefabInstance: {fileID: 4314568022338775539}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &129701137
 GameObject:
   m_ObjectHideFlags: 0
@@ -444,17 +455,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6395060771995152712, guid: 20a9d5c84a9998843882a87a5a5b965f, type: 3}
   m_PrefabInstance: {fileID: 4314568022338775539}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1007173307 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4100065236330115410, guid: 20a9d5c84a9998843882a87a5a5b965f, type: 3}
-  m_PrefabInstance: {fileID: 4314568022338775539}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1007173306}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
 --- !u!224 &1092690854 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2561629389253215592, guid: 20a9d5c84a9998843882a87a5a5b965f, type: 3}
@@ -698,13 +698,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1823907019}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
+  m_LocalRotation: {x: -0.046264585, y: 0.8297758, z: 0.4200783, w: 0.3645079}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: -46.959, y: 123.967, z: 19.646}
 --- !u!114 &1823907022
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -734,28 +734,11 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
---- !u!114 &2026817922 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9000718002455321901, guid: 20a9d5c84a9998843882a87a5a5b965f, type: 3}
+--- !u!1 &1918054219 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8245310210163215510, guid: 20a9d5c84a9998843882a87a5a5b965f, type: 3}
   m_PrefabInstance: {fileID: 4314568022338775539}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
---- !u!114 &2127911234 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2512251207681921095, guid: 20a9d5c84a9998843882a87a5a5b965f, type: 3}
-  m_PrefabInstance: {fileID: 4314568022338775539}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
 --- !u!1001 &4314568022338775539
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -764,17 +747,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1510909861}
     m_Modifications:
-    - target: {fileID: 192913918648758938, guid: 20a9d5c84a9998843882a87a5a5b965f, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 900550600774457234, guid: 20a9d5c84a9998843882a87a5a5b965f, type: 3}
-      propertyPath: m_Navigation.m_WrapAround
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1304044908300447320, guid: 20a9d5c84a9998843882a87a5a5b965f, type: 3}
-      propertyPath: m_Navigation.m_Mode
-      value: 2
+    - target: {fileID: 1924386017273019466, guid: 20a9d5c84a9998843882a87a5a5b965f, type: 3}
+      propertyPath: m_text
+      value: Press V / B1 to continue
       objectReference: {fileID: 0}
     - target: {fileID: 2561629389253215592, guid: 20a9d5c84a9998843882a87a5a5b965f, type: 3}
       propertyPath: m_Pivot.x
@@ -856,45 +831,55 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3039487097170441601, guid: 20a9d5c84a9998843882a87a5a5b965f, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3758860418344439176, guid: 20a9d5c84a9998843882a87a5a5b965f, type: 3}
       propertyPath: m_Name
       value: MainMenu
       objectReference: {fileID: 0}
     - target: {fileID: 4100065236330115410, guid: 20a9d5c84a9998843882a87a5a5b965f, type: 3}
-      propertyPath: m_Navigation.m_Mode
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4100065236330115410, guid: 20a9d5c84a9998843882a87a5a5b965f, type: 3}
-      propertyPath: m_Navigation.m_WrapAround
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4100065236330115410, guid: 20a9d5c84a9998843882a87a5a5b965f, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: ControlsScene
-      objectReference: {fileID: 0}
-    - target: {fileID: 6519380682016058452, guid: 20a9d5c84a9998843882a87a5a5b965f, type: 3}
-      propertyPath: m_IsActive
-      value: 0
+      value: Level 1
       objectReference: {fileID: 0}
     - target: {fileID: 7336845284255103702, guid: 20a9d5c84a9998843882a87a5a5b965f, type: 3}
-      propertyPath: defaultButtonMainPage
+      propertyPath: continueTimerVisual
       value: 
-      objectReference: {fileID: 1007173307}
+      objectReference: {fileID: 112057420}
     - target: {fileID: 7336845284255103702, guid: 20a9d5c84a9998843882a87a5a5b965f, type: 3}
-      propertyPath: defaultButtonLeaderboardPage
+      propertyPath: controlsContinueVisual
       value: 
-      objectReference: {fileID: 2026817922}
-    - target: {fileID: 7336845284255103702, guid: 20a9d5c84a9998843882a87a5a5b965f, type: 3}
-      propertyPath: defaultButtonLevelSelectPage
-      value: 
-      objectReference: {fileID: 2127911234}
-    - target: {fileID: 9000718002455321901, guid: 20a9d5c84a9998843882a87a5a5b965f, type: 3}
-      propertyPath: m_Navigation.m_Mode
-      value: 3
+      objectReference: {fileID: 1918054219}
+    - target: {fileID: 7552950975974869423, guid: 20a9d5c84a9998843882a87a5a5b965f, type: 3}
+      propertyPath: m_text
+      value: 'P1 Controls:
+
+        - Move: WASD / Joystick
+
+        - Shoot: FV/
+        B1
+
+        - Switch weapon: B / B2'
+      objectReference: {fileID: 0}
+    - target: {fileID: 7552950975974869423, guid: 20a9d5c84a9998843882a87a5a5b965f, type: 3}
+      propertyPath: m_fontSize
+      value: 38.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8236690991870061621, guid: 20a9d5c84a9998843882a87a5a5b965f, type: 3}
+      propertyPath: m_text
+      value: 'P2 Controls:
+
+        - Move: IJKL / Joystick
+
+        - Shoot: V /
+        B1
+
+        - Switch weapon: B / B2'
+      objectReference: {fileID: 0}
+    - target: {fileID: 8236690991870061621, guid: 20a9d5c84a9998843882a87a5a5b965f, type: 3}
+      propertyPath: m_fontSize
+      value: 37.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 8245310210163215510, guid: 20a9d5c84a9998843882a87a5a5b965f, type: 3}
+      propertyPath: m_Name
+      value: Press V to continue
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
