@@ -375,7 +375,7 @@
                 {
                     "name": "",
                     "id": "a1f75678-3ff4-46da-8ba0-0c3bc6f5eb3e",
-                    "path": "<Keyboard>/f",
+                    "path": "<Keyboard>/v",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse;Gamepad;Touch;Joystick;XR;WASD",
@@ -397,7 +397,7 @@
                 {
                     "name": "",
                     "id": "61e29ac5-2ab3-4a66-a03c-73cbcf3c1303",
-                    "path": "<Keyboard>/g",
+                    "path": "<Keyboard>/b",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse;Touch;Joystick;XR;WASD;Arrows",
@@ -731,7 +731,7 @@
                 {
                     "name": "",
                     "id": "1ce805be-b127-4025-a267-87e960cc597d",
-                    "path": "<Keyboard>/f",
+                    "path": "<Keyboard>/v",
                     "interactions": "",
                     "processors": "",
                     "groups": ";WASD",
@@ -742,7 +742,7 @@
                 {
                     "name": "",
                     "id": "16a83315-48bc-417a-850f-f15c07a6187c",
-                    "path": "<Keyboard>/numpad4",
+                    "path": "<Keyboard>/numpad1",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Arrows",
@@ -753,7 +753,7 @@
                 {
                     "name": "",
                     "id": "4896c1fc-ff4d-4a37-b0ca-8b0646db1a32",
-                    "path": "<Keyboard>/g",
+                    "path": "<Keyboard>/b",
                     "interactions": "",
                     "processors": "",
                     "groups": ";WASD",
@@ -764,7 +764,7 @@
                 {
                     "name": "",
                     "id": "beecbb77-591c-4ab1-9c5b-0553fcbe5627",
-                    "path": "<Keyboard>/numpad5",
+                    "path": "<Keyboard>/numpad2",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Arrows",
@@ -775,7 +775,7 @@
                 {
                     "name": "",
                     "id": "b6aef977-5a7c-4541-96bf-079b7b5a0d45",
-                    "path": "<Keyboard>/h",
+                    "path": "<Keyboard>/n",
                     "interactions": "",
                     "processors": "",
                     "groups": ";WASD",
@@ -786,7 +786,7 @@
                 {
                     "name": "",
                     "id": "6ce761d8-9980-4bb3-9aa3-c63ab18b14ce",
-                    "path": "<Keyboard>/numpad6",
+                    "path": "<Keyboard>/numpad3",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Arrows",

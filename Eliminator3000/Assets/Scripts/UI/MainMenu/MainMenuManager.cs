@@ -161,7 +161,7 @@ public class MainMenuManager : MonoBehaviour
     private void LevelSelectCodeInputs()
     {
         if (Keyboard.current == null) return;
-        if (Keyboard.current.gKey.isPressed && Keyboard.current.hKey.wasPressedThisFrame)
+        if (Keyboard.current.fKey.isPressed && Keyboard.current.gKey.wasPressedThisFrame)
         {
             OpenPage((int)MainMenuPage.LevelSelectPage);
         }
@@ -171,7 +171,7 @@ public class MainMenuManager : MonoBehaviour
     {
         if (Keyboard.current == null) return;
         if (Keyboard.current.escapeKey.wasPressedThisFrame
-            || Keyboard.current.gKey.wasPressedThisFrame)
+            || Keyboard.current.bKey.wasPressedThisFrame)
         {
             OpenPage((int)MainMenuPage.MainPage);
         }

@@ -66,7 +66,8 @@ public class GameStateManager : MonoBehaviour
     /// </summary>
     private void PlayPauseGame()
     {
-        if (!Keyboard.current.enterKey.wasPressedThisFrame) return;
+        if (!(Keyboard.current.fKey.wasPressedThisFrame
+            || Keyboard.current.numpad4Key.wasPressedThisFrame)) return;
 
         if (!playerProfileManager.BothPlayersAlive()) return;
         if (!playerProfileManager.PlayersJoined[0]) return;
