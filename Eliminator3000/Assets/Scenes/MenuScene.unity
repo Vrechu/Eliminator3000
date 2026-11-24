@@ -337,17 +337,17 @@ MonoBehaviour:
   m_MoveRepeatDelay: 0.5
   m_MoveRepeatRate: 0.1
   m_XRTrackingOrigin: {fileID: 0}
-  m_ActionsAsset: {fileID: -944628639613478452, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_PointAction: {fileID: -1654692200621890270, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_MoveAction: {fileID: -8784545083839296357, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_SubmitAction: {fileID: 392368643174621059, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_CancelAction: {fileID: 7727032971491509709, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_LeftClickAction: {fileID: 3001919216989983466, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_MiddleClickAction: {fileID: -2185481485913320682, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_RightClickAction: {fileID: -4090225696740746782, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_ScrollWheelAction: {fileID: 6240969308177333660, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_TrackedDevicePositionAction: {fileID: 6564999863303420839, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
-  m_TrackedDeviceOrientationAction: {fileID: 7970375526676320489, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  m_ActionsAsset: {fileID: -944628639613478452, guid: 633c5b20bd428aa4bbcb0f2952440a2a, type: 3}
+  m_PointAction: {fileID: -6500827556495933985, guid: 633c5b20bd428aa4bbcb0f2952440a2a, type: 3}
+  m_MoveAction: {fileID: 133240172501795596, guid: 633c5b20bd428aa4bbcb0f2952440a2a, type: 3}
+  m_SubmitAction: {fileID: -1859099534497194403, guid: 633c5b20bd428aa4bbcb0f2952440a2a, type: 3}
+  m_CancelAction: {fileID: -5763686675759531860, guid: 633c5b20bd428aa4bbcb0f2952440a2a, type: 3}
+  m_LeftClickAction: {fileID: 6270884533045547875, guid: 633c5b20bd428aa4bbcb0f2952440a2a, type: 3}
+  m_MiddleClickAction: {fileID: 46568253935455178, guid: 633c5b20bd428aa4bbcb0f2952440a2a, type: 3}
+  m_RightClickAction: {fileID: -6585361284050718289, guid: 633c5b20bd428aa4bbcb0f2952440a2a, type: 3}
+  m_ScrollWheelAction: {fileID: 3285649517361140330, guid: 633c5b20bd428aa4bbcb0f2952440a2a, type: 3}
+  m_TrackedDevicePositionAction: {fileID: 5046793260050523633, guid: 633c5b20bd428aa4bbcb0f2952440a2a, type: 3}
+  m_TrackedDeviceOrientationAction: {fileID: -8409067135722368275, guid: 633c5b20bd428aa4bbcb0f2952440a2a, type: 3}
   m_DeselectOnBackgroundClick: 1
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
@@ -478,6 +478,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd7b6abd2d02d9d479e5ac817cf6d454, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuickRestart
+  enableQuickRestart: 1
 --- !u!4 &1127295828
 Transform:
   m_ObjectHideFlags: 0
@@ -541,7 +542,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -686,13 +687,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1823907019}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
+  m_LocalRotation: {x: -0.046264585, y: 0.8297758, z: 0.4200783, w: 0.3645079}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: -46.959, y: 123.967, z: 19.646}
 --- !u!114 &1823907022
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -813,10 +814,6 @@ PrefabInstance:
     - target: {fileID: 3758860418344439176, guid: 20a9d5c84a9998843882a87a5a5b965f, type: 3}
       propertyPath: m_Name
       value: MainMenu
-      objectReference: {fileID: 0}
-    - target: {fileID: 7336845284255103702, guid: 20a9d5c84a9998843882a87a5a5b965f, type: 3}
-      propertyPath: firstSceneName
-      value: Level 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

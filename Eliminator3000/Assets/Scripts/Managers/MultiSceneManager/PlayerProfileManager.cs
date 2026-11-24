@@ -26,6 +26,7 @@ public class PlayerProfileManager : MonoBehaviour
     private void OnEnable()
     {
         EventBus<MainMenuEnterEvent>.Subscribe(OnGameBoot);
+        EventBus<PlayerMenuJoinInputEvent>.Subscribe(OnMenuPlayerJoin);
         EventBus<PlayerShieldPickupEvent>.Subscribe(OnShieldPickup);
         EventBus<PlayerDummyPickupEvent>.Subscribe(OnDummyPickup);
         EventBus<PlayerBlackHolePickupEvent>.Subscribe(OnBlackHolePickup);
@@ -34,6 +35,7 @@ public class PlayerProfileManager : MonoBehaviour
     private void OnDestroy()
     {
         EventBus<MainMenuEnterEvent>.UnSubscribe(OnGameBoot);
+        EventBus<PlayerMenuJoinInputEvent>.UnSubscribe(OnMenuPlayerJoin);
         EventBus<PlayerShieldPickupEvent>.UnSubscribe(OnShieldPickup);
         EventBus<PlayerDummyPickupEvent>.UnSubscribe(OnDummyPickup);
         EventBus<PlayerBlackHolePickupEvent>.UnSubscribe(OnBlackHolePickup);
@@ -47,7 +49,6 @@ public class PlayerProfileManager : MonoBehaviour
     private void OnGameBoot(MainMenuEnterEvent _mainMenuEnterEvent)
     {
         ResetProfiles();
-        CreateNewProfile(0);
     }
 
     private void CreateNewProfile(int _profileIndex)
@@ -76,23 +77,28 @@ public class PlayerProfileManager : MonoBehaviour
     private void CheckJoinInput()
     {
         if (Keyboard.current == null) return;
-        if (!(GameStateManager.Instance.CurrentState == GameStateManager.GameState.MainMenu
-            || GameStateManager.Instance.CurrentState == GameStateManager.GameState.Pregame
+        if (!(/*GameStateManager.Instance.CurrentState == GameStateManager.GameState.MainMenu
+            ||*/ GameStateManager.Instance.CurrentState == GameStateManager.GameState.Pregame
             || GameStateManager.Instance.CurrentState == GameStateManager.GameState.Ingame
             || GameStateManager.Instance.CurrentState == GameStateManager.GameState.Paused)) return;
         if (!PlayersJoined[0]
-            && Keyboard.current.spaceKey.wasPressedThisFrame)
+            && Keyboard.current.digit1Key.wasPressedThisFrame)
         {
             CreateNewProfile(0);
             return;
         }
 
         if (!PlayersJoined[1]
-                && Keyboard.current.rightCtrlKey.wasPressedThisFrame)
+                && Keyboard.current.digit2Key.wasPressedThisFrame)
         {
             CreateNewProfile(1);
             return;
         }
+    }
+
+    private void OnMenuPlayerJoin(PlayerMenuJoinInputEvent _playerMenuJoinInputEvent)
+    {
+        if (!PlayersJoined[_playerMenuJoinInputEvent.PlayerIndex]) CreateNewProfile(_playerMenuJoinInputEvent.PlayerIndex);
     }
 
     public bool BothPlayersAlive()
