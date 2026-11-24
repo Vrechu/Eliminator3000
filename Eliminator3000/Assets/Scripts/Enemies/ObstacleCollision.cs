@@ -22,7 +22,7 @@ public class ObstacleCollision : MonoBehaviour
             {
                 EventBus<PlayerHitEvent>.Publish(new PlayerHitEvent(1, damage, scoreLoss));
             }
-                Destroy(gameObject);
+            Destroy(gameObject);
             
         }        
     }
