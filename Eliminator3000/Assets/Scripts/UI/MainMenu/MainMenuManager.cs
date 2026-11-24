@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -9,6 +8,7 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private GameObject[] pages;
     [SerializeField] private Button defaultButtonMainPage, defaultButtonLeaderboardPage, defaultButtonLevelSelectPage;
     [SerializeField] private GameObject p1JoinedUI, p2JoinedUI;
+    [SerializeField] private GameObject Player2JoinCheck;
 
 
     public enum MainMenuPage

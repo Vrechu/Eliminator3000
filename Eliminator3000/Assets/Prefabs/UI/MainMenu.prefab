@@ -152,7 +152,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &6897387653406295359
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1736,9 +1736,9 @@ MonoBehaviour:
   - {fileID: 3039487097170441601}
   - {fileID: 6519380682016058452}
   - {fileID: 192913918648758938}
-  defaultButtonMainPage: {fileID: 4100065236330115410}
-  defaultButtonLeaderboardPage: {fileID: 9000718002455321901}
-  defaultButtonLevelSelectPage: {fileID: 2512251207681921095}
+  defaultButtonMainPage: {fileID: 0}
+  defaultButtonLeaderboardPage: {fileID: 0}
+  defaultButtonLevelSelectPage: {fileID: 0}
   p1JoinedUI: {fileID: 7177181760506873379}
   p2JoinedUI: {fileID: 5927234572795417167}
 --- !u!1 &4185049792374114941
@@ -2001,7 +2001,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
   m_Navigation:
     m_Mode: 2
-    m_WrapAround: 1
+    m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -2419,8 +2419,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
   m_Navigation:
-    m_Mode: 2
-    m_WrapAround: 1
+    m_Mode: 3
+    m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -2919,7 +2919,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
   m_Navigation:
-    m_Mode: 2
+    m_Mode: 3
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}

@@ -14,6 +14,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Level 3 Alex.unity
     guid: cfe1319657b149d4d8ccbff32319917b
+  - enabled: 1
+    path: Assets/Scenes/ControlsScene.unity
+    guid: 818e36dd7a32dd54c87d624a0b733a7b
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 633c5b20bd428aa4bbcb0f2952440a2a, type: 3}
   m_UseUCBPForAssetBundles: 0
