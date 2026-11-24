@@ -81,14 +81,14 @@ public class PlayerProfileManager : MonoBehaviour
             || GameStateManager.Instance.CurrentState == GameStateManager.GameState.Ingame
             || GameStateManager.Instance.CurrentState == GameStateManager.GameState.Paused)) return;
         if (!PlayersJoined[0]
-            && Keyboard.current.spaceKey.wasPressedThisFrame)
+            && Keyboard.current.digit1Key.wasPressedThisFrame)
         {
             CreateNewProfile(0);
             return;
         }
 
         if (!PlayersJoined[1]
-                && Keyboard.current.rightCtrlKey.wasPressedThisFrame)
+                && Keyboard.current.digit2Key.wasPressedThisFrame)
         {
             CreateNewProfile(1);
             return;

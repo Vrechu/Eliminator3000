@@ -128,7 +128,7 @@
                 {
                     "name": "up",
                     "id": "854b2529-dfbf-4385-a2f4-3ff7ad2296c3",
-                    "path": "<Keyboard>/upArrow",
+                    "path": "<Keyboard>/i",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Arrows",
@@ -139,7 +139,7 @@
                 {
                     "name": "down",
                     "id": "13ab0b6b-7e95-403f-8777-76c920834c92",
-                    "path": "<Keyboard>/downArrow",
+                    "path": "<Keyboard>/k",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Arrows",
@@ -150,7 +150,7 @@
                 {
                     "name": "left",
                     "id": "bfc753d7-ba18-4eb1-9b83-2a3102de82c3",
-                    "path": "<Keyboard>/leftArrow",
+                    "path": "<Keyboard>/j",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Arrows",
@@ -161,7 +161,7 @@
                 {
                     "name": "right",
                     "id": "cb54a2d1-aa6b-4f42-9d14-79d1c0b5ec94",
-                    "path": "<Keyboard>/rightArrow",
+                    "path": "<Keyboard>/l",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Arrows",
@@ -183,7 +183,7 @@
                 {
                     "name": "",
                     "id": "1ce805be-b127-4025-a267-87e960cc597d",
-                    "path": "<Keyboard>/space",
+                    "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",
                     "groups": ";WASD",
@@ -194,7 +194,7 @@
                 {
                     "name": "",
                     "id": "16a83315-48bc-417a-850f-f15c07a6187c",
-                    "path": "<Keyboard>/backslash",
+                    "path": "<Keyboard>/numpad4",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Arrows",
@@ -205,7 +205,7 @@
                 {
                     "name": "",
                     "id": "4896c1fc-ff4d-4a37-b0ca-8b0646db1a32",
-                    "path": "<Keyboard>/leftCtrl",
+                    "path": "<Keyboard>/g",
                     "interactions": "",
                     "processors": "",
                     "groups": ";WASD",
@@ -216,7 +216,7 @@
                 {
                     "name": "",
                     "id": "beecbb77-591c-4ab1-9c5b-0553fcbe5627",
-                    "path": "<Keyboard>/rightAlt",
+                    "path": "<Keyboard>/numpad5",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Arrows",
@@ -227,7 +227,7 @@
                 {
                     "name": "",
                     "id": "b6aef977-5a7c-4541-96bf-079b7b5a0d45",
-                    "path": "<Keyboard>/q",
+                    "path": "<Keyboard>/h",
                     "interactions": "",
                     "processors": "",
                     "groups": ";WASD",
@@ -238,7 +238,7 @@
                 {
                     "name": "",
                     "id": "6ce761d8-9980-4bb3-9aa3-c63ab18b14ce",
-                    "path": "<Keyboard>/rightShift",
+                    "path": "<Keyboard>/numpad6",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Arrows",
