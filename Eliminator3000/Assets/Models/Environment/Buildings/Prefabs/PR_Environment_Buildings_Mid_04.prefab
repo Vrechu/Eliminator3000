@@ -80,6 +80,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -3902592117797718071, guid: 4e88ad55e01a8a14ebf74294996e7dc8, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -2647800591907617458, guid: 4e88ad55e01a8a14ebf74294996e7dc8, type: 3}
+      propertyPath: m_ScaleInLightmap
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: -831909701315512564, guid: 4e88ad55e01a8a14ebf74294996e7dc8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
