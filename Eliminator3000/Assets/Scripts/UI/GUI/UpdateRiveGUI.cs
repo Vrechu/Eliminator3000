@@ -1,6 +1,7 @@
 ﻿using Rive;
 using Rive.Components;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class UpdateRiveGUI : MonoBehaviour
 {
@@ -343,7 +344,13 @@ public class UpdateRiveGUI : MonoBehaviour
                 Debug.LogError("GunIndex Out of bounds!");
                 return;
             }
-            p0GunAmmoProperties[_playerGunAmmoChangedEvent.GunIndex].Value = _playerGunAmmoChangedEvent.NewAmmo;
+            if (_playerGunAmmoChangedEvent.MaxAmmo == 0) 
+            {
+                p0GunAmmoProperties[_playerGunAmmoChangedEvent.GunIndex].Value = 0;
+                return;
+            }
+            p0GunAmmoProperties[_playerGunAmmoChangedEvent.GunIndex].Value = 
+                100f / _playerGunAmmoChangedEvent.MaxAmmo * _playerGunAmmoChangedEvent.NewAmmo;
         }
         if (_playerGunAmmoChangedEvent.PlayerIndex == 1)
         {
@@ -353,7 +360,13 @@ public class UpdateRiveGUI : MonoBehaviour
                 Debug.LogError("GunIndex Out of bounds!");
                 return;
             }
-            p1GunAmmoProperties[_playerGunAmmoChangedEvent.GunIndex].Value = _playerGunAmmoChangedEvent.NewAmmo;
+            if (_playerGunAmmoChangedEvent.MaxAmmo == 0) 
+            {
+                p1GunAmmoProperties[_playerGunAmmoChangedEvent.GunIndex].Value = 0;
+                return;
+            }
+            p1GunAmmoProperties[_playerGunAmmoChangedEvent.GunIndex].Value = 
+                100f / _playerGunAmmoChangedEvent.MaxAmmo * _playerGunAmmoChangedEvent.NewAmmo;
         }
     }
 
