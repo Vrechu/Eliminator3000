@@ -98,7 +98,7 @@ public class ScoreManager : MonoBehaviour
     private void IncreasePlayerScore(int _playerIndex, int _scoreIncrease)
     {
         playerProfileManager.PlayerProfiles[_playerIndex].LevelScores[currentLevelIndex] += _scoreIncrease * scoreMultipliers[_playerIndex] * (int)multiplierScaleFactors[_playerIndex];
-        EventBus<ScoreChangedEvent>.Publish(new ScoreChangedEvent(_playerIndex, playerProfileManager.PlayerProfiles[_playerIndex].LevelScores[currentLevelIndex]));
+        EventBus<PlayerScoreChangedEvent>.Publish(new PlayerScoreChangedEvent(_playerIndex, playerProfileManager.PlayerProfiles[_playerIndex].LevelScores[currentLevelIndex]));
     }
 
     private void OnPlayerHit(PlayerHitEvent _playerHitEvent)
@@ -114,7 +114,7 @@ public class ScoreManager : MonoBehaviour
         {
             playerProfileManager.PlayerProfiles[_playerIndex].LevelScores[currentLevelIndex] = 0;
         }
-        EventBus<ScoreChangedEvent>.Publish(new ScoreChangedEvent(_playerIndex, playerProfileManager.PlayerProfiles[_playerIndex].LevelScores[currentLevelIndex]));
+        EventBus<PlayerScoreChangedEvent>.Publish(new PlayerScoreChangedEvent(_playerIndex, playerProfileManager.PlayerProfiles[_playerIndex].LevelScores[currentLevelIndex]));
     }
 
     private void OnLevelFinished(LevelFinishedEvent _levelFinishedEvent)

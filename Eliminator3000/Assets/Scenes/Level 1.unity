@@ -906984,7 +906984,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1636838910
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1140075,7 +1140075,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7714149248864374505, guid: 89b8ec0f2854ea640ae5387ff08fdcfb, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Level 3 Alex
+      value: Level 2
       objectReference: {fileID: 0}
     - target: {fileID: 8316486111028544994, guid: 89b8ec0f2854ea640ae5387ff08fdcfb, type: 3}
       propertyPath: m_Material

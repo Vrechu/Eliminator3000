@@ -199378,6 +199378,10 @@ PrefabInstance:
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 7403678266864112833, guid: 89b8ec0f2854ea640ae5387ff08fdcfb, type: 3}
+      propertyPath: p1HealthWidget
+      value: 
+      objectReference: {fileID: 514755284}
     - target: {fileID: 7714149248864374505, guid: 89b8ec0f2854ea640ae5387ff08fdcfb, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 5
@@ -199414,6 +199418,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48d560e452141774eba7c6504177dc8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InGameMenuFunctions
+--- !u!114 &514755284 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 665985602192241792, guid: 89b8ec0f2854ea640ae5387ff08fdcfb, type: 3}
+  m_PrefabInstance: {fileID: 514755282}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30b5bc34e03734ee49f044caba90a384, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Rive.Runtime.Components::Rive.Components.RiveWidget
 --- !u!1001 &515006339
 PrefabInstance:
   m_ObjectHideFlags: 0

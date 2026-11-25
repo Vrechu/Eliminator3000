@@ -42,7 +42,7 @@ public class UpdateGUI : MonoBehaviour
         EventBus<PlayerAvatarInstantiatedEvent>.Subscribe(OnPlayerAvatarInitiated);
         if (showHealth) EventBus<PlayerLivesChangedEvent>.Subscribe(SetLivesGUI);
         if (showHealth) EventBus<PlayerHealthChangedEvent>.Subscribe(SetHealthGUI);
-        if (showScore) EventBus<ScoreChangedEvent>.Subscribe(SetScoreGUI);
+        if (showScore) EventBus<PlayerScoreChangedEvent>.Subscribe(SetScoreGUI);
         if (showScore) EventBus<PlayerScoreMultiplierChangedEvent>.Subscribe(SetMultiplierGUI);
         if (showWin) EventBus<GameWinEvent>.Subscribe(EnableWinGUI);
         if (showWin) EventBus<GameLoseEvent>.Subscribe(EnableLoseGUIgame);
@@ -56,7 +56,7 @@ public class UpdateGUI : MonoBehaviour
         EventBus<PlayerAvatarInstantiatedEvent>.UnSubscribe(OnPlayerAvatarInitiated);
         if (showHealth) EventBus<PlayerLivesChangedEvent>.UnSubscribe(SetLivesGUI);
         if (showHealth) EventBus<PlayerHealthChangedEvent>.UnSubscribe(SetHealthGUI);
-        if (showScore) EventBus<ScoreChangedEvent>.UnSubscribe(SetScoreGUI);
+        if (showScore) EventBus<PlayerScoreChangedEvent>.UnSubscribe(SetScoreGUI);
         if (showWin) EventBus<PlayerScoreMultiplierChangedEvent>.UnSubscribe(SetMultiplierGUI);
         if (showWin) EventBus<GameWinEvent>.UnSubscribe(EnableWinGUI);
         if (showWin) EventBus<GameLoseEvent>.UnSubscribe(EnableLoseGUIgame);
@@ -138,7 +138,7 @@ public class UpdateGUI : MonoBehaviour
         }
     }
 
-    private void SetScoreGUI(ScoreChangedEvent _scoreChangedEvent)
+    private void SetScoreGUI(PlayerScoreChangedEvent _scoreChangedEvent)
     {
         if (_scoreChangedEvent.PlayerIndex == 0)
         {
