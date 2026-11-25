@@ -317,7 +317,8 @@ public class UpdateGUI : MonoBehaviour
 
     private void P2JoinRequest()
     {
-        if (PlayerProfileManager.Instance.PlayersJoined[1]);
+        if (!showP2JoinPopup) return;
+        if (PlayerProfileManager.Instance.PlayersJoined[1]) return;
         if (!PlayerProfileManager.Instance.PlayersJoined[0])
         {
             if (Keyboard.current == null) return;
