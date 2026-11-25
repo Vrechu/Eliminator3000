@@ -10,12 +10,14 @@ public class GunProfile : ScriptableObject
     private string Info;
 
     public bool UnlockedFromStart;
+    [Header("Ammo:")]
     public GameObject ProjectilePrefab;
     public bool InfiniteAmmo;
     public int MaxAmmo;
     public int AmmoCostPerShot;
     public float FireRate;
     public bool LockMovementWhileShooting;
+    [Header("Cluster:")]
     public bool Cluster;
     public float Angle;
     public int Rows;

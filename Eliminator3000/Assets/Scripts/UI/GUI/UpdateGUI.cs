@@ -34,6 +34,7 @@ public class UpdateGUI : MonoBehaviour
     private Timer p2JoinResetTimer;
     [SerializeField] private float p2JoinConsentTimeOutTime = 10f, p2JoinResetime = 20f;
     [SerializeField] private TextMeshProUGUI p2JoinConsentTimerVisual;
+    bool p2joined = false;
 
 
 
@@ -42,7 +43,7 @@ public class UpdateGUI : MonoBehaviour
         EventBus<PlayerAvatarInstantiatedEvent>.Subscribe(OnPlayerAvatarInitiated);
         if (showHealth) EventBus<PlayerLivesChangedEvent>.Subscribe(SetLivesGUI);
         if (showHealth) EventBus<PlayerHealthChangedEvent>.Subscribe(SetHealthGUI);
-        if (showScore) EventBus<ScoreChangedEvent>.Subscribe(SetScoreGUI);
+        if (showScore) EventBus<PlayerScoreChangedEvent>.Subscribe(SetScoreGUI);
         if (showScore) EventBus<PlayerScoreMultiplierChangedEvent>.Subscribe(SetMultiplierGUI);
         if (showWin) EventBus<GameWinEvent>.Subscribe(EnableWinGUI);
         if (showWin) EventBus<GameLoseEvent>.Subscribe(EnableLoseGUIgame);
@@ -56,7 +57,7 @@ public class UpdateGUI : MonoBehaviour
         EventBus<PlayerAvatarInstantiatedEvent>.UnSubscribe(OnPlayerAvatarInitiated);
         if (showHealth) EventBus<PlayerLivesChangedEvent>.UnSubscribe(SetLivesGUI);
         if (showHealth) EventBus<PlayerHealthChangedEvent>.UnSubscribe(SetHealthGUI);
-        if (showScore) EventBus<ScoreChangedEvent>.UnSubscribe(SetScoreGUI);
+        if (showScore) EventBus<PlayerScoreChangedEvent>.UnSubscribe(SetScoreGUI);
         if (showWin) EventBus<PlayerScoreMultiplierChangedEvent>.UnSubscribe(SetMultiplierGUI);
         if (showWin) EventBus<GameWinEvent>.UnSubscribe(EnableWinGUI);
         if (showWin) EventBus<GameLoseEvent>.UnSubscribe(EnableLoseGUIgame);
@@ -138,7 +139,7 @@ public class UpdateGUI : MonoBehaviour
         }
     }
 
-    private void SetScoreGUI(ScoreChangedEvent _scoreChangedEvent)
+    private void SetScoreGUI(PlayerScoreChangedEvent _scoreChangedEvent)
     {
         if (_scoreChangedEvent.PlayerIndex == 0)
         {
@@ -315,7 +316,9 @@ public class UpdateGUI : MonoBehaviour
     }
 
     private void P2JoinRequest()
-    {   
+    {
+        if (!showP2JoinPopup) return;
+        if (PlayerProfileManager.Instance.PlayersJoined[1]) return;
         if (!PlayerProfileManager.Instance.PlayersJoined[0])
         {
             if (Keyboard.current == null) return;
@@ -325,7 +328,8 @@ public class UpdateGUI : MonoBehaviour
                 return;
             }
         }
-
+        
+        if (p2joined) return;
         if (!p2CanRequestJoin) return;
         if (Keyboard.current == null) return;
         else if (Keyboard.current.digit2Key.wasReleasedThisFrame)
@@ -350,6 +354,7 @@ public class UpdateGUI : MonoBehaviour
         {
             SendJoinSignal(1);
             CloseP2JoinConsentPopup();
+            p2joined = true;
         }
         else if (Keyboard.current.digit2Key.isPressed)
         {

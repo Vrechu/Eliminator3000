@@ -54,8 +54,7 @@ public class LivesManager : MonoBehaviour
     public void LoseHealth(int _playerIndex, int _amount)
     {
         PlayerProfileManager.Instance.PlayerProfiles[_playerIndex].Health -= _amount;
-        CheckHealth(_playerIndex);
-        EventBus<PlayerHealthChangedEvent>.Publish(new PlayerHealthChangedEvent(_playerIndex, PlayerProfileManager.Instance.PlayerProfiles[_playerIndex].Health));
+        CheckHealth(_playerIndex);        
     }
 
     private void OnHealthPickup(HealthPickupEvent _healthPickupEvent)
@@ -67,7 +66,6 @@ public class LivesManager : MonoBehaviour
     {
         PlayerProfileManager.Instance.PlayerProfiles[_playerIndex].Health += _amount;
         CheckHealth(_playerIndex);
-        EventBus<PlayerHealthChangedEvent>.Publish(new PlayerHealthChangedEvent(_playerIndex, PlayerProfileManager.Instance.PlayerProfiles[_playerIndex].Health));
     }
 
     /// <summary>
@@ -86,6 +84,7 @@ public class LivesManager : MonoBehaviour
         {
             PlayerProfileManager.Instance.PlayerProfiles[_playerIndex].Health = maxHealth;
         }
+        EventBus<PlayerHealthChangedEvent>.Publish(new PlayerHealthChangedEvent(_playerIndex, PlayerProfileManager.Instance.PlayerProfiles[_playerIndex].Health));
     }
 
     private void LoseLife(int _playerIndex, int _amount = 1)
@@ -101,6 +100,7 @@ public class LivesManager : MonoBehaviour
         {
             PlayerProfileManager.Instance.PlayerProfiles[_playerIndex].AliveInLevel = false;
             EventBus<PlayerLivesAtZeroEvent>.Publish(new(_playerIndex));
+            PlayerProfileManager.Instance.PlayerProfiles[_playerIndex].Health = 0;
 
             CheckPlayersAlive();
         }

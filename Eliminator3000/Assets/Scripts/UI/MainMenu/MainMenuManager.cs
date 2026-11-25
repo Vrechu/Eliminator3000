@@ -15,6 +15,7 @@ public class MainMenuManager : MonoBehaviour
     private Timer p2JoinResetTimer;
     [SerializeField] private float p2JoinConsentTimeOutTime = 10f, p2JoinResetime = 20f;
     [SerializeField] private TextMeshProUGUI p2JoinConsentTimerVisual;
+    private bool p2joined = false;
 
 
     [SerializeField] private GameObject p1JoinedUI, p2JoinedUI;
@@ -180,12 +181,13 @@ public class MainMenuManager : MonoBehaviour
             SendJoinSignal(0);
             SendJoinSignal(1);
             OpenPage((int)MainMenuPage.MainPage);
+            p2joined = true;
         }
     }
 
     private void P2JoinRequest()
     {
-        if (!p2CanRequestJoin) return;
+        if (p2joined || !p2CanRequestJoin) return;
         if (Keyboard.current == null) return;
         else if (Keyboard.current.digit2Key.wasReleasedThisFrame)
         {

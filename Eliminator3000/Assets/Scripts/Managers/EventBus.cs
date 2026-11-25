@@ -164,11 +164,11 @@ public class  PlayerLivesAtZeroEvent : Event
 
 #region Player score events
 
-public class ScoreChangedEvent : Event
+public class PlayerScoreChangedEvent : Event
 {
     public int PlayerIndex;
     public int NewScore;
-    public ScoreChangedEvent(int cPlayerIndex, int cNewScore)
+    public PlayerScoreChangedEvent(int cPlayerIndex, int cNewScore)
     {
         PlayerIndex = cPlayerIndex;
         NewScore = cNewScore;
@@ -277,12 +277,14 @@ public class PlayerGunAmmoChangedEvent : Event
     public int PlayerIndex;
     public int GunIndex;
     public int NewAmmo;
+    public int MaxAmmo;
     public bool InfiniteAmmo;
-    public PlayerGunAmmoChangedEvent(int cPlayer, int cGunIndex, int cNewAmmo, bool cInfiniteAmmo)
+    public PlayerGunAmmoChangedEvent(int cPlayer, int cGunIndex, int cNewAmmo, int cMaxAmmo, bool cInfiniteAmmo)
     {
         PlayerIndex = cPlayer;
         GunIndex = cGunIndex;
         NewAmmo = cNewAmmo;
+        MaxAmmo = cMaxAmmo;
         InfiniteAmmo = cInfiniteAmmo;
     }
 }
