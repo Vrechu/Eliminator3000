@@ -277,12 +277,14 @@ public class PlayerGunAmmoChangedEvent : Event
     public int PlayerIndex;
     public int GunIndex;
     public int NewAmmo;
+    public int MaxAmmo;
     public bool InfiniteAmmo;
-    public PlayerGunAmmoChangedEvent(int cPlayer, int cGunIndex, int cNewAmmo, bool cInfiniteAmmo)
+    public PlayerGunAmmoChangedEvent(int cPlayer, int cGunIndex, int cNewAmmo, int cMaxAmmo, bool cInfiniteAmmo)
     {
         PlayerIndex = cPlayer;
         GunIndex = cGunIndex;
         NewAmmo = cNewAmmo;
+        MaxAmmo = cMaxAmmo;
         InfiniteAmmo = cInfiniteAmmo;
     }
 }
