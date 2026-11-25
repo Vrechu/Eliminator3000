@@ -41166,7 +41166,7 @@ MonoBehaviour:
     cell: 10
     along: 0.76307964
     instance: {fileID: 458083507}
-    offset: {x: 0, y: 0}
+    offset: {x: 2, y: 2.75}
     open: 1
   - prefab: {fileID: 1404456324764638387, guid: 06d5bac05f9588641937ae8448d8d2e9, type: 3}
     isPowerup: 1
@@ -41174,7 +41174,7 @@ MonoBehaviour:
     cell: 12
     along: 0.8341422
     instance: {fileID: 1987298005}
-    offset: {x: 0, y: 0}
+    offset: {x: 0, y: 2.75}
     open: 1
   - prefab: {fileID: 1404456324764638387, guid: 06d5bac05f9588641937ae8448d8d2e9, type: 3}
     isPowerup: 1
@@ -41182,7 +41182,7 @@ MonoBehaviour:
     cell: 12
     along: 0.19212103
     instance: {fileID: 76562881}
-    offset: {x: 1.9828224, y: 0.1400001}
+    offset: {x: 3.9828224, y: -2.51}
     open: 1
   - prefab: {fileID: 0}
     isPowerup: 0
@@ -41238,7 +41238,7 @@ MonoBehaviour:
     cell: 10
     along: 0.95074177
     instance: {fileID: 813639839}
-    offset: {x: 0, y: 0}
+    offset: {x: 2, y: 2.75}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: aec1ab99584e06b44abc02dc2bb70b24, type: 3}
     isPowerup: 0
@@ -41246,15 +41246,15 @@ MonoBehaviour:
     cell: 10
     along: 0.54286695
     instance: {fileID: 1866966412}
-    offset: {x: 0, y: 0}
+    offset: {x: 2, y: 2.75}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: aec1ab99584e06b44abc02dc2bb70b24, type: 3}
     isPowerup: 0
     zone: 0
     cell: 14
-    along: 0.76235765
+    along: 0.7623545
     instance: {fileID: 1021347464}
-    offset: {x: 0, y: 0}
+    offset: {x: -2, y: 2.75}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: aec1ab99584e06b44abc02dc2bb70b24, type: 3}
     isPowerup: 0
@@ -41262,7 +41262,7 @@ MonoBehaviour:
     cell: 14
     along: 0.4912712
     instance: {fileID: 807729349}
-    offset: {x: 0, y: 0}
+    offset: {x: -2, y: 2.75}
     open: 1
   - prefab: {fileID: 5705680382198687851, guid: af8445ac0c47444428c34b669941b117, type: 3}
     isPowerup: 1
@@ -41270,7 +41270,7 @@ MonoBehaviour:
     cell: 12
     along: 0
     instance: {fileID: 1371457415}
-    offset: {x: 0, y: 0}
+    offset: {x: 0, y: 2.75}
     open: 1
   gridEdgeMargin: 30
   gridYOffset: 0
@@ -73042,7 +73042,7 @@ MonoBehaviour:
     cell: 14
     along: 0.5031936
     instance: {fileID: 161310939}
-    offset: {x: 2.5828228, y: 0.14999962}
+    offset: {x: 0.5828228, y: 2.8999996}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: aec1ab99584e06b44abc02dc2bb70b24, type: 3}
     isPowerup: 0
@@ -73050,7 +73050,7 @@ MonoBehaviour:
     cell: 19
     along: 1
     instance: {fileID: 1633803049}
-    offset: {x: 2.1495361, y: 0.109000206}
+    offset: {x: 0.14953613, y: -0.44099998}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: 3b81b96269a1a434dba0ab9dc24aec06, type: 3}
     isPowerup: 0
@@ -73058,7 +73058,7 @@ MonoBehaviour:
     cell: 11
     along: 0.29039073
     instance: {fileID: 406996811}
-    offset: {x: 1.927536, y: 0.05499935}
+    offset: {x: -3.072464, y: 2.8049994}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: 31dda9654e78a40408f45e2fc0ba88c8, type: 3}
     isPowerup: 0
@@ -73066,7 +73066,7 @@ MonoBehaviour:
     cell: 6
     along: 0.4873898
     instance: {fileID: 1589374764}
-    offset: {x: 1.927536, y: 0.0009994507}
+    offset: {x: -3.072464, y: 0.05099964}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: cafbdbb4e4a615649925f75761aef3f0, type: 3}
     isPowerup: 0
@@ -73074,7 +73074,7 @@ MonoBehaviour:
     cell: 14
     along: 0.6220007
     instance: {fileID: 1568409600}
-    offset: {x: 0.15299988, y: 0.05499935}
+    offset: {x: -1.8470001, y: 2.8049994}
     open: 1
   gridEdgeMargin: 30
   gridYOffset: 0
@@ -317528,6 +317528,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd7b6abd2d02d9d479e5ac817cf6d454, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuickRestart
+  enableQuickRestart: 1
 --- !u!4 &566844745
 Transform:
   m_ObjectHideFlags: 0
@@ -392437,9 +392438,9 @@ MonoBehaviour:
     isPowerup: 1
     zone: 2
     cell: 17
-    along: 0.737
+    along: 0.7370014
     instance: {fileID: 1004213640}
-    offset: {x: 0, y: 0}
+    offset: {x: 0, y: -0.5500002}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: 31dda9654e78a40408f45e2fc0ba88c8, type: 3}
     isPowerup: 0
@@ -392447,7 +392448,7 @@ MonoBehaviour:
     cell: 19
     along: 0.41159105
     instance: {fileID: 356605436}
-    offset: {x: 2.1495361, y: 0.109000206}
+    offset: {x: 0.14953613, y: -0.44099998}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: 934dcf21e32127243a43d4a64a0bec5f, type: 3}
     isPowerup: 0
@@ -392455,7 +392456,7 @@ MonoBehaviour:
     cell: 16
     along: 0.8163781
     instance: {fileID: 303722066}
-    offset: {x: 0, y: 0}
+    offset: {x: -5, y: -0.5500002}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: 945e4b1db4aa41f4eb1c9f20f11ee0e7, type: 3}
     isPowerup: 0
@@ -392463,7 +392464,7 @@ MonoBehaviour:
     cell: 7
     along: 1
     instance: {fileID: 348058982}
-    offset: {x: 0, y: 0}
+    offset: {x: 0, y: 0.05000019}
     open: 1
   gridEdgeMargin: 30
   gridYOffset: 0
@@ -479050,7 +479051,7 @@ MonoBehaviour:
     cell: 12
     along: 1
     instance: {fileID: 1908432750}
-    offset: {x: -0.017177582, y: -3.35}
+    offset: {x: -0.017177582, y: 0}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: cafbdbb4e4a615649925f75761aef3f0, type: 3}
     isPowerup: 0
@@ -479058,7 +479059,7 @@ MonoBehaviour:
     cell: 12
     along: 0.021921754
     instance: {fileID: 966405659}
-    offset: {x: 0.66282225, y: 0.7400007}
+    offset: {x: -4.3371778, y: 2.8900003}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: 934dcf21e32127243a43d4a64a0bec5f, type: 3}
     isPowerup: 0
@@ -479066,7 +479067,7 @@ MonoBehaviour:
     cell: 19
     along: 0.05615449
     instance: {fileID: 1721583031}
-    offset: {x: -1.5871773, y: 0}
+    offset: {x: -3.5871773, y: -0.5500002}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: 27381a3d2e4a7f546bbf57e7f3266606, type: 3}
     isPowerup: 0
@@ -479074,7 +479075,7 @@ MonoBehaviour:
     cell: 12
     along: 0.16782522
     instance: {fileID: 1290411822}
-    offset: {x: 1.9828224, y: 0.25}
+    offset: {x: -3.0171776, y: -3}
     open: 1
   - prefab: {fileID: 1404456324764638387, guid: 06d5bac05f9588641937ae8448d8d2e9, type: 3}
     isPowerup: 1
@@ -479082,7 +479083,7 @@ MonoBehaviour:
     cell: 13
     along: 0.42188746
     instance: {fileID: 1258299812}
-    offset: {x: 1.4828224, y: 0}
+    offset: {x: -0.5171776, y: 2.75}
     open: 1
   - prefab: {fileID: 1404456324764638387, guid: 06d5bac05f9588641937ae8448d8d2e9, type: 3}
     isPowerup: 1
@@ -479090,7 +479091,7 @@ MonoBehaviour:
     cell: 0
     along: 0.35111165
     instance: {fileID: 2016252945}
-    offset: {x: -1.0171776, y: 0.25}
+    offset: {x: 5.9828224, y: -0.3000002}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: 2570939ab66c5e740802476ae033633a, type: 3}
     isPowerup: 0
@@ -479098,7 +479099,7 @@ MonoBehaviour:
     cell: 19
     along: 0.79499984
     instance: {fileID: 1548571422}
-    offset: {x: 0.15299988, y: 0.109000206}
+    offset: {x: -1.8470001, y: -0.44099998}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: 2570939ab66c5e740802476ae033633a, type: 3}
     isPowerup: 0
@@ -479106,7 +479107,7 @@ MonoBehaviour:
     cell: 15
     along: 0.79499984
     instance: {fileID: 185534007}
-    offset: {x: -0.1430006, y: 0.109000206}
+    offset: {x: 1.8569994, y: -0.44099998}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: 2570939ab66c5e740802476ae033633a, type: 3}
     isPowerup: 0
@@ -479114,7 +479115,7 @@ MonoBehaviour:
     cell: 17
     along: 0.79499984
     instance: {fileID: 672945199}
-    offset: {x: 0.0049996376, y: 0.109000206}
+    offset: {x: 0.0049996376, y: -0.44099998}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: cafbdbb4e4a615649925f75761aef3f0, type: 3}
     isPowerup: 0
@@ -479122,7 +479123,7 @@ MonoBehaviour:
     cell: 14
     along: 0.86127734
     instance: {fileID: 1657888232}
-    offset: {x: -2.0771775, y: 0.6300001}
+    offset: {x: 4.9228225, y: 0.07999992}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: cafbdbb4e4a615649925f75761aef3f0, type: 3}
     isPowerup: 0
@@ -479130,7 +479131,7 @@ MonoBehaviour:
     cell: 10
     along: 0.44574475
     instance: {fileID: 1329650481}
-    offset: {x: 1.3028225, y: 0}
+    offset: {x: 1.3028225, y: 2.75}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: aec1ab99584e06b44abc02dc2bb70b24, type: 3}
     isPowerup: 0
@@ -479138,7 +479139,7 @@ MonoBehaviour:
     cell: 14
     along: 0.108444214
     instance: {fileID: 87507928}
-    offset: {x: 0.15299988, y: 0.05499935}
+    offset: {x: -1.8470001, y: 2.8049994}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: aec1ab99584e06b44abc02dc2bb70b24, type: 3}
     isPowerup: 0
@@ -479146,7 +479147,7 @@ MonoBehaviour:
     cell: 11
     along: 0.89042556
     instance: {fileID: 1843466493}
-    offset: {x: 0, y: 0}
+    offset: {x: -5, y: 2.75}
     open: 1
   gridEdgeMargin: 30
   gridYOffset: 0
@@ -504773,7 +504774,7 @@ MonoBehaviour:
     cell: 14
     along: 0.3617022
     instance: {fileID: 217768093}
-    offset: {x: 0, y: 0}
+    offset: {x: -2, y: 2.75}
     open: 1
   - prefab: {fileID: 5705680382198687851, guid: fe8b3a74a62726d4a89337bae66b7c03, type: 3}
     isPowerup: 1
@@ -504781,15 +504782,15 @@ MonoBehaviour:
     cell: 10
     along: 0.3617022
     instance: {fileID: 2002324259}
-    offset: {x: 0, y: 0}
+    offset: {x: 2, y: 2.75}
     open: 1
   - prefab: {fileID: 1404456324764638387, guid: f57b12f28189f94479e0bc428902b7be, type: 3}
     isPowerup: 1
     zone: 1
     cell: 12
-    along: 0
+    along: 0.0000021457672
     instance: {fileID: 1503945754}
-    offset: {x: 0, y: 0}
+    offset: {x: 0, y: 2.75}
     open: 1
   gridEdgeMargin: 30
   gridYOffset: 0
@@ -516597,7 +516598,7 @@ MonoBehaviour:
     cell: 12
     along: 1
     instance: {fileID: 131041367}
-    offset: {x: -0.6171775, y: 0}
+    offset: {x: -5.6171775, y: 2.75}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: 934dcf21e32127243a43d4a64a0bec5f, type: 3}
     isPowerup: 0
@@ -516605,7 +516606,7 @@ MonoBehaviour:
     cell: 12
     along: 0.45148444
     instance: {fileID: 2124619791}
-    offset: {x: 2.0828223, y: 0}
+    offset: {x: 4.0828223, y: 2.75}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: cafbdbb4e4a615649925f75761aef3f0, type: 3}
     isPowerup: 0
@@ -516613,7 +516614,7 @@ MonoBehaviour:
     cell: 12
     along: 0.45148444
     instance: {fileID: 1752222581}
-    offset: {x: -0.7171774, y: 0}
+    offset: {x: -2.7171774, y: 2.75}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: aec1ab99584e06b44abc02dc2bb70b24, type: 3}
     isPowerup: 0
@@ -516621,7 +516622,7 @@ MonoBehaviour:
     cell: 12
     along: 0.59808207
     instance: {fileID: 940098}
-    offset: {x: 0, y: 0}
+    offset: {x: 2, y: 0.05000019}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: 945e4b1db4aa41f4eb1c9f20f11ee0e7, type: 3}
     isPowerup: 0
@@ -516629,7 +516630,7 @@ MonoBehaviour:
     cell: 12
     along: 0.29299992
     instance: {fileID: 97885636}
-    offset: {x: 0, y: 0}
+    offset: {x: 0, y: 2.75}
     open: 1
   - prefab: {fileID: 1404456324764638387, guid: 06d5bac05f9588641937ae8448d8d2e9, type: 3}
     isPowerup: 1
@@ -516637,7 +516638,7 @@ MonoBehaviour:
     cell: 12
     along: 0.64733624
     instance: {fileID: 1428728348}
-    offset: {x: 0, y: 0}
+    offset: {x: 0, y: 2.75}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: aec1ab99584e06b44abc02dc2bb70b24, type: 3}
     isPowerup: 0
@@ -516645,7 +516646,7 @@ MonoBehaviour:
     cell: 19
     along: 0.22659159
     instance: {fileID: 1858809275}
-    offset: {x: 0, y: 0}
+    offset: {x: -2, y: -0.5500002}
     open: 1
   gridEdgeMargin: 30
   gridYOffset: 0
@@ -550114,7 +550115,7 @@ MonoBehaviour:
     cell: 12
     along: 1
     instance: {fileID: 1484234699}
-    offset: {x: -1.1171775, y: 0.109000206}
+    offset: {x: 5.8828225, y: 2.8590002}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: cafbdbb4e4a615649925f75761aef3f0, type: 3}
     isPowerup: 0
@@ -550122,7 +550123,7 @@ MonoBehaviour:
     cell: 20
     along: 1
     instance: {fileID: 468857468}
-    offset: {x: 0.7328224, y: 0.1630001}
+    offset: {x: -4.2671776, y: 2.3129997}
     open: 1
   - prefab: {fileID: 1404456324764638387, guid: 06d5bac05f9588641937ae8448d8d2e9, type: 3}
     isPowerup: 1
@@ -550130,7 +550131,7 @@ MonoBehaviour:
     cell: 10
     along: 1
     instance: {fileID: 2137835885}
-    offset: {x: 2.9428225, y: 0.05499935}
+    offset: {x: 0.94282246, y: 2.8049994}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: 934dcf21e32127243a43d4a64a0bec5f, type: 3}
     isPowerup: 0
@@ -550138,7 +550139,7 @@ MonoBehaviour:
     cell: 14
     along: 1
     instance: {fileID: 88794569}
-    offset: {x: 4.7828226, y: 0.05499935}
+    offset: {x: 2.7828226, y: 2.8049994}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: aec1ab99584e06b44abc02dc2bb70b24, type: 3}
     isPowerup: 0
@@ -550146,7 +550147,7 @@ MonoBehaviour:
     cell: 14
     along: 1
     instance: {fileID: 115374388}
-    offset: {x: 2.1495361, y: 0.05499935}
+    offset: {x: 0.14953613, y: 2.8049994}
     open: 1
   - prefab: {fileID: 1404456324764638387, guid: 06d5bac05f9588641937ae8448d8d2e9, type: 3}
     isPowerup: 1
@@ -550154,7 +550155,7 @@ MonoBehaviour:
     cell: 10
     along: 1
     instance: {fileID: 172371563}
-    offset: {x: 0, y: 0}
+    offset: {x: 2, y: 2.75}
     open: 1
   - prefab: {fileID: 8851761484525238538, guid: da47f05236922c6478ac20d7077be4d3, type: 3}
     isPowerup: 1
@@ -550162,7 +550163,7 @@ MonoBehaviour:
     cell: 22
     along: 0.53780437
     instance: {fileID: 71500167}
-    offset: {x: 0, y: -0.87999916}
+    offset: {x: 0, y: 1.2700005}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: 945e4b1db4aa41f4eb1c9f20f11ee0e7, type: 3}
     isPowerup: 0
@@ -550170,7 +550171,7 @@ MonoBehaviour:
     cell: 7
     along: 0.53780437
     instance: {fileID: 779126516}
-    offset: {x: 0, y: 0}
+    offset: {x: 0, y: 0.05000019}
     open: 1
   gridEdgeMargin: 30
   gridYOffset: 0
@@ -564976,15 +564977,15 @@ MonoBehaviour:
     cell: 2
     along: 0.6159034
     instance: {fileID: 150928288}
-    offset: {x: 0, y: 0}
+    offset: {x: 0, y: -2.65}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: 945e4b1db4aa41f4eb1c9f20f11ee0e7, type: 3}
     isPowerup: 0
     zone: 2
     cell: 22
-    along: 0.402
+    along: 0.4020009
     instance: {fileID: 106695146}
-    offset: {x: 0, y: 0}
+    offset: {x: 0, y: 2.1499996}
     open: 1
   gridEdgeMargin: 30
   gridYOffset: 0
@@ -638818,7 +638819,7 @@ MonoBehaviour:
     cell: 14
     along: 0.50000167
     instance: {fileID: 1771192419}
-    offset: {x: 0.8531389, y: 0}
+    offset: {x: -1.1268616, y: 2.75}
     open: 0
   - prefab: {fileID: 5519828220680120833, guid: 2570939ab66c5e740802476ae033633a, type: 3}
     isPowerup: 0
@@ -638826,7 +638827,7 @@ MonoBehaviour:
     cell: 11
     along: 0.50000167
     instance: {fileID: 1298224119}
-    offset: {x: 1.4631386, y: 0}
+    offset: {x: -3.5368614, y: 2.75}
     open: 0
   - prefab: {fileID: 5519828220680120833, guid: 2570939ab66c5e740802476ae033633a, type: 3}
     isPowerup: 0
@@ -638834,7 +638835,7 @@ MonoBehaviour:
     cell: 12
     along: 0.5
     instance: {fileID: 1962152049}
-    offset: {x: -1.4568615, y: 0}
+    offset: {x: 3.5431385, y: 2.75}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: 2570939ab66c5e740802476ae033633a, type: 3}
     isPowerup: 0
@@ -638842,7 +638843,7 @@ MonoBehaviour:
     cell: 10
     along: 0.5
     instance: {fileID: 162009358}
-    offset: {x: 0, y: 0}
+    offset: {x: 2, y: 2.75}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: 945e4b1db4aa41f4eb1c9f20f11ee0e7, type: 3}
     isPowerup: 0
@@ -638850,7 +638851,7 @@ MonoBehaviour:
     cell: 0
     along: 0.70182323
     instance: {fileID: 1090232840}
-    offset: {x: 1.3731384, y: 0.77000046}
+    offset: {x: -5.6268616, y: 2.92}
     open: 1
   - prefab: {fileID: 8851761484525238538, guid: b100fb9f9f89a9640a7cd08d30e801c7, type: 3}
     isPowerup: 1
@@ -638858,7 +638859,7 @@ MonoBehaviour:
     cell: 12
     along: 0.67544365
     instance: {fileID: 21391155}
-    offset: {x: 0, y: -0.05000019}
+    offset: {x: 0, y: 0}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: 3b81b96269a1a434dba0ab9dc24aec06, type: 3}
     isPowerup: 0
@@ -638866,7 +638867,7 @@ MonoBehaviour:
     cell: 23
     along: 0.13544351
     instance: {fileID: 349742368}
-    offset: {x: 0.2921381, y: 0.1630001}
+    offset: {x: 5.292138, y: 2.3129997}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: aec1ab99584e06b44abc02dc2bb70b24, type: 3}
     isPowerup: 0
@@ -638874,7 +638875,7 @@ MonoBehaviour:
     cell: 1
     along: 0.14744276
     instance: {fileID: 60752223}
-    offset: {x: 0.14413834, y: -0.052999973}
+    offset: {x: -4.8558617, y: -2.703}
     open: 1
   gridEdgeMargin: 30
   gridYOffset: 0
@@ -691276,17 +691277,17 @@ MonoBehaviour:
     isPowerup: 1
     zone: 1
     cell: 14
-    along: 0.3
+    along: 0.3000021
     instance: {fileID: 155903317}
-    offset: {x: 0, y: 0}
+    offset: {x: -2, y: 2.75}
     open: 1
   - prefab: {fileID: 5705680382198687851, guid: 419a4ea1bf396f24188e652e8ff813b7, type: 3}
     isPowerup: 1
     zone: 1
     cell: 10
-    along: 0.3
+    along: 0.3000021
     instance: {fileID: 1253027125}
-    offset: {x: 0, y: 0}
+    offset: {x: 2, y: 2.75}
     open: 1
   gridEdgeMargin: 30
   gridYOffset: 0
@@ -695333,7 +695334,7 @@ MonoBehaviour:
     cell: 12
     along: 0.23063278
     instance: {fileID: 1071417047}
-    offset: {x: 0, y: 0}
+    offset: {x: 0, y: 2.75}
     open: 0
   - prefab: {fileID: 1404456324764638387, guid: 06d5bac05f9588641937ae8448d8d2e9, type: 3}
     isPowerup: 1
@@ -695341,7 +695342,7 @@ MonoBehaviour:
     cell: 12
     along: 0.8678669
     instance: {fileID: 1435211789}
-    offset: {x: 0, y: 0}
+    offset: {x: 0, y: 2.75}
     open: 1
   - prefab: {fileID: 1404456324764638387, guid: 06d5bac05f9588641937ae8448d8d2e9, type: 3}
     isPowerup: 1
@@ -695349,7 +695350,7 @@ MonoBehaviour:
     cell: 12
     along: 0.5
     instance: {fileID: 1259578720}
-    offset: {x: 0, y: 0}
+    offset: {x: 0, y: 2.75}
     open: 1
   - prefab: {fileID: 0}
     isPowerup: 0
@@ -695357,7 +695358,7 @@ MonoBehaviour:
     cell: 12
     along: 0
     instance: {fileID: 1325222942}
-    offset: {x: 0, y: -0.5699997}
+    offset: {x: 0, y: 1.5799999}
     open: 1
   gridEdgeMargin: 30
   gridYOffset: 0
@@ -791071,7 +791072,7 @@ MonoBehaviour:
     cell: 12
     along: 0.25202036
     instance: {fileID: 1069217449}
-    offset: {x: 0.24347544, y: 0.05499935}
+    offset: {x: 0.24347544, y: 2.8049994}
     open: 1
   - prefab: {fileID: 1404456324764638387, guid: 06d5bac05f9588641937ae8448d8d2e9, type: 3}
     isPowerup: 1
@@ -791079,7 +791080,7 @@ MonoBehaviour:
     cell: 0
     along: 0.55234385
     instance: {fileID: 509468147}
-    offset: {x: 0.0954752, y: -0.052999973}
+    offset: {x: 2.0954752, y: -2.703}
     open: 1
   - prefab: {fileID: 1404456324764638387, guid: 06d5bac05f9588641937ae8448d8d2e9, type: 3}
     isPowerup: 1
@@ -791087,7 +791088,7 @@ MonoBehaviour:
     cell: 24
     along: 0.93085074
     instance: {fileID: 2014437622}
-    offset: {x: 0.39147568, y: 0.1630001}
+    offset: {x: -1.6085243, y: 2.3129997}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: 229a901baa8b2ed479d768b68f24ec37, type: 3}
     isPowerup: 0
@@ -791095,7 +791096,7 @@ MonoBehaviour:
     cell: 8
     along: 0.034437463
     instance: {fileID: 579745826}
-    offset: {x: 0.31747532, y: -0.75}
+    offset: {x: 5.3174753, y: -0.6999998}
     open: 1
   gridEdgeMargin: 30
   gridYOffset: 0
@@ -829079,7 +829080,7 @@ MonoBehaviour:
     cell: 12
     along: 0.59605837
     instance: {fileID: 689765904}
-    offset: {x: 0, y: 0}
+    offset: {x: 0, y: 2.75}
     open: 1
   - prefab: {fileID: 1404456324764638387, guid: 06d5bac05f9588641937ae8448d8d2e9, type: 3}
     isPowerup: 1
@@ -829087,7 +829088,7 @@ MonoBehaviour:
     cell: 0
     along: 0.6979753
     instance: {fileID: 1322778730}
-    offset: {x: 0, y: 0}
+    offset: {x: 2, y: -2.65}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: 945e4b1db4aa41f4eb1c9f20f11ee0e7, type: 3}
     isPowerup: 0
@@ -829095,7 +829096,7 @@ MonoBehaviour:
     cell: 12
     along: 0.18199904
     instance: {fileID: 1933096459}
-    offset: {x: 0.0049996376, y: 0.05499935}
+    offset: {x: 0.0049996376, y: 2.8049994}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: aec1ab99584e06b44abc02dc2bb70b24, type: 3}
     isPowerup: 0
@@ -829103,7 +829104,7 @@ MonoBehaviour:
     cell: 12
     along: 0.49107063
     instance: {fileID: 192401888}
-    offset: {x: -1.1071775, y: 0}
+    offset: {x: 3.8928225, y: 2.75}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: 2570939ab66c5e740802476ae033633a, type: 3}
     isPowerup: 0
@@ -829111,7 +829112,7 @@ MonoBehaviour:
     cell: 20
     along: 0.44382668
     instance: {fileID: 2034850545}
-    offset: {x: 0, y: 0}
+    offset: {x: 2, y: 2.1499996}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: aec1ab99584e06b44abc02dc2bb70b24, type: 3}
     isPowerup: 0
@@ -829119,7 +829120,7 @@ MonoBehaviour:
     cell: 14
     along: 0.9861661
     instance: {fileID: 1171632690}
-    offset: {x: 0, y: 0}
+    offset: {x: -2, y: 2.75}
     open: 1
   - prefab: {fileID: 1404456324764638387, guid: f57b12f28189f94479e0bc428902b7be, type: 3}
     isPowerup: 1
@@ -829127,7 +829128,7 @@ MonoBehaviour:
     cell: 10
     along: 0.9999989
     instance: {fileID: 685790168}
-    offset: {x: 0.62282276, y: 0}
+    offset: {x: 2.6228228, y: 2.75}
     open: 1
   - prefab: {fileID: 8851761484525238538, guid: b100fb9f9f89a9640a7cd08d30e801c7, type: 3}
     isPowerup: 1
@@ -829135,7 +829136,7 @@ MonoBehaviour:
     cell: 14
     along: 0.9999989
     instance: {fileID: 1575447957}
-    offset: {x: -0.55717754, y: 0}
+    offset: {x: -2.5571775, y: 2.75}
     open: 1
   gridEdgeMargin: 30
   gridYOffset: 0
@@ -906983,7 +906984,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1636838910
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1019544,7 +1019545,7 @@ MonoBehaviour:
     cell: 12
     along: 0.96865845
     instance: {fileID: 1149754358}
-    offset: {x: -1.7971773, y: -0.3199997}
+    offset: {x: -3.7971773, y: 2.4300003}
     open: 1
   - prefab: {fileID: 1404456324764638387, guid: 06d5bac05f9588641937ae8448d8d2e9, type: 3}
     isPowerup: 1
@@ -1019552,7 +1019553,7 @@ MonoBehaviour:
     cell: 12
     along: 0.0320251
     instance: {fileID: 362615408}
-    offset: {x: -1.7971773, y: -0.3199997}
+    offset: {x: -3.7971773, y: 2.4300003}
     open: 1
   - prefab: {fileID: 1404456324764638387, guid: 06d5bac05f9588641937ae8448d8d2e9, type: 3}
     isPowerup: 1
@@ -1019560,7 +1019561,7 @@ MonoBehaviour:
     cell: 12
     along: 0.4619577
     instance: {fileID: 1760417611}
-    offset: {x: -0.21717739, y: -0.3199997}
+    offset: {x: -5.2171774, y: 2.4300003}
     open: 1
   - prefab: {fileID: 1404456324764638387, guid: 06d5bac05f9588641937ae8448d8d2e9, type: 3}
     isPowerup: 1
@@ -1019568,7 +1019569,7 @@ MonoBehaviour:
     cell: 12
     along: 0.9063207
     instance: {fileID: 375615868}
-    offset: {x: -0.21717739, y: -0.3199997}
+    offset: {x: -5.2171774, y: 2.4300003}
     open: 1
   - prefab: {fileID: 1404456324764638387, guid: 06d5bac05f9588641937ae8448d8d2e9, type: 3}
     isPowerup: 1
@@ -1019576,7 +1019577,7 @@ MonoBehaviour:
     cell: 12
     along: 0.4620678
     instance: {fileID: 1824604219}
-    offset: {x: -0.21717739, y: -0.3199997}
+    offset: {x: -5.2171774, y: 2.4300003}
     open: 1
   - prefab: {fileID: 0}
     isPowerup: 0
@@ -1019584,7 +1019585,7 @@ MonoBehaviour:
     cell: 12
     along: 0.25334316
     instance: {fileID: 1979853998}
-    offset: {x: 0.18282223, y: -0.65999985}
+    offset: {x: -4.817178, y: 1.4899998}
     open: 1
   gridEdgeMargin: 30
   gridYOffset: 0
@@ -1065448,7 +1065449,7 @@ MonoBehaviour:
     cell: 10
     along: 0.8353281
     instance: {fileID: 2063286056}
-    offset: {x: 0, y: 0}
+    offset: {x: 2, y: 2.75}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: 934dcf21e32127243a43d4a64a0bec5f, type: 3}
     isPowerup: 0
@@ -1065456,7 +1065457,7 @@ MonoBehaviour:
     cell: 12
     along: 0.8313279
     instance: {fileID: 2012316454}
-    offset: {x: 0, y: 0.05499935}
+    offset: {x: 0, y: 2.8049994}
     open: 1
   - prefab: {fileID: 5705680382198687851, guid: 419a4ea1bf396f24188e652e8ff813b7, type: 3}
     isPowerup: 1
@@ -1065464,7 +1065465,7 @@ MonoBehaviour:
     cell: 22
     along: 0.9853287
     instance: {fileID: 490284451}
-    offset: {x: -0.017177582, y: 0}
+    offset: {x: -0.017177582, y: 2.1499996}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: cafbdbb4e4a615649925f75761aef3f0, type: 3}
     isPowerup: 0
@@ -1065472,7 +1065473,7 @@ MonoBehaviour:
     cell: 18
     along: 0.47332788
     instance: {fileID: 985581439}
-    offset: {x: 2.0755358, y: 0.109000206}
+    offset: {x: -4.924464, y: -0.44099998}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: 31dda9654e78a40408f45e2fc0ba88c8, type: 3}
     isPowerup: 0
@@ -1065480,7 +1065481,7 @@ MonoBehaviour:
     cell: 11
     along: 0.13532782
     instance: {fileID: 1477535334}
-    offset: {x: 1.927536, y: 0.05499935}
+    offset: {x: -3.072464, y: 2.8049994}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: 31dda9654e78a40408f45e2fc0ba88c8, type: 3}
     isPowerup: 0
@@ -1065488,7 +1065489,7 @@ MonoBehaviour:
     cell: 18
     along: 0.662328
     instance: {fileID: 398979450}
-    offset: {x: 2.0755358, y: 0.109000206}
+    offset: {x: -4.924464, y: -0.44099998}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: aec1ab99584e06b44abc02dc2bb70b24, type: 3}
     isPowerup: 0
@@ -1065496,7 +1065497,7 @@ MonoBehaviour:
     cell: 0
     along: 0.9103277
     instance: {fileID: 400941776}
-    offset: {x: 1.8535357, y: -0.052999973}
+    offset: {x: 3.8535357, y: -2.703}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: aec1ab99584e06b44abc02dc2bb70b24, type: 3}
     isPowerup: 0
@@ -1065504,7 +1065505,7 @@ MonoBehaviour:
     cell: 14
     along: 0.38732862
     instance: {fileID: 342976439}
-    offset: {x: 2.1495361, y: 0.05499935}
+    offset: {x: 0.14953613, y: 2.8049994}
     open: 1
   - prefab: {fileID: 1404456324764638387, guid: f57b12f28189f94479e0bc428902b7be, type: 3}
     isPowerup: 1
@@ -1065512,7 +1065513,7 @@ MonoBehaviour:
     cell: 14
     along: 0.8363285
     instance: {fileID: 543958741}
-    offset: {x: 0, y: 0}
+    offset: {x: -2, y: 2.75}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: 945e4b1db4aa41f4eb1c9f20f11ee0e7, type: 3}
     isPowerup: 0
@@ -1065520,7 +1065521,7 @@ MonoBehaviour:
     cell: 12
     along: 0.9853287
     instance: {fileID: 1635329236}
-    offset: {x: 2.001536, y: -0.22999954}
+    offset: {x: 2.001536, y: 2.5200005}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: 31dda9654e78a40408f45e2fc0ba88c8, type: 3}
     isPowerup: 0
@@ -1065528,7 +1065529,7 @@ MonoBehaviour:
     cell: 0
     along: 0.26532838
     instance: {fileID: 573869270}
-    offset: {x: 1.8535357, y: 0.97000027}
+    offset: {x: 3.8535357, y: -1.6799998}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: cafbdbb4e4a615649925f75761aef3f0, type: 3}
     isPowerup: 0
@@ -1065536,7 +1065537,7 @@ MonoBehaviour:
     cell: 14
     along: 0.6073289
     instance: {fileID: 340678357}
-    offset: {x: 2.1495361, y: 0.05499935}
+    offset: {x: 0.14953613, y: 2.8049994}
     open: 1
   gridEdgeMargin: 30
   gridYOffset: 0
@@ -1118834,7 +1118835,7 @@ MonoBehaviour:
     cell: 12
     along: 1
     instance: {fileID: 749014834}
-    offset: {x: -0.017177582, y: -3.35}
+    offset: {x: -0.017177582, y: 0}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: 2570939ab66c5e740802476ae033633a, type: 3}
     isPowerup: 0
@@ -1118842,7 +1118843,7 @@ MonoBehaviour:
     cell: 12
     along: 0.71797705
     instance: {fileID: 83289043}
-    offset: {x: 1.1128225, y: 0}
+    offset: {x: -0.88717747, y: -0.5500002}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: 2570939ab66c5e740802476ae033633a, type: 3}
     isPowerup: 0
@@ -1118850,7 +1118851,7 @@ MonoBehaviour:
     cell: 12
     along: 0.71797705
     instance: {fileID: 1296423938}
-    offset: {x: -0.65717745, y: 0}
+    offset: {x: 4.3428226, y: -0.5500002}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: 2570939ab66c5e740802476ae033633a, type: 3}
     isPowerup: 0
@@ -1118858,7 +1118859,7 @@ MonoBehaviour:
     cell: 12
     along: 0.71797705
     instance: {fileID: 442200077}
-    offset: {x: 2.0428224, y: 0}
+    offset: {x: -2.9571776, y: -0.5500002}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: 2570939ab66c5e740802476ae033633a, type: 3}
     isPowerup: 0
@@ -1118866,7 +1118867,7 @@ MonoBehaviour:
     cell: 15
     along: 0.71797705
     instance: {fileID: 373854131}
-    offset: {x: -0.5171776, y: 0}
+    offset: {x: 1.4828224, y: -0.5500002}
     open: 1
   - prefab: {fileID: 1404456324764638387, guid: 06d5bac05f9588641937ae8448d8d2e9, type: 3}
     isPowerup: 1
@@ -1118874,7 +1118875,7 @@ MonoBehaviour:
     cell: 11
     along: 0.67189777
     instance: {fileID: 2044069276}
-    offset: {x: 0, y: 0}
+    offset: {x: -5, y: 2.75}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: 37b22961b6bd1274d880235d39dffcdc, type: 3}
     isPowerup: 0
@@ -1118882,7 +1118883,7 @@ MonoBehaviour:
     cell: 22
     along: 0.5
     instance: {fileID: 1188393902}
-    offset: {x: 0, y: -0.30999947}
+    offset: {x: 0, y: -0.85999966}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: 3b81b96269a1a434dba0ab9dc24aec06, type: 3}
     isPowerup: 0
@@ -1118890,7 +1118891,7 @@ MonoBehaviour:
     cell: 9
     along: 0.6201047
     instance: {fileID: 630398660}
-    offset: {x: 0, y: -0.25}
+    offset: {x: -2, y: -0.8000002}
     open: 1
   - prefab: {fileID: 1404456324764638387, guid: 06d5bac05f9588641937ae8448d8d2e9, type: 3}
     isPowerup: 1
@@ -1118898,7 +1118899,7 @@ MonoBehaviour:
     cell: 0
     along: 0.03254962
     instance: {fileID: 737117409}
-    offset: {x: 2.0928226, y: 0.43999958}
+    offset: {x: -4.9071774, y: 0.48999977}
     open: 1
   - prefab: {fileID: 8851761484525238538, guid: da47f05236922c6478ac20d7077be4d3, type: 3}
     isPowerup: 1
@@ -1118906,7 +1118907,7 @@ MonoBehaviour:
     cell: 12
     along: 0.4370159
     instance: {fileID: 319026068}
-    offset: {x: 0, y: 0}
+    offset: {x: 0, y: 2.75}
     open: 1
   gridEdgeMargin: 30
   gridYOffset: 0
@@ -1140074,7 +1140075,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7714149248864374505, guid: 89b8ec0f2854ea640ae5387ff08fdcfb, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Level 3 Alex
+      value: Level 2
       objectReference: {fileID: 0}
     - target: {fileID: 8316486111028544994, guid: 89b8ec0f2854ea640ae5387ff08fdcfb, type: 3}
       propertyPath: m_Material
@@ -1167090,7 +1167091,7 @@ MonoBehaviour:
     cell: 13
     along: 0.12645149
     instance: {fileID: 750109735}
-    offset: {x: 2.2828226, y: 0.05499935}
+    offset: {x: 4.2828226, y: 2.8049994}
     open: 1
   - prefab: {fileID: 1404456324764638387, guid: 06d5bac05f9588641937ae8448d8d2e9, type: 3}
     isPowerup: 1
@@ -1167098,7 +1167099,7 @@ MonoBehaviour:
     cell: 12
     along: 0
     instance: {fileID: 706026557}
-    offset: {x: 0.58282244, y: 0.05499935}
+    offset: {x: 0.58282244, y: 2.8049994}
     open: 0
   - prefab: {fileID: 1404456324764638387, guid: 06d5bac05f9588641937ae8448d8d2e9, type: 3}
     isPowerup: 1
@@ -1167106,7 +1167107,7 @@ MonoBehaviour:
     cell: 13
     along: 0.5514513
     instance: {fileID: 510539961}
-    offset: {x: 1.7828224, y: 0.05499935}
+    offset: {x: 1.7828224, y: 2.8049994}
     open: 0
   - prefab: {fileID: 1404456324764638387, guid: 06d5bac05f9588641937ae8448d8d2e9, type: 3}
     isPowerup: 1
@@ -1167114,7 +1167115,7 @@ MonoBehaviour:
     cell: 12
     along: 0.26305842
     instance: {fileID: 1090558439}
-    offset: {x: 0.5828223, y: 0.05499935}
+    offset: {x: 5.5828223, y: 2.8049994}
     open: 0
   - prefab: {fileID: 1404456324764638387, guid: 06d5bac05f9588641937ae8448d8d2e9, type: 3}
     isPowerup: 1
@@ -1167122,7 +1167123,7 @@ MonoBehaviour:
     cell: 10
     along: 0.7743231
     instance: {fileID: 784580984}
-    offset: {x: -0.41717768, y: 0.05499935}
+    offset: {x: 4.5828223, y: 2.8049994}
     open: 1
   - prefab: {fileID: 1404456324764638387, guid: 06d5bac05f9588641937ae8448d8d2e9, type: 3}
     isPowerup: 1
@@ -1167130,7 +1167131,7 @@ MonoBehaviour:
     cell: 10
     along: 0.9223275
     instance: {fileID: 1091014633}
-    offset: {x: -0.16017818, y: 0.05499935}
+    offset: {x: 1.8398218, y: 2.8049994}
     open: 1
   - prefab: {fileID: 0}
     isPowerup: 0
@@ -1167138,7 +1167139,7 @@ MonoBehaviour:
     cell: 2
     along: 0
     instance: {fileID: 611427604}
-    offset: {x: -1.0171776, y: -0.5500002}
+    offset: {x: 0.9828224, y: -1.1000004}
     open: 1
   - prefab: {fileID: 5519828220680120833, guid: 934dcf21e32127243a43d4a64a0bec5f, type: 3}
     isPowerup: 0
@@ -1167146,7 +1167147,7 @@ MonoBehaviour:
     cell: 10
     along: 0.49724948
     instance: {fileID: 154563100}
-    offset: {x: 2.4828224, y: -0.5500002}
+    offset: {x: -2.5171776, y: -1.1000004}
     open: 0
   - prefab: {fileID: 5519828220680120833, guid: 934dcf21e32127243a43d4a64a0bec5f, type: 3}
     isPowerup: 0
@@ -1167154,7 +1167155,7 @@ MonoBehaviour:
     cell: 10
     along: 0.700574
     instance: {fileID: 809839715}
-    offset: {x: -1.7671776, y: -0.5500002}
+    offset: {x: 5.2328224, y: -1.1000004}
     open: 0
   - prefab: {fileID: 5519828220680120833, guid: 934dcf21e32127243a43d4a64a0bec5f, type: 3}
     isPowerup: 0
@@ -1167162,7 +1167163,7 @@ MonoBehaviour:
     cell: 10
     along: 0
     instance: {fileID: 1028563178}
-    offset: {x: -1.0171776, y: -0.5500002}
+    offset: {x: 0.9828224, y: -1.1000004}
     open: 1
   gridEdgeMargin: 30
   gridYOffset: 0
