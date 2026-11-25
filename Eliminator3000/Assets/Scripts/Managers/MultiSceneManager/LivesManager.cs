@@ -100,6 +100,7 @@ public class LivesManager : MonoBehaviour
         {
             PlayerProfileManager.Instance.PlayerProfiles[_playerIndex].AliveInLevel = false;
             EventBus<PlayerLivesAtZeroEvent>.Publish(new(_playerIndex));
+            PlayerProfileManager.Instance.PlayerProfiles[_playerIndex].Health = 0;
 
             CheckPlayersAlive();
         }
