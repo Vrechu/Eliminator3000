@@ -134,34 +134,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyTelegraph
   style: 2
-  intensityMultiplier: 4
-  flashColor: {r: 13.187375, g: 0, b: 11.483158, a: 1}
-  blinkRate: 2
+  intensityMultiplier: 6
+  flashColor: {r: 90.50967, g: 60.424152, b: 0, a: 1}
+  blinkRate: 8
   speedCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.5
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: 4
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  flickerBias: 0.71
+  flickerBias: 0.306
   useCurve: 1
   warningCurve:
     serializedVersion: 2
@@ -187,9 +187,10 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  warnBeforeShooting: 1
+  warnBeforeShooting: 0
   shootWarnTime: 1.2
   warnBeforeCharge: 1
+  chargeWarnTime: 0.6
 --- !u!114 &1509904648753069082
 MonoBehaviour:
   m_ObjectHideFlags: 0

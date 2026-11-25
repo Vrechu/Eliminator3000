@@ -26,12 +26,18 @@ public class EnemyTelegraph : MonoBehaviour
     public bool warnBeforeShooting = true;
     public float shootWarnTime = 1.2f;
     public bool warnBeforeCharge = true;
+    [Tooltip("How long the charge warning lasts (seconds).")]
+    public float chargeWarnTime = 1f;
+    bool chargeSeen;
+    float chargeStart;
 
     struct Slot { public Renderer r; public int index; public Color baseColor; }
     readonly List<Slot> slots = new List<Slot>();
     MaterialPropertyBlock mpb;
     MoveEnemy move;
-    FieldInfo kamiField, kamikazeFlag;
+    FieldInfo kamiField, kamikazeFlag, indexField, speedField;
+    float arrivedAt = -1f;
+    int arrivedIdx = -1;
     float shootInterval = -1f, shotClock, manualUntil, phase, id;
     static readonly int EmissionId = Shader.PropertyToID("_EmissionColor");
 
@@ -43,6 +49,8 @@ public class EnemyTelegraph : MonoBehaviour
         {
             kamiField = typeof(MoveEnemy).GetField("kamikaze", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
             kamikazeFlag = typeof(MoveEnemy).GetField("kamikazeReached", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+            indexField = typeof(MoveEnemy).GetField("currentWaypointIndex", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+            speedField = typeof(MoveEnemy).GetField("speed", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
         }
         var shoot = GetComponent<EnemyShoot>();
         if (shoot != null)
@@ -77,8 +85,44 @@ public class EnemyTelegraph : MonoBehaviour
         t = 1f;
         if (Time.time < manualUntil) return 1f;
 
-        if (warnBeforeCharge && move != null && kamiField != null && kamikazeFlag != null
-            && (bool)kamiField.GetValue(move) && (bool)kamikazeFlag.GetValue(move)) return 1f;
+        if (warnBeforeCharge && move != null && kamiField != null && indexField != null && speedField != null
+            && (bool)kamiField.GetValue(move))
+        {
+            int idx = (int)indexField.GetValue(move);
+            int count = move.WaypointOrder != null ? move.WaypointOrder.Length : 0;
+            if (count > 0)
+            {
+                if (idx >= count)
+                {
+                    t = 1f;   // already charging
+                    return 1f;
+                }
+                float spd = Mathf.Max(0.1f, (float)speedField.GetValue(move));
+                Vector3 p = transform.position;
+                float dist = 0f;
+                for (int i = idx; i < count; i++)
+                {
+                    Vector3 w = move.Waypoints[move.WaypointOrder[i]].position;
+                    dist += Vector3.Distance(p, w);
+                    p = w;
+                }
+                bool atWp = Vector3.Distance(transform.position, move.Waypoints[move.WaypointOrder[idx]].position) < 0.15f;
+                if (atWp && arrivedIdx != idx) { arrivedIdx = idx; arrivedAt = Time.time; }
+                float waits = 0f;
+                if (move.WaitTimes != null)
+                {
+                    for (int i = idx + 1; i < count && i < move.WaitTimes.Length; i++) waits += move.WaitTimes[i];
+                    if (idx < move.WaitTimes.Length)
+                        waits += atWp ? Mathf.Max(0f, move.WaitTimes[idx] - (Time.time - arrivedAt)) : move.WaitTimes[idx];
+                }
+                float remaining = dist / spd + waits;
+                if (remaining <= chargeWarnTime)
+                {
+                    t = 1f - remaining / Mathf.Max(0.05f, chargeWarnTime);
+                    return useCurve ? Mathf.Clamp01(warningCurve.Evaluate(t)) : 1f;
+                }
+            }
+        }
 
         if (warnBeforeShooting && shootInterval > 0f
             && GameStateManager.Instance != null
@@ -89,7 +133,7 @@ public class EnemyTelegraph : MonoBehaviour
             float left = shootInterval - shotClock;
             if (left <= shootWarnTime)
             {
-                t = 1f - left / Mathf.Max(0.01f, shootWarnTime);
+                t = 1f - left / Mathf.Max(0.05f, shootWarnTime);
                 return useCurve ? Mathf.Clamp01(warningCurve.Evaluate(t)) : t;
             }
         }
