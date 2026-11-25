@@ -700,6 +700,10 @@ PrefabInstance:
       propertyPath: p1GunWidget
       value: 
       objectReference: {fileID: 7802994736202486344}
+    - target: {fileID: 7128268126529547557, guid: f3e6d13bb8c569a4d8dd4eb24f240ae5, type: 3}
+      propertyPath: p1HealthWidget
+      value: 
+      objectReference: {fileID: 665985602192241792}
     - target: {fileID: 7723113778477344402, guid: f3e6d13bb8c569a4d8dd4eb24f240ae5, type: 3}
       propertyPath: m_pointerInputMode
       value: 1
@@ -725,7 +729,7 @@ PrefabInstance:
     - {fileID: 2025022834603883951, guid: f3e6d13bb8c569a4d8dd4eb24f240ae5, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 2162143655262118806, guid: f3e6d13bb8c569a4d8dd4eb24f240ae5, type: 3}
-      insertIndex: 0
+      insertIndex: -1
       addedObject: {fileID: 8287727017955874461}
     - targetCorrespondingSourceObject: {fileID: 2162143655262118806, guid: f3e6d13bb8c569a4d8dd4eb24f240ae5, type: 3}
       insertIndex: -1
@@ -924,6 +928,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: MenuObjects
       objectReference: {fileID: 0}
+    - target: {fileID: 1559786577849807385, guid: 4fdbaafad46bb5c4bbbb2f0f29147245, type: 3}
+      propertyPath: m_Name
+      value: ContinueButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 5790799975637204897, guid: 4fdbaafad46bb5c4bbbb2f0f29147245, type: 3}
+      propertyPath: continueButton
+      value: 
+      objectReference: {fileID: 7714149248864374505}
     - target: {fileID: 7324082146743931103, guid: 4fdbaafad46bb5c4bbbb2f0f29147245, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1004,11 +1016,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8758402540524420588, guid: 4fdbaafad46bb5c4bbbb2f0f29147245, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: Level 3 Alex
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4fdbaafad46bb5c4bbbb2f0f29147245, type: 3}
+--- !u!114 &7714149248864374505 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8758402540524420588, guid: 4fdbaafad46bb5c4bbbb2f0f29147245, type: 3}
+  m_PrefabInstance: {fileID: 1333682771951776517}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
 --- !u!224 &8585669046828901338 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7324082146743931103, guid: 4fdbaafad46bb5c4bbbb2f0f29147245, type: 3}
