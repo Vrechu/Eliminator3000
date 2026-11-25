@@ -164,11 +164,11 @@ public class  PlayerLivesAtZeroEvent : Event
 
 #region Player score events
 
-public class ScoreChangedEvent : Event
+public class PlayerScoreChangedEvent : Event
 {
     public int PlayerIndex;
     public int NewScore;
-    public ScoreChangedEvent(int cPlayerIndex, int cNewScore)
+    public PlayerScoreChangedEvent(int cPlayerIndex, int cNewScore)
     {
         PlayerIndex = cPlayerIndex;
         NewScore = cNewScore;

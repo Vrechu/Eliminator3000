@@ -49,8 +49,6 @@ public class UpdateRiveGUI : MonoBehaviour
         p0LevelScoreAmountProperty, p0TotalScoreAmountProperty, p0MultiplierAmountProperty,
         p1LevelScoreAmountProperty, p1TotalScoreAmountProperty, p1MultiplierAmountProperty;
 
-    //private bool levelScoreCalculated = false;
-
     private void OnEnable()
     {
         EventBus<PlayerAvatarInstantiatedEvent>.Subscribe(OnPlayerAvatarInitiated);
@@ -76,7 +74,7 @@ public class UpdateRiveGUI : MonoBehaviour
         {
             if (p0ScoreWidget != null) p0ScoreWidget.OnWidgetStatusChanged += HandleScoreWidgetStatusChanges;
             if (p1ScoreWidget != null) p1ScoreWidget.OnWidgetStatusChanged += HandleScoreWidgetStatusChanges;
-            EventBus<ScoreChangedEvent>.Subscribe(SetLevelScoreGUI);
+            EventBus<PlayerScoreChangedEvent>.Subscribe(SetLevelScoreGUI);
             EventBus<PlayerScoreMultiplierChangedEvent>.Subscribe(SetMultiplierGUI);
         }
 
@@ -101,7 +99,7 @@ public class UpdateRiveGUI : MonoBehaviour
 
         if (p0ScoreWidget != null) p0ScoreWidget.OnWidgetStatusChanged -= HandleScoreWidgetStatusChanges;
         if (p1ScoreWidget != null) p1ScoreWidget.OnWidgetStatusChanged -= HandleScoreWidgetStatusChanges;
-        EventBus<ScoreChangedEvent>.UnSubscribe(SetLevelScoreGUI);
+        EventBus<PlayerScoreChangedEvent>.UnSubscribe(SetLevelScoreGUI);
         EventBus<PlayerScoreMultiplierChangedEvent>.UnSubscribe(SetMultiplierGUI);
 
 
@@ -214,14 +212,12 @@ public class UpdateRiveGUI : MonoBehaviour
 
     private void SetLivesGUI(PlayerLivesChangedEvent _playerLivesChangedEvent)
     {
-        if (p0LivesAmountProperty == null) return;
-        if (p1LivesAmountProperty == null) return;
         if (!showHealthAndLives) return;
-        if (_playerLivesChangedEvent.Player == 0)
+        if (p0LivesAmountProperty != null &&_playerLivesChangedEvent.Player == 0)
         {
             p0LivesAmountProperty.Value = _playerLivesChangedEvent.NewLives;
         }
-        else if (_playerLivesChangedEvent.Player == 1)
+        else if (p1LivesAmountProperty != null && _playerLivesChangedEvent.Player == 1)
         {
             p1LivesAmountProperty.Value = _playerLivesChangedEvent.NewLives;
         }
@@ -229,30 +225,25 @@ public class UpdateRiveGUI : MonoBehaviour
 
     private void SetHealthGUI(PlayerHealthChangedEvent _playerHealthChangedEvent)
     {
-        if (p0HealthAmountProperty == null) return;
-        if (p1HealthAmountProperty == null) return;
-        if (p0GunStateProperties == null) return;
         if (!showHealthAndLives) return;
-        if (_playerHealthChangedEvent.Player == 0)
+        if (p0HealthAmountProperty != null && _playerHealthChangedEvent.Player == 0)
         {
             p0HealthAmountProperty.Value = _playerHealthChangedEvent.NewHealth;
         }
-        else if (_playerHealthChangedEvent.Player == 1)
+        else if (p1HealthAmountProperty != null &&_playerHealthChangedEvent.Player == 1)
         {
             p1HealthAmountProperty.Value = _playerHealthChangedEvent.NewHealth;
         }
     }
 
-    private void SetLevelScoreGUI(ScoreChangedEvent _scoreChangedEvent)
+    private void SetLevelScoreGUI(PlayerScoreChangedEvent _scoreChangedEvent)
     {
-        if (p0LevelScoreAmountProperty == null) return;
-        if (p1LevelScoreAmountProperty == null) return;
         if (!showScoreAndMultiplier) return;
-        if (_scoreChangedEvent.PlayerIndex == 0)
+        if (p0LevelScoreAmountProperty != null && _scoreChangedEvent.PlayerIndex == 0)
         {
             p0LevelScoreAmountProperty.Value = _scoreChangedEvent.NewScore;
         }
-        else if (_scoreChangedEvent.PlayerIndex == 1)
+        else if (p1LevelScoreAmountProperty != null && _scoreChangedEvent.PlayerIndex == 1)
         {
             p1LevelScoreAmountProperty.Value = _scoreChangedEvent.NewScore;
         }
@@ -260,14 +251,12 @@ public class UpdateRiveGUI : MonoBehaviour
 
     private void SetMultiplierGUI(PlayerScoreMultiplierChangedEvent _playerScoreMultiplierChangedEvent)
     {
-        if (p0MultiplierAmountProperty == null) return;
-        if (p1MultiplierAmountProperty == null) return;
         if (!showScoreAndMultiplier) return;
-        if (_playerScoreMultiplierChangedEvent.Player == 0)
+        if (p0MultiplierAmountProperty != null && _playerScoreMultiplierChangedEvent.Player == 0)
         {
             p0MultiplierAmountProperty.Value = _playerScoreMultiplierChangedEvent.NewMultiplier;
         }
-        else if (_playerScoreMultiplierChangedEvent.Player == 1)
+        else if (p1MultiplierAmountProperty != null && _playerScoreMultiplierChangedEvent.Player == 1)
         {
             p1MultiplierAmountProperty.Value = _playerScoreMultiplierChangedEvent.NewMultiplier;
         }
