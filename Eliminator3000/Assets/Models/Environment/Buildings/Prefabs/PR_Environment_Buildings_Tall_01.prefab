@@ -92,9 +92,17 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 506768834168262845, guid: f12755666b500d148b8697b93a995a6b, type: 3}
+      propertyPath: m_ScaleInLightmap
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: f12755666b500d148b8697b93a995a6b, type: 3}
       propertyPath: m_Name
       value: SM_Environment_Buildings_Tall_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 3879302432799758696, guid: f12755666b500d148b8697b93a995a6b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
