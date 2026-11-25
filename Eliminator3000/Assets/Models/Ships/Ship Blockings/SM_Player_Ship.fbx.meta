@@ -19,6 +19,16 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: M_Ship
     second: {fileID: 2100000, guid: 5ce4cc0fc36cc0740be9930c9e36c3f5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Welding5
+    second: {fileID: 2100000, guid: 968820bd82e706348a8de5583030a055, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lambert31
+    second: {fileID: 2100000, guid: 59d1b4c77097f3b4a9a3b2b74b2103dc, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
@@ -49,7 +59,7 @@ ModelImporter:
     isReadable: 0
   meshes:
     lODScreenPercentages: []
-    globalScale: 100
+    globalScale: 1
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
@@ -107,7 +117,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 100
+    globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
