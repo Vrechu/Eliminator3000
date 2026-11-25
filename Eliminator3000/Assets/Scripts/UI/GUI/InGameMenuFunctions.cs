@@ -1,8 +1,10 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InGameMenuFunctions : MonoBehaviour
 {
     [SerializeField] private GameObject inGameMenu;
+    [SerializeField] private Button continueButton;
 
     private void OnEnable()
     {
@@ -29,6 +31,7 @@ public class InGameMenuFunctions : MonoBehaviour
     private void EnableMenu()
     {
         inGameMenu.SetActive(true);
+        continueButton.Select();
     }
 
     private void OnGameWinEvent(GameWinEvent _winEvent)
