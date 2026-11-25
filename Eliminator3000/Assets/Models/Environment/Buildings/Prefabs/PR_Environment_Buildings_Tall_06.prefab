@@ -80,6 +80,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -1364348785101024411, guid: 6f391c87250eef54aac8fe5cd3581f81, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 502444907580787228, guid: 6f391c87250eef54aac8fe5cd3581f81, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
@@ -87,6 +91,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 6f391c87250eef54aac8fe5cd3581f81, type: 3}
       propertyPath: m_Name
       value: SM_Environment_Buildings_Tall_06
+      objectReference: {fileID: 0}
+    - target: {fileID: 1231672646494533881, guid: 6f391c87250eef54aac8fe5cd3581f81, type: 3}
+      propertyPath: m_ScaleInLightmap
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 3191132661229883966, guid: 6f391c87250eef54aac8fe5cd3581f81, type: 3}
       propertyPath: m_LocalPosition.x

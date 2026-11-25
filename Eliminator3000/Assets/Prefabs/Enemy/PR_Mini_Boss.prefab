@@ -272,7 +272,6 @@ MonoBehaviour:
   WaypointSpeeds: []
   WaitTimes: []
   EndPoint: {fileID: 0}
-  speed: 6
   kamikaze: 0
   kamikazeOvershootDistance: 0.5
 --- !u!114 &7460655747993194662
@@ -290,6 +289,7 @@ MonoBehaviour:
   projectilePrefab: {fileID: 4603973788345293308, guid: 0b47b98ede419214dbe5631d4d588960, type: 3}
   aimAtPlayer: 1
   shootInterval: 1
+  stopShootingDistance: 2
   multiShot: 1
   shotOrigins:
   - {fileID: 9151973694371936873}
@@ -748,6 +748,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2218959641077387811, guid: ab2db9d7c86f0194aa60ca0a96d13115, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5734044290910311396, guid: ab2db9d7c86f0194aa60ca0a96d13115, type: 3}
       propertyPath: m_Name
       value: PR_MiniBoss_01_FourShooter
@@ -755,8 +759,110 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5734044290910311396, guid: ab2db9d7c86f0194aa60ca0a96d13115, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4116196649302511579}
+    - targetCorrespondingSourceObject: {fileID: 5734044290910311396, guid: ab2db9d7c86f0194aa60ca0a96d13115, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4761679222298591708}
   m_SourcePrefab: {fileID: 100100000, guid: ab2db9d7c86f0194aa60ca0a96d13115, type: 3}
+--- !u!1 &3820072741986583103 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5734044290910311396, guid: ab2db9d7c86f0194aa60ca0a96d13115, type: 3}
+  m_PrefabInstance: {fileID: 8831828308348080603}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4116196649302511579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3820072741986583103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0ceb2451700a0b4595e42ae5253d5c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyLife
+  visual: {fileID: 0}
+  lookAtPlayer: 1
+  turnSpeed: 4
+  maxAngle: 60
+  rotationOffsetEuler: {x: 0, y: 270, z: 0}
+  stopTrackingBehind: 0
+  hover: 1
+  bobHeight: 0.35
+  bobSpeed: 1.6
+  swayWidth: 0.15
+--- !u!114 &4761679222298591708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3820072741986583103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a403609c718f5644996ae2895e8eb1ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyTelegraph
+  style: 0
+  intensityMultiplier: 6
+  flashColor: {r: 6, g: 5, b: 0.5, a: 1}
+  blinkRate: 4
+  speedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.5
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 4
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  flickerBias: 0.5
+  useCurve: 1
+  warningCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.3
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  warnBeforeShooting: 1
+  shootWarnTime: 1.2
+  warnBeforeCharge: 1
 --- !u!4 &8589877169696861502 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 983379886671887589, guid: ab2db9d7c86f0194aa60ca0a96d13115, type: 3}

@@ -113,6 +113,7 @@ public class UpdateRiveGUI : MonoBehaviour
     private void Start()
     {
         DisableGUI();
+        EventBus<GUIReadyEvent>.Publish(new GUIReadyEvent());
     }
 
     private void DisableGUI()

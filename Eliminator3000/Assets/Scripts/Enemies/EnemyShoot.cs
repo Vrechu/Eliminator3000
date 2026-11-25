@@ -5,7 +5,7 @@ public class EnemyShoot : MonoBehaviour
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private bool aimAtPlayer = false;
     [SerializeField] private float shootInterval = 6f;
-
+    [SerializeField] private float stopShootingDistance = 2f;
     private Timer timer;
 
     [SerializeField] private bool multiShot = false;
@@ -14,11 +14,21 @@ public class EnemyShoot : MonoBehaviour
     private PlayerProfileManager playerProfileManager;
     private DummyManager dummyManager;
 
+    private MoveEnemy moveEnemy;
+
     private void Start()
     {
         timer = new Timer(shootInterval, true);
         playerProfileManager = PlayerProfileManager.Instance;
         dummyManager = DummyManager.Instance;
+        if (TryGetComponent<MoveEnemy>(out MoveEnemy _moveEnemy))
+        {
+            moveEnemy = _moveEnemy;
+        }
+        else
+        {
+            Debug.LogWarning("MoveEnemy component not found on " + gameObject.name);
+        }
     }
 
     /// <summary>
@@ -27,8 +37,8 @@ public class EnemyShoot : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        if (GameStateManager.Instance.CurrentState != GameStateManager.GameState.Ingame)
-            return;
+        if (GameStateManager.Instance.CurrentState != GameStateManager.GameState.Ingame) return;
+        if (moveEnemy != null && moveEnemy.DistanceBehindPlayer() < stopShootingDistance) return;
         if (timer.IsFinished())
         {
             if (multiShot)

@@ -7,7 +7,7 @@ public class MoveEnemy : MonoBehaviour
     public float[] WaypointSpeeds;
     public float[] WaitTimes;
     public Transform EndPoint;
-    [SerializeField] private float speed = 2f;
+    private float speed = 2f;
     [SerializeField] private bool kamikaze = false;
     [SerializeField] private float kamikazeOvershootDistance = 0.5f;
     private bool kamikazeReached = false;
@@ -19,6 +19,7 @@ public class MoveEnemy : MonoBehaviour
     private bool finalWaypointReached = false;
     private GameStateManager gameStatemanager;
     private BlackHoleManager blackHoleManager;
+    private bool blackHoleAffected = false;
     private PlayerProfileManager playerProfileManager = PlayerProfileManager.Instance;
 
     private void Start()
@@ -75,6 +76,7 @@ public class MoveEnemy : MonoBehaviour
     private Vector3 NextWaypointPosition()
     {        
         if (BlackHoleActive()) return blackHoleManager.BlackHolePosition;
+        if (blackHoleAffected) return EndPoint.position;
         if (currentWaypointIndex < WaypointOrder.Length)
         {
             return Waypoints[WaypointOrder[currentWaypointIndex]].position;
@@ -120,7 +122,11 @@ public class MoveEnemy : MonoBehaviour
     {
         for (int i = 0; i < blackHoleManager.BlackHolesUp.Length; i++)
         {
-            if (blackHoleManager.BlackHolesUp[i]) return true;
+            if (blackHoleManager.BlackHolesUp[i])
+            {
+                blackHoleAffected = true;
+                return true;
+            }
         }
         return false;
     }
@@ -151,5 +157,10 @@ public class MoveEnemy : MonoBehaviour
         Vector3 directionToPlayer = (closestPlayerPosition - transform.position).normalized;
         float extensionDistance = 1f + kamikazeOvershootDistance;
         return closestPlayerPosition + directionToPlayer * extensionDistance;
+    }
+
+    public float DistanceBehindPlayer()
+    {
+        return transform.position.z - GetClosestPlayerPosition().z;
     }
 }

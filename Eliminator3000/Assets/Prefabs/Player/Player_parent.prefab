@@ -263,12 +263,12 @@ MonoBehaviour:
   minHeight: 2
   edgeBounceResidualSpeed: 0.3
   accelerationEnabled: 1
-  horizontalMaxSpeed: 20
-  verticalMaxSpeed: 15
-  horizontalAcceleration: 150
-  verticalAcceleration: 90
-  horizontalDeceleration: 80
-  verticalDeceleration: 50
+  horizontalMaxSpeed: 17
+  verticalMaxSpeed: 17
+  horizontalAcceleration: 160
+  verticalAcceleration: 160
+  horizontalDeceleration: 70
+  verticalDeceleration: 70
   bankEnabled: 1
   horizontalInputBankSpeed: 7
   verticalInputBankSpeed: 7

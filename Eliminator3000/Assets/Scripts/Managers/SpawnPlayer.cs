@@ -10,21 +10,25 @@ public class SpawnPlayer : MonoBehaviour
 
     private void OnEnable()
     {
-        EventBus<LevelEnteredEvent>.Subscribe(InstantiateOnLevelEnter);
+        EventBus<LevelReadyEvent>.Subscribe(InstantiateOnLevelReady);
         EventBus<PlayerLivesAtZeroEvent>.Subscribe(OnPlayerLivesAtZero);
         EventBus<PlayerJoinedEvent>.Subscribe(OnInGameJoin);
     }
 
     private void OnDestroy()
     {
-        EventBus<LevelEnteredEvent>.UnSubscribe(InstantiateOnLevelEnter);
+        EventBus<LevelReadyEvent>.UnSubscribe(InstantiateOnLevelReady);
         EventBus<PlayerLivesAtZeroEvent>.UnSubscribe(OnPlayerLivesAtZero);
         EventBus<PlayerJoinedEvent>.UnSubscribe(OnInGameJoin);
+    }    
+
+    private void Start()
+    {
+        EventBus<SpawnerReadyEvent>.Publish(new SpawnerReadyEvent());
     }
 
-    private void InstantiateOnLevelEnter(LevelEnteredEvent _levelEnteredEvent)
+    private void InstantiateOnLevelReady(LevelReadyEvent _levelReadyEvent)
     {
-        if (_levelEnteredEvent.LevelIndex < 1) return;
         for (int i = 0; i < PlayerProfileManager.Instance.PlayerProfiles.Length; i++)
         {
             if (PlayerProfileManager.Instance.PlayersJoined[i])
@@ -33,7 +37,6 @@ public class SpawnPlayer : MonoBehaviour
             }
         }
     }
-
 
     /// <summary>
     /// Publishes a PlayerSpawnEvent when a player joins, providing the appropriate spawn point based on the player's profile.

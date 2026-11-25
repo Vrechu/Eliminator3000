@@ -1,10 +1,41 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class MainMenuManager : MonoBehaviour
 {
-    [SerializeField] private string firstSceneName = "SampleScene";
+    [SerializeField] private MainMenuPage startingPage = MainMenuPage.AttractScreen;
     [SerializeField] private GameObject[] pages;
+    [SerializeField] private Button defaultButtonMainPage, defaultButtonLeaderboardPage, defaultButtonLevelSelectPage;
+
+    private bool p2JoinPopupActive = false, p2CanRequestJoin = true;
+    [Header("Player joining"), SerializeField] private GameObject p2JoinConsentPopup;
+    private Timer p2JoinConsentTimeOutTimer;
+    private Timer p2JoinResetTimer;
+    [SerializeField] private float p2JoinConsentTimeOutTime = 10f, p2JoinResetime = 20f;
+    [SerializeField] private TextMeshProUGUI p2JoinConsentTimerVisual;
+
+
     [SerializeField] private GameObject p1JoinedUI, p2JoinedUI;
+
+    [Header("Control screen"),SerializeField] private GameObject controlsContinueVisual;
+    [SerializeField] private float continueTime = 4f;
+    [SerializeField] TextMeshProUGUI continueTimerVisual;
+    private Timer controlsContinueTimer;
+
+
+    public enum MainMenuPage
+    {
+        AttractScreen = 0,
+        ControlsPage = 1,
+        PlayerSelectPage = 2,
+        MainPage = 3,
+        LeaderboardPage = 4,
+        LevelSelectPage = 5,
+    }
+
+    private MainMenuPage currentMenuPage;
 
     private void Awake()
     {
@@ -23,13 +54,194 @@ public class MainMenuManager : MonoBehaviour
 
     private void Start()
     {
-        OpenPage(0);
+        OpenPage((int)startingPage);
+        controlsContinueTimer = new Timer(continueTime);
+        controlsContinueVisual.SetActive(false);
+
+        p2JoinConsentPopup.SetActive(false);
+        p2JoinConsentTimeOutTimer = new Timer(p2JoinConsentTimeOutTime);
+        p2JoinResetTimer = new Timer(p2JoinResetime);
     }
 
-    public void OnStartButtonPressed()
+    private void Update()
     {
-        EventBus<LoadSceneEvent>.Publish(new LoadSceneEvent(firstSceneName));
+        switch (currentMenuPage)
+        {
+            case MainMenuPage.AttractScreen:
+                AttractScreenInputListener();
+                break;
+            case MainMenuPage.ControlsPage:
+                ControlsPageInputListener();
+                break;
+
+            case MainMenuPage.PlayerSelectPage:
+                PlayerSelectInputs();
+                break;
+
+            case MainMenuPage.MainPage:
+                LevelSelectCodeInputs();
+                P2JoinRequest();
+                AwnserP2JoinConsentPopup();
+                CountdownPopupTimers();
+                break;
+
+            case MainMenuPage.LeaderboardPage:
+            case MainMenuPage.LevelSelectPage:
+                BackInputs();
+                P2JoinRequest();
+                AwnserP2JoinConsentPopup();
+                CountdownPopupTimers();
+                break;
+        }
     }
+
+    public void StartLevel(string _levelName)
+    {
+        EventBus<LoadSceneEvent>.Publish(new LoadSceneEvent(_levelName));
+    }
+
+    private void ResetPlayerJoinedUI()
+    {
+        p1JoinedUI.SetActive(false);
+        p2JoinedUI.SetActive(false);
+    }
+
+    public void OpenPage(int _pageIndex)
+    {
+        ClosePages();
+        pages[_pageIndex].SetActive(true);
+        currentMenuPage = (MainMenuPage)_pageIndex;
+
+        switch (_pageIndex)
+        {
+            case (int)MainMenuPage.MainPage:
+                defaultButtonMainPage.Select();
+                break;
+            case (int)MainMenuPage.LeaderboardPage:
+                defaultButtonLeaderboardPage.Select();
+                break;
+            case (int)MainMenuPage.LevelSelectPage:
+                defaultButtonLevelSelectPage.Select();
+                break;
+        }
+    }
+
+    private void ClosePages()
+    {
+        for (int i = 0; i < pages.Length; i++)
+        {
+            pages[i].SetActive(false);
+        }
+    }
+
+    private void AttractScreenInputListener()
+    {
+        if (Keyboard.current == null) return;
+        if (Keyboard.current.anyKey.wasPressedThisFrame)
+        {
+            OpenPage((int)MainMenuPage.ControlsPage);
+        }
+    }
+
+    private void ControlsPageInputListener()
+    {
+        if (Keyboard.current.fKey.isPressed && Keyboard.current.gKey.isPressed)
+        {
+            OpenPage((int)MainMenuPage.PlayerSelectPage);
+        }
+
+        if ((controlsContinueTimer.IsFinished()))
+        {
+            controlsContinueVisual.SetActive(true);
+            continueTimerVisual.enabled = false;
+            if (Keyboard.current.vKey.wasPressedThisFrame)
+            {
+                OpenPage((int)MainMenuPage.PlayerSelectPage);
+            }
+        }
+        continueTimerVisual.text = controlsContinueTimer.TimeLeft.ToString("F1");
+    }
+
+    private void SendJoinSignal(int _playerIdex)
+    {
+        EventBus<PlayerMenuJoinInputEvent>.Publish(new PlayerMenuJoinInputEvent(_playerIdex));
+    }
+
+    private void PlayerSelectInputs()
+    {
+        if (Keyboard.current == null) return;
+        else if (Keyboard.current.digit1Key.wasPressedThisFrame)
+        {
+            SendJoinSignal(0);
+            OpenPage((int)MainMenuPage.MainPage);
+        }
+        else if (Keyboard.current.digit2Key.wasPressedThisFrame)
+        {
+            SendJoinSignal(0);
+            SendJoinSignal(1);
+            OpenPage((int)MainMenuPage.MainPage);
+        }
+    }
+
+    private void P2JoinRequest()
+    {
+        if (!p2CanRequestJoin) return;
+        if (Keyboard.current == null) return;
+        else if (Keyboard.current.digit2Key.wasReleasedThisFrame)
+        {
+            OpenP2JoinConsentPopup();
+        }
+    }
+
+    private void OpenP2JoinConsentPopup()
+    {
+        p2JoinConsentPopup.SetActive(true);
+        p2JoinPopupActive = true;
+        p2JoinConsentTimeOutTimer.Reset(p2JoinConsentTimeOutTime);
+        p2CanRequestJoin = false;
+    }
+
+    private void AwnserP2JoinConsentPopup()
+    {   if (!p2JoinPopupActive) return;
+        if (Keyboard.current == null) return;
+        if (Keyboard.current.digit1Key.isPressed)
+        {
+            SendJoinSignal(1);
+            CloseP2JoinConsentPopup();
+        }
+        else if (Keyboard.current.digit2Key.isPressed)
+        {
+            CloseP2JoinConsentPopup();
+            p2JoinResetTimer.Reset(p2JoinResetime);
+        }
+    }
+
+    private void CloseP2JoinConsentPopup()
+    {
+        p2JoinConsentPopup.SetActive(false);
+        p2JoinPopupActive = false;
+    }
+
+    private void CountdownPopupTimers()
+    {
+        if (p2JoinPopupActive)
+        {
+            if (p2JoinConsentTimeOutTimer.IsFinished())
+            {
+                CloseP2JoinConsentPopup();
+                p2JoinResetTimer.Reset(p2JoinResetime);
+            }
+            p2JoinConsentTimerVisual.text = p2JoinConsentTimeOutTimer.TimeLeft.ToString("F1");
+        }
+        else if (!p2JoinPopupActive && !p2CanRequestJoin)
+        {
+            if (p2JoinResetTimer.IsFinished())
+            {
+                p2CanRequestJoin = true;
+            }
+        }
+    }
+
 
     private void OnPlayerJoined(PlayerJoinedEvent _playerJoinedEvent)
     {
@@ -43,23 +255,22 @@ public class MainMenuManager : MonoBehaviour
         }
     }
 
-    private void ResetPlayerJoinedUI()
+    private void LevelSelectCodeInputs()
     {
-        p1JoinedUI.SetActive(false);
-        p2JoinedUI.SetActive(false);
-    }
-
-    public void OpenPage(int _pageIndex)
-    {
-        ClosePages();
-        pages[_pageIndex].SetActive(true);
-    }
-
-    private void ClosePages()
-    {
-        for (int i = 0; i < pages.Length; i++)
+        if (Keyboard.current == null) return;
+        if (Keyboard.current.fKey.isPressed && Keyboard.current.gKey.wasPressedThisFrame)
         {
-            pages[i].SetActive(false);
+            OpenPage((int)MainMenuPage.LevelSelectPage);
+        }
+    }
+
+    private void BackInputs()
+    {
+        if (Keyboard.current == null) return;
+        if (Keyboard.current.escapeKey.wasPressedThisFrame
+            || Keyboard.current.bKey.wasPressedThisFrame)
+        {
+            OpenPage((int)MainMenuPage.MainPage);
         }
     }
 }

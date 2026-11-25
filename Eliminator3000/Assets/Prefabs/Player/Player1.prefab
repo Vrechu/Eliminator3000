@@ -32,50 +32,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 2158181575188216181, guid: 5dc7f4f5ff2bf8048af11888999a2531, type: 3}
-      propertyPath: bankEnabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2158181575188216181, guid: 5dc7f4f5ff2bf8048af11888999a2531, type: 3}
-      propertyPath: verticalMaxSpeed
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 2158181575188216181, guid: 5dc7f4f5ff2bf8048af11888999a2531, type: 3}
-      propertyPath: horizontalMaxSpeed
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 2158181575188216181, guid: 5dc7f4f5ff2bf8048af11888999a2531, type: 3}
-      propertyPath: verticalAcceleration
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 2158181575188216181, guid: 5dc7f4f5ff2bf8048af11888999a2531, type: 3}
-      propertyPath: verticalDeceleration
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 2158181575188216181, guid: 5dc7f4f5ff2bf8048af11888999a2531, type: 3}
-      propertyPath: verticalIdleBankSpeed
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2158181575188216181, guid: 5dc7f4f5ff2bf8048af11888999a2531, type: 3}
-      propertyPath: horizontalAcceleration
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 2158181575188216181, guid: 5dc7f4f5ff2bf8048af11888999a2531, type: 3}
-      propertyPath: horizontalDeceleration
-      value: 210
-      objectReference: {fileID: 0}
-    - target: {fileID: 2158181575188216181, guid: 5dc7f4f5ff2bf8048af11888999a2531, type: 3}
-      propertyPath: verticalInputBankSpeed
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 2158181575188216181, guid: 5dc7f4f5ff2bf8048af11888999a2531, type: 3}
-      propertyPath: horizontalIdleBankSpeed
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2158181575188216181, guid: 5dc7f4f5ff2bf8048af11888999a2531, type: 3}
-      propertyPath: horizontalInputBankSpeed
-      value: 7
-      objectReference: {fileID: 0}
     - target: {fileID: 2683548426514216474, guid: 5dc7f4f5ff2bf8048af11888999a2531, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -144,14 +100,6 @@ PrefabInstance:
       propertyPath: dummyPrefab
       value: 
       objectReference: {fileID: 133854376005785244, guid: 159728c9b7043744fb063cfa330fe8f5, type: 3}
-    - target: {fileID: 5991984168135489204, guid: 5dc7f4f5ff2bf8048af11888999a2531, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6548040488092596121, guid: 5dc7f4f5ff2bf8048af11888999a2531, type: 3}
-      propertyPath: Player
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6747074732344875239, guid: 5dc7f4f5ff2bf8048af11888999a2531, type: 3}
       propertyPath: PlayerID
       value: 0
@@ -159,30 +107,6 @@ PrefabInstance:
     - target: {fileID: 6827704096844093803, guid: 5dc7f4f5ff2bf8048af11888999a2531, type: 3}
       propertyPath: m_IsActive
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6908293870932674626, guid: 5dc7f4f5ff2bf8048af11888999a2531, type: 3}
-      propertyPath: m_Size.x
-      value: 1.5852871
-      objectReference: {fileID: 0}
-    - target: {fileID: 6908293870932674626, guid: 5dc7f4f5ff2bf8048af11888999a2531, type: 3}
-      propertyPath: m_Size.y
-      value: 1.7963141
-      objectReference: {fileID: 0}
-    - target: {fileID: 6908293870932674626, guid: 5dc7f4f5ff2bf8048af11888999a2531, type: 3}
-      propertyPath: m_Size.z
-      value: 1.8455261
-      objectReference: {fileID: 0}
-    - target: {fileID: 6908293870932674626, guid: 5dc7f4f5ff2bf8048af11888999a2531, type: 3}
-      propertyPath: m_Center.x
-      value: -0.040099572
-      objectReference: {fileID: 0}
-    - target: {fileID: 6908293870932674626, guid: 5dc7f4f5ff2bf8048af11888999a2531, type: 3}
-      propertyPath: m_Center.y
-      value: 0.24916321
-      objectReference: {fileID: 0}
-    - target: {fileID: 6908293870932674626, guid: 5dc7f4f5ff2bf8048af11888999a2531, type: 3}
-      propertyPath: m_Center.z
-      value: 0.4289467
       objectReference: {fileID: 0}
     - target: {fileID: 7019095551105211704, guid: 5dc7f4f5ff2bf8048af11888999a2531, type: 3}
       propertyPath: player

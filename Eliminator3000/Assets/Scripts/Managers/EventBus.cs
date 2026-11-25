@@ -70,6 +70,24 @@ public class PlayerSpawnEvent : Event
     }
 }
 
+public class PlayerMenuJoinInputEvent : Event
+{
+    public int PlayerIndex;
+    public PlayerMenuJoinInputEvent(int cPlayerIndex)
+    {
+        PlayerIndex = cPlayerIndex;
+    }
+}
+
+public class  PlayerIngameJoinInputEvent : Event
+{
+    public int PlayerIndex;
+    public PlayerIngameJoinInputEvent(int cPlayerIndex)
+    {
+        PlayerIndex = cPlayerIndex;
+    }
+}
+
 #endregion
 
 #region Main menu events
@@ -272,6 +290,21 @@ public class PlayerGunAmmoChangedEvent : Event
 #endregion
 
 #region Level events
+
+public class  SpawnerReadyEvent : Event
+{
+    public SpawnerReadyEvent() { }
+}
+
+public class  GUIReadyEvent : Event
+{
+    public GUIReadyEvent() { }
+}
+
+public class LevelReadyEvent : Event
+{
+    public LevelReadyEvent() { }
+}
 
 public class  LevelEnteredEvent : Event
 {
