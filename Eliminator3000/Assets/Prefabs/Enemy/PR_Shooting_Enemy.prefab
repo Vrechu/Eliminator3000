@@ -129,6 +129,7 @@ MonoBehaviour:
   warnBeforeShooting: 1
   shootWarnTime: 0.5
   warnBeforeCharge: 0
+  chargeWarnTime: 1
 --- !u!114 &1340070435426162157
 MonoBehaviour:
   m_ObjectHideFlags: 0

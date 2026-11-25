@@ -15,19 +15,19 @@ MonoBehaviour:
   Info: 
   SpawnPointIndex: 22
   EnemyPrefabs:
-  - {fileID: 3699308623078601662, guid: 955d9f6cf94f6d340bd1b5504ac41421, type: 3}
+  - {fileID: 3699308623078601662, guid: 67d2085d610b8244bb74e95e6df6b45b, type: 3}
   - {fileID: 3699308623078601662, guid: 67d2085d610b8244bb74e95e6df6b45b, type: 3}
   - {fileID: 3699308623078601662, guid: 808c374093f9b964982724dcbac8b515, type: 3}
   TimesBetweenSpawns:
   - 1
-  - 2
-  - 2
-  EnemySpeed: 8
+  - 3
+  - 3
+  EnemySpeed: 30
   WaypointOrder: 4000000041000000
   WaypointSpeeds:
-  - 0
-  - 0
+  - 13
+  - 13
   WaitTimes:
   - 1
-  - 2
+  - 1
   EndPointIndex: 19
