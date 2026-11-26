@@ -37,6 +37,12 @@ public class UpdateRiveGUI : MonoBehaviour
 
     private ViewModelInstanceEnumProperty[] p0GunStateProperties, p1GunStateProperties, p0GunIconProperties, p1GunIconProperties;
 
+    [Header("Gun availability"), SerializeField]
+    private bool[] gunImplemented = { true, true, true, false, false };
+
+    private bool IsGunImplemented(int index) =>
+        index >= 0 && index < gunImplemented.Length && gunImplemented[index];
+
     private ViewModelInstanceNumberProperty 
         p0BaseGunAmmoProperty, p0RapidGunAmmoProperty, p0ClusterGunAmmoProperty, p0BoomerangGunAmmoProperty, p0HomingGunAmmoProperty,
         p1BaseGunAmmoProperty, p1RapidGunAmmoProperty, p1ClusterGunAmmoProperty, p1BoomerangGunAmmoProperty, p1HomingGunAmmoProperty;
@@ -170,7 +176,17 @@ public class UpdateRiveGUI : MonoBehaviour
             states[i] = gun.GetEnumProperty(gunStatePropertyName);
             icons[i] = gun.GetEnumProperty(gunIconPropertyName);
             ammos[i] = gun.GetNumberProperty(gunAmmoPropertyName);
-            icons[i].Value = iconNames[i];   // replaces SetGunIcons()
+
+            if (IsGunImplemented(i))
+            {
+                icons[i].Value = iconNames[i];
+            }
+            else
+            {
+                // Gun not in the build yet: show it as locked with no ammo
+                states[i].Value = "Unequipped";
+                ammos[i].Value = 0;
+            }
         }
 
         if (player == 0) { p0GunStateProperties = states; p0GunIconProperties = icons; p0GunAmmoProperties = ammos; }
@@ -282,6 +298,11 @@ public class UpdateRiveGUI : MonoBehaviour
 
             for (int i = 0; p0GunStateProperties.Length > i; i++)
             {
+                if (!IsGunImplemented(i))
+                {
+                    p0GunStateProperties[i].Value = "Unequipped";
+                    continue;
+                }
                 if (i >= _ammos.Length) break;
                 if (i == _gunIndex)
                 {
