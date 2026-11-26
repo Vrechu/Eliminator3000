@@ -140,10 +140,14 @@ public class EnemyHitFeedback : MonoBehaviour
         VT.localScale = baseScale;
 
         float totalTime = duration * flashCount + flashGap * (flashCount - 1);
-        if (timer > totalTime)
+        if (timer >= totalTime)
+        {
+            if (dirty) { Apply(0f); dirty = false; }
+            return;
+        }
 
-            timer += Time.deltaTime;
-               float w = FlashWeight(timer);
+        timer += Time.deltaTime;
+        float w = FlashWeight(timer);
         Apply(w);
         dirty = true;
 

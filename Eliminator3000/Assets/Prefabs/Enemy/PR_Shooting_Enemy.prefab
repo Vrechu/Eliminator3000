@@ -71,7 +71,7 @@ MonoBehaviour:
   emissionBoost: 20
   duration: 0.3
   flashCount: 2
-  flashGap: 0.01
+  flashGap: 0.02
   fade:
     serializedVersion: 2
     m_Curve:
