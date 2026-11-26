@@ -227,6 +227,46 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: be7619bf-e29c-4a7a-8c83-fc9fca83176b
     m_ActionName: 'Gameplay/UsePickup[/Keyboard/q,/Keyboard/rightShift]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 3305eb39-ba1f-47b0-af85-90a3b5508780
+    m_ActionName: 'UI/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ef597b90-b18c-4933-8718-dbea411e2517
+    m_ActionName: 'UI/Submit[/Keyboard/v,/Keyboard/enter]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 5cadae4f-073a-449f-8300-41e5b2fe974b
+    m_ActionName: 'UI/Cancel[/Keyboard/b,/Keyboard/escape]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 1f8f683c-548b-4d28-9f53-233aae838937
+    m_ActionName: 'UI/Point[/Mouse/position]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e08705d5-e7ed-48c8-ad93-be441abf6cd3
+    m_ActionName: 'UI/Click[/Mouse/leftButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e34e77a5-a53c-4fa1-aada-135b359b2e58
+    m_ActionName: 'UI/RightClick[/Mouse/rightButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 9797d9a5-44a7-43e5-92d1-a7f7bf37fb6e
+    m_ActionName: 'UI/MiddleClick[/Mouse/middleButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f97543a9-ee62-470d-9e59-c2e03dc3310c
+    m_ActionName: 'UI/ScrollWheel[/Mouse/scroll]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: bc0ffff9-4790-4637-9e27-e19f3e5fe0be
+    m_ActionName: UI/TrackedDevicePosition
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 768b3345-b52c-4538-8f9a-325f939a0189
+    m_ActionName: UI/TrackedDeviceOrientation
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: 
   m_DefaultActionMap: Gameplay
