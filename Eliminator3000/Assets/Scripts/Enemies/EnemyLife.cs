@@ -1,20 +1,25 @@
 using UnityEngine;
+using System.Reflection;
 
 public class EnemyLife : MonoBehaviour
 {
     [Header("Visual (optional)")]
-    [Tooltip("Child object holding the model. Best choice: it is rotated and bobbed instead of the root, so it can't fight MoveEnemy. Empty = use this object.")]
     public Transform visual;
 
     [Header("Look at player")]
     public bool lookAtPlayer = true;
     public float turnSpeed = 4f;
-    [Tooltip("Max angle away from the travel direction. Stops wild flips.")]
     public float maxAngle = 60f;
-    [Tooltip("Add 180 on Y if the model's front faces backwards.")]
     public Vector3 rotationOffsetEuler = Vector3.zero;
-    [Tooltip("Stops tracking once the enemy is this far past the player in Z (default 0 = level with the player). It then keeps its last pose while flying away.")]
     public float stopTrackingBehind = 0f;
+
+    [Header("Entry spin (roll around the look direction)")]
+    public bool spinOnEntry = true;
+    [Tooltip("Degrees per second while flying to the first point.")]
+    public float spinSpeed = 120f;
+    [Tooltip("Degrees per second afterwards. 0 = settle and stop.")]
+    public float idleSpinSpeed = 0f;
+    public float settleSpeed = 2f;
 
     [Header("Hover")]
     public bool hover = true;
@@ -25,15 +30,29 @@ public class EnemyLife : MonoBehaviour
     Transform target;
     float nextScan, phase;
     bool frozen;
-    Quaternion baseRot, lastRot;
+    Quaternion lastRot, smoothBase;
     Vector3 lastOffset;
+    MoveEnemy move;
+    FieldInfo finalField, chargeField, indexField;
+    float roll, rollSpeed, settleTarget;
+    bool arrived;
 
     Transform T { get { return visual != null ? visual : transform; } }
 
     void Start()
     {
         phase = Random.value * 10f;
-        baseRot = T.rotation;
+        smoothBase = Quaternion.LookRotation(Vector3.back);
+        rollSpeed = spinSpeed;
+        move = GetComponent<MoveEnemy>();
+        if (move != null)
+        {
+            var f = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
+            finalField = typeof(MoveEnemy).GetField("finalWaypointReached", f);
+            chargeField = typeof(MoveEnemy).GetField("kamikazeReached", f);
+            indexField = typeof(MoveEnemy).GetField("currentWaypointIndex", f);
+        }
+        if (!spinOnEntry) arrived = true;
     }
 
     void FindPlayer()
@@ -50,31 +69,71 @@ public class EnemyLife : MonoBehaviour
         target = best;
     }
 
+    bool ReachedFirstPoint()
+    {
+        if (move == null || indexField == null || move.WaypointOrder == null || move.WaypointOrder.Length == 0) return true;
+        if ((int)indexField.GetValue(move) >= 1) return true;
+        return Vector3.Distance(transform.position, move.Waypoints[move.WaypointOrder[0]].position) < 0.3f;
+    }
+
+    bool HeadingToEnd()
+    {
+        if (move == null) return false;
+        if (finalField != null && (bool)finalField.GetValue(move)) return true;
+        if (chargeField != null && (bool)chargeField.GetValue(move)) return true;
+        return false;
+    }
+
     void LateUpdate()
     {
-        // undo last frame's hover offset so we never fight MoveEnemy
         T.localPosition -= lastOffset;
+        float dt = Time.deltaTime;
 
         if (Time.time >= nextScan) { nextScan = Time.time + 0.5f; FindPlayer(); }
 
-        if (lookAtPlayer && target != null && !frozen)
+        if (!frozen && HeadingToEnd()) { frozen = true; lastRot = T.rotation; }
+
+        if (frozen) T.rotation = lastRot;
+        else
         {
-            if (transform.position.z < target.position.z - stopTrackingBehind)
-                frozen = true;   // flew past: keep last animation
-            else
+            if (lookAtPlayer && target != null)
             {
-                Vector3 dir = target.position - transform.position;
-                if (dir.sqrMagnitude > 0.01f)
+                if (transform.position.z < target.position.z - stopTrackingBehind)
                 {
-                    Quaternion want = Quaternion.LookRotation(dir) * Quaternion.Euler(rotationOffsetEuler);
-                    Quaternion travel = Quaternion.LookRotation(Vector3.back) * Quaternion.Euler(rotationOffsetEuler);
-                    want = Quaternion.RotateTowards(travel, want, maxAngle);
-                    lastRot = Quaternion.Slerp(T.rotation, want, 1f - Mathf.Exp(-turnSpeed * Time.deltaTime));
-                    T.rotation = lastRot;
+                    frozen = true;
+                    lastRot = T.rotation;
+                }
+                else
+                {
+                    Vector3 dir = target.position - transform.position;
+                    if (dir.sqrMagnitude > 0.01f)
+                    {
+                        Quaternion travel = Quaternion.LookRotation(Vector3.back);
+                        Quaternion want = Quaternion.RotateTowards(travel, Quaternion.LookRotation(dir), maxAngle);
+                        smoothBase = Quaternion.Slerp(smoothBase, want, 1f - Mathf.Exp(-turnSpeed * dt));
+                    }
                 }
             }
+
+            // entry spin
+            if (!arrived && ReachedFirstPoint())
+            {
+                arrived = true;
+                settleTarget = Mathf.Ceil(roll / 360f) * 360f;
+            }
+            if (!arrived) roll += rollSpeed * dt;
+            else if (idleSpinSpeed > 0f)
+            {
+                rollSpeed = Mathf.Lerp(rollSpeed, idleSpinSpeed, 1f - Mathf.Exp(-settleSpeed * dt));
+                roll += rollSpeed * dt;
+            }
+            else roll = Mathf.Lerp(roll, settleTarget, 1f - Mathf.Exp(-settleSpeed * dt));
+
+            Vector3 axis = smoothBase * Vector3.forward;
+            Quaternion final = Quaternion.AngleAxis(roll, axis) * smoothBase * Quaternion.Euler(rotationOffsetEuler);
+            T.rotation = final;
+            lastRot = final;
         }
-        else if (frozen) T.rotation = lastRot;
 
         float t = Time.time * bobSpeed + phase;
         lastOffset = hover ? new Vector3(Mathf.Sin(t * 0.7f) * swayWidth, Mathf.Sin(t) * bobHeight, 0f) : Vector3.zero;

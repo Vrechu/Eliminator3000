@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1016135611604295379}
   - component: {fileID: 7186699958618388317}
+  - component: {fileID: 8743917377942831576}
   - component: {fileID: 4812246389829270740}
   - component: {fileID: 6673216381554715552}
   - component: {fileID: 3035863154724065037}
@@ -46,6 +47,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5519828220680120833}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &8743917377942831576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5519828220680120833}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b40191a7385d454ab8ba5e18610f646, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ObstacleFloat
+  visual: {fileID: 8377079963743951286}
+  bobHeight: 0.12
+  bobSpeed: 0.8
+  swayWidth: 0.05
+  tiltAmount: 1.5
+  tiltSpeed: 0.5
 --- !u!23 &4812246389829270740
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -175,6 +194,7 @@ MonoBehaviour:
   Info: 
   ScoreValue: 300
   health: 2
+  scoreMultiplierGain: 1
   healthText: {fileID: 0}
 --- !u!1001 &7870282711526940462
 PrefabInstance:

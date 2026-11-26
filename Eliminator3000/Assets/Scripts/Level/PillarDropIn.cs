@@ -21,6 +21,7 @@ public class PillarDropIn : MonoBehaviour
     }
 
     private Pillar[] pillars;
+    public static bool Previewing;
 
     private void Start()
     {
@@ -66,7 +67,38 @@ public class PillarDropIn : MonoBehaviour
             if (k >= 1f) { p.t.localPosition = p.finalPos; p.state = 2; }
         }
     }
+#if UNITY_EDITOR
+    [System.NonSerialized] public Vector3[] previewFinals;
 
+    // Editor preview: progress 0..1 across the whole drop (all pillars).
+    public void PreviewSet(float progress)
+    {
+        if (Application.isPlaying) return;
+        Previewing = true;
+        int n = transform.childCount;
+        if (previewFinals == null || previewFinals.Length != n)
+        {
+            previewFinals = new Vector3[n];
+            for (int i = 0; i < n; i++) previewFinals[i] = transform.GetChild(i).localPosition;
+        }
+        float total = dropDuration + randomDelay;
+        for (int i = 0; i < n; i++)
+        {
+            float delay = ((i * 0.37f) % 1f) * randomDelay;
+            float k = Mathf.Clamp01((progress * total - delay) / Mathf.Max(0.01f, dropDuration));
+            transform.GetChild(i).localPosition = previewFinals[i] + Vector3.up * dropHeight * (1f - k * k);
+        }
+    }
+
+    public void PreviewRestore()
+    {
+        Previewing = false;
+        if (previewFinals == null) return;
+        if (previewFinals.Length == transform.childCount)
+            for (int i = 0; i < previewFinals.Length; i++) transform.GetChild(i).localPosition = previewFinals[i];
+        previewFinals = null;
+    }
+#endif
     private static void SetVisible(Pillar p, bool on)
     {
         foreach (var r in p.rends) if (r != null) r.enabled = on;

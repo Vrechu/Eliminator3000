@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4812246389829270740}
   - component: {fileID: 6673216381554715552}
   - component: {fileID: 3035863154724065037}
+  - component: {fileID: 5970493591685287629}
   - component: {fileID: 6826200374914394844}
   - component: {fileID: 1832058872937928393}
   m_Layer: 10
@@ -143,6 +144,24 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!114 &5970493591685287629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5519828220680120833}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b40191a7385d454ab8ba5e18610f646, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ObstacleFloat
+  visual: {fileID: 0}
+  bobHeight: 0.12
+  bobSpeed: 0.8
+  swayWidth: 0.05
+  tiltAmount: 0.5
+  tiltSpeed: 0.5
 --- !u!114 &6826200374914394844
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -175,6 +194,7 @@ MonoBehaviour:
   Info: 
   ScoreValue: 300
   health: 2
+  scoreMultiplierGain: 1
   healthText: {fileID: 0}
 --- !u!1001 &2701520262434646091
 PrefabInstance:
