@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7686808771196906120}
   - component: {fileID: 5832627450606735392}
+  - component: {fileID: -5779839934334018811}
+  - component: {fileID: 1233671008832604367}
   - component: {fileID: 471220609010298582}
   - component: {fileID: 5357760874045993868}
   - component: {fileID: 4991216272546077901}
@@ -51,6 +53,73 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3699308623078601662}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &-5779839934334018811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3699308623078601662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 429452a55257a354db29459c6a9435cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyHealthBar
+  height: 3.2
+  width: 5
+  thickness: 0.1
+  towardCamera: 2
+  onlyAfterFirstHit: 0
+  hideNumbers: 1
+  fullColor: {r: 0.1, g: 1, b: 1, a: 1}
+  midColor: {r: 1, g: 0.2, b: 1, a: 1}
+  lowColor: {r: 1, g: 0.15, b: 0.1, a: 1}
+  materialOverride: {fileID: 0}
+--- !u!114 &1233671008832604367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3699308623078601662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0035c468a2a391e44b37389ee58e22e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyHitFeedback
+  mode: 0
+  flashColor: {r: 1.7922739, g: 2.7391365, b: 3.1929586, a: 1}
+  emissionBoost: 20
+  duration: 0.15
+  fade:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  vibrate: 1
+  vibrateStrength: 0.2
+  vibrateSpeed: 60
+  vibrateTarget: {fileID: 0}
+  punchScale: 0.02
 --- !u!23 &471220609010298582
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -489,23 +558,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7751419097327573008, guid: 7e74eff255a29d54691763947dec31d8, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.99999577
       objectReference: {fileID: 0}
     - target: {fileID: 7751419097327573008, guid: 7e74eff255a29d54691763947dec31d8, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0.0029092594
       objectReference: {fileID: 0}
     - target: {fileID: 7751419097327573008, guid: 7e74eff255a29d54691763947dec31d8, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 7751419097327573008, guid: 7e74eff255a29d54691763947dec31d8, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 7751419097327573008, guid: 7e74eff255a29d54691763947dec31d8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: -0.333
       objectReference: {fileID: 0}
     - target: {fileID: 7751419097327573008, guid: 7e74eff255a29d54691763947dec31d8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y

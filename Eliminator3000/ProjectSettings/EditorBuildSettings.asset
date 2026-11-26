@@ -15,5 +15,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Level 3 Alex.unity
     guid: cfe1319657b149d4d8ccbff32319917b
   m_configObjects:
+    com.unity.dt.app-ui: {fileID: 11400000, guid: 1b1c20d82303e4b5781c3ef50ac1449f, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 633c5b20bd428aa4bbcb0f2952440a2a, type: 3}
   m_UseUCBPForAssetBundles: 0

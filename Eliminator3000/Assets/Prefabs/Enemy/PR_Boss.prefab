@@ -758,6 +758,12 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 5734044290910311396, guid: ab2db9d7c86f0194aa60ca0a96d13115, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 3509836254565638889}
+    - targetCorrespondingSourceObject: {fileID: 5734044290910311396, guid: ab2db9d7c86f0194aa60ca0a96d13115, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2829057675820602985}
+    - targetCorrespondingSourceObject: {fileID: 5734044290910311396, guid: ab2db9d7c86f0194aa60ca0a96d13115, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 3652704180316561927}
     - targetCorrespondingSourceObject: {fileID: 5734044290910311396, guid: ab2db9d7c86f0194aa60ca0a96d13115, type: 3}
       insertIndex: -1
@@ -768,6 +774,73 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5734044290910311396, guid: ab2db9d7c86f0194aa60ca0a96d13115, type: 3}
   m_PrefabInstance: {fileID: 8831828308348080603}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3509836254565638889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3820072741986583103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 429452a55257a354db29459c6a9435cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyHealthBar
+  height: 3.2
+  width: 2.4
+  thickness: 0.22
+  towardCamera: 2
+  onlyAfterFirstHit: 0
+  hideNumbers: 1
+  fullColor: {r: 0.1, g: 1, b: 1, a: 1}
+  midColor: {r: 1, g: 0.2, b: 1, a: 1}
+  lowColor: {r: 1, g: 0.15, b: 0.1, a: 1}
+  materialOverride: {fileID: 0}
+--- !u!114 &2829057675820602985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3820072741986583103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0035c468a2a391e44b37389ee58e22e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyHitFeedback
+  mode: 0
+  flashColor: {r: 3, g: 3, b: 3, a: 1}
+  emissionBoost: 8
+  duration: 0.15
+  fade:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  vibrate: 1
+  vibrateStrength: 0.2
+  vibrateSpeed: 60
+  vibrateTarget: {fileID: 0}
+  punchScale: 0.08
 --- !u!114 &3652704180316561927
 MonoBehaviour:
   m_ObjectHideFlags: 0

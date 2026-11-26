@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7686808771196906120}
   - component: {fileID: 5832627450606735392}
+  - component: {fileID: 2629320753498184304}
+  - component: {fileID: 1958903276801092326}
   - component: {fileID: 3364538047729802477}
   - component: {fileID: 1340070435426162157}
   - component: {fileID: 471220609010298582}
@@ -19,6 +21,7 @@ GameObject:
   - component: {fileID: 285611534498342072}
   - component: {fileID: 5466366148492343946}
   - component: {fileID: -7738268868134584641}
+  - component: {fileID: 5053885447521651075}
   m_Layer: 8
   m_Name: PR_Shooting_Enemy
   m_TagString: Enemy
@@ -51,6 +54,73 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3699308623078601662}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &2629320753498184304
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3699308623078601662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0035c468a2a391e44b37389ee58e22e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyHitFeedback
+  mode: 0
+  flashColor: {r: 0.40547845, g: 0.79250944, b: 1.3224835, a: 1}
+  emissionBoost: 20
+  duration: 0.3
+  fade:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  vibrate: 1
+  vibrateStrength: 0.1
+  vibrateSpeed: 60
+  vibrateTarget: {fileID: 0}
+  punchScale: 0.08
+--- !u!114 &1958903276801092326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3699308623078601662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 429452a55257a354db29459c6a9435cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyHealthBar
+  height: 3.2
+  width: 2.4
+  thickness: 0.1
+  towardCamera: 2
+  onlyAfterFirstHit: 0
+  hideNumbers: 1
+  fullColor: {r: 0.1, g: 1, b: 1, a: 1}
+  midColor: {r: 1, g: 0.2, b: 1, a: 1}
+  lowColor: {r: 1, g: 0.15, b: 0.1, a: 1}
+  materialOverride: {fileID: 0}
 --- !u!114 &3364538047729802477
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -350,6 +420,51 @@ MonoBehaviour:
   EndPoint: {fileID: 0}
   kamikaze: 0
   kamikazeOvershootDistance: 0.5
+--- !u!114 &5053885447521651075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3699308623078601662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0035c468a2a391e44b37389ee58e22e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyHitFeedback
+  mode: 0
+  flashColor: {r: 1.7922739, g: 2.7391365, b: 3.1929586, a: 1}
+  emissionBoost: 20
+  duration: 0.15
+  fade:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  vibrate: 1
+  vibrateStrength: 0.2
+  vibrateSpeed: 60
+  vibrateTarget: {fileID: 0}
+  punchScale: 0.02
 --- !u!1001 &2409449810566581684
 PrefabInstance:
   m_ObjectHideFlags: 0

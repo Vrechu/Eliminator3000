@@ -11,6 +11,13 @@ public class PillarDropIn : MonoBehaviour
     [Tooltip("Random extra wait per pillar so they don't all land together.")]
     public float randomDelay = 0.25f;
 
+    [Header("Landing sound (optional, empty = silent)")]
+    public AudioClip landClip;
+    [Range(0f, 1f)] public float landVolume = 1f;
+    public float maxHearDistance = 60f;
+
+    public static bool Previewing;
+
     private class Pillar
     {
         public Transform t;
@@ -21,7 +28,6 @@ public class PillarDropIn : MonoBehaviour
     }
 
     private Pillar[] pillars;
-    public static bool Previewing;
 
     private void Start()
     {
@@ -33,7 +39,7 @@ public class PillarDropIn : MonoBehaviour
             p.finalPos = p.t.localPosition;
             var list = new System.Collections.Generic.List<Renderer>();
             foreach (var r in p.t.GetComponentsInChildren<Renderer>(true))
-                if (r.enabled) list.Add(r);   // renderers you disabled stay disabled
+                if (r.enabled) list.Add(r);
             p.rends = list.ToArray();
             p.delay = Random.value * randomDelay;
             p.timer = -p.delay;
@@ -63,14 +69,28 @@ public class PillarDropIn : MonoBehaviour
 
             SetVisible(p, true);
             float k = Mathf.Clamp01(p.timer / Mathf.Max(0.01f, dropDuration));
-            p.t.localPosition = p.finalPos + Vector3.up * dropHeight * (1f - k * k); // speeds up like gravity
-            if (k >= 1f) { p.t.localPosition = p.finalPos; p.state = 2; }
+            p.t.localPosition = p.finalPos + Vector3.up * dropHeight * (1f - k * k);
+            if (k >= 1f) { p.t.localPosition = p.finalPos; p.state = 2; PlayLand(p); }
         }
     }
+
+    private void PlayLand(Pillar p)
+    {
+        if (landClip == null) return;
+        Vector3 from = reference != null ? reference.position : (Camera.main != null ? Camera.main.transform.position : Vector3.zero);
+        float d = Vector3.Distance(p.t.position, from);
+        float vol = landVolume * Mathf.Clamp01(1f - d / Mathf.Max(1f, maxHearDistance));
+        if (vol > 0.01f) AudioSource.PlayClipAtPoint(landClip, p.t.position, vol);
+    }
+
+    private static void SetVisible(Pillar p, bool on)
+    {
+        foreach (var r in p.rends) if (r != null) r.enabled = on;
+    }
+
 #if UNITY_EDITOR
     [System.NonSerialized] public Vector3[] previewFinals;
 
-    // Editor preview: progress 0..1 across the whole drop (all pillars).
     public void PreviewSet(float progress)
     {
         if (Application.isPlaying) return;
@@ -99,8 +119,4 @@ public class PillarDropIn : MonoBehaviour
         previewFinals = null;
     }
 #endif
-    private static void SetVisible(Pillar p, bool on)
-    {
-        foreach (var r in p.rends) if (r != null) r.enabled = on;
-    }
 }
