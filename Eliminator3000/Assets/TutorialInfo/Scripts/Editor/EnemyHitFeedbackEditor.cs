@@ -23,12 +23,16 @@ public class EnemyHitFeedbackEditor : Editor
         double now = EditorApplication.timeSinceStartup;
         time += (float)(now - last);
         last = now;
-        if (time > f.duration + 0.5f)
+        float total = f.duration * f.flashCount + f.flashGap * (f.flashCount - 1);
+        if (time > total + 0.5f)
         {
             time = 0f;
             if (!loop) { playing = false; f.PreviewEnd(); SceneView.RepaintAll(); Repaint(); return; }
         }
-        float w = time <= f.duration ? Mathf.Clamp01(f.fade.Evaluate(time / Mathf.Max(0.02f, f.duration))) : 0f;
+        float cycle = f.duration + f.flashGap;
+        int fi = Mathf.Clamp(Mathf.FloorToInt(time / Mathf.Max(0.02f, cycle)), 0, f.flashCount - 1);
+        float local = time - fi * cycle;
+        float w = (time <= total && local <= f.duration) ? Mathf.Clamp01(f.fade.Evaluate(local / Mathf.Max(0.02f, f.duration))) : 0f;
         f.PreviewSet(w);
         SceneView.RepaintAll();
         UnityEditorInternal.InternalEditorUtility.RepaintAllViews();

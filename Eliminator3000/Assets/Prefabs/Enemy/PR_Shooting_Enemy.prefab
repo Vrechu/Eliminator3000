@@ -70,6 +70,8 @@ MonoBehaviour:
   flashColor: {r: 0.40547845, g: 0.79250944, b: 1.3224835, a: 1}
   emissionBoost: 20
   duration: 0.3
+  flashCount: 2
+  flashGap: 0.01
   fade:
     serializedVersion: 2
     m_Curve:
@@ -436,6 +438,8 @@ MonoBehaviour:
   flashColor: {r: 1.7922739, g: 2.7391365, b: 3.1929586, a: 1}
   emissionBoost: 20
   duration: 0.15
+  flashCount: 2
+  flashGap: 0.06
   fade:
     serializedVersion: 2
     m_Curve:

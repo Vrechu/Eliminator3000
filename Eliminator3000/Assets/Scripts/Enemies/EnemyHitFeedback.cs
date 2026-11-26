@@ -12,6 +12,10 @@ public class EnemyHitFeedback : MonoBehaviour
     [ColorUsage(false, true)] public Color flashColor = new Color(3f, 3f, 3f);
     public float emissionBoost = 8f;
     public float duration = 0.15f;
+    [Tooltip("1 = single flash, 2 = double, 3 = triple...")]
+    [Min(1)] public int flashCount = 2;
+    [Tooltip("Pause between flashes (seconds).")]
+    public float flashGap = 0.06f;
     public AnimationCurve fade = AnimationCurve.EaseInOut(0f, 1f, 1f, 0f);
 
     [Header("Vibrate (optional)")]
@@ -65,7 +69,14 @@ public class EnemyHitFeedback : MonoBehaviour
             }
         }
     }
-
+    float FlashWeight(float t)
+    {
+        float cycle = duration + flashGap;
+        int n = Mathf.Clamp(Mathf.FloorToInt(t / Mathf.Max(0.01f, cycle)), 0, flashCount - 1);
+        float local = t - n * cycle;
+        if (local > duration) return 0f;   // inside the gap
+        return Mathf.Clamp01(fade.Evaluate(Mathf.Clamp01(local / Mathf.Max(0.01f, duration))));
+    }
     public void Hit() { timer = 0f; }
     // ---- Edit Mode preview
     public void PreviewSet(float w)
@@ -128,14 +139,11 @@ public class EnemyHitFeedback : MonoBehaviour
         lastVib = Vector3.zero;
         VT.localScale = baseScale;
 
-        if (timer > duration)
-        {
-            if (dirty) { Apply(0f); dirty = false; }
-            return;
-        }
+        float totalTime = duration * flashCount + flashGap * (flashCount - 1);
+        if (timer > totalTime)
 
-        timer += Time.deltaTime;
-        float w = Mathf.Clamp01(fade.Evaluate(Mathf.Clamp01(timer / Mathf.Max(0.01f, duration))));
+            timer += Time.deltaTime;
+               float w = FlashWeight(timer);
         Apply(w);
         dirty = true;
 
