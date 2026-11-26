@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class EnemyShoot : MonoBehaviour
 {
@@ -37,6 +38,14 @@ public class EnemyShoot : MonoBehaviour
     /// </summary>
     private void Update()
     {
+        ///delete later
+        if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame)
+        {
+            if (multiShot) ShootMultiProjectile();
+            else ShootProjectile();
+        }
+
+        if (GameStateManager.Instance.CurrentState != GameStateManager.GameState.Ingame) return;
         if (GameStateManager.Instance.CurrentState != GameStateManager.GameState.Ingame) return;
         if (moveEnemy != null && moveEnemy.DistanceBehindPlayer() < stopShootingDistance) return;
         if (timer.IsFinished())
