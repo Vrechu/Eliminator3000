@@ -69,7 +69,7 @@ MonoBehaviour:
   mode: 0
   flashColor: {r: 0.40547845, g: 0.79250944, b: 1.3224835, a: 1}
   emissionBoost: 20
-  duration: 0.3
+  duration: 0.09
   flashCount: 2
   flashGap: 0.02
   fade:
