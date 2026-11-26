@@ -97325,20 +97325,20 @@ MonoBehaviour:
     intensity: 0.6
     sameAsBuilding: 0
   colorPresets:
-  - name: Coral_Pink
-    color: {r: 6.524383, g: 0, b: 0.4134361, a: 1}
-    weight: 1
-    inGlobalPool: 1
   - name: Pink
-    color: {r: 5.453554, g: 0.3258402, b: 2.5803182, a: 1}
+    color: {r: 0, g: 1.0078367, b: 6.524382, a: 1}
     weight: 1
     inGlobalPool: 1
-  - name: Purple
-    color: {r: 4.326227, g: 0.16217075, b: 4.688225, a: 1}
+  - name: Blue
+    color: {r: 5, g: 0.31413615, b: 2.6534462, a: 1}
     weight: 1
     inGlobalPool: 1
-  - name: Blue_Purple
-    color: {r: 0.39842895, g: 0.12993935, b: 0.91823894, a: 1}
+  - name: red
+    color: {r: 3.9044747, g: 0, b: 0.07493181, a: 1}
+    weight: 1
+    inGlobalPool: 1
+  - name: dark blue
+    color: {r: 0, g: 0.07288269, b: 0.98354334, a: 1}
     weight: 1
     inGlobalPool: 1
   windowPresets:
